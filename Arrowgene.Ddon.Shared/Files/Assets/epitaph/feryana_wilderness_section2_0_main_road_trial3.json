@@ -1,0 +1,113 @@
+{
+    "comment": "Well: Trial 3",
+    "stage_id": {
+        "id": 554,
+        "group_id": 104
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [
+        {"stage_id": 554, "group_id": 109, "pos_id": 0}
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 360
+                },
+                {
+                    "type": "DefeatEnemyWithAbnormalStatusCount",
+                    "priority": "Secondary",
+                    "Param1": 3
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 10
+                },
+                {
+                    "item_id": 18742,
+                    "amount": 40
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 8
+                    },
+                    "enemies": [
+                        {
+                            "comment": "War-Ready Goremanticore",
+                            "enemy_id": "0x015220",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "infection_type": 1,
+                            "is_boss": true
+                        },
+                        {
+                            "comment": "Greater Goblin Torch",
+                            "enemy_id": "0x010131",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_required": false
+                        },
+                        {
+                            "comment": "Greater Goblin Torch",
+                            "enemy_id": "0x010131",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_required": false
+                        },
+                        {
+                            "comment": "Sling Grim Goblin",
+                            "enemy_id": "0x010123",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_required": false
+                        },
+                        {
+                            "comment": "Sling Grim Goblin",
+                            "enemy_id": "0x010123",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_required": false
+                        },
+                        {
+                            "comment": "Sling Grim Goblin",
+                            "enemy_id": "0x010123",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_required": false
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

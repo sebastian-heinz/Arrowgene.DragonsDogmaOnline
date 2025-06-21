@@ -1,0 +1,208 @@
+{
+    "comment": "Space 2: Trial 1",
+    "stage_id": {
+        "id": 554,
+        "group_id": 108
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 120
+                },
+                {
+                    "type": "ItemNoteUsedMoreThanOnce",
+                    "priority": "Secondary"
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 10
+                },
+                {
+                    "item_id": 18742,
+                    "amount": 40
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 24
+                    },
+                    "enemies": [
+                        {
+                            "comment": "War-Ready Giant Saurian",
+                            "enemy_id": "0x010471",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1
+                        },
+                        {
+                            "comment": "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1
+                        },
+                        {
+                            "comment": "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1
+                        },
+                        {
+                            "comment": "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1
+                        },
+                        {
+                            "comment": "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1
+                        },
+                        {
+                            "comment": "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 240
+                },
+                {
+                    "type": "ItemNoteUsedMoreThanOnce",
+                    "priority": "Secondary"
+                }
+            ],
+            "cost": [
+                {
+                    "item_id": 18658,
+                    "amount": 20
+                }
+            ],
+            "item_rewards": [
+                {
+                    "item_id": 18742,
+                    "amount": 80
+                },
+                {
+                    "type": "pool",
+                    "rolls": 1,
+                    "items": [
+                        {
+                            "type": "Fixed",
+                            "item_id": 9247,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 9248,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 9339,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 9340,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 13694,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 24
+                    },
+                    "enemies": [
+                        {
+                            "comment": "War-Ready Ogre",
+                            "enemy_id": "0x015510",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "infection_type": 1,
+                            "is_boss": true
+                        },
+                        {
+                            "comment": "Brute Ape",
+                            "enemy_id": "0x015504",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Brute Ape",
+                            "enemy_id": "0x015504",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Brute Ape",
+                            "enemy_id": "0x015504",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Brute Ape",
+                            "enemy_id": "0x015504",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

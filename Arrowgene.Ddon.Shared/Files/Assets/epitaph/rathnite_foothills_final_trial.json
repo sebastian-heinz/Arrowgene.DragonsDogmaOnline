@@ -31,21 +31,23 @@
                     },
                     "enemies": [
                         {
-                            "comment" : "War-Ready Goremanticore",
+                            "comment": "War-Ready Goremanticore",
                             "enemy_id": "0x015220",
                             "level": 85,
-                            "exp": 85000,
+                            "exp_scheme": "Automatic",
                             "pp": 15,
                             "named_enemy_params_id": 2287,
+                            "infection_type": 3,
                             "is_boss": true
                         },
                         {
-                            "comment" : "War-Ready Gorecyclops",
+                            "comment": "War-Ready Gorecyclops",
                             "enemy_id": "0x015060",
                             "level": 85,
-                            "exp": 85000,
+                            "exp_scheme": "Automatic",
                             "pp": 15,
                             "named_enemy_params_id": 2287,
+                            "infection_type": 3,
                             "is_boss": true
                         }
                    ]

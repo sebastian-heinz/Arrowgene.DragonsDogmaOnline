@@ -178,9 +178,9 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     }
 
                     var dropTableIds = new List<uint>();
-                    foreach (var jTableId in jChests.GetProperty("drop_tables").EnumerateArray())
+                    foreach (var jDropSlot in jChests.GetProperty("drop_tables").EnumerateArray())
                     {
-                        dropTableIds.Add(jTableId.GetUInt32());
+                        dropTableIds.Add(jDropSlot.GetUInt32());
                     }
 
                     if (definitionType == EpitaphWeeklyReward.Type.Range)

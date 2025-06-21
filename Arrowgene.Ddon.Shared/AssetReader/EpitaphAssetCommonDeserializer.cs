@@ -30,26 +30,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 reward.Rolls = jRolls.GetUInt32();
             }
 
-            if (reward.Type != SoulOrdealRewardType.Pool)
-            {
-                var itemId = jItemReward.GetProperty("item_id").GetUInt32();
-                var amount = jItemReward.GetProperty("amount").GetUInt32();
-
-                var isHidden = false;
-                if (jItemReward.TryGetProperty("is_hidden", out JsonElement jIsHidden))
-                {
-                    isHidden = jIsHidden.GetBoolean();
-                }
-
-                double chance = 1.0;
-                if (jItemReward.TryGetProperty("chance", out JsonElement jChance))
-                {
-                    chance = jChance.GetDouble();
-                }
-
-                reward.Items.Add((itemId, amount, reward.Type, isHidden, chance));
-            }
-            else
+            if (reward.Type == SoulOrdealRewardType.Pool)
             {
                 foreach (var jPoolItem in jItemReward.GetProperty("items").EnumerateArray())
                 {
@@ -80,6 +61,25 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                     reward.Items.Add((itemId, amount, type, isHidden, chance));
                 }
+            }
+            else
+            {
+                var itemId = jItemReward.GetProperty("item_id").GetUInt32();
+                var amount = jItemReward.GetProperty("amount").GetUInt32();
+
+                var isHidden = false;
+                if (jItemReward.TryGetProperty("is_hidden", out JsonElement jIsHidden))
+                {
+                    isHidden = jIsHidden.GetBoolean();
+                }
+
+                double chance = 1.0;
+                if (jItemReward.TryGetProperty("chance", out JsonElement jChance))
+                {
+                    chance = jChance.GetDouble();
+                }
+
+                reward.Items.Add((itemId, amount, reward.Type, isHidden, chance));
             }
 
             return reward;

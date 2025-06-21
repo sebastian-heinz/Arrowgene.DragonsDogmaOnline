@@ -10,215 +10,579 @@
     ],
     "paths": [
         {
-            "name": "Heroic Spirit Sleeping Path: Rathnite Foothills",
+            "name": "Epitaph Road (Rathnite District)",
             "npc_id": "Pehr1",
             "dungeon_id": 1,
-            "final_trial_id": {"stage_id": {"id": 549, "group_id": 26}, "pos_id": 0},
+            "final_trial_id": {
+                "stage_id": {
+                    "id": 549,
+                    "group_id": 26
+                },
+                "pos_id": 0
+            },
             "hub_stage_id": 549,
-            "stage_ids": [550, 551, 553],
+            "stage_ids": [ 550, 551, 553 ],
             "soul_item_id": 18656,
             "reward_buffs": false,
             "barriers": [
-                {"type": "omid", "name": "Shrine: after 1st trial", "stage_id": 550, "group_id": 50, "pos_id": 0, "item_id": 18656, "amount": 8},
-                {"type": "omid", "name": "Shrine: before 4th trial", "stage_id": 550, "group_id": 49, "pos_id": 1, "item_id": 18656, "amount": 10},
-                {"type": "omid", "name": "Shrine: 1st space", "stage_id": 550, "group_id": 45, "pos_id": 0, "item_id": 18656, "amount": 30},
-                {"type": "omid", "name": "Shrine: 2nd space", "stage_id": 550, "group_id": 46, "pos_id": 0, "item_id": 18656, "amount": 30},
-                {"type": "omid", "name": "Shrine: 3rd space", "stage_id": 550, "group_id": 47, "pos_id": 0, "item_id": 18656, "amount": 30},
-                {"type": "omid", "name": "Shrine: 4th space", "stage_id": 550, "group_id": 48, "pos_id": 0, "item_id": 18656, "amount": 30},
-                {"type": "npcid", "name": "Shrine: Cave", "npc_id": "Anita1", "stage_id": 550, "group_id": 31, "pos_id": 1, "item_id": 18656, "amount": 99},
+                {
+                    "type": "omid",
+                    "name": "Shrine: after 1st trial",
+                    "stage_id": 550,
+                    "group_id": 50,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 8
+                },
+                {
+                    "type": "omid",
+                    "name": "Shrine: before 4th trial",
+                    "stage_id": 550,
+                    "group_id": 49,
+                    "pos_id": 1,
+                    "item_id": 18656,
+                    "amount": 10
+                },
+                {
+                    "type": "omid",
+                    "name": "Shrine: 1st space",
+                    "stage_id": 550,
+                    "group_id": 45,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 30
+                },
+                {
+                    "type": "omid",
+                    "name": "Shrine: 2nd space",
+                    "stage_id": 550,
+                    "group_id": 46,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 30
+                },
+                {
+                    "type": "omid",
+                    "name": "Shrine: 3rd space",
+                    "stage_id": 550,
+                    "group_id": 47,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 30
+                },
+                {
+                    "type": "omid",
+                    "name": "Shrine: 4th space",
+                    "stage_id": 550,
+                    "group_id": 48,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 30
+                },
+                {
+                    "type": "npcid",
+                    "name": "Shrine: Cave",
+                    "npc_id": "Anita1",
+                    "stage_id": 550,
+                    "group_id": 31,
+                    "pos_id": 1,
+                    "item_id": 18656,
+                    "amount": 99
+                },
 
-                {"type": "omid", "name": "Cave: before 3rd trial", "stage_id": 551, "group_id": 43, "pos_id": 0, "item_id": 18656, "amount": 30},
-                {"type": "omid", "name": "Cave: 1st space", "stage_id": 551, "group_id": 52, "pos_id": 0, "item_id": 18656, "amount": 50},
-                {"type": "omid", "name": "Cave: 2nd space", "stage_id": 551, "group_id": 62, "pos_id": 0, "item_id": 18656, "amount": 50},
-                {"type": "omid", "name": "Cave: 3rd space", "stage_id": 551, "group_id": 82, "pos_id": 0, "item_id": 18656, "amount": 50},
-                {"type": "omid", "name": "Cave: 4th space", "stage_id": 551, "group_id": 72, "pos_id": 0, "item_id": 18656, "amount": 50},
-                {"type": "npcid", "name": "Cave: Cave Depth", "npc_id": "Isel1", "stage_id": 551, "group_id": 36, "pos_id": 0, "item_id": 18656, "amount": 198},
+                {
+                    "type": "omid",
+                    "name": "Cave: before 3rd trial",
+                    "stage_id": 551,
+                    "group_id": 43,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 30
+                },
+                {
+                    "type": "omid",
+                    "name": "Cave: 1st space",
+                    "stage_id": 551,
+                    "group_id": 52,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 50
+                },
+                {
+                    "type": "omid",
+                    "name": "Cave: 2nd space",
+                    "stage_id": 551,
+                    "group_id": 62,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 50
+                },
+                {
+                    "type": "omid",
+                    "name": "Cave: 3rd space",
+                    "stage_id": 551,
+                    "group_id": 82,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 50
+                },
+                {
+                    "type": "omid",
+                    "name": "Cave: 4th space",
+                    "stage_id": 551,
+                    "group_id": 72,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 50
+                },
+                {
+                    "type": "npcid",
+                    "name": "Cave: Cave Depth",
+                    "npc_id": "Isel1",
+                    "stage_id": 551,
+                    "group_id": 36,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 198
+                },
 
-                {"type": "omid", "name": "Cave Depth: before 2nd trial", "stage_id": 551, "group_id": 93, "pos_id": 0, "item_id": 18656, "amount": 100},
-                {"type": "omid", "name": "Cave Depth: 1st space", "stage_id": 551, "group_id": 102, "pos_id": 0, "item_id": 18656, "amount": 150},
-                {"type": "omid", "name": "Cave Depth: 2nd space", "stage_id": 551, "group_id": 112, "pos_id": 0, "item_id": 18656, "amount": 150},
-                {"type": "omid", "name": "Cave Depth: 3rd space", "stage_id": 551, "group_id": 122, "pos_id": 0, "item_id": 18656, "amount": 150},
-                {"type": "omid", "name": "Cave Depth: 4th space", "stage_id": 551, "group_id": 132, "pos_id": 0, "item_id": 18656, "amount": 150},
-                {"type": "npcid", "name": "Waterway", "npc_id": "Damad1", "stage_id": 553, "group_id": 31, "pos_id": 0, "item_id": 18656, "amount": 297},
+                {
+                    "type": "omid",
+                    "name": "Cave Depth: before 2nd trial",
+                    "stage_id": 551,
+                    "group_id": 93,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 100
+                },
+                {
+                    "type": "omid",
+                    "name": "Cave Depth: 1st space",
+                    "stage_id": 551,
+                    "group_id": 102,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 150
+                },
+                {
+                    "type": "omid",
+                    "name": "Cave Depth: 2nd space",
+                    "stage_id": 551,
+                    "group_id": 112,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 150
+                },
+                {
+                    "type": "omid",
+                    "name": "Cave Depth: 3rd space",
+                    "stage_id": 551,
+                    "group_id": 122,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 150
+                },
+                {
+                    "type": "omid",
+                    "name": "Cave Depth: 4th space",
+                    "stage_id": 551,
+                    "group_id": 132,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 150
+                },
+                {
+                    "type": "npcid",
+                    "name": "Waterway",
+                    "npc_id": "Damad1",
+                    "stage_id": 553,
+                    "group_id": 31,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 297
+                },
 
-                {"type": "omid", "name": "Waterway: before 3rd trial", "stage_id": 553, "group_id": 39, "pos_id": 0, "item_id": 18656, "amount": 200},
-                {"type": "omid", "name": "Waterway: 1st space", "stage_id": 553, "group_id": 41, "pos_id": 0, "item_id": 18656, "amount": 300},
-                {"type": "omid", "name": "Waterway: 2nd space", "stage_id": 553, "group_id": 42, "pos_id": 0, "item_id": 18656, "amount": 300},
-                {"type": "omid", "name": "Waterway: 3rd space", "stage_id": 553, "group_id": 43, "pos_id": 0, "item_id": 18656, "amount": 300},
-                {"type": "omid", "name": "Waterway: 4th space", "stage_id": 553, "group_id": 44, "pos_id": 0, "item_id": 18656, "amount": 300}
+                {
+                    "type": "omid",
+                    "name": "Waterway: before 3rd trial",
+                    "stage_id": 553,
+                    "group_id": 39,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 200
+                },
+                {
+                    "type": "omid",
+                    "name": "Waterway: 1st space",
+                    "stage_id": 553,
+                    "group_id": 41,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 300
+                },
+                {
+                    "type": "omid",
+                    "name": "Waterway: 2nd space",
+                    "stage_id": 553,
+                    "group_id": 42,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 300
+                },
+                {
+                    "type": "omid",
+                    "name": "Waterway: 3rd space",
+                    "stage_id": 553,
+                    "group_id": 43,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 300
+                },
+                {
+                    "type": "omid",
+                    "name": "Waterway: 4th space",
+                    "stage_id": 553,
+                    "group_id": 44,
+                    "pos_id": 0,
+                    "item_id": 18656,
+                    "amount": 300
+                }
             ],
             "statues": [
-                {"stage_id": 550, "group_id": 32, "pos_id": 0},
-                {"stage_id": 551, "group_id": 38, "pos_id": 0},
-                {"stage_id": 551, "group_id": 88, "pos_id": 0},
-                {"stage_id": 553, "group_id": 33, "pos_id": 0}
+                {
+                    "stage_id": 550,
+                    "group_id": 32,
+                    "pos_id": 0
+                },
+                {
+                    "stage_id": 551,
+                    "group_id": 38,
+                    "pos_id": 0
+                },
+                {
+                    "stage_id": 551,
+                    "group_id": 88,
+                    "pos_id": 0
+                },
+                {
+                    "stage_id": 553,
+                    "group_id": 33,
+                    "pos_id": 0
+                }
             ],
             "doors": [
                 {
                     "comment": "Shrine: Main Road",
-                    "stage_id": {"id": 550, "group_id": 54}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 54
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 550, "group_id": 40},
+                        "stage_id": {
+                            "id": 550,
+                            "group_id": 40
+                        },
                         "amount": 6
                     }
                 },
                 {
                     "comment": "Shrine: 1st Space",
-                    "stage_id": {"id": 550, "group_id": 56}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 56
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 550, "group_id": 42},
+                        "stage_id": {
+                            "id": 550,
+                            "group_id": 42
+                        },
                         "amount": 5
                     }
                 },
                 {
                     "comment": "Shrine: 2nd Space",
-                    "stage_id": {"id": 550, "group_id": 57}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 57
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 550, "group_id": 43},
+                        "stage_id": {
+                            "id": 550,
+                            "group_id": 43
+                        },
                         "amount": 4
                     }
                 },
                 {
                     "comment": "Shrine: 3rd Space",
-                    "stage_id": {"id": 550, "group_id": 58}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 58
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 550, "group_id": 44},
+                        "stage_id": {
+                            "id": 550,
+                            "group_id": 44
+                        },
                         "amount": 5
                     }
                 },
                 {
                     "comment": "Shrine: 4th Space",
-                    "stage_id": {"id": 550, "group_id": 55}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 55
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 550, "group_id": 41},
+                        "stage_id": {
+                            "id": 550,
+                            "group_id": 41
+                        },
                         "amount": 7
                     }
                 },
                 {
                     "comment": "Cave: Main Road",
-                    "stage_id": {"id": 551, "group_id": 39}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 39
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 551, "group_id": 40},
+                        "stage_id": {
+                            "id": 551,
+                            "group_id": 40
+                        },
                         "amount": 8
                     }
                 },
                 {
                     "comment": "Cave: 1st Space",
-                    "stage_id": {"id": 551, "group_id": 50}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 50
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 551, "group_id": 51},
+                        "stage_id": {
+                            "id": 551,
+                            "group_id": 51
+                        },
                         "amount": 15
                     }
                 },
                 {
                     "comment": "Cave: 2nd Space",
-                    "stage_id": {"id": 551, "group_id": 60}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 60
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 551, "group_id": 61},
+                        "stage_id": {
+                            "id": 551,
+                            "group_id": 61
+                        },
                         "amount": 15
                     }
                 },
                 {
                     "comment": "Cave: 3rd Space",
-                    "stage_id": {"id": 551, "group_id": 80}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 80
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 551, "group_id": 81},
+                        "stage_id": {
+                            "id": 551,
+                            "group_id": 81
+                        },
                         "amount": 8
                     }
                 },
                 {
                     "comment": "Cave: 4th Space",
-                    "stage_id": {"id": 551, "group_id": 70}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 70
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 551, "group_id": 71},
+                        "stage_id": {
+                            "id": 551,
+                            "group_id": 71
+                        },
                         "amount": 14
                     }
                 },
                 {
                     "comment": "Cave Depth: Main Road",
-                    "stage_id": {"id": 551, "group_id": 89}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 89
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 551, "group_id": 90},
+                        "stage_id": {
+                            "id": 551,
+                            "group_id": 90
+                        },
                         "amount": 17
                     }
                 },
                 {
                     "comment": "Cave Depth: 1st Space",
-                    "stage_id": {"id": 551, "group_id": 100}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 100
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 551, "group_id": 101},
+                        "stage_id": {
+                            "id": 551,
+                            "group_id": 101
+                        },
                         "amount": 9
                     }
                 },
                 {
                     "comment": "Cave Depth: 2nd Space",
-                    "stage_id": {"id": 551, "group_id": 110}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 110
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 551, "group_id": 111},
+                        "stage_id": {
+                            "id": 551,
+                            "group_id": 111
+                        },
                         "amount": 19
                     }
                 },
                 {
                     "comment": "Cave Depth: 3rd Space",
-                    "stage_id": {"id": 551, "group_id": 120}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 120
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 551, "group_id": 121},
+                        "stage_id": {
+                            "id": 551,
+                            "group_id": 121
+                        },
                         "amount": 28
                     }
                 },
                 {
                     "comment": "Cave Depth: 4th Space",
-                    "stage_id": {"id": 551, "group_id": 130}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 130
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 551, "group_id": 131},
+                        "stage_id": {
+                            "id": 551,
+                            "group_id": 131
+                        },
                         "amount": 23
                     }
                 },
                 {
                     "comment": "Waterway",
-                    "stage_id": {"id": 553, "group_id": 47}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 47
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 553, "group_id": 48},
+                        "stage_id": {
+                            "id": 553,
+                            "group_id": 48
+                        },
                         "amount": 9
                     }
                 },
                 {
                     "comment": "Waterway",
-                    "stage_id": {"id": 553, "group_id": 47}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 47
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 553, "group_id": 48},
+                        "stage_id": {
+                            "id": 553,
+                            "group_id": 48
+                        },
                         "amount": 9
                     }
                 },
                 {
                     "comment": "Waterway",
-                    "stage_id": {"id": 553, "group_id": 55}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 55
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 553, "group_id": 56},
+                        "stage_id": {
+                            "id": 553,
+                            "group_id": 56
+                        },
                         "amount": 11
                     }
                 },
                 {
                     "comment": "Waterway",
-                    "stage_id": {"id": 553, "group_id": 65}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 65
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 553, "group_id": 66},
+                        "stage_id": {
+                            "id": 553,
+                            "group_id": 66
+                        },
                         "amount": 9
                     }
                 },
                 {
                     "comment": "Waterway",
-                    "stage_id": {"id": 553, "group_id": 75}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 75
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 553, "group_id": 76},
+                        "stage_id": {
+                            "id": 553,
+                            "group_id": 76
+                        },
                         "amount": 13
                     }
                 },
                 {
                     "comment": "Waterway",
-                    "stage_id": {"id": 553, "group_id": 85}, "pos_id": 0,
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 85
+                    },
+                    "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 553, "group_id": 86},
+                        "stage_id": {
+                            "id": 553,
+                            "group_id": 86
+                        },
                         "amount": 9
                     }
                 }
@@ -227,91 +591,172 @@
                 {
                     "comment": "Gold Chest (Shrine Main Road)",
                     "type": "single",
-                    "stage_id": {"id": 550, "group_id": 221}, "pos_id": 0, "drop_tables": [0]
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 221
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 0 ]
                 },
                 {
                     "comment": "Gold Chest (Shrine)",
                     "type": "single",
-                    "stage_id": {"id": 550, "group_id": 223}, "pos_id": 0, "drop_tables": [0]
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 223
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 0 ]
                 },
                 {
                     "comment": "Gold Chest (Shrine)",
                     "type": "single",
-                    "stage_id": {"id": 550, "group_id": 225}, "pos_id": 0, "drop_tables": [0]
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 225
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 0 ]
                 },
                 {
                     "comment": "Gold Chest (Cave Main Road)",
                     "type": "single",
-                    "stage_id": {"id": 551, "group_id": 227}, "pos_id": 0, "drop_tables": [1]
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 227
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 1 ]
                 },
                 {
                     "comment": "Gold Chest (Cave 1st Space)",
                     "type": "single",
-                    "stage_id": {"id": 551, "group_id": 225}, "pos_id": 0, "drop_tables": [1]
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 225
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 1 ]
                 },
                 {
                     "comment": "Gold Chest (Cave 4th Space)",
                     "type": "single",
-                    "stage_id": {"id": 551, "group_id": 226}, "pos_id": 0, "drop_tables": [1]
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 226
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 1 ]
                 },
                 {
                     "comment": "Gold Chest (Cave Depth Main Road)",
                     "type": "single",
-                    "stage_id": {"id": 551, "group_id": 232}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 232
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 2, 3, 4 ]
                 },
                 {
                     "comment": "Gold Chest (Cave Depth 1st Space)",
                     "type": "single",
-                    "stage_id": {"id": 551, "group_id": 230}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 230
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 2, 3, 4 ]
                 },
                 {
                     "comment": "Gold Chest (Cave Depth 4th Space)",
                     "type": "single",
-                    "stage_id": {"id": 551, "group_id": 231}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 231
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 2, 3, 4 ]
                 },
                 {
                     "comment": "Gold Chest (Waterway Main Road)",
                     "type": "single",
-                    "stage_id": {"id": 553, "group_id": 213}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 213
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 2, 3, 4 ]
                 },
                 {
                     "comment": "Gold Chest (Waterway 1st Space)",
                     "type": "single",
-                    "stage_id": {"id": 553, "group_id": 214}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 214
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 2, 3, 4 ]
                 },
                 {
                     "comment": "Gold Chest (Waterway 4th Space)",
                     "type": "single",
-                    "stage_id": {"id": 553, "group_id": 215}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 215
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 2, 3, 4 ]
                 },
                 {
                     "comment": "Gold Chest (Final Trial)",
                     "type": "single",
-                    "stage_id": {"id": 553, "group_id": 209}, "pos_id": 0, "drop_tables": [0, 1, 2, 3, 4, 5]
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 209
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 0, 1, 2, 3, 4, 5 ]
                 },
                 {
                     "comment": "Bronze Chest (Shrine)",
                     "type": "range",
                     "amount": 12,
-                    "stage_id": {"id": 550, "group_id": 224}, "drop_tables": [10]
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 224
+                    },
+                    "drop_tables": [ 10 ]
                 },
                 {
                     "comment": "Bronze Chest (Cave)",
                     "type": "range",
                     "amount": 12,
-                    "stage_id": {"id": 551, "group_id": 224}, "drop_tables": [11]
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 224
+                    },
+                    "drop_tables": [ 11 ]
                 },
                 {
                     "comment": "Bronze Chest (Cave Depth)",
                     "type": "range",
                     "amount": 10,
-                    "stage_id": {"id": 551, "group_id": 229}, "drop_tables": [12]
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 229
+                    },
+                    "drop_tables": [ 12 ]
                 },
                 {
                     "comment": "Bronze Chest (Cave Depth)",
                     "type": "range",
                     "amount": 12,
-                    "stage_id": {"id": 553, "group_id": 212}, "drop_tables": [13]
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 212
+                    },
+                    "drop_tables": [ 13 ]
                 }
             ],
             "dungeon_trash": [
@@ -319,21 +764,36 @@
                     "comment": "Chest and Enemy Loot in Shrine",
                     "stage_id": 550,
                     "items": [
-                        {"type": "random", "item_id": 18656, "amount": 3, "chance": 0.50}
+                        {
+                            "type": "random",
+                            "item_id": 18656,
+                            "amount": 3,
+                            "chance": 0.50
+                        }
                     ]
                 },
                 {
                     "comment": "Chest and Enemy Loot in Cave",
                     "stage_id": 551,
                     "items": [
-                        {"type": "random", "item_id": 18656, "amount": 5, "chance": 0.50}
+                        {
+                            "type": "random",
+                            "item_id": 18656,
+                            "amount": 5,
+                            "chance": 0.50
+                        }
                     ]
                 },
                 {
                     "comment": "Chest and Enemy Loot in Waterway",
                     "stage_id": 553,
                     "items": [
-                        {"type": "random", "item_id": 18656, "amount": 8, "chance": 0.50}
+                        {
+                            "type": "random",
+                            "item_id": 18656,
+                            "amount": 8,
+                            "chance": 0.50
+                        }
                     ]
                 }
             ],
@@ -346,26 +806,126 @@
                             "type": "pool",
                             "rolls": 1,
                             "items": [
-                                {"type": "fixed", "item_id": 17816, "amount": 1, "comment": "Biyabaan Mail 0*"},
-                                {"type": "fixed", "item_id": 17817, "amount": 1, "comment": "Biyabaan Mail 1*"},
-                                {"type": "fixed", "item_id": 17818, "amount": 1, "comment": "Biyabaan Mail 2*"},
-                                {"type": "fixed", "item_id": 17819, "amount": 1, "comment": "Biyabaan Mail 3*"},
-                                {"type": "fixed", "item_id": 17820, "amount": 1, "comment": "Biyabaan Mail 4*"},
-                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 0*"},
-                                {"type": "fixed", "item_id": 17832, "amount": 1, "comment": "Biyabaan Tights 1*"},
-                                {"type": "fixed", "item_id": 17833, "amount": 1, "comment": "Biyabaan Tights 2*"},
-                                {"type": "fixed", "item_id": 17834, "amount": 1, "comment": "Biyabaan Tights 3*"},
-                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 4*"},
-                                {"type": "fixed", "item_id": 17846, "amount": 1, "comment": "Albasiyyah 0*"},
-                                {"type": "fixed", "item_id": 17847, "amount": 1, "comment": "Albasiyyah 1*"},
-                                {"type": "fixed", "item_id": 17848, "amount": 1, "comment": "Albasiyyah 2*"},
-                                {"type": "fixed", "item_id": 17849, "amount": 1, "comment": "Albasiyyah 3*"},
-                                {"type": "fixed", "item_id": 17850, "amount": 1, "comment": "Albasiyyah 4*"},
-                                {"type": "fixed", "item_id": 17821, "amount": 1, "comment": "Acrean Tunic 0*"},
-                                {"type": "fixed", "item_id": 17821, "amount": 1, "comment": "Acrean Tunic 0*"},
-                                {"type": "fixed", "item_id": 17821, "amount": 1, "comment": "Acrean Tunic 0*"},
-                                {"type": "fixed", "item_id": 17821, "amount": 1, "comment": "Acrean Tunic 0*"},
-                                {"type": "fixed", "item_id": 17825, "amount": 1, "comment": "Acrean Tunic 4*"}
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17816,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17817,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 1*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17818,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 2*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17819,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 3*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17820,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 4*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17831,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17832,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 1*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17833,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 2*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17834,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 3*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17831,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 4*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17846,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17847,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 1*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17848,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 2*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17849,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 3*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17850,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 4*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17821,
+                                    "amount": 1,
+                                    "comment": "Acrean Tunic 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17821,
+                                    "amount": 1,
+                                    "comment": "Acrean Tunic 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17821,
+                                    "amount": 1,
+                                    "comment": "Acrean Tunic 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17821,
+                                    "amount": 1,
+                                    "comment": "Acrean Tunic 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17825,
+                                    "amount": 1,
+                                    "comment": "Acrean Tunic 4*"
+                                }
                             ]
                         }
                     ]
@@ -378,26 +938,126 @@
                             "type": "pool",
                             "rolls": 1,
                             "items": [
-                                {"type": "fixed", "item_id": 17816, "amount": 1, "comment": "Biyabaan Mail 0*"},
-                                {"type": "fixed", "item_id": 17817, "amount": 1, "comment": "Biyabaan Mail 1*"},
-                                {"type": "fixed", "item_id": 17818, "amount": 1, "comment": "Biyabaan Mail 2*"},
-                                {"type": "fixed", "item_id": 17819, "amount": 1, "comment": "Biyabaan Mail 3*"},
-                                {"type": "fixed", "item_id": 17820, "amount": 1, "comment": "Biyabaan Mail 4*"},
-                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 0*"},
-                                {"type": "fixed", "item_id": 17832, "amount": 1, "comment": "Biyabaan Tights 1*"},
-                                {"type": "fixed", "item_id": 17833, "amount": 1, "comment": "Biyabaan Tights 2*"},
-                                {"type": "fixed", "item_id": 17834, "amount": 1, "comment": "Biyabaan Tights 3*"},
-                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 4*"},
-                                {"type": "fixed", "item_id": 17846, "amount": 1, "comment": "Albasiyyah 0*"},
-                                {"type": "fixed", "item_id": 17847, "amount": 1, "comment": "Albasiyyah 1*"},
-                                {"type": "fixed", "item_id": 17848, "amount": 1, "comment": "Albasiyyah 2*"},
-                                {"type": "fixed", "item_id": 17849, "amount": 1, "comment": "Albasiyyah 3*"},
-                                {"type": "fixed", "item_id": 17850, "amount": 1, "comment": "Albasiyyah 4*"},
-                                {"type": "fixed", "item_id": 17836, "amount": 1, "comment": "Acrean Hose 0*"},
-                                {"type": "fixed", "item_id": 17836, "amount": 1, "comment": "Acrean Hose 0*"},
-                                {"type": "fixed", "item_id": 17836, "amount": 1, "comment": "Acrean Hose 0*"},
-                                {"type": "fixed", "item_id": 17836, "amount": 1, "comment": "Acrean Hose 0*"},
-                                {"type": "fixed", "item_id": 17840, "amount": 1, "comment": "Acrean Hose 4*"}
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17816,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17817,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 1*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17818,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 2*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17819,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 3*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17820,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 4*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17831,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17832,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 1*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17833,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 2*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17834,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 3*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17831,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 4*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17846,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17847,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 1*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17848,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 2*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17849,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 3*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17850,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 4*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17836,
+                                    "amount": 1,
+                                    "comment": "Acrean Hose 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17836,
+                                    "amount": 1,
+                                    "comment": "Acrean Hose 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17836,
+                                    "amount": 1,
+                                    "comment": "Acrean Hose 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17836,
+                                    "amount": 1,
+                                    "comment": "Acrean Hose 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17840,
+                                    "amount": 1,
+                                    "comment": "Acrean Hose 4*"
+                                }
                             ]
                         }
                     ]
@@ -410,26 +1070,126 @@
                             "type": "pool",
                             "rolls": 1,
                             "items": [
-                                {"type": "fixed", "item_id": 17816, "amount": 1, "comment": "Biyabaan Mail 0*"},
-                                {"type": "fixed", "item_id": 17817, "amount": 1, "comment": "Biyabaan Mail 1*"},
-                                {"type": "fixed", "item_id": 17818, "amount": 1, "comment": "Biyabaan Mail 2*"},
-                                {"type": "fixed", "item_id": 17819, "amount": 1, "comment": "Biyabaan Mail 3*"},
-                                {"type": "fixed", "item_id": 17820, "amount": 1, "comment": "Biyabaan Mail 4*"},
-                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 0*"},
-                                {"type": "fixed", "item_id": 17832, "amount": 1, "comment": "Biyabaan Tights 1*"},
-                                {"type": "fixed", "item_id": 17833, "amount": 1, "comment": "Biyabaan Tights 2*"},
-                                {"type": "fixed", "item_id": 17834, "amount": 1, "comment": "Biyabaan Tights 3*"},
-                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 4*"},
-                                {"type": "fixed", "item_id": 17846, "amount": 1, "comment": "Albasiyyah 0*"},
-                                {"type": "fixed", "item_id": 17847, "amount": 1, "comment": "Albasiyyah 1*"},
-                                {"type": "fixed", "item_id": 17848, "amount": 1, "comment": "Albasiyyah 2*"},
-                                {"type": "fixed", "item_id": 17849, "amount": 1, "comment": "Albasiyyah 3*"},
-                                {"type": "fixed", "item_id": 17850, "amount": 1, "comment": "Albasiyyah 4*"},
-                                {"type": "fixed", "item_id": 17851, "amount": 1, "comment": "Acrean Cloak 0*"},
-                                {"type": "fixed", "item_id": 17851, "amount": 1, "comment": "Acrean Cloak 0*"},
-                                {"type": "fixed", "item_id": 17851, "amount": 1, "comment": "Acrean Cloak 0*"},
-                                {"type": "fixed", "item_id": 17851, "amount": 1, "comment": "Acrean Cloak 0*"},
-                                {"type": "fixed", "item_id": 17855, "amount": 1, "comment": "Acrean Cloak 4*"}
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17816,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17817,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 1*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17818,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 2*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17819,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 3*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17820,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Mail 4*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17831,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17832,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 1*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17833,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 2*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17834,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 3*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17831,
+                                    "amount": 1,
+                                    "comment": "Biyabaan Tights 4*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17846,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17847,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 1*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17848,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 2*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17849,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 3*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17850,
+                                    "amount": 1,
+                                    "comment": "Albasiyyah 4*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17851,
+                                    "amount": 1,
+                                    "comment": "Acrean Cloak 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17851,
+                                    "amount": 1,
+                                    "comment": "Acrean Cloak 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17851,
+                                    "amount": 1,
+                                    "comment": "Acrean Cloak 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17851,
+                                    "amount": 1,
+                                    "comment": "Acrean Cloak 0*"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17855,
+                                    "amount": 1,
+                                    "comment": "Acrean Cloak 4*"
+                                }
                             ]
                         }
                     ]
@@ -442,16 +1202,66 @@
                             "type": "pool",
                             "rolls": 1,
                             "items": [
-                                {"type": "fixed", "item_id": 17401, "amount": 1, "comment": "Shamshir-e Morad"},
-                                {"type": "fixed", "item_id": 17491, "amount": 1, "comment": "Rakhshan"},
-                                {"type": "fixed", "item_id": 17536, "amount": 1, "comment": "Nuri-e Sepehr"},
-                                {"type": "fixed", "item_id": 17446, "amount": 1, "comment": "Dival-e-Hami"},
-                                {"type": "fixed", "item_id": 17466, "amount": 1, "comment": "Farid"},
-                                {"type": "fixed", "item_id": 17551, "amount": 1, "comment": "Mahasti"},
-                                {"type": "fixed", "item_id": 17521, "amount": 1, "comment": "Parto"},
-                                {"type": "fixed", "item_id": 17431, "amount": 1, "comment": "Yekta-Kavi"},
-                                {"type": "fixed", "item_id": 17506, "amount": 1, "comment": "Hushyar"},
-                                {"type": "fixed", "item_id": 17566, "amount": 1, "comment": "Arsalan Milad"}
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17401,
+                                    "amount": 1,
+                                    "comment": "Shamshir-e Morad"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17491,
+                                    "amount": 1,
+                                    "comment": "Rakhshan"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17536,
+                                    "amount": 1,
+                                    "comment": "Nuri-e Sepehr"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17446,
+                                    "amount": 1,
+                                    "comment": "Dival-e-Hami"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17466,
+                                    "amount": 1,
+                                    "comment": "Farid"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17551,
+                                    "amount": 1,
+                                    "comment": "Mahasti"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17521,
+                                    "amount": 1,
+                                    "comment": "Parto"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17431,
+                                    "amount": 1,
+                                    "comment": "Yekta-Kavi"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17506,
+                                    "amount": 1,
+                                    "comment": "Hushyar"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17566,
+                                    "amount": 1,
+                                    "comment": "Arsalan Milad"
+                                }
                             ]
                         }
                     ]
@@ -464,16 +1274,66 @@
                             "type": "pool",
                             "rolls": 1,
                             "items": [
-                                {"type": "fixed", "item_id": 17416, "amount": 1, "comment": "Mehrdad"},
-                                {"type": "fixed", "item_id": 17461, "amount": 1, "comment": "Roshanak"},
-                                {"type": "fixed", "item_id": 17881, "amount": 3, "comment": "Bone Pearl"},
-                                {"type": "fixed", "item_id": 17881, "amount": 3, "comment": "Bone Pearl"},
-                                {"type": "fixed", "item_id": 17881, "amount": 3, "comment": "Bone Pearl"},
-                                {"type": "fixed", "item_id": 17881, "amount": 3, "comment": "Bone Pearl"},
-                                {"type": "fixed", "item_id": 18656, "amount": 40, "comment": "Guardians Soul"},
-                                {"type": "fixed", "item_id": 18656, "amount": 40, "comment": "Guardians Soul"},
-                                {"type": "fixed", "item_id": 18656, "amount": 40, "comment": "Guardians Soul"},
-                                {"type": "fixed", "item_id": 18656, "amount": 40, "comment": "Guardians Soul"}
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17416,
+                                    "amount": 1,
+                                    "comment": "Mehrdad"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17461,
+                                    "amount": 1,
+                                    "comment": "Roshanak"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17881,
+                                    "amount": 3,
+                                    "comment": "Bone Pearl"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17881,
+                                    "amount": 3,
+                                    "comment": "Bone Pearl"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17881,
+                                    "amount": 3,
+                                    "comment": "Bone Pearl"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17881,
+                                    "amount": 3,
+                                    "comment": "Bone Pearl"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18656,
+                                    "amount": 40,
+                                    "comment": "Guardians Soul"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18656,
+                                    "amount": 40,
+                                    "comment": "Guardians Soul"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18656,
+                                    "amount": 40,
+                                    "comment": "Guardians Soul"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18656,
+                                    "amount": 40,
+                                    "comment": "Guardians Soul"
+                                }
                             ]
                         }
                     ]
@@ -483,12 +1343,16 @@
                     "id": 5,
                     "items": [
                         {
-                            "type": "pool",
-                            "rolls": 1,
-                            "items": [
-                                {"type": "fixed", "item_id": 19236, "amount": 1, "comment": "Helm of the First King"},
-                                {"type": "fixed", "item_id": 19246, "amount": 1, "comment": "Gauntlets of the First King"}
-                            ]
+                            "type": "fixed",
+                            "item_id": 19236,
+                            "amount": 1,
+                            "comment": "Helm of the First King"
+                        },
+                        {
+                            "type": "fixed",
+                            "item_id": 19246,
+                            "amount": 1,
+                            "comment": "Gauntlets of the First King"
                         }
                     ]
                 },
@@ -496,28 +1360,44 @@
                     "comment": "Shrine Bronze Chest",
                     "id": 10,
                     "items": [
-                        {"type": "fixed", "item_id": 18656, "amount": 18}
+                        {
+                            "type": "fixed",
+                            "item_id": 18656,
+                            "amount": 18
+                        }
                     ]
                 },
                 {
                     "comment": "Cave Bronze Chest",
                     "id": 11,
                     "items": [
-                        {"type": "fixed", "item_id": 18656, "amount": 23}
+                        {
+                            "type": "fixed",
+                            "item_id": 18656,
+                            "amount": 23
+                        }
                     ]
                 },
                 {
                     "comment": "Cave Depth Bronze Chest",
                     "id": 12,
                     "items": [
-                        {"type": "fixed", "item_id": 18656, "amount": 29}
+                        {
+                            "type": "fixed",
+                            "item_id": 18656,
+                            "amount": 29
+                        }
                     ]
                 },
                 {
                     "comment": "Waterway Bronze Chest",
                     "id": 13,
                     "items": [
-                        {"type": "fixed", "item_id": 18656, "amount": 39}
+                        {
+                            "type": "fixed",
+                            "item_id": 18656,
+                            "amount": 39
+                        }
                     ]
                 }
             ],
@@ -546,7 +1426,7 @@
                             "pos_id": 1
                         }
                     ],
-                    "unlock_dependency": [2105955]
+                    "unlock_dependency": [ 2105955 ]
                 },
                 {
                     "name": "Rathnite Foothills - Section 3: Cave Depth",
@@ -563,7 +1443,7 @@
                             "pos_id": 0
                         }
                     ],
-                    "unlock_dependency": [2499187]
+                    "unlock_dependency": [ 2499187 ]
                 },
                 {
                     "name": "Rathnite Foothills - Section 4: Waterway",
@@ -580,7 +1460,2051 @@
                             "pos_id": 0
                         }
                     ],
-                    "unlock_dependency": [5775987]
+                    "unlock_dependency": [ 5775987 ]
+                }
+            ]
+        },
+        {
+            "name": "Epitaph Road (Feryana District)",
+            "npc_id": "Ira1",
+            "dungeon_id": 2,
+            "final_trial_id": {
+                "stage_id": {
+                    "id": 557,
+                    "group_id": 32
+                },
+                "pos_id": 0
+            },
+            "hub_stage_id": 557,
+            "stage_ids": [ 552, 554, 555, 556 ],
+            "soul_item_id": 18658,
+            "reward_buffs": false,
+            "barriers": [
+                {
+                    "type": "omid",
+                    "name": "Ruins",
+                    "stage_id": 552,
+                    "group_id": 110,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 30
+                },
+                {
+                    "type": "omid",
+                    "name": "Ruins",
+                    "stage_id": 552,
+                    "group_id": 111,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 60
+                },
+                {
+                    "type": "omid",
+                    "name": "Ruins",
+                    "stage_id": 552,
+                    "group_id": 112,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 60
+                },
+                {
+                    "type": "omid",
+                    "name": "Ruins",
+                    "stage_id": 552,
+                    "group_id": 113,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 60
+                },
+                {
+                    "type": "omid",
+                    "name": "Ruins",
+                    "stage_id": 552,
+                    "group_id": 114,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 60
+                },
+                {
+                    "type": "npcid",
+                    "name": "Ruins: Path to Well",
+                    "npc_id": "Yuiato1",
+                    "stage_id": 552,
+                    "group_id": 100,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 99
+                },
+                {
+                    "type": "omid",
+                    "name": "Well",
+                    "stage_id": 554,
+                    "group_id": 110,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 30
+                },
+                {
+                    "type": "omid",
+                    "name": "Well",
+                    "stage_id": 554,
+                    "group_id": 111,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 60
+                },
+                {
+                    "type": "omid",
+                    "name": "Well",
+                    "stage_id": 554,
+                    "group_id": 112,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 60
+                },
+                {
+                    "type": "omid",
+                    "name": "Well",
+                    "stage_id": 554,
+                    "group_id": 113,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 60
+                },
+                {
+                    "type": "omid",
+                    "name": "Well",
+                    "stage_id": 554,
+                    "group_id": 114,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 60
+                },
+                {
+                    "type": "npcid",
+                    "name": "Ruins: Path to Tomb",
+                    "npc_id": "Kemal1",
+                    "stage_id": 554,
+                    "group_id": 100,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 198
+                },
+                {
+                    "type": "omid",
+                    "name": "Tomb",
+                    "stage_id": 555,
+                    "group_id": 110,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 60
+                },
+                {
+                    "type": "omid",
+                    "name": "Tomb",
+                    "stage_id": 555,
+                    "group_id": 111,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 120
+                },
+                {
+                    "type": "omid",
+                    "name": "Tomb",
+                    "stage_id": 555,
+                    "group_id": 112,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 120
+                },
+                {
+                    "type": "omid",
+                    "name": "Tomb",
+                    "stage_id": 555,
+                    "group_id": 113,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 120
+                },
+                {
+                    "type": "omid",
+                    "name": "Tomb",
+                    "stage_id": 555,
+                    "group_id": 114,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 120
+                },
+                {
+                    "type": "npcid",
+                    "name": "Ruins: Path to Ruins Deepest Level",
+                    "npc_id": "Holya1",
+                    "stage_id": 556,
+                    "group_id": 100,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 297
+                },
+                {
+                    "type": "omid",
+                    "name": "Ruin Depths",
+                    "stage_id": 556,
+                    "group_id": 110,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 120
+                },
+                {
+                    "type": "omid",
+                    "name": "Ruin Depths",
+                    "stage_id": 556,
+                    "group_id": 111,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 240
+                },
+                {
+                    "type": "omid",
+                    "name": "Ruin Depths",
+                    "stage_id": 556,
+                    "group_id": 112,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 240
+                },
+                {
+                    "type": "omid",
+                    "name": "Ruin Depths",
+                    "stage_id": 556,
+                    "group_id": 113,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 240
+                },
+                {
+                    "type": "omid",
+                    "name": "Ruin Depths",
+                    "stage_id": 556,
+                    "group_id": 114,
+                    "pos_id": 0,
+                    "item_id": 18658,
+                    "amount": 240
+                }
+            ],
+            "statues": [
+                {
+                    "stage_id": 552,
+                    "group_id": 101,
+                    "pos_id": 0
+                },
+                {
+                    "stage_id": 554,
+                    "group_id": 101,
+                    "pos_id": 0
+                },
+                {
+                    "stage_id": 555,
+                    "group_id": 101,
+                    "pos_id": 0
+                },
+                {
+                    "stage_id": 556,
+                    "group_id": 101,
+                    "pos_id": 0
+                }
+            ],
+            "doors": [
+                {
+                    "comment": "Ruins: Main Road",
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 115
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 552,
+                            "group_id": 120
+                        },
+                        "amount": 8
+                    }
+                },
+                {
+                    "comment": "Ruins: 1st Space",
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 116
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 552,
+                            "group_id": 121
+                        },
+                        "amount": 10
+                    }
+                },
+                {
+                    "comment": "Ruins: 2nd Space",
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 117
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 552,
+                            "group_id": 122
+                        },
+                        "amount": 16
+                    }
+                },
+                {
+                    "comment": "Ruins: 3rd Space",
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 118
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 552,
+                            "group_id": 123
+                        },
+                        "amount": 15
+                    }
+                },
+                {
+                    "comment": "Ruins: 4th Space",
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 119
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 552,
+                            "group_id": 124
+                        },
+                        "amount": 26
+                    }
+                },
+                {
+                    "comment": "Well: Main Road",
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 115
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 554,
+                            "group_id": 120
+                        },
+                        "amount": 7
+                    }
+                },
+                {
+                    "comment": "Well: 1st Space",
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 116
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 554,
+                            "group_id": 121
+                        },
+                        "amount": 11
+                    }
+                },
+                {
+                    "comment": "Well: 2nd Space",
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 117
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 554,
+                            "group_id": 122
+                        },
+                        "amount": 9
+                    }
+                },
+                {
+                    "comment": "Well: 3rd Space",
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 118
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 554,
+                            "group_id": 123
+                        },
+                        "amount": 21
+                    }
+                },
+                {
+                    "comment": "Well: 4th Space",
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 119
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 554,
+                            "group_id": 124
+                        },
+                        "amount": 26
+                    }
+                },
+                {
+                    "comment": "Tomb: Main Road",
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 115
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 555,
+                            "group_id": 120
+                        },
+                        "amount": 24
+                    }
+                },
+                {
+                    "comment": "Tomb: 1st Space",
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 116
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 555,
+                            "group_id": 121
+                        },
+                        "amount": 6
+                    }
+                },
+                {
+                    "comment": "Tomb: 2nd Space",
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 117
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 555,
+                            "group_id": 122
+                        },
+                        "amount": 6
+                    }
+                },
+                {
+                    "comment": "Tomb: 3rd Space",
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 118
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 555,
+                            "group_id": 123
+                        },
+                        "amount": 7
+                    }
+                },
+                {
+                    "comment": "Tomb: 4th Space",
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 119
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 555,
+                            "group_id": 124
+                        },
+                        "amount": 6
+                    }
+                },
+
+
+                {
+                    "comment": "Ruin Depths: Main Road",
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 115
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 556,
+                            "group_id": 120
+                        },
+                        "amount": 14
+                    }
+                },
+                {
+                    "comment": "Ruin Depths: 1st Space",
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 116
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 556,
+                            "group_id": 121
+                        },
+                        "amount": 9
+                    }
+                },
+                {
+                    "comment": "Ruin Depths: 2nd Space",
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 117
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 556,
+                            "group_id": 122
+                        },
+                        "amount": 6
+                    }
+                },
+                {
+                    "comment": "Ruin Depths: 3rd Space",
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 118
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 556,
+                            "group_id": 123
+                        },
+                        "amount": 10
+                    }
+                },
+                {
+                    "comment": "Ruin Depths: 4th Space",
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 119
+                    },
+                    "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {
+                            "id": 556,
+                            "group_id": 124
+                        },
+                        "amount": 7
+                    }
+                }
+            ],
+            "chests": [
+                {
+                    "comment": "Gold Chest (Ruins)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 214
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 1 ]
+                },
+                {
+                    "comment": "Gold Chest (Ruins)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 215
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 1 ]
+                },
+                {
+                    "comment": "Gold Chest (Ruins)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 217
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 1 ]
+                },
+                {
+                    "comment": "Bronze Chest (Ruins)",
+                    "type": "range",
+                    "amount": 16,
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 216
+                    },
+                    "drop_tables": [ 10 ]
+                },
+                {
+                    "comment": "Gold Chest (Well)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 214
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 2 ]
+                },
+                {
+                    "comment": "Gold Chest (Well)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 215
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 2 ]
+                },
+                {
+                    "comment": "Gold Chest (Well)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 217
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 2 ]
+                },
+                {
+                    "comment": "Bronze Chest (Well)",
+                    "type": "range",
+                    "amount": 12,
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 216
+                    },
+                    "drop_tables": [ 11 ]
+                },
+                {
+                    "comment": "Gold Chest (Tomb)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 214
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 3 ]
+                },
+                {
+                    "comment": "Gold Chest (Tomb)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 214
+                    },
+                    "pos_id": 1,
+                    "drop_tables": [ 4 ]
+                },
+                {
+                    "comment": "Gold Chest (Tomb)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 215
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 3 ]
+                },
+                {
+                    "comment": "Gold Chest (Tomb)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 217
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 3 ]
+                },
+                {
+                    "comment": "Bronze Chest (Tomb)",
+                    "type": "range",
+                    "amount": 6,
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 216
+                    },
+                    "drop_tables": [ 6 ]
+                },
+                {
+                    "comment": "Treasure Chest (Tomb)",
+                    "type": "range",
+                    "amount": 2,
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 200
+                    },
+                    "drop_tables": [ 12 ]
+                },
+                {
+                    "comment": "Treasure Chest (Tomb)",
+                    "type": "range",
+                    "amount": 2,
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 201
+                    },
+                    "drop_tables": [ 12 ]
+                },
+                {
+                    "comment": "Treasure Chest (Tomb)",
+                    "type": "range",
+                    "amount": 2,
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 202
+                    },
+                    "drop_tables": [ 12 ]
+                },
+                {
+                    "comment": "Treasure Chest (Tomb)",
+                    "type": "range",
+                    "amount": 2,
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 203
+                    },
+                    "drop_tables": [ 12 ]
+                },
+                {
+                    "comment": "Treasure Chest (Tomb)",
+                    "type": "range",
+                    "amount": 2,
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 204
+                    },
+                    "drop_tables": [ 12 ]
+                },
+                {
+                    "comment": "Treasure Chest (Tomb)",
+                    "type": "range",
+                    "amount": 1,
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 209
+                    },
+                    "drop_tables": [ 12 ]
+                },
+                {
+                    "comment": "Gold Chest (Ruin Depths)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 214
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 3 ]
+                },
+                {
+                    "comment": "Gold Chest (Ruin Depths)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 214
+                    },
+                    "pos_id": 1,
+                    "drop_tables": [ 4 ]
+                },
+                {
+                    "comment": "Gold Chest (Ruin Depths)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 215
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 3 ]
+                },
+                {
+                    "comment": "Gold Chest (Ruin Depths)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 217
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 6, 3 ]
+                },
+                {
+                    "comment": "Gold Chest (Final Trial)",
+                    "type": "single",
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 219
+                    },
+                    "pos_id": 0,
+                    "drop_tables": [ 5 ]
+                },
+                {
+                    "comment": "Bronze Chest (Ruin Depths)",
+                    "type": "range",
+                    "amount": 6,
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 216
+                    },
+                    "drop_tables": [ 6 ]
+                },
+                {
+                    "comment": "Treasure Chest (Ruin Depths)",
+                    "type": "range",
+                    "amount": 2,
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 200
+                    },
+                    "drop_tables": [ 13 ]
+                },
+                {
+                    "comment": "Treasure Chest (Ruin Depths)",
+                    "type": "range",
+                    "amount": 2,
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 201
+                    },
+                    "drop_tables": [ 13 ]
+                },
+                {
+                    "comment": "Treasure Chest (Ruin Depths)",
+                    "type": "range",
+                    "amount": 2,
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 202
+                    },
+                    "drop_tables": [ 13 ]
+                },
+                {
+                    "comment": "Treasure Chest (Ruin Depths)",
+                    "type": "range",
+                    "amount": 2,
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 203
+                    },
+                    "drop_tables": [ 13 ]
+                },
+                {
+                    "comment": "Treasure Chest (Ruin Depths)",
+                    "type": "range",
+                    "amount": 2,
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 204
+                    },
+                    "drop_tables": [ 13 ]
+                },
+                {
+                    "comment": "Treasure Chest (Ruin Depths)",
+                    "type": "range",
+                    "amount": 1,
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 209
+                    },
+                    "drop_tables": [ 13 ]
+                }
+            ],
+            "dungeon_trash": [
+                {
+                    "comment": "Ruins",
+                    "stage_id": 552,
+                    "items": [
+                        {
+                            "type": "random",
+                            "item_id": 18658,
+                            "amount": 3,
+                            "chance": 0.40
+                        }
+                    ]
+                },
+                {
+                    "comment": "Well",
+                    "stage_id": 554,
+                    "items": [
+                        {
+                            "type": "random",
+                            "item_id": 18658,
+                            "amount": 5,
+                            "chance": 0.40
+                        }
+                    ]
+                },
+                {
+                    "comment": "Tomb",
+                    "stage_id": 555,
+                    "items": [
+                        {
+                            "type": "random",
+                            "item_id": 18658,
+                            "amount": 8,
+                            "chance": 0.40
+                        }
+                    ]
+                },
+                {
+                    "comment": "Ruins Deepest Level",
+                    "stage_id": 556,
+                    "items": [
+                        {
+                            "type": "random",
+                            "item_id": 18658,
+                            "amount": 10,
+                            "chance": 0.40
+                        }
+                    ]
+                }
+            ],
+            "drop_tables": [
+                {
+                    "comment": "Golden Chest (Ruins)",
+                    "id": 1,
+                    "items": [
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18449,
+                                    "amount": 1,
+                                    "comment": "Casanance Tunic"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18450,
+                                    "amount": 1,
+                                    "comment": "Casanance Tunic (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18451,
+                                    "amount": 1,
+                                    "comment": "Casanance Tunic (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18452,
+                                    "amount": 1,
+                                    "comment": "Casanance Tunic (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18453,
+                                    "amount": 1,
+                                    "comment": "Casanance Tunic (4)"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "Golden Chest (Well)",
+                    "id": 2,
+                    "items": [
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18464,
+                                    "amount": 1,
+                                    "comment": "Casanance Hose"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18465,
+                                    "amount": 1,
+                                    "comment": "Casanance Hose (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18466,
+                                    "amount": 1,
+                                    "comment": "Casanance Hose (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18467,
+                                    "amount": 1,
+                                    "comment": "Casanance Hose (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18468,
+                                    "amount": 1,
+                                    "comment": "Casanance Hose (4)"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "Golden Chest 1 (Tomb)",
+                    "id": 3,
+                    "items": [
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18479,
+                                    "amount": 1,
+                                    "comment": "Eastern Shade"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18480,
+                                    "amount": 1,
+                                    "comment": "Eastern Shade (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18481,
+                                    "amount": 1,
+                                    "comment": "Eastern Shade (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18482,
+                                    "amount": 1,
+                                    "comment": "Eastern Shade (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18483,
+                                    "amount": 1,
+                                    "comment": "Eastern Shade (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17971,
+                                    "amount": 1,
+                                    "comment": "Zarrin-dokht Axe"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17972,
+                                    "amount": 1,
+                                    "comment": "Zarrin-dokht Axe (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17973,
+                                    "amount": 1,
+                                    "comment": "Zarrin-dokht Axe (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17974,
+                                    "amount": 1,
+                                    "comment": "Zarrin-dokht Axe (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17975,
+                                    "amount": 1,
+                                    "comment": "Zarrin-dokht Axe (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18016,
+                                    "amount": 1,
+                                    "comment": "Taraneh Wall"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18017,
+                                    "amount": 1,
+                                    "comment": "Taraneh Wall (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18018,
+                                    "amount": 1,
+                                    "comment": "Taraneh Wall (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18019,
+                                    "amount": 1,
+                                    "comment": "Taraneh Wall (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18020,
+                                    "amount": 1,
+                                    "comment": "Taraneh Wall (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18001,
+                                    "amount": 1,
+                                    "comment": "Sholeha Blade"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18002,
+                                    "amount": 1,
+                                    "comment": "Sholeha Blade (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18003,
+                                    "amount": 1,
+                                    "comment": "Sholeha Blade (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18004,
+                                    "amount": 1,
+                                    "comment": "Sholeha Blade (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18005,
+                                    "amount": 1,
+                                    "comment": "Sholeha Blade (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18046,
+                                    "amount": 1,
+                                    "comment": "Sanaz Scramaseax"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18047,
+                                    "amount": 1,
+                                    "comment": "Sanaz Scramaseax (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18048,
+                                    "amount": 1,
+                                    "comment": "Sanaz Scramaseax (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18049,
+                                    "amount": 1,
+                                    "comment": "Sanaz Scramaseax (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18050,
+                                    "amount": 1,
+                                    "comment": "Sanaz Scramaseax (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18061,
+                                    "amount": 1,
+                                    "comment": "Roshni Bow"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18062,
+                                    "amount": 1,
+                                    "comment": "Roshni Bow (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18063,
+                                    "amount": 1,
+                                    "comment": "Roshni Bow (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18064,
+                                    "amount": 1,
+                                    "comment": "Roshni Bow (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18065,
+                                    "amount": 1,
+                                    "comment": "Roshni Bow (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18076,
+                                    "amount": 1,
+                                    "comment": "Setareh Gauntlet"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18077,
+                                    "amount": 1,
+                                    "comment": "Setareh Gauntlet (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18078,
+                                    "amount": 1,
+                                    "comment": "Setareh Gauntlet (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18079,
+                                    "amount": 1,
+                                    "comment": "Setareh Gauntlet (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18080,
+                                    "amount": 1,
+                                    "comment": "Setareh Gauntlet (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18106,
+                                    "amount": 1,
+                                    "comment": "Shahnaz Sceptre"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18107,
+                                    "amount": 1,
+                                    "comment": "Shahnaz Sceptre (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18108,
+                                    "amount": 1,
+                                    "comment": "Shahnaz Sceptre (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18109,
+                                    "amount": 1,
+                                    "comment": "Shahnaz Sceptre (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18110,
+                                    "amount": 1,
+                                    "comment": "Shahnaz Sceptre (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18121,
+                                    "amount": 1,
+                                    "comment": "Delbar Wand"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18122,
+                                    "amount": 1,
+                                    "comment": "Delbar Wand (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18123,
+                                    "amount": 1,
+                                    "comment": "Delbar Wand (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18124,
+                                    "amount": 1,
+                                    "comment": "Delbar Wand (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18125,
+                                    "amount": 1,
+                                    "comment": "Delbar Wand (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18136,
+                                    "amount": 1,
+                                    "comment": "Dina Soliferreum"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18137,
+                                    "amount": 1,
+                                    "comment": "Dina Soliferreum (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18138,
+                                    "amount": 1,
+                                    "comment": "Dina Soliferreum (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18139,
+                                    "amount": 1,
+                                    "comment": "Dina Soliferreum (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18140,
+                                    "amount": 1,
+                                    "comment": "Dina Soliferreum (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18091,
+                                    "amount": 1,
+                                    "comment": "Shams Shooter"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18092,
+                                    "amount": 1,
+                                    "comment": "Shams Shooter (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18093,
+                                    "amount": 1,
+                                    "comment": "Shams Shooter (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18094,
+                                    "amount": 1,
+                                    "comment": "Shams Shooter (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18095,
+                                    "amount": 1,
+                                    "comment": "Shams Shooter (4)"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {
+                                    "type": "random",
+                                    "item_id": 18658,
+                                    "amount": 20,
+                                    "comment": "Courtier's Spirit"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17881,
+                                    "amount": 2,
+                                    "comment": "Bone Perl"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17986,
+                                    "amount": 1,
+                                    "comment": "Farzaneh Guard"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17987,
+                                    "amount": 1,
+                                    "comment": "Farzaneh Guard (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17988,
+                                    "amount": 1,
+                                    "comment": "Farzaneh Guard (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17989,
+                                    "amount": 1,
+                                    "comment": "Farzaneh Guard (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 17990,
+                                    "amount": 1,
+                                    "comment": "Farzaneh Guard (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18031,
+                                    "amount": 1,
+                                    "comment": "Maryam Rod"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18032,
+                                    "amount": 1,
+                                    "comment": "Maryam Rod (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18033,
+                                    "amount": 1,
+                                    "comment": "Maryam Rod (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18034,
+                                    "amount": 1,
+                                    "comment": "Maryam Rod (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18035,
+                                    "amount": 1,
+                                    "comment": "Maryam Rod (4)"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "Golden Chest 2 (Tomb)",
+                    "id": 4,
+                    "items": [
+                        {
+                            "type": "fixed",
+                            "item_id": 21379,
+                            "amount": 100,
+                            "comment": "Relic Steel (Feryana District)"
+                        }
+                    ]
+                },
+                {
+                    "comment": "Golden Chest (Final Trial)",
+                    "id": 5,
+                    "items": [
+                        {
+                            "type": "fixed",
+                            "item_id": 19251,
+                            "amount": 1,
+                            "comment": "Armor of the First King"
+                        },
+                        {
+                            "type": "fixed",
+                            "item_id": 19241,
+                            "amount": 1,
+                            "comment": "Torso of the First King"
+                        }
+                    ]
+                },
+                {
+                    "comment": "Golden Chest Generic Items (Armor)",
+                    "id": 6,
+                    "items": [
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18444,
+                                    "amount": 1,
+                                    "comment": "Krall Breastplate"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18445,
+                                    "amount": 1,
+                                    "comment": "Krall Breastplate (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18446,
+                                    "amount": 1,
+                                    "comment": "Krall Breastplate (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18447,
+                                    "amount": 1,
+                                    "comment": "Krall Breastplate (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18448,
+                                    "amount": 1,
+                                    "comment": "Krall Breastplate (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18459,
+                                    "amount": 1,
+                                    "comment": "Krall Banded"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18460,
+                                    "amount": 1,
+                                    "comment": "Krall Banded (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18461,
+                                    "amount": 1,
+                                    "comment": "Krall Banded (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18462,
+                                    "amount": 1,
+                                    "comment": "Krall Banded (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18463,
+                                    "amount": 1,
+                                    "comment": "Krall Banded (4)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18474,
+                                    "amount": 1,
+                                    "comment": "Oriental Mantle"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18475,
+                                    "amount": 1,
+                                    "comment": "Oriental Mantle (1)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18476,
+                                    "amount": 1,
+                                    "comment": "Oriental Mantle (2)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18477,
+                                    "amount": 1,
+                                    "comment": "Oriental Mantle (3)"
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 18478,
+                                    "amount": 1,
+                                    "comment": "Oriental Mantle (4)"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "Bronze Chest (Ruins)",
+                    "id": 10,
+                    "items": [
+                        {
+                            "type": "Random",
+                            "item_id": 18658,
+                            "amount": 10
+                        },
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9227,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 11734,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13671,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9217,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 11729,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13666,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9261,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9262,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13655,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9305,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9306,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 11746,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13681,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9245,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9246,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9337,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9338,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13693,
+                                    "amount": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "Bronze Chest (Well)",
+                    "id": 11,
+                    "items": [
+                        {
+                            "type": "Random",
+                            "item_id": 18658,
+                            "amount": 10
+                        },
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9295,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9296,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 11742,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13678,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9247,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9248,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9339,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9340,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13694,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9215,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 11728,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13665,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9271,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9272,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9320,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9321,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9322,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13686,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13702,
+                                    "amount": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "Treasure Chest (Tomb)",
+                    "id": 12,
+                    "items": [
+                        {
+                            "type": "Random",
+                            "item_id": 18658,
+                            "amount": 15
+                        },
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9287,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9288,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9289,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9290,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 11740,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 14186,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9225,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 11733,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13670,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9279,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9280,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 11721,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13675,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13707,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9241,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9331,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 9332,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "Fixed",
+                                    "item_id": 13690,
+                                    "amount": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "Treasure Chest (Ruin Depths)",
+                    "id": 13,
+                    "items": [
+                        {
+                            "type": "Random",
+                            "item_id": 18658,
+                            "amount": 15
+                        },
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {
+                                    "type": "fixed",
+                                    "item_id": 9195,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 9196,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 9197,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 9198,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 11719,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 13658,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 9237,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 11739,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 14185,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 9281,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 9282,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 11724,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 13676,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 13706,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 9343,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 9344,
+                                    "amount": 1
+                                },
+                                {
+                                    "type": "fixed",
+                                    "item_id": 13696,
+                                    "amount": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "sections": [
+                {
+                    "name": "Section 1: Ruins",
+                    "stage_id": 552,
+                    "start_pos": 0,
+                    "unlock_cost": [],
+                    "barrier_oms": [],
+                    "barrier_dependency": [],
+                    "unlock_dependency": []
+                },
+                {
+                    "name": "Section 2: Well",
+                    "stage_id": 554,
+                    "start_pos": 0,
+                    "unlock_cost": [],
+                    "barrier_oms": [],
+                    "barrier_dependency": [
+                        {
+                            "stage_id": {
+                                "id": 552,
+                                "group_id": 100
+                            },
+                            "pos_id": 0
+                        }
+                    ],
+                    "unlock_dependency": [ 6627971 ]
+                },
+                {
+                    "name": "Section 3: Tomb",
+                    "stage_id": 555,
+                    "start_pos": 0,
+                    "unlock_cost": [],
+                    "barrier_oms": [],
+                    "barrier_dependency": [
+                        {
+                            "stage_id": {
+                                "id": 554,
+                                "group_id": 100
+                            },
+                            "pos_id": 0
+                        }
+                    ],
+                    "unlock_dependency": [ 6628003 ]
+                },
+                {
+                    "name": "Section 4: Ruins Depths",
+                    "stage_id": 556,
+                    "start_pos": 0,
+                    "unlock_cost": [],
+                    "barrier_oms": [],
+                    "barrier_dependency": [
+                        {
+                            "stage_id": {
+                                "id": 556,
+                                "group_id": 100
+                            },
+                            "pos_id": 0
+                        }
+                    ],
+                    "unlock_dependency": [ 6628019 ]
                 }
             ]
         },
@@ -588,9 +3512,15 @@
             "name": "Memory of Megadosys",
             "npc_id": "Morgan",
             "dungeon_id": 3,
-            "final_trial_id": {"stage_id": {"id": 558, "group_id": 26}, "pos_id": 0},
+            "final_trial_id": {
+                "stage_id": {
+                    "id": 558,
+                    "group_id": 26
+                },
+                "pos_id": 0
+            },
             "hub_stage_id": 1149,
-            "stage_ids": [559],
+            "stage_ids": [ 559 ],
             "soul_item_id": 18659,
             "reward_buffs": true,
             "barriers": [],
@@ -614,9 +3544,12 @@
                     "stage_id": 559,
                     "start_pos": 3,
                     "unlock_cost": [
-                        {"item_id": 18659, "amount": 99}
+                        {
+                            "item_id": 18659,
+                            "amount": 99
+                        }
                     ],
-                    "barrier_oms": [107],
+                    "barrier_oms": [ 107 ],
                     "barrier_dependency": [],
                     "unlock_dependency": []
                 },
@@ -625,9 +3558,12 @@
                     "stage_id": 559,
                     "start_pos": 4,
                     "unlock_cost": [
-                        {"item_id": 18659, "amount": 120}
+                        {
+                            "item_id": 18659,
+                            "amount": 120
+                        }
                     ],
-                    "barrier_oms": [117],
+                    "barrier_oms": [ 117 ],
                     "barrier_dependency": [],
                     "unlock_dependency": []
                 },
@@ -636,9 +3572,12 @@
                     "stage_id": 559,
                     "start_pos": 5,
                     "unlock_cost": [
-                        {"item_id": 18659, "amount": 297}
+                        {
+                            "item_id": 18659,
+                            "amount": 297
+                        }
                     ],
-                    "barrier_oms": [127],
+                    "barrier_oms": [ 127 ],
                     "barrier_dependency": [],
                     "unlock_dependency": []
                 }

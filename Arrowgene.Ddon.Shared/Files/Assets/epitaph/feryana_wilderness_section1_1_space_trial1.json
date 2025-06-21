@@ -1,0 +1,168 @@
+{
+    "comment": "Section 1: Space 1 Trial",
+    "stage_id": {
+        "id": 552,
+        "group_id": 105
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [
+        {"stage_id": 552, "group_id": 109, "pos_id": 0}
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CannotBeAffectedByAbnormalStatus",
+                    "priority": "Secondary",
+                    "Param1": 3
+                },
+                {
+                    "type": "ItemNoteUsedMoreThanOnce",
+                    "priority": "Secondary",
+                    "Param1": 1
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 5
+                },
+                {
+                    "item_id": 18742,
+                    "amount": 40
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 13
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment": "Living Armor",
+                            "enemy_id": "0x010306",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "index": 0,
+                            "is_boss": true
+                        },
+                        {
+                            "comment": "Frost Corpse Punisher",
+                            "enemy_id": "0x010511",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 1
+                        },
+                        {
+                            "comment": "Frost Corpse Punisher",
+                            "enemy_id": "0x010511",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 2
+                        },
+                        {
+                            "comment": "Frost Corpse Punisher",
+                            "enemy_id": "0x010511",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 3
+                        },
+                        {
+                            "comment": "Frost Corpse Punisher",
+                            "enemy_id": "0x010511",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 4
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CannotBeAffectedByAbnormalStatus",
+                    "priority": "Secondary",
+                    "Param1": 3
+                },
+                {
+                    "type": "ItemNoteUsedMoreThanOnce",
+                    "priority": "Secondary",
+                    "Param1": 1
+                }
+            ],
+            "cost": [
+                {
+                    "item_id": 18658,
+                    "amount": 10
+                }
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 80},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9227, "amount": 1},
+                        {"type": "Random", "item_id": 11734, "amount": 1},
+                        {"type": "Random", "item_id": 13671, "amount": 1}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 13
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment": "Skull Lord",
+                            "enemy_id": "0x010313",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 5
+                        },
+                        {
+                            "comment": "Skull Lord",
+                            "enemy_id": "0x010313",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 6
+                        },
+                        {
+                            "comment": "Witch",
+                            "enemy_id": "0x015604",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "index": 7,
+                            "is_boss": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

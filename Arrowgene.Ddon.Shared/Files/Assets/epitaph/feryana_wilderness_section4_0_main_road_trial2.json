@@ -1,0 +1,116 @@
+{
+    "comment": "Ruins Depths: Trial 2",
+    "stage_id": {
+        "id": 556,
+        "group_id": 103
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 90
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 40
+                },
+                {
+                    "type": "pool",
+                    "rolls": 1,
+                    "items": [
+                        {
+                            "item_id": 18742,
+                            "amount": 40
+                        },
+                        {
+                            "type": "fixed",
+                            "item_id": 21379,
+                            "amount": 3,
+                            "comment": "Relic Steel (Feryana District)"
+                        }
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 2
+                    },
+                    "enemies": [
+                        {
+                            "comment": "Shadow Goblin Fighter",
+                            "enemy_id": "0x011131",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Shadow Goblin Fighter",
+                            "enemy_id": "0x011131",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Shadow Goblin Fighter",
+                            "enemy_id": "0x011131",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Shadow Harpy",
+                            "enemy_id": "0x010607",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Shadow Harpy",
+                            "enemy_id": "0x010607",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Shadow Harpy",
+                            "enemy_id": "0x010607",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Shadow Harpy",
+                            "enemy_id": "0x010607",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Shadow Goblin Leader",
+                            "enemy_id": "0x011160",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

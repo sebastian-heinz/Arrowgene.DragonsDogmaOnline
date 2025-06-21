@@ -1,0 +1,271 @@
+{
+    "comment": "3rd Space: Trial 1",
+    "stage_id": {
+        "id": 555,
+        "group_id": 107
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "DefeatEnemyCount",
+                    "priority": "Primary",
+                    "Param1": 15
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 120
+                },
+                {
+                    "type": "CannotDieMoreThanOnce",
+                    "priority": "Secondary"
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 40
+                },
+                {
+                    "type": "pool",
+                    "rolls": 1,
+                    "items": [
+                        {
+                            "item_id": 18742,
+                            "amount": 40
+                        },
+                        {
+                            "type": "fixed",
+                            "item_id": 21379,
+                            "amount": 3,
+                            "comment": "Relic Steel (Feryana District)"
+                        }
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 25
+                    },
+                    "enemies": [
+                        {
+                            "comment": "Empress Ghost",
+                            "enemy_id": "0x015605",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Skelton Mage",
+                            "enemy_id": "0x010308",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Skelton Mage",
+                            "enemy_id": "0x010308",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Skelton Mage",
+                            "enemy_id": "0x010308",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Skelton Mage",
+                            "enemy_id": "0x010308",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Skelton Mage",
+                            "enemy_id": "0x010308",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Skelton Mage",
+                            "enemy_id": "0x010308",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {
+                    "type": "DefeatEnemyCount",
+                    "priority": "Primary",
+                    "Param1": 15
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 120
+                },
+                {
+                    "type": "CannotDieMoreThanOnce",
+                    "priority": "Secondary"
+                }
+            ],
+            "cost": [
+                {
+                    "item_id": 18658,
+                    "amount": 30
+                }
+            ],
+            "item_rewards": [
+                {
+                    "item_id": 18742,
+                    "amount": 80,
+                    "comment": "High Orb"
+                },
+                {
+                    "type": "pool",
+                    "rolls": 1,
+                    "items": [
+                        {
+                            "type": "Fixed",
+                            "item_id": 9279,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 9280,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 11721,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 13675,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 13707,
+                            "amount": 1
+                        },
+                        {
+                            "item_id": 21379,
+                            "amount": 3,
+                            "comment": "Relic Steel (Feryana District)"
+                        }
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 25
+                    },
+                    "enemies": [
+                        {
+                            "comment": "Medusa",
+                            "enemy_id": "0x015610",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Harpy",
+                            "enemy_id": "0x010607",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Harpy",
+                            "enemy_id": "0x010607",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Harpy",
+                            "enemy_id": "0x010607",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Harpy",
+                            "enemy_id": "0x010607",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Harpy",
+                            "enemy_id": "0x010607",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Harpy",
+                            "enemy_id": "0x010607",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

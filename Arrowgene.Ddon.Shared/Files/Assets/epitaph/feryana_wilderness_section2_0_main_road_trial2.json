@@ -1,0 +1,140 @@
+{
+    "comment": "Well: Trial 2",
+    "stage_id": {
+        "id": 554,
+        "group_id": 103
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "DefeatEnemyWithAbnormalStatusCount",
+                    "priority": "Secondary",
+                    "Param1": 5
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 10
+                },
+                {
+                    "item_id": 18742,
+                    "amount": 40
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 5
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment": "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 5,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_required": false
+                        },
+                        {
+                            "comment": "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 7,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_required": false
+                        },
+                        {
+                            "comment": "War-Ready Giant Saurian",
+                            "enemy_id": "0x010471",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 6
+                        },
+                        {
+                            "comment": "War-Ready Saurian",
+                            "enemy_id": "0x010470",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 0,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_required": false
+                        },
+                        {
+                            "comment": "War-Ready Saurian",
+                            "enemy_id": "0x010470",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "index": 1,
+                            "is_required": false
+                        },
+                        {
+                            "comment": "War-Ready Saurian",
+                            "enemy_id": "0x010470",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 2,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_required": false
+                        },
+                        {
+                            "comment": "War-Ready Saurian",
+                            "enemy_id": "0x010470",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 3,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_required": false
+                        },
+                        {
+                            "comment": "War-Ready Saurian",
+                            "enemy_id": "0x010470",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 4,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_required": false
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
