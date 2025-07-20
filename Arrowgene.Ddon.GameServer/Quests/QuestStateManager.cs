@@ -1020,13 +1020,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
     public class SoloQuestStateManager : QuestStateManager
     {
-        private readonly PlayerPartyMember Member;
         private readonly DdonGameServer Server;
+        private readonly GameClient Client;
 
-        public SoloQuestStateManager(PlayerPartyMember member, DdonGameServer server)
+        public SoloQuestStateManager(GameClient client, DdonGameServer server)
         {
-            this.Member = member;
             this.Server = server;
+            this.Client = client;
         }
 
         public override bool UpdateQuestProgress(uint questScheduleId, DbConnection? connectionIn = null)
@@ -1040,7 +1040,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 return false;
             }
 
-            var result = Server.Database.GetQuestProgressByScheduleId(Member.Client.Character.CommonId, questState.QuestScheduleId, connectionIn);
+            var result = Server.Database.GetQuestProgressByScheduleId(Client.Character.CommonId, questState.QuestScheduleId, connectionIn);
             if (result == null)
             {
                 return false;
@@ -1051,7 +1051,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 return false;
             }
 
-            Server.Database.UpdateQuestProgress(Member.Client.Character.CommonId, questState.QuestScheduleId, questState.QuestType, questState.Step + 1, connectionIn);
+            Server.Database.UpdateQuestProgress(Client.Character.CommonId, questState.QuestScheduleId, questState.QuestType, questState.Step + 1, connectionIn);
 
             questState.Step += 1;
 
@@ -1063,7 +1063,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             Quest quest = GetQuest(questScheduleId);
             var questState = GetQuestState(quest);
 
-            var result = Server.Database.GetQuestProgressByScheduleId(Member.Client.Character.CommonId, questScheduleId, connectionIn);
+            var result = Server.Database.GetQuestProgressByScheduleId(Client.Character.CommonId, questScheduleId, connectionIn);
             if (result == null)
             {
                 return false;
@@ -1074,28 +1074,28 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 return false;
             }
 
-            Server.Database.DeletePriorityQuest(Member.Client.Character.CommonId, questScheduleId, connectionIn);
-            Server.Database.RemoveQuestProgress(Member.Client.Character.CommonId, questScheduleId, quest.QuestType, connectionIn);
+            Server.Database.DeletePriorityQuest(Client.Character.CommonId, questScheduleId, connectionIn);
+            Server.Database.RemoveQuestProgress(Client.Character.CommonId, questScheduleId, quest.QuestType, connectionIn);
             if (quest.NextQuestId != QuestId.None)
             {
                 var nextQuest = GetQuest((uint)quest.NextQuestId);
-                Server.Database.InsertQuestProgress(Member.Client.Character.CommonId, nextQuest.QuestScheduleId, nextQuest.QuestType, 0, connectionIn);
+                Server.Database.InsertQuestProgress(Client.Character.CommonId, nextQuest.QuestScheduleId, nextQuest.QuestType, 0, connectionIn);
             }
 
-            if (!Member.Client.Character.CompletedQuests.ContainsKey(quest.QuestId))
+            if (!Client.Character.CompletedQuests.ContainsKey(quest.QuestId))
             {
-                Member.Client.Character.CompletedQuests.Add(quest.QuestId, new CompletedQuest()
+                Client.Character.CompletedQuests.Add(quest.QuestId, new CompletedQuest()
                 {
                     QuestId = quest.QuestId,
                     QuestType = quest.QuestType,
                     ClearCount = 1,
                 });
-                Server.Database.InsertCompletedQuest(Member.Client.Character.CommonId, quest.QuestId, quest.QuestType, connectionIn);
+                Server.Database.InsertCompletedQuest(Client.Character.CommonId, quest.QuestId, quest.QuestType, connectionIn);
             }
             else
             {
-                uint clearCount = ++Member.Client.Character.CompletedQuests[quest.QuestId].ClearCount;
-                Server.Database.ReplaceCompletedQuest(Member.Client.Character.CommonId, quest.QuestId, quest.QuestType, clearCount, connectionIn);
+                uint clearCount = ++Client.Character.CompletedQuests[quest.QuestId].ClearCount;
+                Server.Database.ReplaceCompletedQuest(Client.Character.CommonId, quest.QuestId, quest.QuestType, clearCount, connectionIn);
             }
 
             CompleteQuest(quest.QuestScheduleId);
@@ -1111,14 +1111,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
             var questState = GetQuestState(quest);
             if (quest.HasRewards())
             {
-                Server.RewardManager.AddQuestRewards(Member.Client, quest, connectionIn);
+                Server.RewardManager.AddQuestRewards(Client, quest, connectionIn);
             }
 
             // Check for Exp, Rift and Gold Rewards
-            packets.AddRange(SendWalletRewards(Server, Member.Client, quest, connectionIn));
+            packets.AddRange(SendWalletRewards(Server, Client, quest, connectionIn));
 
             // Check for any content released by completing the quest
-            packets.AddRange(RewardReleasedContent(Member.Client, quest, connectionIn));
+            packets.AddRange(RewardReleasedContent(Client, quest, connectionIn));
 
             return packets;
         }
@@ -1132,7 +1132,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             PacketQueue packets = new();
 
-            if (Member.Client.Character.GameMode != GameMode.Normal)
+            if (Client.Character.GameMode != GameMode.Normal)
             {
                 return packets;
             }
@@ -1143,7 +1143,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     Quest questObject = QuestManager.GetQuestByScheduleId(questScheduleId);
 
-                    if (questObject is null || Member.Client.Party.ExmInProgress && questObject?.QuestType == QuestType.Light)
+                    if (questObject is null || Client.Party.ExmInProgress && questObject?.QuestType == QuestType.Light)
                     {
                         // The UI indicates that light quests cannot progress during EXMs.
                         continue;
@@ -1160,7 +1160,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             // Stage 0 -> Not accepted, should never occur.
                             // Stage 1 -> Accepted, but no work done
                             // Stage N+1 -> Accepted, but with N work done. 
-                            Server.Database.UpdateQuestProgress(Member.Client.Character.CommonId, questState.QuestScheduleId, questState.QuestType, huntRecord.AmountHunted + 1, connectionIn);
+                            Server.Database.UpdateQuestProgress(Client.Character.CommonId, questState.QuestScheduleId, questState.QuestType, huntRecord.AmountHunted + 1, connectionIn);
                         }
 
                         S2CQuestQuestProgressWorkSaveNtc ntc = new()
@@ -1178,7 +1178,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             Work03 = (int)huntRecord.AmountHunted
                         });
 
-                        Member.Client.Enqueue(ntc, packets);
+                        Client.Enqueue(ntc, packets);
                     }
                 }
             }
@@ -1189,7 +1189,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             PacketQueue packets = new();
 
-            if (Member.Client.Character.GameMode != GameMode.Normal)
+            if (Client.Character.GameMode != GameMode.Normal)
             {
                 return packets;
             }
@@ -1200,7 +1200,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     Quest questObject = QuestManager.GetQuestByScheduleId(questScheduleId);
 
-                    if (questObject is null || Member.Client.Party.ExmInProgress && questObject?.QuestType == QuestType.Light)
+                    if (questObject is null || Client.Party.ExmInProgress && questObject?.QuestType == QuestType.Light)
                     {
                         // The UI indicates that light quests cannot progress during EXMs.
                         continue;
@@ -1223,7 +1223,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             Work03 = (int)huntRecord.AmountHunted
                         });
 
-                        Member.Client.Enqueue(ntc, packets);
+                        Client.Enqueue(ntc, packets);
                     }
 
                 }

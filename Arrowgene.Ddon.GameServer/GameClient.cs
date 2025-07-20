@@ -19,6 +19,7 @@ namespace Arrowgene.Ddon.GameServer
             InstanceDropItemManager = new(this, server);
             InstanceShopManager = new InstanceShopManager(server.ShopManager);
             GameMode = GameMode.Normal;
+            QuestState = new SoloQuestStateManager(this, server);
         }
 
         public void UpdateIdentity()
@@ -47,12 +48,7 @@ namespace Arrowgene.Ddon.GameServer
         public InstanceDropItemManager InstanceDropItemManager { get; }
 
         public GameMode GameMode { get; set; }
-
-        public QuestStateManager QuestState { get
-            {
-                return ((PlayerPartyMember)Party?.GetPartyMemberByCharacter(Character))?.QuestState;
-            } 
-        }
+        public SoloQuestStateManager QuestState { get; private set; }
 
         public bool IsPartyLeader()
         {
