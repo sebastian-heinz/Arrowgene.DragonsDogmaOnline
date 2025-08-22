@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Storage storage = client.Character.Storage.GetStorage(request.SortData.StorageType);
             storage.SortData = request.SortData.Bin;
-            Server.Database.UpdateStorage(client.Character.CharacterId, request.SortData.StorageType, storage);
+            Server.Database.UpdateStorage(client.Character.ContentCharacterId, request.SortData.StorageType, storage);
 
             return new();
         }

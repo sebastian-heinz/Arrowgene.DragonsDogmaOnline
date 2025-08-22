@@ -393,7 +393,7 @@ public abstract class SqlDb : IDatabase
     public abstract bool ReplaceAbilityPreset(uint characterId, CDataPresetAbilityParam preset);
     public abstract bool UpdateAbilityPreset(uint characterId, CDataPresetAbilityParam preset);
     public abstract bool InsertSecretAbilityUnlock(uint commonId, AbilityId secretAbility, DbConnection? connectionIn = null);
-    public abstract List<AbilityId> SelectAllUnlockedSecretAbilities(uint commonId);
+    public abstract List<AbilityId> SelectAllUnlockedSecretAbilities(uint commonId, DbConnection? connectionIn = null);
     public abstract bool InsertIfNotExistsNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);
     public abstract bool InsertNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);
     public abstract bool ReplaceNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);

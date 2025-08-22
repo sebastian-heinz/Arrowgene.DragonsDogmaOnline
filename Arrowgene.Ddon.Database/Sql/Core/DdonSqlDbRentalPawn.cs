@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 "ddon_character"."character_id", 
                 "ddon_character"."first_name", 
                 "ddon_character"."last_name", 
-                "ddon_clan_param"."name"
+                "ddon_clan_param"."short_name"
             FROM "ddon_character"
             LEFT OUTER JOIN "ddon_clan_membership" on "ddon_character"."character_id" = "ddon_clan_membership"."character_id"
             LEFT OUTER JOIN "ddon_clan_param" on "ddon_clan_param"."clan_id" = "ddon_clan_membership"."clan_id"
@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {BuildQueryField("ddon_rental_pawn_feedback", RentalPawnFeedbackFields)},
                 "ddon_character"."first_name" as "debtor_first_name", 
                 "ddon_character"."last_name" as "debtor_last_name", 
-                "ddon_clan_param"."name" as "debtor_clan_name"
+                "ddon_clan_param"."short_name" as "debtor_clan_name"
             FROM "ddon_rental_pawn_feedback"
             LEFT OUTER JOIN "ddon_character" on "ddon_character"."character_id" = "ddon_rental_pawn_feedback"."hiring_character_id"
             LEFT OUTER JOIN "ddon_clan_membership" on "ddon_rental_pawn_feedback"."hiring_character_id" = "ddon_clan_membership"."character_id"
@@ -194,7 +194,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 FirstName = GetString(reader, "first_name"),
                                 LastName = GetString(reader, "last_name")
                             };
-                            data.ClanName = GetStringNullable(reader, "name") ?? string.Empty;
+                            data.ClanName = GetStringNullable(reader, "short_name") ?? string.Empty;
                         }
                     }
                 );

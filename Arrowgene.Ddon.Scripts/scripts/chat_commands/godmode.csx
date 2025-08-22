@@ -30,6 +30,15 @@ public class ChatCommand : IChatCommand
                 MagicAttackGain = BoostedStat,
                 MagicDefenseGain = BoostedStat
             });
+
+            client.Character.StatusInfo.HP = uint.MaxValue;
+            client.Character.StatusInfo.WhiteHP = uint.MaxValue;
+            client.Character.StatusInfo.Stamina = uint.MaxValue;
+
+            var ntc3 = client.Character.S2CContextGetLobbyPlayerContextNtc;
+
+            client.Send(ntc3);
+
             responses.Add(ChatResponse.ServerMessage(client, "Godmode enabled."));
         }
         else

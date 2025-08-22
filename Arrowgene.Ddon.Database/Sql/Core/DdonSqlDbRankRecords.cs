@@ -40,7 +40,7 @@ public partial class DdonSqlDb : SqlDb
 	            rar.*,
 	            ch.first_name,
 	            ch.last_name,
-	            cp.name AS clan_name
+	            cp.short_name AS clan_name
             FROM RankedRank rar
             INNER JOIN ddon_character ch ON rar.character_id = ch.character_id
             LEFT JOIN ddon_clan_membership cm ON cm.character_id = rar.character_id
@@ -59,7 +59,7 @@ public partial class DdonSqlDb : SqlDb
                 br.*,
                 ch.first_name,
                 ch.last_name,
-                cp.name AS clan_name,
+                cp.short_name AS clan_name,
                 RANK() OVER (ORDER BY score DESC) sparse_rank
             FROM BestRank br
             INNER JOIN ddon_character ch ON br.character_id = ch.character_id

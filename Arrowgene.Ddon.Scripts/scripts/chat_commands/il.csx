@@ -17,7 +17,7 @@ public class ChatCommand : IChatCommand
         int topCount = 5;
         if (command.Length >= 2)
         {
-            if (int.TryParse(command[2], out int parsedCount))
+            if (int.TryParse(command[1], out int parsedCount))
             {
                 topCount = parsedCount;
             }

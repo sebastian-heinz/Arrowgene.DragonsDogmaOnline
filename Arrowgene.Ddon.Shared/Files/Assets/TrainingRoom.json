@@ -1,0 +1,67 @@
+[
+  {
+    "EntryName": "Orc Soldiers",
+    "EnemyData": [
+      {
+        "PositionIndex": 0,
+        "EnemyInfo": {
+          "EnemyId": 88064,
+          "NamedEnemyParamsId": 47,
+          "Scale": 100,
+          "IsBossGauge": true
+        }
+      },
+      {
+        "PositionIndex": 1,
+        "EnemyInfo": {
+          "EnemyId": 88064,
+          "NamedEnemyParamsId": 47,
+          "Scale": 100,
+          "IsBossGauge": true
+        }
+      }
+    ]
+  },
+  {
+    "EntryName": "Cyclops",
+    "EnemyData": [
+      {
+        "PositionIndex": 0,
+        "EnemyInfo": {
+          "EnemyId": 86016,
+          "NamedEnemyParamsId": 47,
+          "Scale": 100,
+          "IsBossGauge": true
+        }
+      }
+    ]
+  },
+  {
+    "EntryName": "Ogre",
+    "EnemyData": [
+      {
+        "PositionIndex": 0,
+        "EnemyInfo": {
+          "EnemyId": 87296,
+          "NamedEnemyParamsId": 47,
+          "Scale": 100,
+          "IsBossGauge": true
+        }
+      }
+    ]
+  },
+  {
+    "EntryName": "Training Dummy Zuhl",
+    "EnemyData": [
+      {
+        "PositionIndex": 0,
+        "EnemyInfo": {
+          "EnemyId": 1048833,
+          "NamedEnemyParamsId": 722,
+          "Scale": 75,
+          "IsBossGauge": true
+        }
+      }
+    ]
+  }
+]

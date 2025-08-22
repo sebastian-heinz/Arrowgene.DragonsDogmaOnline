@@ -13,15 +13,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        private static readonly CDataStageLayoutId TrainingRoomLayout = new CDataStageLayoutId(349, 0, 1);
+        private static readonly CDataStageLayoutId TrainingRoomLayout = Stage.TrainingRoom.AsCDataStageLayoutId(1);
         private static readonly int RepopDelay = 2000; // ms
         public override PacketQueue Handle(GameClient client, C2SInstanceTraningRoomSetEnemyReq request)
         {
-
-            // TODO: Enemies that share the same positionIndex sometimes spawn with the wrong HP.
-            // To avoid this in the meantime, each enemy must have its own unique positionIndex.
-            // But the training room layout only has 6 (0-5) indices, so you can only have six different spawns.
-
             PacketQueue queue = new();
 
             client.Enqueue(new S2CInstanceTraningRoomSetEnemyRes(), queue);
@@ -41,107 +36,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             ushort level = (ushort)request.Lv;
 
-            Task.Delay(RepopDelay).ContinueWith(_ => {
-                switch (request.OptionId)
+            if (request.OptionId > Server.AssetRepository.TrainingRoomAsset.Count)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_INSTANCE_AREA_ENEMY_GROUP_NOT_CREATED, 
+                    $"Missing training room data for entry {request.OptionId}");
+            }
+
+            Task.Delay(RepopDelay).ContinueWith(_ =>
+            {
+                foreach (var entry in Server.AssetRepository.TrainingRoomAsset[(int)(request.OptionId - 1)].EnemyData)
                 {
-                    case 1: // Two orc soldiers
-                        client.Party.SendToAll(new S2CInstanceEnemyRepopNtc()
-                        {
-                            LayoutId = TrainingRoomLayout,
-                            EnemyData = new CDataLayoutEnemyData()
-                            {
-                                PositionIndex = 0,
-                                EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
-                                {
-                                    EnemyId = EnemyId.OrcSoldier0,
-                                    NamedEnemyParamsId = 47, // Training <name>
-                                    Lv = level,
-                                    RepopCount = 10,
-                                    Scale = 100,
-                                    IsBossGauge = true,
-                                }
-                            },
-                            WaitSecond = 0,
-                        });
-                        client.Party.SendToAll(new S2CInstanceEnemyRepopNtc()
-                        {
-                            LayoutId = TrainingRoomLayout,
-                            EnemyData = new CDataLayoutEnemyData()
-                            {
-                                PositionIndex = 1,
-                                EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
-                                {
-                                    EnemyId = EnemyId.OrcSoldier0,
-                                    NamedEnemyParamsId = 47, // Training <name>
-                                    Lv = level,
-                                    RepopCount = 10,
-                                    Scale = 100,
-                                    IsBossGauge = true,
-                                }
-                            },
-                            WaitSecond = 0,
-                        });
-                        break;
-                    case 2: // Cyclops
-                        client.Party.SendToAll(new S2CInstanceEnemyRepopNtc()
-                        {
-                            LayoutId = TrainingRoomLayout,
-                            EnemyData = new CDataLayoutEnemyData()
-                            {
-                                PositionIndex = 0,
-                                EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
-                                {
-                                    EnemyId = EnemyId.Cyclops0,
-                                    NamedEnemyParamsId = 47, // Training <name>
-                                    Lv = level,
-                                    RepopCount = 10,
-                                    Scale = 100,
-                                    IsBossGauge = true,
-                                }
-                            },
-                            WaitSecond = 0,
-                        });
-                        break;
-                    case 3: //Ogre
-                        client.Party.SendToAll(new S2CInstanceEnemyRepopNtc()
-                        {
-                            LayoutId = TrainingRoomLayout,
-                            EnemyData = new CDataLayoutEnemyData()
-                            {
-                                PositionIndex = 0,
-                                EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
-                                {
-                                    EnemyId = EnemyId.Ogre,
-                                    NamedEnemyParamsId = 47, // Training <name>
-                                    Lv = level,
-                                    RepopCount = 10,
-                                    Scale = 100,
-                                    IsBossGauge = true,
-                                }
-                            },
-                            WaitSecond = 0,
-                        });
-                        break;
-                    case 4: //Passive Zuhl
-                        client.Party.SendToAll(new S2CInstanceEnemyRepopNtc()
-                        {
-                            LayoutId = TrainingRoomLayout,
-                            EnemyData = new CDataLayoutEnemyData()
-                            {
-                                PositionIndex = 4,
-                                EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
-                                {
-                                    EnemyId = EnemyId.ZuhlPassive,
-                                    NamedEnemyParamsId = 722, // Practice <name>, has extra HP.
-                                    Lv = level,
-                                    RepopCount = 10,
-                                    Scale = 75,
-                                    IsBossGauge = true,
-                                }
-                            },
-                            WaitSecond = 0,
-                        });
-                        break;
+                    var ntc = new S2CInstanceEnemyRepopNtc()
+                    {
+                        LayoutId = TrainingRoomLayout,
+                        EnemyData = entry,
+                        WaitSecond = 0
+                    };
+                    ntc.EnemyData.EnemyInfo.Lv = level;
+                    ntc.EnemyData.EnemyInfo.RepopCount = 10;
+                    client.Party.SendToAll(ntc);
                 }
             });
 

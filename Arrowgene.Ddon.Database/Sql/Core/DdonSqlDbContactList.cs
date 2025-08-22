@@ -52,7 +52,7 @@ public partial class DdonSqlDb : SqlDb
 	            j.job, 
 	            j.lv, 
 	            mp.comment,
-                cp.name AS clan_name
+                cp.short_name AS clan_name
             FROM ContactInfo ci
             INNER JOIN ddon_character c ON c.character_id = other_id
             INNER JOIN ddon_character_common cc ON cc.character_common_id = c.character_common_id

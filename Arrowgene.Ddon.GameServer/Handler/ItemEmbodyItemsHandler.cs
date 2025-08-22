@@ -44,7 +44,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     var exchangeItemNtc = new S2CItemUpdateCharacterItemNtc()
                     {
-                        UpdateType = ItemNoticeType.SwitchingStorage
+                        UpdateType = ItemNoticeType.SwitchingStorage,
+                        UpdateWalletList =
+                        [
+                            Server.WalletManager.RemoveFromWallet(client.Character, request.WalletType, 3, connection)
+                                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR, "Lacking item embody price.") // TODO: Why is the price not passed?
+                        ]
                     };
 
                     exchangeItemNtc.UpdateItemList.Add(Server.ItemManager.ConsumeItemByUId(Server, bbmCharacter, storageType, embodyItem.UId, embodyItem.Num, connection));
@@ -73,18 +78,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (storageType == StorageType.CharacterEquipment)
                     {
                         storageType = StorageType.ItemBagEquipment;
+                        Server.ItemManager.EmbodyItem(Server, normalCharacter, storageType, item, amount, connection);
                     }
-
-                    Server.ItemManager.EmbodyItem(Server, normalCharacter, storageType, item, amount, connection);
-
-                    client.Enqueue(new S2CItemUpdateCharacterItemNtc()
+                    else
                     {
-                        UpdateWalletList = new List<CDataUpdateWalletPoint>()
-                        {
-                            Server.WalletManager.RemoveFromWallet(client.Character, request.WalletType, 3, connection)
-                                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR, "Lacking item embody price.") // TODO: Why is the price not passed?
-                        }
-                    }, packets);
+                        // For "simple" items without crests or other details, we can use the stack-preserving logic here.
+                        Server.ItemManager.AddItem(Server, normalCharacter, true, item.ItemId, embodyItem.Num, connectionIn: connection);
+                    }
 
                     // We don't send an NTC with item updates so the storage doesn't update again on the
                     // BBM character we are currently play as. When we switch back to the other game mode,

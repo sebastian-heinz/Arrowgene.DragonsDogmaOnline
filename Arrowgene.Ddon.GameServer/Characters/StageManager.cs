@@ -74,6 +74,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 Stage.FortressCityMegadoResidentialLevel1,
                 Stage.FortressCityMegadoResidentialLevel2,
                 Stage.FortressCityMegadoResidentialLevel3,
+                Stage.FortressCityMegadoCraftRoom,
                 Stage.FortThines1, // TODO: The other ones?
                 Stage.FortThinesGreatDiningHall,
                 Stage.LookoutCastle1, // TODO: The other ones?

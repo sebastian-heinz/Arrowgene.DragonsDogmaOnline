@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.Key = request.Key;
             ntc.Value = request.Value;
             ntc.OldValue = oldValue;
-            client.Send(ntc);
+            client.Party.SendToAll(ntc);
 
             S2CInstanceExchangeOmInstantKeyValueRes res = new S2CInstanceExchangeOmInstantKeyValueRes();
             res.StageId = client.Character.Stage.Id;

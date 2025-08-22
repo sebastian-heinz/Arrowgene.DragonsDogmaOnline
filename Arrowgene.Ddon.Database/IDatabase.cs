@@ -220,7 +220,7 @@ public interface IDatabase
     bool UpdateAbilityPreset(uint characterId, CDataPresetAbilityParam preset);
 
     bool InsertSecretAbilityUnlock(uint commonId, AbilityId secretAbility, DbConnection? connectionIn = null);
-    List<AbilityId> SelectAllUnlockedSecretAbilities(uint commonId);
+    List<AbilityId> SelectAllUnlockedSecretAbilities(uint commonId, DbConnection? connectionIn = null);
 
     // (Learned) Normal Skills / Learned Core Skills
     bool InsertIfNotExistsNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);

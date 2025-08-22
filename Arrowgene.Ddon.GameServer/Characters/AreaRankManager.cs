@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return [.. pointSupplies.SupplyItemList.Select((x, i) => new CDataRewardItemInfo()
             {
                 Index = (uint)i,
-                ItemId = x.ItemId,
+                ItemId = (uint) x.ItemId,
                 Num = (byte)(x.ItemNum * rewardMult),
             })];
         }

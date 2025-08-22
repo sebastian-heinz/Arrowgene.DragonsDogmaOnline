@@ -17,17 +17,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterManager));
 
-        public static readonly uint BASE_HEALTH = 760U;
-        public static readonly uint BASE_STAMINA = 450U;
-        public static readonly uint BBM_BASE_HEALTH = 990U;
-        public static readonly uint BBM_BASE_STAMINA = 589U;
-
-        public static readonly uint DEFAULT_RING_COUNT = 1;
-        public static readonly uint BASE_ABILITY_COST_AMOUNT = 15;
-
-        public static readonly uint MAX_PLAYER_HP = uint.MaxValue;
-        public static readonly uint MAX_PLAYER_STAMINA = uint.MaxValue;
-
         private readonly DdonGameServer Server;
 
         public CharacterManager(DdonGameServer server)
@@ -92,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 // Calculate everything upfront so we don't need to calculate it every time in vocation select/upgrade handler.
                 character.AcquirableSkills = CalculateAcquirableSkills(character);
-                character.AcquirableAbilities = CalculateAcquirableAbilities(character);
+                character.AcquirableAbilities = CalculateAcquirableAbilities(character, connectionIn);
 
                 UpdateCharacterExtendedParams(character);
 
@@ -183,7 +172,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Any();
         }
 
-        private Dictionary<JobId, List<CDataAbilityParam>> CalculateAcquirableAbilities(Character character)
+        private Dictionary<JobId, List<CDataAbilityParam>> CalculateAcquirableAbilities(Character character, DbConnection? connectionIn = null)
         {
             var acquirableAbilities = new Dictionary<JobId, List<CDataAbilityParam>>();
 
@@ -193,7 +182,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 if (jobId == JobId.None)
                 {
-                    var unlockedAbilities = Server.Database.SelectAllUnlockedSecretAbilities(character.CommonId);
+                    var unlockedAbilities = Server.Database.SelectAllUnlockedSecretAbilities(character.CommonId, connectionIn);
                     skillData.AddRange(Server.AssetRepository.SkillData.SecretAbilities.Where(x => unlockedAbilities.Contains(x.AbilityNo)));
                 }
                 else
@@ -378,7 +367,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public uint GetMaxAugmentAllocation(CharacterCommon character)
         {
-            return CharacterManager.BASE_ABILITY_COST_AMOUNT + character.ExtendedParams.AbilityCost;
+            return CharacterCommon.BASE_ABILITY_COST_AMOUNT + character.ExtendedParams.AbilityCost;
         }
 
         public void UpdateCharacterExtendedParams(CharacterCommon characterCommon, bool newCharacter = false, Character ownerCharacter = null)
@@ -386,7 +375,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var extendedParams = characterCommon.ExtendedParams;
 
             // There is always an implicit + 1 ring slot plus the extended params value
-            characterCommon.JewelrySlotNum = (byte)(CharacterManager.DEFAULT_RING_COUNT + extendedParams.JewelrySlot);
+            characterCommon.JewelrySlotNum = (byte)(CharacterCommon.DEFAULT_RING_COUNT + extendedParams.JewelrySlot);
 
             /**
              * There are two physical attack traits and two magic attack traits in
@@ -445,16 +434,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
              */
             if (characterCommon.StatusInfo.MaxHP != 0 || newCharacter)
             {
-                characterCommon.StatusInfo.HP = CharacterManager.MAX_PLAYER_HP;
-                characterCommon.StatusInfo.WhiteHP = CharacterManager.MAX_PLAYER_HP;
+                characterCommon.StatusInfo.HP = CharacterCommon.MAX_PLAYER_HP;
+                characterCommon.StatusInfo.WhiteHP = CharacterCommon.MAX_PLAYER_HP;
             }
-            characterCommon.StatusInfo.MaxHP = CharacterManager.BASE_HEALTH;
+            characterCommon.StatusInfo.MaxHP = CharacterCommon.BASE_HEALTH;
 
             if (characterCommon.StatusInfo.MaxStamina != 0 || newCharacter)
             {
-                characterCommon.StatusInfo.Stamina = CharacterManager.MAX_PLAYER_STAMINA;
+                characterCommon.StatusInfo.Stamina = CharacterCommon.MAX_PLAYER_STAMINA;
             }
-            characterCommon.StatusInfo.MaxStamina = CharacterManager.BASE_STAMINA;
+            characterCommon.StatusInfo.MaxStamina = CharacterCommon.BASE_STAMINA;
         }
 
         public void CleanupOnExit(GameClient client)
@@ -481,8 +470,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             foreach (var pawn in character.Pawns)
             {
                 // Reset pawn HP to base max so next time we log in they are at full health
-                pawn.GreenHp = CharacterManager.BASE_HEALTH;
-                pawn.WhiteHp = CharacterManager.BASE_HEALTH;
+                pawn.GreenHp = CharacterCommon.BASE_HEALTH;
+                pawn.WhiteHp = CharacterCommon.BASE_HEALTH;
 
                 Server.Database.UpdateStatusInfo(pawn);
             }

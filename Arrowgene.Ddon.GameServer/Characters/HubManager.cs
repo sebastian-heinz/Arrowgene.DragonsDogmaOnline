@@ -113,6 +113,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             gatherClients.Add(otherClient);
                         }
                         client.Character.LastSeenLobby[otherId] = targetStageId;
+
+                        // Make sure you have their last data message to avoid invisible people?
+                        if (otherClient.LastLobbyDataMsg is not null)
+                        {
+                            client.Send(otherClient.LastLobbyDataMsg);
+                        }
                     }
                     HubMembers[targetStageId].Add(client.Character.CharacterId);
                 }

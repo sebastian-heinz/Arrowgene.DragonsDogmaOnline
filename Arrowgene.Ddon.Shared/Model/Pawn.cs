@@ -143,7 +143,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     ContextAbilityList = [.. EquippedAbilitiesDictionary[Job]
                         .Select((ability, index) => ability?.AsCDataContextAcquirementData((byte)(index + 1)))
                         .Where(ability => ability != null)],
-                    AbilityCostMax = (uint)(15 + extendParams.AbilityCost),
+                    AbilityCostMax = BASE_ABILITY_COST_AMOUNT + extendParams.AbilityCost,
                     ExtendParam = extendParams,
                     PawnType = PawnType,
                     ShareRange = 1,
@@ -190,6 +190,26 @@ namespace Arrowgene.Ddon.Shared.Model
                     EditInfo = EditInfo,
                 };
             } 
+        }
+
+        public CDataRegisterdPawnList CDataRegisterdPawnList
+        {
+            get
+            {
+                return new()
+                {
+                    PawnId = PawnId,
+                    Name = Name,
+                    Sex = EditInfo.Sex,
+                    PawnListData = new()
+                    {
+                        Job = Job,
+                        Level = ActiveCharacterJobData!.Lv,
+                        CraftRank = CraftData.CraftRank,
+                        PawnCraftSkillList = CraftData.PawnCraftSkillList,
+                    }
+                };
+            }
         }
 
         #endregion

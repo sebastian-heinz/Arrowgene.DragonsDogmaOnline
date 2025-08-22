@@ -140,6 +140,7 @@ public class ChatCommand : IChatCommand
                         if (client.Party.GetPartyMemberByCharacter(targetCharacter) is null)
                         {
                             responses.Add(ChatResponse.CommandError(client, $"Template could not be applied; {targetCharacter.CDataCharacterName} is not in your party."));
+                            return;
                         }
 
                         if (!CheckItems(client, targetCharacter, out var names))

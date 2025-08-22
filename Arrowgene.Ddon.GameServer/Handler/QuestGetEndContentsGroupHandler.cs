@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             {1, ContentsType.ExtremeMission}, // Seneka (WDT)
             {2, ContentsType.ExtremeMission}, // Issac (WDT)
-            {3, ContentsType.ExtremeMission},
+            {3, ContentsType.ExtremeMission}, // Seabell (WDT)
             {4, ContentsType.ClanDungeon}, // Clan Dungeon
             {5, ContentsType.ExtremeMission}, 
             {6, ContentsType.ExtremeMission}, // Nayajiku (Lookout Castle)

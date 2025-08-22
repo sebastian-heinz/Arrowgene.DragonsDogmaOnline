@@ -35,26 +35,24 @@ public partial class DdonSqlDb : SqlDb
         });
     }
 
-    public override List<AbilityId> SelectAllUnlockedSecretAbilities(uint commonId)
+    public override List<AbilityId> SelectAllUnlockedSecretAbilities(uint commonId, DbConnection? connectionIn = null)
     {
-        using DbConnection connection = OpenNewConnection();
-        return SelectAllUnlockedSecretAbilities(connection, commonId);
-    }
+        List<AbilityId> results = [];
 
-    public List<AbilityId> SelectAllUnlockedSecretAbilities(DbConnection conn, uint commonId)
-    {
-        List<AbilityId> Results = new();
-
-        ExecuteInTransaction(conn =>
+        ExecuteQuerySafe(connectionIn, conn =>
         {
             ExecuteReader(conn, SqlSelectAllUnlockedSecretAbility,
-                command => { AddParameter(command, "@character_common_id", commonId); }, reader =>
+                command => { AddParameter(command, "@character_common_id", commonId); }, 
+                reader =>
                 {
-                    while (reader.Read()) Results.Add(ReadUnlockedSecretAbility(reader));
+                    while (reader.Read())
+                    {
+                        results.Add(ReadUnlockedSecretAbility(reader));
+                    }
                 });
         });
 
-        return Results;
+        return results;
     }
 
     private void AddParameter(DbCommand command, uint commonId, AbilityId secretAbility)

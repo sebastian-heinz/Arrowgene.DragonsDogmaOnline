@@ -88,8 +88,8 @@ namespace Arrowgene.Ddon.GameServer.Chat
         
         public void SendTellMessage(GameClient sender, GameClient receiver, C2SChatSendTellMsgReq request)
         {
-            var senderCharacterInfo = sender.Character.GetCommunityCharacterBaseInfo();
-            var receiverCharacterInfo = receiver.Character.GetCommunityCharacterBaseInfo();
+            var senderCharacterInfo = sender.Character.CDataCommunityCharacterBaseInfo;
+            var receiverCharacterInfo = receiver.Character.CDataCommunityCharacterBaseInfo;
             ChatResponse senderChatResponse = GetTellChatResponse(senderCharacterInfo.CharacterId, receiverCharacterInfo, request);
             senderChatResponse.Recipients.Add(sender);
             ChatResponse receiverChatResponse = GetTellChatResponse(senderCharacterInfo.CharacterId, senderCharacterInfo, request);

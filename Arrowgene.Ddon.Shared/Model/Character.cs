@@ -230,20 +230,6 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public CharacterStampBonus StampBonus { get; set; }
 
-        public CDataCommunityCharacterBaseInfo GetCommunityCharacterBaseInfo()
-        {
-            return new CDataCommunityCharacterBaseInfo
-            {
-                CharacterId = CharacterId,
-                CharacterName = new CDataCharacterName
-                {
-                    FirstName = FirstName,
-                    LastName = LastName,
-                },
-                ClanName = ClanName.ShortName
-            };
-        }
-
         public List<CDataCharacterReleaseElement> GetReleasedContent()
         {
             return ContentsReleased.Select(x => x.ToCDataCharacterReleaseElement()).ToList();

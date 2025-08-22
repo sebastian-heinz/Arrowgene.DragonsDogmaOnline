@@ -736,6 +736,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SInstanceEnemyGroupLeaveNtc.Serializer());
             Create(new C2SInstanceEnemyKillReq.Serializer());
             Create(new C2SInstanceExchangeOmInstantKeyValueReq.Serializer());
+            Create(new C2SInstanceGetOmInstantKeyValueAllReq.Serializer());
             Create(new C2SInstanceGetDropItemListReq.Serializer());
             Create(new C2SInstanceGetDropItemReq.Serializer());
             Create(new C2SInstanceGetEnemySetListReq.Serializer());

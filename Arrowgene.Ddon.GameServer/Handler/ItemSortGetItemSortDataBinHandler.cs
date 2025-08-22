@@ -10,14 +10,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemSortGetItemSortDataBinHandler));
 
-
         public ItemSortGetItemSortDataBinHandler(DdonGameServer server) : base(server)
         {
         }
 
         public override S2CItemSortGetItemSortdataBinRes Handle(GameClient client, C2SItemSortGetItemSortDataBinReq request)
         {
-            S2CItemSortGetItemSortdataBinNtc ntc = new S2CItemSortGetItemSortdataBinNtc();
             S2CItemSortGetItemSortdataBinRes res = new S2CItemSortGetItemSortdataBinRes();
             foreach (var item in request.SortList)
             {
@@ -31,10 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 };
 
                 res.SortData.Add(cdata);
-                ntc.SortData.Add(cdata);
             }
-
-            client.Send(ntc); // Whats the ntc for if the res has the same info
 
             return res;
         }

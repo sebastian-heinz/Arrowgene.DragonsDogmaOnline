@@ -9,6 +9,17 @@ namespace Arrowgene.Ddon.Shared.Model
     // This class contains data common to both players (Character) and pawns (Pawn)
     public abstract class CharacterCommon
     {
+        public static readonly uint BASE_HEALTH = 760U;
+        public static readonly uint BASE_STAMINA = 450U;
+        public static readonly uint BBM_BASE_HEALTH = 990U;
+        public static readonly uint BBM_BASE_STAMINA = 589U;
+
+        public static readonly uint DEFAULT_RING_COUNT = 1;
+        public static readonly uint BASE_ABILITY_COST_AMOUNT = 15;
+
+        public static readonly uint MAX_PLAYER_HP = uint.MaxValue;
+        public static readonly uint MAX_PLAYER_STAMINA = uint.MaxValue;
+
         public CharacterCommon()
         {
             EquippedCustomSkillsDictionary = System.Enum.GetValues<JobId>()
