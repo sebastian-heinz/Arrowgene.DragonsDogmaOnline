@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -14,6 +14,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public ConnectionPingHandler(DdonGameServer server) : base(server)
         {
+        }
+
+        // Leaving this implementation in case we want to do anything with this info later.
+        public override S2CConnectionPingRes Handle(GameClient client, C2SConnectionPingReq request)
+        {
+            return base.Handle(client, request);
         }
 
         public override S2CConnectionPingRes BuildPingResponse(GameClient client, DateTime now)

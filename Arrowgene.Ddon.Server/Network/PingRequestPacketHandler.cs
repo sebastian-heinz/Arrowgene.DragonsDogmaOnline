@@ -1,6 +1,7 @@
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Logging;
 using System;
 using System.Timers;
-using Arrowgene.Ddon.Shared.Entity;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -9,6 +10,7 @@ namespace Arrowgene.Ddon.Server.Network
         where TReqStruct : class, IPacketStructure, new()
         where TResStruct : ServerResponse, new()
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PingRequestPacketHandler<TClient, TReqStruct, TResStruct>));
 
         private static readonly double TIMER_INTERVAL_MS = 60000; // 1 minute
 
@@ -27,6 +29,7 @@ namespace Arrowgene.Ddon.Server.Network
                     {
                         // Try messaging the client to ensure it is still alive
                         // If the client is dead, the send will fail and it'll be cleaned up
+                        Logger.Error(client, "\n[AUTOKICK] Suspected asleep client; sending wakeup ping.");
                         var pingRes = BuildPingResponse(client, now);
                         client.Send(pingRes);
                     }

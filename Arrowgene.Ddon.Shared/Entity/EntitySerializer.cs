@@ -86,6 +86,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCharacterReleaseElement.Serializer());
             Create(new CDataCharacterSearchParam.Serializer());
             Create(new CDataCharacterSearchParameter.Serializer());
+            Create(new CDataCheatInfo.Serializer());
             Create(new CDataClanConciergeInfo.Serializer());
             Create(new CDataClanConciergeNpc.Serializer());
             Create(new CDataClanHistoryElement.Serializer());
@@ -153,6 +154,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCycleContentsNews.Serializer());
             Create(new CDataCycleContentsNewsDetail.Serializer());
             Create(new CDataCycleContentsRank.Serializer());
+            Create(new CDataCycleContentsUnk.Serializer());
 
             Create(new CDataDeliveredItem.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());

@@ -119,7 +119,10 @@ namespace Arrowgene.Ddon.Shared.Network
 
         public bool Equals(PacketId other)
         {
-            return GroupId == other.GroupId && HandlerId == other.HandlerId && HandlerSubId == other.HandlerSubId;
+            return GroupId == other.GroupId 
+                && HandlerId == other.HandlerId 
+                && HandlerSubId == other.HandlerSubId
+                && ServerType == other.ServerType;
         }
 
         public override bool Equals(object obj)
@@ -284,7 +287,8 @@ namespace Arrowgene.Ddon.Shared.Network
 // Group: 2 - (CHARACTER)
         public static readonly PacketId C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ = new PacketId(2, 0, 1, "C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_DECIDE_CHARACTER_ID_RES = new PacketId(2, 0, 2, "S2C_CHARACTER_DECIDE_CHARACTER_ID_RES", ServerType.Game, PacketSource.Server); // キャラクター確定に
-        public static readonly PacketId S2C_CHARACTER_2_1_1 = new PacketId(2, 1, 1, "S2C_CHARACTER_2_1_1", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_GET_CHEAT_INFO_REQ = new PacketId(2, 1, 1, "S2C_GET_CHEAT_INFO_REQ", ServerType.Game, PacketSource.Server); // Yes, this pair is backwards, it's more like a notice?
+        public static readonly PacketId C2S_GET_CHEAT_INFO_RES = new PacketId(2, 1, 2, "C2S_GET_CHEAT_INFO_RES", ServerType.Game, PacketSource.Client); // Yes, this pair is backwards, it's more like a notice?
         public static readonly PacketId C2S_CHARACTER_CHARACTER_SEARCH_REQ = new PacketId(2, 2, 1, "C2S_CHARACTER_CHARACTER_SEARCH_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_CHARACTER_SEARCH_RES = new PacketId(2, 2, 2, "S2C_CHARACTER_CHARACTER_SEARCH_RES", ServerType.Game, PacketSource.Server); // キャラクター検索に
         public static readonly PacketId S2C_CHARACTER_ADD_WALLET_POINT_NTC = new PacketId(2, 3, 16, "S2C_CHARACTER_ADD_WALLET_POINT_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_2_3_16_NTC");
@@ -2215,7 +2219,8 @@ namespace Arrowgene.Ddon.Shared.Network
 // Group: 2 - (CHARACTER)
             AddPacketIdEntry(packetIds, C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_DECIDE_CHARACTER_ID_RES);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_2_1_1);
+            AddPacketIdEntry(packetIds, S2C_GET_CHEAT_INFO_REQ);
+            AddPacketIdEntry(packetIds, C2S_GET_CHEAT_INFO_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_CHARACTER_SEARCH_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_CHARACTER_SEARCH_RES);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_ADD_WALLET_POINT_NTC);
