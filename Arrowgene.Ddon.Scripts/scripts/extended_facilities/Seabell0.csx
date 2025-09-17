@@ -7,7 +7,19 @@ public class NpcExtendedFacility : INpcExtendedFacility
 
     public override void GetExtendedOptions(DdonGameServer server, GameClient client, S2CNpcGetNpcExtendedFacilityRes result)
     {
-        result.ExtendedMenuItemList.Add(new CDataNpcExtendedFacilityMenuItem() { FunctionClass = NpcFunction.ExtremeMissions, FunctionSelect = NpcFunction.ExtremeMissions });
+        if (QuestManager.GetQuestsByType(QuestType.ExtremeMission)
+            .Select(x => QuestManager.GetQuestByScheduleId(x))
+            .Where(x => x.MissionParams.Group == 3) 
+            .Where(x => x.IsActive(client))
+            .Any()
+        )
+        {
+            result.ExtendedMenuItemList.Add(new CDataNpcExtendedFacilityMenuItem()
+            {
+                FunctionClass = NpcFunction.ExtremeMissions,
+                FunctionSelect = NpcFunction.ExtremeMissions
+            });
+        }
     }
 }
 
