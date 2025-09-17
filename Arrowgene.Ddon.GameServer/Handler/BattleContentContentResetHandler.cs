@@ -81,7 +81,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             break;
                         case 2:
                             // TODO: Do all the premium reset stuff; better starting gear (IR 11, e.g. Sublime Set) and rewards. 
-                            updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.GoldenGemstones, 1, connection));
+                            updateCharacterItemNtc.UpdateWalletList.Add(
+                                Server.WalletManager.RemoveFromWallet(client.Character, WalletType.GoldenGemstones, Server.GameSettings.GameServerSettings.BBMResetGGCost, connection)
+                            );
                             Server.Database.InsertBBMGGReset(client.Character.CharacterId, connection);
                             break;
 

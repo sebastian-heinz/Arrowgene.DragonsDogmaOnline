@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     new()
                     {
                         Type = WalletType.GoldenGemstones,
-                        Value = 1,
+                        Value = Server.GameSettings.GameServerSettings.BBMResetGGCost,
                     },
                 ]
             });

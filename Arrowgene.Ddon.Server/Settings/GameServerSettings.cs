@@ -1746,5 +1746,22 @@ namespace Arrowgene.Ddon.Server.Settings
             }
         }
         private const uint _BBMWeeklyGGResets = 6;
+
+        /// <summary>
+        /// The cost of resetting BBM using GG.
+        /// </summary>
+        [DefaultValue(_BBMResetGGCost)]
+        public uint BBMResetGGCost
+        {
+            set
+            {
+                SetSetting("BBMResetGGCost", value);
+            }
+            get
+            {
+                return TryGetSetting("BBMResetGGCost", _BBMResetGGCost);
+            }
+        }
+        private const uint _BBMResetGGCost = 1;
     }
 }
