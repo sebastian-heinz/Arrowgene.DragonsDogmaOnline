@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -38,6 +39,16 @@ namespace Arrowgene.Ddon.Server.Network
 
         public DateTime PingTime { get; set; }
 
+        public PacketId LastPacketSentToServer { get; set; }
+        public PacketId LastPacketSentToClient { get; set; }
+
+        ~Client()
+        {
+            // Something is funny in the event handling for disconnections, so I'm burying this logging here to make sure this absolutely gets called at some point.
+            // This may be divorced in the log from the actual event, but you can reconstruct this based on the IP address and the rough timing.
+            Logger.Debug(this, $"Final Packets: {this?.LastPacketSentToServer.Name ?? "NULL"} / {this?.LastPacketSentToClient.Name ?? "NULL"}");
+        }
+
         public void SetChallengeCompleted(bool challengeCompleted)
         {
             _challengeCompleted = challengeCompleted;
@@ -60,6 +71,11 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 Logger.Exception(this, ex);
                 packets = new List<IPacket>();
+            }
+
+            if (Socket.IsAlive)
+            {
+                LastPacketSentToServer = packets.Last().Id;
             }
 
             foreach (IPacket packet in packets)
@@ -116,6 +132,11 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 Logger.Exception(this, ex);
                 return;
+            }
+
+            if (Socket.IsAlive)
+            {
+                LastPacketSentToClient = packet.Id;
             }
 
             SendRaw(data);

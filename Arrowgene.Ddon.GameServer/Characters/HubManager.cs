@@ -113,12 +113,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             gatherClients.Add(otherClient);
                         }
                         client.Character.LastSeenLobby[otherId] = targetStageId;
-
-                        // Make sure you have their last data message to avoid invisible people?
-                        if (otherClient.LastLobbyDataMsg is not null)
-                        {
-                            client.Send(otherClient.LastLobbyDataMsg);
-                        }
                     }
                     HubMembers[targetStageId].Add(client.Character.CharacterId);
                 }
@@ -129,11 +123,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 targetClients.Add(client);
             }
 
-            if (targetClients.Any())
+            // HOTFIX: Seems to reduce the channel meltdown issues?
+            // Be really aggressive about making sure everybody has all the lobby contexts, even if it means sending extra packets.
+            // May cause people standing around in WDT oddly.
+            targetClients = [.. Server.ClientLookup.GetAll().Except([client])];
+            if (previousStageId == 0)
+            {
+                gatherClients = targetClients;
+            }
+            else
+            {
+                gatherClients = [];
+            }
+
+            if (targetClients.Count != 0)
             {
                 SendContext(client, targetClients);
             }
-            if (gatherClients.Any())
+
+            if (gatherClients.Count != 0)
             {
                 GatherContexts(gatherClients, client);
             }
@@ -157,6 +165,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             foreach (GameClient source in sourceClients)
             {
+                if (source.Character is null)
+                {
+                    continue;
+                }
+
                 S2CContextGetLobbyPlayerContextNtc contextNtc = source.Character.S2CContextGetLobbyPlayerContextNtc;
                 targetClient.Send(contextNtc);
             }

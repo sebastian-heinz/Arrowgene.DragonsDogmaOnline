@@ -11,7 +11,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInnHpRecoveryCompleteNtc> packet)
         {
-            //Unsure what CAPCOM wanted with this packet.
+            client.Character.WhiteHp = uint.MaxValue;
+            client.Character.GreenHp = uint.MaxValue;
         }
     }
 }

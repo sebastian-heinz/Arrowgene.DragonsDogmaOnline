@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.Server.Network
                     {
                         // Try messaging the client to ensure it is still alive
                         // If the client is dead, the send will fail and it'll be cleaned up
-                        Logger.Error(client, "\n[AUTOKICK] Suspected asleep client; sending wakeup ping.");
+                        Logger.Error(client, "[AUTOKICK] Suspected asleep client; sending wakeup ping.");
                         var pingRes = BuildPingResponse(client, now);
                         client.Send(pingRes);
                     }

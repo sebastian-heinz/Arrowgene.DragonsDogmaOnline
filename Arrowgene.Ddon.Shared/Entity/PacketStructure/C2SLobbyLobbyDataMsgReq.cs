@@ -8,16 +8,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_LOBBY_LOBBY_DATA_MSG_REQ;
 
-        public C2SLobbyLobbyDataMsgReq()
-        {
-            Type = 0;
-            CharacterId = 0;
-            RpcPacket = new byte[0];
-        }
-
         public RpcMsgType Type { get; set; }
         public uint CharacterId { get; set; }
-        public byte[] RpcPacket { get; set; }
+        public byte[] RpcPacket { get; set; } = [];
 
         public class Serializer : PacketEntitySerializer<C2SLobbyLobbyDataMsgReq>
         {

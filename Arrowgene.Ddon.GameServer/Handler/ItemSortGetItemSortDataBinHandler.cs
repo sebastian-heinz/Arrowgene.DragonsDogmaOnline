@@ -16,7 +16,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CItemSortGetItemSortdataBinRes Handle(GameClient client, C2SItemSortGetItemSortDataBinReq request)
         {
-            S2CItemSortGetItemSortdataBinRes res = new S2CItemSortGetItemSortdataBinRes();
+            S2CItemSortGetItemSortdataBinRes res = new();
+
             foreach (var item in request.SortList)
             {
                 StorageType storageType = (StorageType)item.Value; // why the hell is it U32 then
@@ -30,6 +31,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 res.SortData.Add(cdata);
             }
+
+            S2CItemSortGetItemSortdataBinNtc ntc = new()
+            {
+                SortData = res.SortData
+            };
+
+            client.Send(ntc);
 
             return res;
         }
