@@ -73,7 +73,7 @@ namespace Arrowgene.Ddon.Server.Network
                 packets = new List<IPacket>();
             }
 
-            if (Socket.IsAlive)
+            if (Socket.IsAlive && packets.Count > 0)
             {
                 LastPacketSentToServer = packets.Last().Id;
             }
@@ -134,7 +134,7 @@ namespace Arrowgene.Ddon.Server.Network
                 return;
             }
 
-            if (Socket.IsAlive)
+            if (Socket.IsAlive && packet is not null)
             {
                 LastPacketSentToClient = packet.Id;
             }
