@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         client.Enqueue(changeCharacterEquipNtc, packets);
                     }
 
-                    if (storageType == StorageType.CharacterEquipment)
+                    if (storageType == StorageType.CharacterEquipment || storageType == StorageType.ItemBagEquipment)
                     {
                         storageType = StorageType.ItemBagEquipment;
                         Server.ItemManager.EmbodyItem(Server, normalCharacter, storageType, item, amount, connection);
