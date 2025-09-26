@@ -30,7 +30,6 @@ public interface IDatabase
     void Stop();
 
     // Generic functions for getting/setting
-    void AddParameter(DbCommand command, string name, object? value, DbType type);
     void AddParameter(DbCommand command, string name, string value);
     void AddParameter(DbCommand command, string name, int value);
     void AddParameter(DbCommand command, string name, float value);

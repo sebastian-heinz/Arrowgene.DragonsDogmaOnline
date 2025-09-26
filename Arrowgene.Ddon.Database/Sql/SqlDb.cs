@@ -75,7 +75,7 @@ public abstract class SqlDb : IDatabase
         }
     }
 
-    public int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> nonQueryAction, bool rethrowException = false)
+    public int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> nonQueryAction, bool rethrowException = true)
     {
         try
         {
@@ -158,7 +158,7 @@ public abstract class SqlDb : IDatabase
         }
     }
 
-    public virtual void AddParameter(DbCommand command, string name, object? value, DbType type)
+    private void AddParameter(DbCommand command, string name, object? value, DbType type)
     {
         DbParameter parameter = Parameter(command, name, value, type);
         command.Parameters.Add(parameter);
@@ -180,6 +180,11 @@ public abstract class SqlDb : IDatabase
     }
 
     public virtual void AddParameter(DbCommand command, string name, byte value)
+    {
+        AddParameter(command, name, value, DbType.Byte);
+    }
+
+    public virtual void AddParameter(DbCommand command, string name, byte? value)
     {
         AddParameter(command, name, value, DbType.Byte);
     }

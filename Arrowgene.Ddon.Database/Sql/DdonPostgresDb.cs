@@ -144,16 +144,6 @@ public partial class DdonPostgresDb : DdonSqlDb
 
     #region: Parameter
 
-    protected override DbParameter Parameter(DbCommand command, string name, object? value, DbType type)
-    {
-        throw new Exception("Do not use the generic parameter mapping for PSQL as it introduces a performance overhead due to autoboxing.");
-    }
-
-    public override void AddParameter(DbCommand command, string name, object? value, DbType type)
-    {
-        throw new Exception("Do not use the generic parameter mapping for PSQL as it introduces a performance overhead due to autoboxing.");
-    }
-
     private static void AddTypedParameter<T>(DbCommand command, string name, T value)
     {
         command.Parameters.Add(new NpgsqlParameter<T>(name, value));
@@ -185,6 +175,11 @@ public partial class DdonPostgresDb : DdonSqlDb
     }
 
     public override void AddParameter(DbCommand command, string name, byte value)
+    {
+        AddTypedParameter(command, name, value);
+    }
+
+    public override void AddParameter(DbCommand command, string name, byte? value)
     {
         AddTypedParameter(command, name, value);
     }

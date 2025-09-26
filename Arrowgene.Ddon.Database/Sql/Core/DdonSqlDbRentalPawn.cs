@@ -218,12 +218,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     AddParameter(command, "@adventure_count", pawn.MaxAdventureCount - pawn.AdventureCount);
                     AddParameter(command, "@craft_count", pawn.MaxCraftCount - pawn.CraftCount);
                     AddParameter(command, "@kill_count", pawn.KillCount);
-                    AddParameter(command, "@appearance_score", pawnFeedbacks.Where(x => x.Type == 0).FirstOrDefault()?.Value, System.Data.DbType.Byte);
-                    AddParameter(command, "@appearance_comment", pawnFeedbacks.Where(x => x.Type == 0).FirstOrDefault()?.CommentNo, System.Data.DbType.Byte);
-                    AddParameter(command, "@combat_score", pawnFeedbacks.Where(x => x.Type == 1).FirstOrDefault()?.Value, System.Data.DbType.Byte);
-                    AddParameter(command, "@combat_comment", pawnFeedbacks.Where(x => x.Type == 1).FirstOrDefault()?.CommentNo, System.Data.DbType.Byte);
-                    AddParameter(command, "@craft_score", pawnFeedbacks.Where(x => x.Type == 2).FirstOrDefault()?.Value, System.Data.DbType.Byte);
-                    AddParameter(command, "@craft_comment", pawnFeedbacks.Where(x => x.Type == 2).FirstOrDefault()?.CommentNo, System.Data.DbType.Byte);
+                    AddParameter(command, "@appearance_score", pawnFeedbacks.Where(x => x.Type == 0).FirstOrDefault()?.Value);
+                    AddParameter(command, "@appearance_comment", pawnFeedbacks.Where(x => x.Type == 0).FirstOrDefault()?.CommentNo);
+                    AddParameter(command, "@combat_score", pawnFeedbacks.Where(x => x.Type == 1).FirstOrDefault()?.Value);
+                    AddParameter(command, "@combat_comment", pawnFeedbacks.Where(x => x.Type == 1).FirstOrDefault()?.CommentNo);
+                    AddParameter(command, "@craft_score", pawnFeedbacks.Where(x => x.Type == 2).FirstOrDefault()?.Value);
+                    AddParameter(command, "@craft_comment", pawnFeedbacks.Where(x => x.Type == 2).FirstOrDefault()?.CommentNo);
                 }
                 ) == 1;
             });
