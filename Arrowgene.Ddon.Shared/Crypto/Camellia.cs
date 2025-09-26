@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
             {
                 if (!pad)
                 {
-                    throw new Exception("Invalid PlainText Size");
+                    throw new ArgumentException("Invalid PlainText Size");
                 }
 
                 int padding = 16 - mod;
@@ -72,7 +72,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
             {
                 if (!pad)
                 {
-                    throw new Exception("Invalid CipherText Size");
+                    throw new ArgumentException("Invalid CipherText Size");
                 }
 
                 int padding = 16 - mod;

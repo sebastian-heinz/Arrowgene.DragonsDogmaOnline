@@ -67,10 +67,19 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 packets = _packetFactory.Read(data);
             }
+            catch (ResponseErrorException ex)
+            {
+                // Usually thrown by the Camelia cipher complaining about misshapen packets.
+                // We shouldn't tolerate these connections and just kick them.
+                Logger.Exception(this, ex);
+                packets = [];
+
+                this.Close();
+            }
             catch (Exception ex)
             {
                 Logger.Exception(this, ex);
-                packets = new List<IPacket>();
+                packets = [];
             }
 
             if (Socket.IsAlive && packets.Count > 0)
