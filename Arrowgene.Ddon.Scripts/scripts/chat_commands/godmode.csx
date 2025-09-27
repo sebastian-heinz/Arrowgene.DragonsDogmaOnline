@@ -8,7 +8,7 @@ public class ChatCommand : IChatCommand
     public override string CommandName => "godmode";
     public override string HelpText => "usage: `/godmode [true/false]` - Toggle high stats.";
 
-    private uint BoostedStat = 10000;
+    private uint BoostedStat = 50000;
 
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
@@ -23,7 +23,7 @@ public class ChatCommand : IChatCommand
             client.Send(new S2CCharacterGainCharacterParamNtc()
             {
                 CharacterId = client.Character.CharacterId,
-                //HpMaxGain = BoostedStat,
+                HpMaxGain = BoostedStat,
                 StaminaMaxGain = BoostedStat,
                 AttackGain = BoostedStat,
                 DefenseGain = BoostedStat,
@@ -36,6 +36,12 @@ public class ChatCommand : IChatCommand
             client.Character.StatusInfo.Stamina = uint.MaxValue;
 
             var ntc3 = client.Character.S2CContextGetLobbyPlayerContextNtc;
+            ntc3.Context.PlayerInfo.GainHp = BoostedStat;
+            ntc3.Context.PlayerInfo.GainStamina = BoostedStat;
+            ntc3.Context.PlayerInfo.GainAttack = BoostedStat;
+            ntc3.Context.PlayerInfo.GainDefense = BoostedStat;
+            ntc3.Context.PlayerInfo.GainMagicAttack = BoostedStat;
+            ntc3.Context.PlayerInfo.GainMagicDefense = BoostedStat;
 
             client.Send(ntc3);
 
