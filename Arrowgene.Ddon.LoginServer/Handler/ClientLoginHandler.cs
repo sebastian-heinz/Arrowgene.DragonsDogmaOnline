@@ -103,7 +103,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     {
                         if (connections.Any())
                         {
-                            connections.ForEach(x => RequestKick(x));
+                            connections.ForEach(x => RequestKick(client, x));
                             Thread.Sleep(_setting.KickOnMultipleLoginTimer);
                             connections = Database.SelectConnectionsByAccountId(account.Id);
                         }
@@ -180,7 +180,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             }
         }
 
-        private void RequestKick(Connection connection)
+        private void RequestKick(LoginClient client, Connection connection)
         {
             // Timing issues with loading files vs server process startup.
             if (!_httpReady)
@@ -190,7 +190,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     ServerInfo serverInfo = Server.AssetRepository.ServerList.Find(x => x.LoginId == Server.Id);
                     if (serverInfo is null)
                     {
-                        Logger.Error($"[AUTOKICK] Login server with ID {Server.Id} was not found in the ServerList asset.");
+                        Logger.Error(client, $"[AUTOKICK] Login server with ID {Server.Id} was not found in the ServerList asset.");
                         return;
                     }
 
@@ -203,7 +203,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             // Only one login server should be servicing requests, so it has to be this one.
             if (connection.Type == ConnectionType.LoginServer)
             {
-                Logger.Error($"[AUTOKICK] Clearing double login for account {connection.AccountId}.");
+                Logger.Error(client, $"[AUTOKICK] Clearing double login for account {connection.AccountId}.");
                 Database.DeleteConnection(connection.ServerId, connection.AccountId);
                 return;
             }
@@ -212,7 +212,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             if (channel is null)
             {
                 // If the server can't be found, the entry in the DB is erroneous and should be cleared.
-                Logger.Info($"[AUTOKICK] Clearing bad connection record for account {connection.AccountId} from server {connection.ServerId}");
+                Logger.Info(client, $"[AUTOKICK] Clearing bad connection record for account {connection.AccountId} from server {connection.ServerId}");
                 Server.Database.DeleteConnection(connection.ServerId, connection.AccountId);
                 return;
             }
@@ -226,7 +226,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Data = connection.AccountId
             };
 
-            Logger.Info($"[AUTOKICK] Attempting to auto kick account {connection.AccountId} from server {connection.ServerId}");
+            Logger.Info(client, $"[AUTOKICK] Attempting to auto kick account {connection.AccountId} from server {connection.ServerId}");
 
             var json = JsonSerializer.Serialize(wrappedObject);
             _ = _httpClient.PostAsync(route, new StringContent(json));

@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Rpc.Command;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
@@ -15,7 +16,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
     {
         public class InternalCommand : RpcBodyCommand<RpcUnwrappedObject>
         {
-            private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(InternalCommand));
+            private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InternalCommand));
 
             public InternalCommand(RpcUnwrappedObject entry) : base(entry)
             {
@@ -68,6 +69,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                             {
                                 if (client.Account?.Id == target)
                                 {
+                                    Logger.Error(client, $"[AUTOKICK] Handling auto kick for account {target}");
                                     client.Close();
                                 }
                             }

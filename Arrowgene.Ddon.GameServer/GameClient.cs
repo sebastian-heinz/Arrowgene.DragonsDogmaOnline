@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public void UpdateIdentity()
         {
-            string newIdentity = $"[GameClient@{Socket.Identity}]";
+            string newIdentity = $"[GameClient#{Id}@{Socket.Identity}]";
             if (Account != null)
             {
                 newIdentity += $"[Acc:({Account.Id}){Account.NormalName}]";
