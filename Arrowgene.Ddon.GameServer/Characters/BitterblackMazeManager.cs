@@ -1,20 +1,16 @@
-using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Model;
-using Arrowgene.Ddon.GameServer.Scripting;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Appraisal;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Linq;
+using System.Text;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -35,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private static uint ShouldReportSearchResults(BitterblackMazeProgress progress, IEnumerable<BitterblackMazeMarkRewards> rewards)
         {
-            bool rewardPresent = rewards.Any(x => x.GoldMarks > 0 || x.SilverMarks > 0 || x.RedMarks > 0);
+            bool rewardPresent = rewards.Any(x => x.Any);
             return (uint)((rewardPresent && progress.Tier == 0 && progress.StartTime > 0) ? 1 : 0);
         }
 
@@ -63,17 +59,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             var availableRewards = new List<CDataBattleContentAvailableRewards>();
 
-            foreach (var stage in server.AssetRepository.BitterblackMazeAsset.Stages)
+            foreach (var (mode, stageId, tier, contentId) in gBossStages)
             {
                 var closedChests = gSealedChestDrops
-                    .Where(x => x.Key.Item1.Equals(stage.Key) 
+                    .Where(x => x.Key.Item1.Id == stageId
                         && (x.Value == ChestType.Earring || x.Value == ChestType.Bracelet)
                         && !openedChests.Any(y => x.Key.Item1.Equals(y.LayoutId) && x.Key.Item2 == y.Index)
                     ).Select(x => x.Key);
 
                 availableRewards.Add(new CDataBattleContentAvailableRewards()
                 {
-                    Id = stage.Value.ContentId,
+                    Id = contentId,
                     Amount = (byte)closedChests.Count(),
                 });
             }
@@ -86,7 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     ContentId = progress.ContentId,
                     StartTime = progress.StartTime,
                     RewardBonus = BattleContentRewardBonus.Normal, // This gets set to UP when resetting with GG.
-                    RewardReceived = rewards.Count > 0 && rewards.Sum(x => x.Value.RedMarks) == 0,
+                    RewardReceived = rewards.Count > 0 && !rewards.Values.Any(x => x.Any),
                     ReportSearchResults = ShouldReportSearchResults(progress, rewards.Values), // This needs to be set after killing last boss? (or maybe between tiers if you exit?)
                     ReportReset = ShouldReportProgress(progress),
                     Unk7 = 23, // Value from pcap, not sure what it does
@@ -241,6 +237,59 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return queue;
         }
 
+        public List<string> GenerateProgressReportString(GameClient client)
+        {
+            Dictionary<uint, BitterblackMazeMarkRewards> rewards = [];
+            HashSet<uint> openedChests = [];
+            Server.Database.ExecuteInTransaction(connectionIn =>
+            {
+                rewards = server.Database.SelectBBMRewards(client.Character.CharacterId, connectionIn);
+                openedChests = [.. server.Database.SelectBBMContentTreasure(client.Character.CharacterId, connectionIn).Select(x => x.LayoutId.Id)];
+            });
+
+            StringBuilder sbChests = new();
+            StringBuilder sbMarks = new();
+            StringBuilder sbTotalMarks = new();
+            sbChests.Append("==CHEST REWARDS==");
+            sbMarks.Append("==MARK REWARDS==");
+            foreach (var (mode, stageId, tier, contentId) in gBossStages)
+            {
+                string stageName = $"{mode} {tier}";
+
+                if (rewards.TryGetValue(stageId, out var markReward))
+                {
+                    if (markReward.Any)
+                    {
+                        sbMarks.Append($"\n{stageName}: Can Claim");
+                    }
+                    else
+                    {
+                        sbMarks.Append($"\n{stageName}: Claimed");
+                    }
+                }
+                else
+                {
+                    sbMarks.Append($"\n{stageName}: Can Earn");
+                }
+
+                if (openedChests.Contains(stageId))
+                {
+                    sbChests.Append($"\n{stageName}: Claimed");
+                }
+                else
+                {
+                    sbChests.Append($"\n{stageName}: Can Earn");
+                }
+            }
+
+            sbTotalMarks.Append("==PENDING MARKS==");
+            sbTotalMarks.Append($"\nGold Marks: {rewards.Sum(x => x.Value.GoldMarks)}");
+            sbTotalMarks.Append($"\nSilver Marks: {rewards.Sum(x => x.Value.SilverMarks)}");
+            sbTotalMarks.Append($"\nRed Marks: {rewards.Sum(x => x.Value.RedMarks)}");
+
+            return [sbChests.ToString(), sbMarks.ToString(), sbTotalMarks.ToString()];
+        }
+
         internal enum ChestType
         {
             Normal, // Random unsealed chests
@@ -344,6 +393,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [(new StageLayoutId(684, 0, 201), 1)] = ChestType.Purple,
             [(new StageLayoutId(685, 0, 200), 0)] = ChestType.Earring,
         };
+
+        private static List<(BattleContentMode Mode, uint StageId, uint Tier, uint ContentId)> gBossStages = [
+            (BattleContentMode.Rotunda, 603, 1, 2),
+            (BattleContentMode.Rotunda, 604, 2, 3),
+            (BattleContentMode.Rotunda, 605, 3, 4),
+            (BattleContentMode.Abyss, 682, 1, 10),
+            (BattleContentMode.Abyss, 683, 2, 11),
+            (BattleContentMode.Abyss, 684, 3, 12),
+            (BattleContentMode.Abyss, 685, 4, 13),
+        ];
 
         public static List<InstancedGatheringItem> RollChestLoot(DdonGameServer server, Character character, StageLayoutId stageId, uint pos)
         {

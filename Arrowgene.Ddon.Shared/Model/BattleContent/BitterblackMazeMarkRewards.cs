@@ -12,5 +12,13 @@ namespace Arrowgene.Ddon.Shared.Model.BattleContent
         public uint GoldMarks { get; set; }
         public uint SilverMarks { get; set; }
         public uint RedMarks { get; set; }
+
+        public bool Any
+        {
+            get
+            {
+                return GoldMarks > 0 || SilverMarks > 0 || RedMarks > 0;
+            }
+        }
     }
 }

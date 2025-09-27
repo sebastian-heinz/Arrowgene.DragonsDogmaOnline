@@ -288,6 +288,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             PacketQueue queue = new();
 
+            if (client.Character.GameMode != GameMode.Normal)
+            {
+                return queue;
+            }
+
             // Handle single jobs
             (AchievementType, uint) key = (AchievementType.MainLevel, (uint)client.Character.Job);
             uint progress = client.Character.ActiveCharacterJobData.Lv;
@@ -550,16 +555,40 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         progress.Add((uint)(client.Character.AchievementUniqueCrafts.GetValueOrDefault((AchievementCraftTypeParam)asset.Param) ?? new()).Count);
                         break;
                     case AchievementType.LearnAugments:
+                        if (client.Character.GameMode != GameMode.Normal)
+                        {
+                            progress.Add(0);
+                            break;
+                        }
+
                         progress.Add((uint)client.Character.LearnedAbilities.Select(x => (int)x.AbilityLv).Sum());
                         break;
                     case AchievementType.LearnSkills:
+                        if (client.Character.GameMode != GameMode.Normal)
+                        {
+                            progress.Add(0);
+                            break;
+                        }
+
                         progress.Add((uint)client.Character.LearnedCustomSkills.Select(x => (int)x.SkillLv).Sum());
                         break;
                     case AchievementType.MainLevel:
+                        if (client.Character.GameMode != GameMode.Normal)
+                        {
+                            progress.Add(0);
+                            break;
+                        }
+
                         progress.Add(client.Character.CharacterJobDataList.Where(x => x.Job == (JobId)asset.Param).FirstOrDefault()?.Lv ?? 0);
                         break;
                     case AchievementType.MainLevelGroup:
                         {
+                            if (client.Character.GameMode != GameMode.Normal)
+                            {
+                                progress.Add(0);
+                                break;
+                            }
+
                             HashSet<JobId> group = LevelGroupMap.GetValueOrDefault((AchievementLevelGroupParam)asset.Param);
                             int lowestLevel = group.Select(job => client.Character.CharacterJobDataList.Where(x => x.Job == job).Select(x => (int)x.Lv).FirstOrDefault()).Min();
                             uint result = lowestLevel >= asset.Count ? 1u : 0u;
