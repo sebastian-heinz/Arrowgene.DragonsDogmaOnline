@@ -450,6 +450,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemEmbodyItemsHandler(this));
             AddHandler(new ItemChangeAttrDiscardHandler(this));
             AddHandler(new ItemGetEquipRareTypeItemsHandler(this));
+            AddHandler(new ItemRecoveryValuableItemHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobChangePawnJobHandler(this));
