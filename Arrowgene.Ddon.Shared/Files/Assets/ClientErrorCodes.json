@@ -4,6 +4,10 @@
         "en": "An internal server error has occured."
     },
     {
+        "code": "ERROR_CODE_DB_FAILURE",
+        "en": "An internal database error has occured; you will be disconnected."
+    },
+    {
         "code": "ERROR_CODE_NOT_IMPLEMENTED",
         "en": "This feature is not yet implemented."
     },

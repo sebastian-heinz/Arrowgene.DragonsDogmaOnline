@@ -27,7 +27,7 @@ public partial class DdonSqlDb : SqlDb
         INSERT INTO ""ddon_bbm_reset_gg"" (character_id, reset_count)
         VALUES (@character_id, 1)
         ON CONFLICT (character_id)
-        DO UPDATE SET reset_count = reset_count + 1;
+        DO UPDATE SET reset_count = ddon_bbm_reset_gg.reset_count + 1;
     ";
     private readonly string SqlResetBBMGGReset = "DELETE FROM \"ddon_bbm_reset_gg\";";
     private readonly string SqlSelectBBMGGReset = "SELECT reset_count FROM \"ddon_bbm_reset_gg\" WHERE \"character_id\"=@character_id;";
