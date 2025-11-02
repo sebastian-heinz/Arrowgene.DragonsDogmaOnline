@@ -4,18 +4,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataCharacterMessage
     {
-        public CDataCharacterMessage()
-        {
-            MessageNo = 0;
-            Message = "";
-            Emotion = 0;
-            EmotoChat = false;
-        }
-
-        public uint MessageNo;
-        public string Message;
-        public uint Emotion;
-        public bool EmotoChat;
+        public uint MessageNo { get; set; }
+        public string Message { get; set; } = "";
+        public uint Emotion { get; set; }
+        public bool EmotoChat { get; set; }
 
         public class Serializer : EntitySerializer<CDataCharacterMessage>
         {

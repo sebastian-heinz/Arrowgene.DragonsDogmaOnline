@@ -2,6 +2,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
@@ -27,7 +28,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     PrioGroup = (byte)course.Value.PriorityGroup,
                     PrioSameTime = (byte)course.Value.PrioritySameTime,
                     AnnounceType = (byte)course.Value.AnnounceType,
-                    EffectUIDs = course.Value.Effects
+                    EffectUIDs = [.. course.Value.Effects.Select(x => new CDataCommonU32(x))]
                 };
 
                 response.CourseInfo.Add(cDataGPCourseInfo);

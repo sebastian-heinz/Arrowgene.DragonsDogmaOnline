@@ -9,12 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_GP_GP_COURSE_GET_AVAILABLE_LIST_RES;
 
-        public S2CGpGpCourseGetAvailableListRes()
-        {
-            AvailableCourses = new List<CDataGPCourseInfo>();
-        }
-
-        public List<CDataGPCourseInfo> AvailableCourses { get; set; }
+        public List<CDataGPCourseInfo> AvailableCourses { get; set; } = [];
 
         public class Serializer : PacketEntitySerializer<S2CGpGpCourseGetAvailableListRes>
         {

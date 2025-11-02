@@ -122,5 +122,21 @@
     {
         "code": "ERROR_CODE_DISPEL_NO_OPTIONS",
         "en": "You've sealed all available effects for this item; it cannot be redeemed at the moment."
+    },
+    {
+        "code": "ERROR_CODE_GM_KICK",
+        "en": "You have been kicked from the server by a Game Master."
+    },
+    {
+        "code": "ERROR_CODE_GM_BAN",
+        "en": "You have been banned from the server by a Game Master."
+    },
+    {
+        "code": "ERROR_CODE_GROUP_CHAT_DISABLED",
+        "en": "To use group chat, type /gc help."
+    },
+    {
+        "code": "ERROR_CODE_BLACK_LIST_TARGET_INVALID",
+        "en": "The target could not be added to your blacklist; either they are already on it, or they are a Game Master or Moderator."
     }
 ]

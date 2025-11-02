@@ -18,10 +18,16 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
         UpdateCrafting, // RpcCraftingTimerData
         WorldQuestReset, // long (seed)
 
+        StampReset, //null
+
         //InternalChatRoute
         SendTellMessage, // RpcChatData
         SendClanMessage, // RpcChatData
         SendShoutMessage, // RpcChatData
+        SendMail, // RpcChatData
+        SendGroupMessage, // RpcChatData
+        JoinGroupChat, // RpcPacketData
+        LeaveGroupChat, // RpcPacketData
 
         //PacketRoute
         AnnouncePacketAll, // RpcPacketData

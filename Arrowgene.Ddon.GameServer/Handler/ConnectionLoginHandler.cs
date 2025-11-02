@@ -43,6 +43,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Logger.Error(client, $"AccountId:{token.AccountId} not found");
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL);
             }
+            else if (account.State == AccountStateType.Banned)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_GM_BAN);
+            }
 
             DateTime now = DateTime.UtcNow;
 

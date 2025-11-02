@@ -16,9 +16,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CMailMailGetListHeadRes Handle(GameClient client, C2SMailMailGetListHeadReq request)
         {
             // client.Send(InGameDump.Dump_77);
-            // TODO: Num = 1 is the single message from the static packet currently used in the other
-            // TODO: parts of this mail handler.
-            return new S2CMailMailGetListHeadRes() { Num = 1 };
+
+            var messages = Server.Database.SelectMailMessages(client.Character.CharacterId);
+
+            return new S2CMailMailGetListHeadRes() 
+            { 
+                Num = (uint)messages.Count 
+            };
         }
     }
 }

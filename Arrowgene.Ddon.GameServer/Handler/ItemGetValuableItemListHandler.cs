@@ -21,8 +21,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CItemGetValuableItemListRes Handle(GameClient client, C2SItemGetValuableItemListReq request)
         {
-            //TODO: Implement this properly.
-            //This is enough to prevent the client from hanging if you accidentally use this menu.
             var res = new S2CItemGetValuableItemListRes();
 
             foreach (var storageType in ItemManager.BothStorageTypes)
@@ -35,9 +33,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 });
             }
 
+            var rewards = Server.RewardManager.GetQuestBoxRewards(client).Select(x => QuestManager.GetQuestByScheduleId(x.QuestScheduleId).QuestId).ToHashSet();
+
             foreach (var valuableItem in ValuableItemQuestRewards)
             {
-                if (client.Character.HasQuestCompleted(valuableItem.QuestId) && client.Character.Storage.FindItemsByIdInStorage(ItemManager.EquipmentStorages, valuableItem.ItemId).Count == 0)
+                if (client.Character.HasQuestCompleted(valuableItem.QuestId)
+                    && !rewards.Contains(valuableItem.QuestId)
+                    && client.Character.Storage.FindItemsByIdInStorage(ItemManager.EquipmentStorages, valuableItem.ItemId).Count == 0)
                 {
                     res.ValuableItems.Add(new()
                     {

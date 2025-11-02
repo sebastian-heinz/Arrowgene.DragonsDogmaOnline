@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class ChatCommand : IChatCommand
 {
-    public override AccountStateType AccountState => AccountStateType.Admin;
+    public override AccountStateType AccountState => AccountStateType.GameMaster;
     public override string CommandName => "animalcrossing";
     public override string HelpText => "usage: `/animalcrossing` - Unlock all furniture.";
 

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public class ChatCommand : IChatCommand
 {
-    public override AccountStateType AccountState => AccountStateType.Admin;
+    public override AccountStateType AccountState => AccountStateType.GameMaster;
     public override string CommandName            => "givepowerfulitems";
     public override string HelpText               => "usage: `/givepowerfulitems` - Get a set of free stuff.";
 

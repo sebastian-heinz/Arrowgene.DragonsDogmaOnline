@@ -26,6 +26,15 @@ public partial class DdonSqlDb : SqlDb
     private static readonly string SqlSelectAccountByEmailAndName = $"SELECT \"id\", {BuildQueryField(AccountFields)} FROM \"account\" WHERE UPPER(\"mail\")=UPPER(@mail) AND \"normal_name\"=@normal_name;";
     private static readonly string SqlUpdateAccount = $"UPDATE \"account\" SET {BuildQueryUpdate(AccountFields)} WHERE \"id\"=@id;";
 
+    private static readonly string[] AccountIpBanFields =
+    [
+        "addr", "date"
+    ];
+
+    private static readonly string SqlCheckBannedIp = "SELECT * FROM \"account_ip_ban\" WHERE \"addr\" = @addr LIMIT 1;";
+    private static readonly string SqlInsertBannedIp = "INSERT INTO \"account_ip_ban\" VALUES (@addr);";
+    private static readonly string SqlDeleteBannedIp = "DELETE * FROM \"account_ip_ban\" WHERE \"addr\" = @addr;";
+
     public override Account? CreateAccount(string name, string mail, string hash, string mailToken)
     {
         Account account = new();
@@ -206,5 +215,34 @@ public partial class DdonSqlDb : SqlDb
         account.LastAuthentication = GetDateTimeNullable(reader, "last_login");
         account.Created = GetDateTime(reader, "created");
         return account;
+    }
+
+    public override bool CheckBannedIp(string addr)
+    {
+        bool banned = false;
+        ExecuteReader(SqlCheckBannedIp, command => { AddParameter(command, "@addr", addr); }, reader =>
+        {
+            if (reader.Read())
+            {
+                banned = true;
+            }
+        });
+        return banned;
+    }
+
+    public override bool InsertBannedIp(string addr)
+    {
+        return ExecuteNonQuery(SqlInsertBannedIp, command =>
+        {
+            AddParameter(command, "@addr", addr);
+        }) > 0;
+    }
+
+    public override bool DeleteBannedIp(string addr)
+    {
+        return ExecuteNonQuery(SqlDeleteBannedIp, command =>
+        {
+            AddParameter(command, "@addr", addr);
+        }) > 0;
     }
 }

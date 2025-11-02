@@ -1,4 +1,5 @@
 #nullable enable
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -38,6 +39,31 @@ public partial class DdonSqlDb : SqlDb
            VALUES ({BuildQueryInsert(CommunicationShortcutFields)})
            ON CONFLICT (""character_id"", ""page_no"", ""button_no"")
            DO UPDATE SET {UpdateList};";
+
+    private static readonly string SqlUpsertCommunicationMessageSet =
+        """
+            INSERT INTO ddon_communication_message_set (character_id, set_no, set_name)
+            VALUES (@character_id, @set_no, @set_name)
+            ON CONFLICT (character_id, set_no)
+            DO UPDATE SET set_name = EXCLUDED.set_name;
+        """;
+
+    private static readonly string SqlUpsertCommunicationMessage =
+        """
+            INSERT INTO ddon_communication_message ("character_id", "set_no", "message_no", "message", "emotion", "emotochat")
+            VALUES (@character_id, @set_no, @message_no, @message, @emotion, @emotochat)
+            ON CONFLICT (character_id, set_no, message_no)
+            DO UPDATE SET message = EXCLUDED.message, emotion = EXCLUDED.emotion, emotochat = EXCLUDED.emotochat;
+        """;
+
+    private static readonly string SqlSelectCommunicationMessages =
+        """
+            SELECT * 
+            FROM ddon_communication_message
+            NATURAL JOIN ddon_communication_message_set
+            WHERE character_id = @character_id
+            ORDER BY set_no, message_no;
+        """;
 
     public override bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null)
     {
@@ -102,5 +128,79 @@ public partial class DdonSqlDb : SqlDb
         AddParameter(command, "type", shortcut.Type);
         AddParameter(command, "category", shortcut.Category);
         AddParameter(command, "id", shortcut.Id);
+    }
+
+    public override int UpsertCommunicationSet(uint characterId, List<CDataCharacterMsgSet> messages, DbConnection? connectionIn = null) 
+    {
+        return ExecuteQuerySafe(connectionIn, connection =>
+        {
+            int rowsAffected = 0;
+            foreach(var messageSet in messages)
+            {
+                rowsAffected += ExecuteNonQuery(connection, SqlUpsertCommunicationMessageSet, command =>
+                {
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "set_no", messageSet.SetNo);
+                    AddParameter(command, "set_name", messageSet.MsgSetName);
+                });
+
+                foreach (var message in messageSet.CharacterMessageList)
+                {
+                    rowsAffected += ExecuteNonQuery(connection, SqlUpsertCommunicationMessage, command =>
+                    {
+                        AddParameter(command, "character_id", characterId);
+                        AddParameter(command, "set_no", messageSet.SetNo);
+                        AddParameter(command, "message_no", message.MessageNo);
+                        AddParameter(command, "message", message.Message);
+                        AddParameter(command, "emotion", message.Emotion);
+                        AddParameter(command, "emotochat", message.EmotoChat);
+                    });
+                }
+            }
+
+            return rowsAffected;
+        });
+    }
+
+    public override List<CDataCharacterMsgSet> SelectCommunicationSet(uint characterId, DbConnection? connectionIn = null)
+    {
+        List<CDataCharacterMsgSet> result = [];
+
+        ExecuteQuerySafe(connectionIn, connection =>
+        {
+            ExecuteReader(connection, SqlSelectCommunicationMessages,
+                command => { AddParameter(command, "@character_id", characterId); },
+                reader => { 
+                    while (reader.Read())
+                    {
+                        var setNo = GetUInt32(reader, "set_no");
+                        var setName = GetString(reader, "set_name");
+                        var messageNo = GetUInt32(reader, "message_no");
+                        var message = GetString(reader, "message");
+                        var emotion = GetUInt32(reader, "emotion");
+                        var emotochat = GetBoolean(reader, "emotochat");
+
+                        if (setNo > result.Count)
+                        {
+                            result.Add(new()
+                            {
+                                SetNo = setNo,
+                                MsgSetName = setName
+                            });
+                        }
+
+                        result[(int)setNo - 1].CharacterMessageList.Add(new()
+                        {
+                            MessageNo = messageNo,
+                            Message = message,
+                            Emotion = emotion,
+                            EmotoChat = emotochat
+                        });
+                    };
+                }
+            );
+        });
+
+        return result;
     }
 }

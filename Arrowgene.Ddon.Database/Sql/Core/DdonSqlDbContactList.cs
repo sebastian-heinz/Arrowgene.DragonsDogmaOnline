@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.Data.Common;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using System.Collections.Generic;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core;
 
@@ -61,6 +61,37 @@ public partial class DdonSqlDb : SqlDb
             LEFT JOIN ddon_clan_membership cm ON cm.character_id = ci.other_id
             LEFT JOIN ddon_clan_param cp ON cp.clan_id = cm.clan_id
             WHERE ci.requested_character_id = @character_id OR ci.requester_character_id = @character_id;";
+
+    private static readonly string[] BlackListFields = new[]
+    {
+       "character_id", "target_id"
+    };
+
+    private static readonly string SqlSelectBlackList = """SELECT "target_id" from "ddon_black_list" WHERE "character_id" = @character_id;""";
+    private static readonly string SqlDeleteBlackList = """DELETE FROM "ddon_black_list" "character_id" = @character_id AND "target_id" = @target_id;""";
+    //private static readonly string SqlInsertBlackList = $"INSERT INTO \"ddon_black_list\" ({BuildQueryField(BlackListFields)}) VALUES ({BuildQueryInsert(BlackListFields)});";
+    private static readonly string SqlInsertBlackList = @"
+        INSERT INTO ddon_black_list (character_id, target_id)
+        SELECT
+            @character_id,
+            @target_id
+        FROM ddon_character c
+        JOIN account a
+            ON a.id = c.account_id
+        WHERE c.character_id = @target_id AND a.state <= 1
+        ON CONFLICT DO NOTHING;
+    ";
+    private static readonly string SqlSelectBlackListFull = @"
+            SELECT 
+                c.character_id,
+                c.first_name, 
+                c.last_name, 
+                cp.short_name AS clan_name
+            FROM ddon_black_list bl
+            INNER JOIN ddon_character c ON c.character_id = bl.target_id
+            LEFT JOIN ddon_clan_membership cm ON cm.character_id = bl.target_id
+            LEFT JOIN ddon_clan_param cp ON cp.clan_id = cm.clan_id
+            WHERE bl.character_id = @character_id;";
 
     public override int InsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite,
         bool requestedFavorite)
@@ -207,5 +238,76 @@ public partial class DdonSqlDb : SqlDb
         e.RequesterFavorite = GetBoolean(reader, "requester_favorite");
         e.RequestedFavorite = GetBoolean(reader, "requested_favorite");
         return e;
+    }
+
+    public override HashSet<uint> SelectBlackList(uint characterId, DbConnection? connectionIn = null)
+    {
+        return ExecuteQuerySafe(connectionIn, connection =>
+        {
+            HashSet<uint> result = [];
+            ExecuteReader(
+                connection,
+                SqlSelectBlackList,
+                command => { AddParameter(command, "@character_id", characterId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(GetUInt32(reader, "target_id"));
+                    }
+                });
+            return result;
+        });
+    }
+
+    public override bool DeleteBlackList(uint characterId, uint targetId, DbConnection? connectionIn = null)
+    {
+        return ExecuteQuerySafe(connectionIn, connection =>
+        {
+            return ExecuteNonQuery(connection, SqlDeleteBlackList, command => {
+                AddParameter(command, "@character_id", characterId);
+                AddParameter(command, "@target_id", targetId);
+            }) == 1;
+        });
+    }
+
+    public override bool InsertBlackList(uint characterId, uint targetId, DbConnection? connectionIn = null)
+    {
+        return ExecuteQuerySafe(connectionIn, connection =>
+        {
+            return ExecuteNonQuery(connection, SqlInsertBlackList, command => {
+                AddParameter(command, "@character_id", characterId);
+                AddParameter(command, "@target_id", targetId);
+            }) == 1;
+        });
+    }
+
+    public override List<CDataCommunityCharacterBaseInfo> SelectBlackListFull(uint characterId, DbConnection? connectionIn = null)
+    {
+        List<CDataCommunityCharacterBaseInfo> result = [];
+
+        ExecuteQuerySafe(connectionIn, connection =>
+        {
+            ExecuteReader(
+                connection,
+                SqlSelectBlackListFull,
+                command => { AddParameter(command, "@character_id", characterId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        CDataCommunityCharacterBaseInfo characterListElement = new();
+
+                        characterListElement.CharacterId = GetUInt32(reader, "other_id");
+                        characterListElement.CharacterName.FirstName = GetString(reader, "first_name");
+                        characterListElement.CharacterName.LastName = GetString(reader, "last_name");
+                        characterListElement.ClanName = GetStringNullable(reader, "clan_name") ?? string.Empty;
+
+                        result.Add(characterListElement);
+                    }
+                });
+        });
+
+        return result;
     }
 }

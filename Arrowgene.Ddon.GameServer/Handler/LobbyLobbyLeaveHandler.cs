@@ -46,6 +46,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
+                Server.GroupChatManager.LeaveGroupChatOnDisconnect(client, out var queue);
+                queue.Send();
+
                 Server.HubManager.LeaveAllHubs(client);
                 Server.CharacterManager.CleanupOnExit(client);
                 Server.PartyManager.CleanupOnExit(client);

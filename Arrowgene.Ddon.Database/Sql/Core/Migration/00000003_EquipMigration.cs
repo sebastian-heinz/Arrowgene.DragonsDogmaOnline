@@ -135,7 +135,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
                     if (mailItemIds.Count > 0)
                     {
                         // Send mail with the equipped items for this job
-                        SystemMailMessage mail = new SystemMailMessage()
+                        MailMessage mail = new MailMessage()
                         {
                             Title = $"{name}'s {job} Items",
                             Body = $"This mail contains items which used to be equipped by {name} as a {job}\n" +
@@ -163,10 +163,24 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
                                 IsReceived = false,
                             });
                         }
-                        SystemMailService.DeliverSystemMailMessage(db, conn, mail);
+                        DeliverSystemMailMessage(db, conn, mail);
                     }
                 });
             }
+        }
+
+        public static bool DeliverSystemMailMessage(IDatabase db, DbConnection conn, MailMessage message)
+        {
+            message.SendDate = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            uint messageId = (uint)db.InsertSystemMailMessage(conn, message);
+
+            foreach (var attachment in message.Attachments)
+            {
+                attachment.MessageId = messageId;
+                db.InsertSystemMailAttachment(conn, attachment);
+            }
+
+            return true;
         }
     }
 }

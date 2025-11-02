@@ -30,8 +30,8 @@ namespace Arrowgene.Ddon.GameServer
             Timers = new List<Timer>();
 
             // TODO: Load from server config
-            Tasks = new List<SchedulerTask>()
-            {
+            Tasks =
+            [
                 new EpitaphSchedulerTask(DayOfWeek.Monday, 5, 0),
                 new AreaPointResetTask(DayOfWeek.Monday, 5, 0),
                 new RankingBoardResetTask(DayOfWeek.Monday, 5, 0),
@@ -44,7 +44,9 @@ namespace Arrowgene.Ddon.GameServer
                     server.GameSettings.GameServerSettings.WorldQuestResetDay,
                     server.GameSettings.GameServerSettings.WorldQuestResetHour,
                     server.GameSettings.GameServerSettings.WorldQuestResetMinute),
-            };
+                new GroupChatPruningTask(0, 0),
+                new StampResetTask(5, 0),
+            ];
         }
 
         private int GetTimerTick(ScheduleInterval interval)

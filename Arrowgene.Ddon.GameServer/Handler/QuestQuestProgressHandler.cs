@@ -205,7 +205,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (quest.QuestType == QuestType.ExtremeMission)
             {
                 double timeScore = Server.PartyQuestContentManager.CheckTimer(client.Party.Id);
-                double playerMult = 1 + (8 - client.Party.MemberCount()) * 0.2;
+                double playerMult = 1 + (8 - client.Party.ExmInitialPartySize) * 0.2;
                 long totalScore = (long)(timeScore * playerMult);
                 foreach (var player in client.Party.Clients.Select(x => x.Character.CharacterId).OrderBy(x => Random.Shared.Next()))
                 {

@@ -2,7 +2,7 @@
 
 public class ChatCommand : IChatCommand
 {
-    public override AccountStateType AccountState => AccountStateType.Admin;
+    public override AccountStateType AccountState => AccountStateType.GameMaster;
     public override string CommandName            => "il";
     public override string HelpText               => "usage: `/il <itemname> [n?]` - Lookup item, no spaces.";
 

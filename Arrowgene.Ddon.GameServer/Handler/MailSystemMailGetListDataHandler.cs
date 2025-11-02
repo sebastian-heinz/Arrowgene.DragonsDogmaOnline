@@ -18,11 +18,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CMailSystemMailGetListDataRes Handle(GameClient client, C2SMailSystemMailGetListDataReq request)
         {
             // var pcap = new S2CMailSystemMailGetListDataRes.Serializer().Read(InGameDump.Dump_85.AsBuffer());
-            var pcap = new S2CMailSystemMailGetListDataRes.Serializer().Read(pcap_data);
+            // var pcap = new S2CMailSystemMailGetListDataRes.Serializer().Read(pcap_data);
 
             S2CMailSystemMailGetListDataRes result = new S2CMailSystemMailGetListDataRes();
-
-
 
             var messages = Server.Database.SelectSystemMailMessages(client.Character.CharacterId);
             foreach (var message in messages)

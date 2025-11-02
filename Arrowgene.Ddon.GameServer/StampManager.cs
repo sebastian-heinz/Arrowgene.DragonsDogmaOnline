@@ -22,16 +22,6 @@ namespace Arrowgene.Ddon.GameServer
         public static readonly int MAX_DAILY_STAMP = 8;
         private static readonly int TOTAL_STAMP_SLOT = 10;
 
-        /// <summary>
-        /// Grace period *after* their their regular daily reset.
-        /// </summary>
-        private static readonly TimeSpan DAILY_STAMP_GRACE_PERIOD = new TimeSpan(1, 0, 0, 0);
-
-        /// <summary>
-        /// JST hour of the reset.
-        /// </summary>
-        private static readonly int STAMP_RESET_HOUR = 5;
-
         private DdonGameServer Server;
 
         public List<CDataStampBonusAsset> GetDailyStampAssets()
@@ -64,7 +54,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public bool CanDailyStamp(CharacterStampBonus stampData)
         {
-            return CanStamp(stampData.LastStamp);
+            return stampData.CanStamp;
         }
 
         public bool CanTotalStamp(CharacterStampBonus stampData)
@@ -109,51 +99,25 @@ namespace Arrowgene.Ddon.GameServer
             queue.Send();
         }
 
-        static public bool CanResetConsecutiveStamp(CharacterStampBonus stampData)
-        {
-            return RelativeSpanToReset(stampData.LastStamp) > DAILY_STAMP_GRACE_PERIOD;
-        }
-
-        static public bool CanStamp(DateTime lastStamp)
-        {
-            return RelativeSpanToReset(lastStamp).TotalSeconds > 0;
-        }
-
         public void UpdateStamp(Character character)
         {
-            DateTime utcNow = DateTime.UtcNow;
-            TimeZoneInfo jstZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
-            DateTime jstNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, jstZone);
-
-            character.StampBonus.LastStamp = jstNow;
+            character.StampBonus.CanStamp = false;
             character.StampBonus.ConsecutiveStamp += 1;
             character.StampBonus.TotalStamp += 1;
 
             Server.Database.UpdateCharacterStampData(character.CharacterId, character.StampBonus);
         }
 
-        /// <summary>
-        /// Calculate the timespan from/until the reset.
-        /// If negative, their stamp reset hasn't happened yet.
-        /// If positive, their stamp reset has happened.
-        /// </summary>
-        static private TimeSpan RelativeSpanToReset(DateTime lastStamp)
+        public void RefreshStamp(Character character)
         {
-            DateTime utcNow = DateTime.UtcNow;
-            TimeZoneInfo jstZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
-            DateTime jstNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, jstZone);
-
-            DateTime lastStampReset; // Always in JST
-            if (lastStamp.Hour < STAMP_RESET_HOUR)
+            if (character.StampBonus.CanStamp)
             {
-                lastStampReset = lastStamp.Date.AddHours(STAMP_RESET_HOUR);
+                character.StampBonus.ConsecutiveStamp = 0;
             }
             else
             {
-                lastStampReset = lastStamp.Date.AddDays(1).AddHours(STAMP_RESET_HOUR);
+                character.StampBonus.CanStamp = true;
             }
-
-            return jstNow - lastStampReset;
         }
     }
 }

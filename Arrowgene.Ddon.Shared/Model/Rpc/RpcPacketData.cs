@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Model.Rpc
@@ -15,10 +16,28 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
         public uint ClanId { get; set; }
         public byte[] Data { get; set; }
 
+        public PacketId PacketId { get
+            {
+                return PacketId.GetGamePacketId(GroupId, HandlerId, HandlerSubId);
+            } 
+        }
+
         public Packet ToPacket()
         {
-            PacketId id = PacketId.GetGamePacketId(GroupId, HandlerId, HandlerSubId);
-            return new Packet(id, Data);
+            return new Packet(PacketId, Data);
+        }
+
+        public static RpcPacketData FromPacket<T>(T packet, uint characterId, uint clanId) where T : class, IPacketStructure, new()
+        {
+            return new RpcPacketData()
+            {
+                GroupId = packet.Id.GroupId,
+                HandlerId = packet.Id.HandlerId,
+                HandlerSubId = packet.Id.HandlerSubId,
+                CharacterId = characterId,
+                ClanId = clanId,
+                Data = EntitySerializer.Get<T>().Write(packet)
+            };
         }
     }
 }

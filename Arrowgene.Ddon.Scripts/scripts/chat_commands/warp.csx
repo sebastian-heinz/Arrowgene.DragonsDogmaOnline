@@ -1,6 +1,6 @@
 public class ChatCommand : IChatCommand
 {
-    public override AccountStateType AccountState => AccountStateType.Admin;
+    public override AccountStateType AccountState => AccountStateType.GameMaster;
     public override string CommandName            => "warp";
     public override string HelpText               => "usage: `/warp stageNo` - Warp to a stage.";
 

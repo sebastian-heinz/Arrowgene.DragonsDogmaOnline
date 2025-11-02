@@ -1,3 +1,5 @@
+using Arrowgene.Ddon.Shared.Entity.Structure;
+
 namespace Arrowgene.Ddon.Shared.Model.Rpc
 {
     public class RpcCharacterData
@@ -26,5 +28,22 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
         public string LastName { get; set; }
         public string ClanName { get; set; }
         public string ClanShortName { get; set; }
+
+        public CDataCommunityCharacterBaseInfo CommunityCharacterBaseInfo
+        {
+            get
+            {
+                return new()
+                {
+                    CharacterId = CharacterId,
+                    ClanName = ClanName,
+                    CharacterName = new()
+                    {
+                        FirstName = FirstName,
+                        LastName = LastName,
+                    }
+                };
+            }
+        }
     }
 }

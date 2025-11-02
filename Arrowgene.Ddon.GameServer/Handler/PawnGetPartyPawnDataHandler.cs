@@ -5,7 +5,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -13,11 +12,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetPartyPawnDataHandler));
 
-        private readonly DdonGameServer Server;
-
         public PawnGetPartyPawnDataHandler(DdonGameServer server) : base(server)
         {
-            Server = server;
         }
 
         public override S2CPawnGetPartyPawnDataRes Handle(GameClient client, C2SPawnGetPartyPawnDataReq packet)

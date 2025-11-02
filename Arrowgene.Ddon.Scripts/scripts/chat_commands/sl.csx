@@ -3,7 +3,7 @@ using System.Reflection;
 
 public class ChatCommand : IChatCommand
 {
-    public override AccountStateType AccountState => AccountStateType.Admin;
+    public override AccountStateType AccountState => AccountStateType.GameMaster;
     public override string CommandName            => "sl";
     public override string HelpText               => "usage: `/sl <stagename> [n?]` - Lookup stage, no spaces.";
 

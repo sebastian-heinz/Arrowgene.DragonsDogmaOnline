@@ -4,11 +4,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
@@ -16,10 +11,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
     {
         private static readonly ServerLogger Logger =
             LogProvider.Logger<ServerLogger>(typeof(ClientDecideCharacterIdHandler));
-
-        private static int LoadBalanceServerIndex = 0;
-        private static object LoadBalanceLock = new object();
-
 
         public ClientDecideCharacterIdHandler(DdonLoginServer server) : base(server)
         {

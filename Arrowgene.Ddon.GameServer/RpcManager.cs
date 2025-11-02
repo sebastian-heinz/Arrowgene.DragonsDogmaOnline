@@ -336,7 +336,7 @@ namespace Arrowgene.Ddon.GameServer
         {
             RpcChatData chatData = new RpcChatData()
             {
-                HandleId = 0,
+                HandleId = (uint)client.Account.State,
                 Type = LobbyChatMsgType.Shout,
                 MessageFlavor = chatResponse.MessageFlavor,
                 PhrasesCategory = chatResponse.PhrasesCategory,
@@ -378,7 +378,7 @@ namespace Arrowgene.Ddon.GameServer
 
             RpcChatData chatData = new RpcChatData()
             {
-                HandleId = 0,
+                HandleId = (uint)client.Account.State,
                 Type = LobbyChatMsgType.Tell,
                 MessageFlavor = request.MessageFlavor,
                 PhrasesCategory = request.PhrasesCategory,
@@ -395,6 +395,52 @@ namespace Arrowgene.Ddon.GameServer
             };
 
             AnnounceAsync(targetServer, "internal/chat", RpcInternalCommand.SendTellMessage, chatData);
+        }
+
+        public void AnnounceMail(GameClient client, MailMessage mail)
+        {
+            var targetServer = FindPlayerById(mail.CharacterId);
+
+            // If the target is offline, we don't actually need to announce anything.
+            if (targetServer == 0) return;
+            if (targetServer == Server.Id) return;
+
+            RpcChatData chatData = new RpcChatData()
+            {
+                HandleId = (uint)mail.MessageId, // This is bad, but do we expect people to send 4 billion mails?
+                Type = LobbyChatMsgType.Say,
+                MessageFlavor = 0,
+                PhrasesCategory = 0,
+                PhrasesIndex = 0,
+                Message = mail.Body,
+                Deliver = false,
+                SourceData = new RpcCharacterData(client.Character),
+                TargetData = new RpcCharacterData()
+                {
+                    CharacterId = mail.CharacterId
+                }
+            };
+
+            AnnounceAsync(targetServer, "internal/chat", RpcInternalCommand.SendMail, chatData);
+        }
+
+        public void AnnounceGroupChat(GameClient client, ChatResponse chatResponse)
+        {
+            if (client.Character.GroupChatId == 0) return;
+
+            RpcChatData chatData = new RpcChatData()
+            { 
+                HandleId = (uint)client.Character.GroupChatId, // TODO: This is the same problem as mails.
+                Type = LobbyChatMsgType.Group,
+                MessageFlavor = chatResponse.MessageFlavor,
+                PhrasesCategory = chatResponse.PhrasesCategory,
+                PhrasesIndex = chatResponse.PhrasesIndex,
+                Message = chatResponse.Message,
+                Deliver = false,
+                SourceData = new RpcCharacterData(client.Character)
+            };
+
+            AnnounceOthers("internal/chat", RpcInternalCommand.SendGroupMessage, chatData);
         }
         #endregion
 

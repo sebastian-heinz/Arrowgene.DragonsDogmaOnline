@@ -36,6 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var acquirableSkills = client.Character.AcquirableSkills;
             var acquirableAbilities = client.Character.AcquirableAbilities;
             var dispelSeals = client.Character.DispelSeals;
+            var msgSetList = client.Character.MsgSetList;
 
             var serverInfo = client.Character.Server;
 
@@ -82,6 +83,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.AcquirableSkills = acquirableSkills;
             client.Character.AcquirableAbilities = acquirableAbilities;
             client.Character.DispelSeals = dispelSeals;
+            client.Character.MsgSetList = msgSetList;
 
             client.Send(new S2CCharacterSwitchGameModeNtc()
             {

@@ -5,28 +5,15 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataMatchingProfile
     {
-        public CDataMatchingProfile()
-        {
-            EntryJob = 0;
-            EntryJobLevel = 0;
-            CurrentJob = 0;
-            CurrentJobLevel = 0;
-            ObjectiveType1 = 0;
-            ObjectiveType2 = 0;
-            PlayStyle = 0;
-            Comment = "";
-            IsJoinParty = false;
-        }
-
-        public JobId EntryJob;
-        public uint EntryJobLevel;
-        public JobId CurrentJob;
-        public uint CurrentJobLevel;
-        public uint ObjectiveType1;
-        public uint ObjectiveType2;
-        public uint PlayStyle;
-        public string Comment;
-        public bool IsJoinParty;
+        public JobId EntryJob { get; set; }
+        public uint EntryJobLevel { get; set; }
+        public JobId CurrentJob { get; set; }
+        public uint CurrentJobLevel { get; set; }
+        public uint ObjectiveType1 { get; set; }
+        public uint ObjectiveType2 { get; set; }
+        public uint PlayStyle { get; set; }
+        public string Comment { get; set; } = string.Empty;
+        public bool IsJoinParty { get; set; }
 
         public class Serializer : EntitySerializer<CDataMatchingProfile>
         {

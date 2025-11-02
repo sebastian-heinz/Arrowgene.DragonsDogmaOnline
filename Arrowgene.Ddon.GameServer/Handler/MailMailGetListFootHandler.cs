@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CMailMailGetListFootRes Handle(GameClient client, C2SMailMailGetListFootReq request)
         {
             // client.Send(InGameDump.Dump_81);
-            return new S2CMailMailGetListFootRes();
+            return new();
         }
     }
 }

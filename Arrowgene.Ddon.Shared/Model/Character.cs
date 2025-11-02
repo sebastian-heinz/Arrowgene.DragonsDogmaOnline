@@ -162,6 +162,8 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public HashSet<uint> DispelSeals { get; set; }
 
+        public ulong GroupChatId { get; set; }
+
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }
 

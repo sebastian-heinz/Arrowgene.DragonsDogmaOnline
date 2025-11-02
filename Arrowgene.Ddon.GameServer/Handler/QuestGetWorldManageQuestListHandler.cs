@@ -1,14 +1,10 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetWorldManageQuestListHandler : PacketHandler<GameClient>
+    public class QuestGetWorldManageQuestListHandler : GameRequestPacketHandler<C2SQuestGetWorldManageQuestListReq, S2CQuestGetWorldManageQuestListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetWorldManageQuestListHandler));
 
@@ -16,12 +12,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_QUEST_GET_WORLD_MANAGE_QUEST_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CQuestGetWorldManageQuestListRes Handle(GameClient client, C2SQuestGetWorldManageQuestListReq request)
         {
             //client.Send(GameFull.Dump_121);
-            client.Send(new S2CQuestGetWorldManageQuestListRes());
+            return new();
         }
     }
 }

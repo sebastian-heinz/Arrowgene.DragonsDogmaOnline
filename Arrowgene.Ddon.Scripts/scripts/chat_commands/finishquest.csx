@@ -2,7 +2,7 @@ using Arrowgene.Ddon.GameServer.Quests;
 
 public class ChatCommand : IChatCommand
 {
-    public override AccountStateType AccountState => AccountStateType.Admin;
+    public override AccountStateType AccountState => AccountStateType.GameMaster;
     public override string CommandName            => "finishquest";
     public override string HelpText               => "usage: `/finishquest [questScheduleId]` - Finish quests.";
 

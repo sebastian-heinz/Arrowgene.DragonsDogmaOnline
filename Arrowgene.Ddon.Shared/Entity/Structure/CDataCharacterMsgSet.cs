@@ -5,16 +5,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataCharacterMsgSet
     {
-        public CDataCharacterMsgSet()
-        {
-            SetNo = 0;
-            MsgSetName = "";
-            CharacterMessageList = new List<CDataCharacterMessage>();
-        }
-
-        public uint SetNo;
-        public string MsgSetName;
-        public List<CDataCharacterMessage> CharacterMessageList;
+        public uint SetNo { get; set; }
+        public string MsgSetName { get; set; } = "";
+        public List<CDataCharacterMessage> CharacterMessageList { get; set; } = [];
 
         public class Serializer : EntitySerializer<CDataCharacterMsgSet>
         {

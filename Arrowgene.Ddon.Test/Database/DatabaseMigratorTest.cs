@@ -305,6 +305,14 @@ namespace Arrowgene.Ddon.Test.Database
         public List<ContactListEntity> SelectContactsByCharacterId(uint characterId) { return new List<ContactListEntity>(); }
         public ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2) { return new ContactListEntity(); }
         public List<(ContactListEntity, CDataCharacterListElement)> SelectFullContactListByCharacterId(uint characterId, DbConnection? connectionIn = null) { return new(); }
+
+        public HashSet<uint> SelectBlackList(uint characterId, DbConnection? connectionIn = null) { return []; }
+        public bool DeleteBlackList(uint characterId, uint targetId, DbConnection? connectionIn = null) { return true; }
+        public bool InsertBlackList(uint characterId, uint targetId, DbConnection? connectionIn = null) { return true; }
+        public List<CDataCommunityCharacterBaseInfo> SelectBlackListFull(uint characterId, DbConnection? connectionIn = null) { return []; }
+        public int UpsertCommunicationSet(uint characterId, List<CDataCharacterMsgSet> messages, DbConnection? connectionIn = null) { return 0; }
+        public List<CDataCharacterMsgSet> SelectCommunicationSet(uint characterId, DbConnection? connectionIn = null) { return []; }
+
         public Item SelectStorageItemByUId(string uId, DbConnection? connectionIn = null) { return new Item(); }
 
         public bool InsertStorage(uint characterId, StorageType storageType, Storage storage, DbConnection? connectionIn = null) { return true; }
@@ -326,6 +334,9 @@ namespace Arrowgene.Ddon.Test.Database
         public bool SetMeta(DatabaseMeta meta) { return true; }
         public bool SetToken(GameToken token) { return true; }
         public bool UpdateAccount(Account account) { return true; }
+        public bool CheckBannedIp(string addr) { return true; }
+        public bool InsertBannedIp(string addr) { return true; }
+        public bool DeleteBannedIp(string addr) { return true; }
         public int UpdateBazaarExhibiton(BazaarExhibition exhibition) { return 1; }
         public bool UpdateCharacterProfile(CharacterCommon characterCommon, DbConnection? connectionIn = null) { return true; }
         public bool UpdateCharacterBaseInfo(Character character) { return true; }
@@ -359,12 +370,11 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint, DbConnection? connectionIn = null) { return true; }
         public bool UpdateMyPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null) { return true; }
         public bool UpdateRentalPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null) { return true; }
-
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion) { return true; }
-        public long InsertSystemMailMessage(SystemMailMessage message) { return 0; }
-        public long InsertSystemMailMessage(DbConnection connection, SystemMailMessage message) { return 0; }
-        public List<SystemMailMessage> SelectSystemMailMessages(uint characterId) { return new List<SystemMailMessage>(); }
-        public SystemMailMessage SelectSystemMailMessage(ulong messageId) { return new SystemMailMessage(); }
+        public long InsertSystemMailMessage(MailMessage message) { return 0; }
+        public long InsertSystemMailMessage(DbConnection connection, MailMessage message) { return 0; }
+        public List<MailMessage> SelectSystemMailMessages(uint characterId) { return new List<MailMessage>(); }
+        public MailMessage SelectSystemMailMessage(ulong messageId) { return new MailMessage(); }
         public bool UpdateSystemMailMessageState(ulong messageId, MailState messageState) {  return true; }
         public bool DeleteSystemMailMessage(ulong messageId) { return true; }
         public long InsertSystemMailAttachment(SystemMailAttachment attachment) { return 0; }
@@ -372,11 +382,27 @@ namespace Arrowgene.Ddon.Test.Database
         public List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId) { return new List<SystemMailAttachment>(); }
         public bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived) {  return true; }
         public bool DeleteSystemMailAttachment(ulong messageId) { return true; }
+        public long InsertMailMessage(MailMessage message, DbConnection? connectionIn = null) { return 0; }
+        public List<MailMessage> SelectMailMessages(uint characterId, DbConnection? connectionIn = null) { return new(); }
+        public MailMessage SelectMailMessage(ulong messageId, DbConnection? connectionIn = null) { return new(); }
+        public bool UpdateMailMessageState(ulong messageId, MailState messageState, DbConnection? connectionIn = null) { return true; }
+        public bool DeleteMailMessage(ulong messageId, DbConnection? connectionIn = null) { return true; }
+        public ulong SelectNextGroupChatId(DbConnection? connectionIn = null) { return 0; }
+        public (ulong Id, string Name) SelectGroupChatId(uint characterId, DbConnection? connectionIn = null) { return (0, ""); }
+        public (ulong Id, string Name) SelectGroupChatName(string groupName, DbConnection? connectionIn = null) { return (0, ""); }
+        public List<CDataCharacterListElement> SelectGroupChatMembers(ulong groupId, DbConnection? connectionIn = null) { return new(); }
+        public bool InsertGroupChatMember(uint characterId, ulong groupId, DbConnection? connectionIn = null) { return true; }
+        public bool DeleteGroupChatMember(uint characterId, DbConnection? connectionIn = null) { return true; }
+        public bool DisbandGroupChat(ulong groupId, DbConnection? connectionIn = null) { return true; }
+        public long InsertGroupChatGroup(string groupName, string groupDesc, DbConnection? connectionIn = null) { return 0; }
+        public int PruneGroupChatGroups(DbConnection? connectionIn = null) { return 0; }
+        public Dictionary<string, (ulong Id, uint Count, uint CountTotal, string Desc)> SelectGroupChatGroups(DbConnection? connectionIn = null) { return []; }
         public bool UpdateItemEquipPoints(string itemUID, uint equipPoints, DbConnection? connectionIn = null) {return true; }
         public bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData, DbConnection? connectionIn = null) { return true; }
         public bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData, DbConnection? connectionIn = null) { return true; }
-        public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
-        public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
+        public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData, DbConnection? connectionIn = null) { return true; }
+        public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData, DbConnection? connectionIn = null) { return true; }
+        public int ResetCharacterStamps(DbConnection? connectionIn = null) { return 0; }
         public bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? connectionIn = null) { return true; }
         public bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? ConnectionIn = null) { return true; }
         public bool RemoveCrest(uint characterCommonId, string itemUId, uint slot, DbConnection? connectionIn = null) { return true; }

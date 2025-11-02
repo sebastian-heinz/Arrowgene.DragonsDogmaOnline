@@ -5,25 +5,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataCharacterListElement
     {
-        public CDataCharacterListElement()
-        {
-            CommunityCharacterBaseInfo = new CDataCommunityCharacterBaseInfo();
-            ServerId = 0;
-            OnlineStatus = 0;
-            CurrentJobBaseInfo = new CDataJobBaseInfo();
-            EntryJobBaseInfo = new CDataJobBaseInfo();
-            MatchingProfile = "";
-            unk2 = 0;
-        }
+        public CDataCommunityCharacterBaseInfo CommunityCharacterBaseInfo { get; set; } = new();
+        public ushort ServerId { get; set; }
+        public OnlineStatus OnlineStatus { get; set; }
+        public CDataJobBaseInfo CurrentJobBaseInfo { get; set; } = new();
+        public CDataJobBaseInfo EntryJobBaseInfo { get; set; } = new();
+        public string MatchingProfile { get; set; } = string.Empty;
+        public byte unk2 { get; set; } // Party type?
 
-        public CDataCommunityCharacterBaseInfo CommunityCharacterBaseInfo { get; set; }
-        public ushort ServerId;
-        public OnlineStatus OnlineStatus;
-        public CDataJobBaseInfo CurrentJobBaseInfo;
-        public CDataJobBaseInfo EntryJobBaseInfo;
-        public string MatchingProfile;
-        public byte unk2; // Party type?
-        
         public class Serializer : EntitySerializer<CDataCharacterListElement>
         {
             public override void Write(IBuffer buffer, CDataCharacterListElement obj)

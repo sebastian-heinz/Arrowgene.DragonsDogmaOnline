@@ -1,13 +1,10 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class OrbDevoteGetOrbGainExtendParamHandler : PacketHandler<GameClient>
+    public class OrbDevoteGetOrbGainExtendParamHandler : GameRequestPacketHandler<C2SOrbDevoteGetOrbGainExtendParam, S2COrbDevoteGetOrbGainExtendParamRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(OrbDevoteGetOrbGainExtendParamHandler));
 
@@ -15,16 +12,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_ORB_DEVOTE_GET_ORB_GAIN_EXTEND_PARAM_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2COrbDevoteGetOrbGainExtendParamRes Handle(GameClient client, C2SOrbDevoteGetOrbGainExtendParam request)
         {
             // client.Send(InGameDump.Dump_50);
-            S2COrbDevoteGetOrbGainExtendParamRes Result = new S2COrbDevoteGetOrbGainExtendParamRes()
+            S2COrbDevoteGetOrbGainExtendParamRes res = new()
             {
                 ExtendParam = client.Character.CalculateFullExtendedParams()
             };
-            client.Send(Result);
+            return res;
         }
     }
 }

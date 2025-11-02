@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class ChatCommand : IChatCommand
 {
-    public override AccountStateType AccountState => AccountStateType.Admin;
+    public override AccountStateType AccountState => AccountStateType.GameMaster;
     public override string CommandName => "finishquesttype";
     public override string HelpText => "usage: `/finishquesttype [type]` - Finish all quests.";
 

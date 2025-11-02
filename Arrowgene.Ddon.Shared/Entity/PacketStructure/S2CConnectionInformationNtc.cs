@@ -2,6 +2,7 @@ using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -9,7 +10,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public S2CConnectionInformationNtc()
         {
-            ParagraphList = new();
+            ParagraphList = [];
+        }
+
+        public S2CConnectionInformationNtc(IEnumerable<string> text)
+        {
+            ParagraphList = [.. text.Select((x, i) => new CDataInformationParagraph() { Index = (uint)i, Text = x })];
         }
 
         public override PacketId Id => PacketId.S2C_CONNECTION_INFORMATION_NTC;

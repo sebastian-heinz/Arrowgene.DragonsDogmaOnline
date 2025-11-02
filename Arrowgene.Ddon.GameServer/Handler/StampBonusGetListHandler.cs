@@ -36,8 +36,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 AssetList = _gameServer.StampManager.GetDailyStampAssets()
             });
 
-            //If you missed a day, reset stamp to 0 (to be incremented up in RECIEVE_DAILY)
-            if (StampManager.CanResetConsecutiveStamp(client.Character.StampBonus)) client.Character.StampBonus.ConsecutiveStamp = 0;
             //If you've finished the 8-stamp sequence and you're going to roll over to 9, reset stamp to 0.
             if (client.Character.StampBonus.ConsecutiveStamp >= StampManager.MAX_DAILY_STAMP) client.Character.StampBonus.ConsecutiveStamp = 0;
 

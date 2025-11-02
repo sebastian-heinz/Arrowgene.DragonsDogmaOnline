@@ -36,6 +36,10 @@ namespace Arrowgene.Ddon.WebServer
             public string Token { get; set; }
         }
 
+        private class AccountRouteException(string message) : Exception(message)
+        {
+        }
+
         private class AccountVerification
         {
             public bool Error { get; set; }
@@ -54,32 +58,24 @@ namespace Arrowgene.Ddon.WebServer
 
                 if (Username.Trim().Length == 0)
                 {
-                    Error = true;
-                    Message = "Account ID cannot be empty";
-                    return;
+                    throw new AccountRouteException("Account ID cannot be empty.");
                 }
 
                 // Disallow any whitespace.
 
                 if (Regex.IsMatch(Username, @"\s"))
                 {
-                    Error = true;
-                    Message = "Account ID cannot contain spaces";
-                    return;
+                    throw new AccountRouteException("Account ID cannot contain spaces.");
                 }
 
                 if (Password.Trim().Length == 0)
                 {
-                    Error = true;
-                    Message = "Password cannot be empty";
-                    return;
+                    throw new AccountRouteException("Password cannot be empty.");
                 }
 
                 if (Regex.IsMatch(Password, @"\s"))
                 {
-                    Error = true;
-                    Message = "Password cannot contain spaces";
-                    return;
+                    throw new AccountRouteException("Password cannot contain spaces.");
                 }
                 
                 if (Email == null || Email.Trim().Length == 0)
@@ -254,7 +250,7 @@ namespace Arrowgene.Ddon.WebServer
             if (account != null)
             {
                 Logger.Error($"{name} - CreateAccount: account already taken");
-                return null;
+                throw new AccountRouteException("Account already exists.");
             }
 
             Account email = _database.SelectAccountByEmail(mail);
@@ -276,13 +272,19 @@ namespace Arrowgene.Ddon.WebServer
             if (account == null)
             {
                 Logger.Error($"{name} - CreateToken: account does not exist");
-                return null;
+                throw new AccountRouteException("Account or password wrong.");
             }
 
             if (!PasswordHash.Verify(password, account.Hash))
             {
                 Logger.Error($"{name} - CreateToken: wrong password provided");
-                return null;
+                throw new AccountRouteException("Account or password wrong.");
+            }
+
+            if (account.State <= AccountStateType.Banned)
+            {
+                Logger.Error($"{name} - CreateToken: attempted login to banned account.");
+                throw new AccountRouteException("This account has been banned.");
             }
 
             if (!account.MailVerified && (bool)_webServerSetting.MailSetting.MailRequired )

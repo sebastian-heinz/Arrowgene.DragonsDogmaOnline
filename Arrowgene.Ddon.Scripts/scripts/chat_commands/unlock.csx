@@ -3,7 +3,7 @@ using System;
 
 public class ChatCommand : IChatCommand
 {
-    public override AccountStateType AccountState => AccountStateType.Admin;
+    public override AccountStateType AccountState => AccountStateType.GameMaster;
     public override string CommandName => "unlock";
     public override string HelpText => "usage: `/unlock [groupId?] [areaBoss?]` - Send a defeat announcement for a group.";
 

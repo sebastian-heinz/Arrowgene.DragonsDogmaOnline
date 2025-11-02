@@ -335,6 +335,9 @@ public abstract class SqlDb : IDatabase
     public abstract Account? SelectAccountByEmailAndName(string accountName, string email);
     public abstract bool UpdateAccount(Account account);
     public abstract bool DeleteAccount(int accountId);
+    public abstract bool CheckBannedIp(string addr);
+    public abstract bool InsertBannedIp(string addr);
+    public abstract bool DeleteBannedIp(string addr);
     public abstract Storages SelectAllStoragesByCharacterId(uint characterId);
     public abstract bool UpdateCharacterCommonBaseInfo(CharacterCommon common, DbConnection? connectionIn = null);
     public abstract bool UpdateEditInfo(CharacterCommon character);
@@ -444,6 +447,9 @@ public abstract class SqlDb : IDatabase
     public abstract bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null);
     public abstract bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut, DbConnection? connectionIn = null);
     public abstract bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo);
+    public abstract int UpsertCommunicationSet(uint characterId, List<CDataCharacterMsgSet> messages, DbConnection? connectionIn = null);
+    public abstract List<CDataCharacterMsgSet> SelectCommunicationSet(uint characterId, DbConnection? connectionIn = null);
+
     public abstract bool SetToken(GameToken token);
     public abstract GameToken SelectTokenByAccountId(int accountId);
     public abstract GameToken SelectToken(string tokenStr);
@@ -468,6 +474,12 @@ public abstract class SqlDb : IDatabase
     public abstract ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2);
     public abstract ContactListEntity SelectContactListById(uint id);
     public abstract List<(ContactListEntity, CDataCharacterListElement)> SelectFullContactListByCharacterId(uint characterId, DbConnection? connectionIn = null);
+
+    public abstract HashSet<uint> SelectBlackList(uint characterId, DbConnection? connectionIn = null);
+    public abstract bool DeleteBlackList(uint characterId, uint targetId, DbConnection? connectionIn = null);
+    public abstract bool InsertBlackList(uint characterId, uint targetId, DbConnection? connectionIn = null);
+    public abstract List<CDataCommunityCharacterBaseInfo> SelectBlackListFull(uint characterId, DbConnection? connectionIn = null);
+
     public abstract bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo, DbConnection? connectionIn = null);
     public abstract List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId, DbConnection? connectionIn = null);
     public abstract bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
@@ -498,19 +510,35 @@ public abstract class SqlDb : IDatabase
     public abstract bool DeletePriorityQuest(uint characterCommonId, uint questScheduleId, DbConnection? connectionIn = null);
     public abstract long InsertSystemMailAttachment(SystemMailAttachment attachment);
     public abstract long InsertSystemMailAttachment(DbConnection connection, SystemMailAttachment attachment);
-    public abstract long InsertSystemMailMessage(SystemMailMessage message);
-    public abstract long InsertSystemMailMessage(DbConnection connection, SystemMailMessage message);
-    public abstract List<SystemMailMessage> SelectSystemMailMessages(uint characterId);
-    public abstract SystemMailMessage SelectSystemMailMessage(ulong messageId);
+    public abstract long InsertSystemMailMessage(MailMessage message);
+    public abstract long InsertSystemMailMessage(DbConnection connection, MailMessage message);
+    public abstract List<MailMessage> SelectSystemMailMessages(uint characterId);
+    public abstract MailMessage SelectSystemMailMessage(ulong messageId);
     public abstract bool UpdateSystemMailMessageState(ulong messageId, MailState messageState);
     public abstract bool DeleteSystemMailMessage(ulong messageId);
     public abstract List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId);
     public abstract bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived);
     public abstract bool DeleteSystemMailAttachment(ulong messageId);
+    public abstract long InsertMailMessage(MailMessage message, DbConnection? connectionIn = null);
+    public abstract List<MailMessage> SelectMailMessages(uint characterId, DbConnection? connectionIn = null);
+    public abstract MailMessage SelectMailMessage(ulong messageId, DbConnection? connectionIn = null);
+    public abstract bool UpdateMailMessageState(ulong messageId, MailState messageState, DbConnection? connectionIn = null);
+    public abstract bool DeleteMailMessage(ulong messageId, DbConnection? connectionIn = null);
+    public abstract ulong SelectNextGroupChatId(DbConnection? connectionIn = null);
+    public abstract (ulong Id, string Name) SelectGroupChatId(uint characterId, DbConnection? connectionIn = null);
+    public abstract (ulong Id, string Name) SelectGroupChatName(string groupName, DbConnection? connectionIn = null);
+    public abstract List<CDataCharacterListElement> SelectGroupChatMembers(ulong groupId, DbConnection? connectionIn = null);
+    public abstract bool InsertGroupChatMember(uint characterId, ulong groupId, DbConnection? connectionIn = null);
+    public abstract bool DeleteGroupChatMember(uint characterId, DbConnection? connectionIn = null);
+    public abstract bool DisbandGroupChat(ulong groupId, DbConnection? connectionIn = null);
+    public abstract long InsertGroupChatGroup(string groupName, string groupDesc, DbConnection? connectionIn = null);
+    public abstract int PruneGroupChatGroups(DbConnection? connectionIn = null);
+    public abstract Dictionary<string, (ulong Id, uint Count, uint CountTotal, string Desc)> SelectGroupChatGroups(DbConnection? connectionIn = null);
     public abstract bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData, DbConnection? connectionIn = null);
     public abstract bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData, DbConnection? connectionIn = null);
-    public abstract bool InsertCharacterStampData(uint id, CharacterStampBonus stampData);
-    public abstract bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData);
+    public abstract bool InsertCharacterStampData(uint id, CharacterStampBonus stampData, DbConnection? connectionIn = null);
+    public abstract bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData, DbConnection? connectionIn = null);
+    public abstract int ResetCharacterStamps(DbConnection? connectionIn = null);
     public abstract bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? connectionIn = null);
     public abstract bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? ConnectionIn = null);
     public abstract bool RemoveCrest(uint characterCommonId, string itemUId, uint slot, DbConnection? connectionIn = null);

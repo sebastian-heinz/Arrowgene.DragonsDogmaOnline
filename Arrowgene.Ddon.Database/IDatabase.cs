@@ -76,6 +76,9 @@ public interface IDatabase
 
     bool UpdateAccount(Account account);
     bool DeleteAccount(int accountId);
+    bool CheckBannedIp(string addr);
+    bool InsertBannedIp(string addr);
+    bool DeleteBannedIp(string addr);
     Storages SelectAllStoragesByCharacterId(uint characterId);
 
     // CharacterCommon
@@ -254,6 +257,8 @@ public interface IDatabase
     bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut, DbConnection? connectionIn = null);
 
     bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo);
+    int UpsertCommunicationSet(uint characterId, List<CDataCharacterMsgSet> messages, DbConnection? connectionIn = null);
+    List<CDataCharacterMsgSet> SelectCommunicationSet(uint characterId, DbConnection? connectionIn = null);
 
     // GameToken
     bool SetToken(GameToken token);
@@ -281,6 +286,11 @@ public interface IDatabase
     ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2);
     ContactListEntity SelectContactListById(uint id);
     List<(ContactListEntity, CDataCharacterListElement)> SelectFullContactListByCharacterId(uint characterId, DbConnection? connectionIn = null);
+
+    HashSet<uint> SelectBlackList(uint characterId, DbConnection? connectionIn = null);
+    bool DeleteBlackList(uint characterId, uint targetId, DbConnection? connectionIn = null);
+    bool InsertBlackList(uint characterId, uint targetId, DbConnection? connectionIn = null);
+    List<CDataCommunityCharacterBaseInfo> SelectBlackListFull(uint characterId, DbConnection? connectionIn = null);
 
     // Dragon Force Augmentation
     bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo, DbConnection? connectionIn = null);
@@ -334,10 +344,10 @@ public interface IDatabase
     // System mail
     long InsertSystemMailAttachment(SystemMailAttachment attachment);
     long InsertSystemMailAttachment(DbConnection connection, SystemMailAttachment attachment);
-    long InsertSystemMailMessage(SystemMailMessage message);
-    long InsertSystemMailMessage(DbConnection connection, SystemMailMessage message);
-    List<SystemMailMessage> SelectSystemMailMessages(uint characterId);
-    SystemMailMessage SelectSystemMailMessage(ulong messageId);
+    long InsertSystemMailMessage(MailMessage message);
+    long InsertSystemMailMessage(DbConnection connection, MailMessage message);
+    List<MailMessage> SelectSystemMailMessages(uint characterId);
+    MailMessage SelectSystemMailMessage(ulong messageId);
     bool UpdateSystemMailMessageState(ulong messageId, MailState messageState);
     bool DeleteSystemMailMessage(ulong messageId);
 
@@ -351,7 +361,27 @@ public interface IDatabase
     );
 
     bool DeleteSystemMailAttachment(ulong messageId);
-    
+
+    // Player Mail
+    long InsertMailMessage(MailMessage message, DbConnection? connectionIn = null);
+    List<MailMessage> SelectMailMessages(uint characterId, DbConnection? connectionIn = null);
+    MailMessage SelectMailMessage(ulong messageId, DbConnection? connectionIn = null);
+    bool UpdateMailMessageState(ulong messageId, MailState messageState, DbConnection? connectionIn = null);
+    bool DeleteMailMessage(ulong messageId, DbConnection? connectionIn = null);
+
+    // Group Chat
+    ulong SelectNextGroupChatId(DbConnection? connectionIn = null);
+    (ulong Id, string Name) SelectGroupChatId(uint characterId, DbConnection? connectionIn = null);
+    (ulong Id, string Name) SelectGroupChatName(string groupName, DbConnection? connectionIn = null);
+    List<CDataCharacterListElement> SelectGroupChatMembers(ulong groupId, DbConnection? connectionIn = null);
+    bool InsertGroupChatMember(uint characterId, ulong groupId, DbConnection? connectionIn = null);
+    bool DeleteGroupChatMember(uint characterId, DbConnection? connectionIn = null);
+    bool DisbandGroupChat(ulong groupId, DbConnection? connectionIn = null);
+    long InsertGroupChatGroup(string groupName, string groupDesc, DbConnection? connectionIn = null);
+    int PruneGroupChatGroups(DbConnection? connectionIn = null);
+    Dictionary<string, (ulong Id, uint Count, uint CountTotal, string Desc)> SelectGroupChatGroups(DbConnection? connectionIn = null);
+
+
     // Play points
     bool ReplaceCharacterPlayPointData(
         uint id,
@@ -362,8 +392,9 @@ public interface IDatabase
     bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData, DbConnection? connectionIn = null);
 
     // Stamps
-    public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData);
-    public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData);
+    public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData, DbConnection? connectionIn = null);
+    public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData, DbConnection? connectionIn = null);
+    public int ResetCharacterStamps(DbConnection? connectionIn = null);
 
     // Crests
     bool InsertCrest(

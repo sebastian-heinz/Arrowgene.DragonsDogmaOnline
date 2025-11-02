@@ -3,7 +3,7 @@ using Arrowgene.Ddon.Shared.Network;
 
 public class ChatCommand : IChatCommand
 {
-    public override AccountStateType AccountState => AccountStateType.Admin;
+    public override AccountStateType AccountState => AccountStateType.GameMaster;
     public override string CommandName            => "invite";
     public override string HelpText               => "usage: `/invite [Pawn/Player Name]`";
 

@@ -1,26 +1,19 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using System;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public class SystemMailMessage
+    public class MailMessage
     {
-        public SystemMailMessage()
-        {
-            SenderName = String.Empty;
-            Body = String.Empty;
-            Attachments = new List<SystemMailAttachment>();
-        }
-
         public ulong MessageId { get; set; }
         public uint CharacterId { get; set; }
-        public MailState MessageState;
-        public string SenderName { get; set; }
-        public string Title { get; set; }
-        public string Body { get; set; }
+        public MailState MessageState { get; set; }
+        public string SenderName { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Body { get; set; } = string.Empty;
         public ulong SendDate { get; set; }
-        public List<SystemMailAttachment> Attachments { get; set; }
+        public List<SystemMailAttachment> Attachments { get; set; } = [];
+        public CDataCommunityCharacterBaseInfo BaseInfo { get; set; } = new();
 
         public CDataMailInfo ToCDataMailInfo(byte itemState)
         {
@@ -31,7 +24,8 @@ namespace Arrowgene.Ddon.Shared.Model
                 SenderName = SenderName,
                 MailText = Title,
                 SenderDate = SendDate,
-                ItemState = itemState
+                ItemState = itemState,
+                BaseInfo = BaseInfo
             };
         }
     }
