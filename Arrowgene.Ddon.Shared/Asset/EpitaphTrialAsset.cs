@@ -88,7 +88,7 @@ namespace Arrowgene.Ddon.Shared.Asset
                     break;
                 case SoulOrdealObjective.CannotDieMoreThanOnce:
                     counter = (Param2 == 1) ? 0U : 1U;
-                    label = $"Cannot die {counter}/1";
+                    label = $"Die less than {Param2} times {counter}/1";
                     break;
                 case SoulOrdealObjective.CannotBeAffectedByAbnormalStatus:
                     label = $"Cannot be affected by abnormal status {Param1} times {Param2}/{Param1}";
@@ -98,7 +98,7 @@ namespace Arrowgene.Ddon.Shared.Asset
                     break;
                 case SoulOrdealObjective.ItemNoteUsedMoreThanOnce:
                     counter = (Param2 == 1) ? 0U : 1U;
-                    label = $"Items must not be used {counter}/1";
+                    label = $"Items cannot be used {Param2} times {counter}/1";
                     break;
                 case SoulOrdealObjective.EliminateTheEnemy:
                     label = "Eliminate the enemy";
