@@ -98,7 +98,7 @@ namespace Arrowgene.Ddon.Shared.Asset
                     break;
                 case SoulOrdealObjective.ItemNoteUsedMoreThanOnce:
                     counter = (Param2 == 1) ? 0U : 1U;
-                    label = $"Items cannot be used {Param2} times {counter}/1";
+                    label = $"Use items less than {Param2} times {counter}/1";
                     break;
                 case SoulOrdealObjective.EliminateTheEnemy:
                     label = "Eliminate the enemy";
