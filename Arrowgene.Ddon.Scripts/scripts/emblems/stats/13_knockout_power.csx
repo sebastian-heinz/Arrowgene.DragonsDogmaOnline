@@ -2,7 +2,7 @@
 
 public class JobEmblemStat : IJobEmblemStatTable
 {
-    public override EquipStatId StatId => EquipStatId.KnockoutPower;
+    public override EquipStatId StatId => EquipStatId.StunPower;
 }
 
 var jobEmblemStat = new JobEmblemStat();

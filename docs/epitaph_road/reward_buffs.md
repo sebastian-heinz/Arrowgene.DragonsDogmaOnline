@@ -15,12 +15,12 @@
 | Attack Power Up +Lv.1                 | 攻撃力アップ+Lv.1              | 13   | 4    | 1 | Strength and Magick +15 
 | Physical Defense Up +Lv1              | 物理防御力アップ+Lv.1          | 17   | 5    | 1
 | Magic Defense Up +Lv.1                | 魔法防御力アップ+Lv.1          | 21  | 6    | 1 | Magic Defense +25
-| Blow Power Up +LV.1                   | 吹き飛ばし力アップ+Lv.1        | 25  | 7    | 1 | Blow Force +25
+| Knockdown Power Up +LV.1                   | 吹き飛ばし力アップ+Lv.1        | 25  | 7    | 1 | Blow Force +25
 | Chance Attack up +Lv1                 | チャンス攻力アップ+Lv.1        | 29  | 8    | 1 | Chance Attack up +12
 | Exhaust Attack Up +Lv.1               | 疲労攻力アップ+Lv.1            | 33  | 9    | 1
 | Stun Attack Up +Lv.1                  | 気絶攻力アップ+Lv.1            | 37  | 10   | 1
 | Endurance Up +Lv.1                    | 耐久力アップ+Lv.1              | 41  | 11   | 1
-| Healing Power Up +Lv.1                | "生命治癒力アップ+Lv.1"        | 45  | 12    | 1
+| Recovery Limit Up +Lv.1                | "生命治癒力アップ+Lv.1"        | 45  | 12    | 1
 | Fire Resist Up +Lv.1                  | 炎耐性アップ+Lv.1             | 49 | 13 | 1 | +37
 | Ice Resist Up +Lv.1                   | 氷耐性アップ+Lv.1             | 53 | 14 | 1  | +37
 | Thunder Resist Up +Lv.1               | 雷耐性アップ+Lv.1             | 57 | 15 | 1  | +37

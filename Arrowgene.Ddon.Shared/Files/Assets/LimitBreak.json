@@ -9,8 +9,8 @@
             {"type": "CustomMadeServiceTickets", "name": "Custom-Made Service Tickets", "amount": 1}
         ],
         "stats": [
-            {"name": "Blow Power", "ids": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], "min_great_success_index": 8},
-            {"name": "Knockout Power", "ids": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 38, 40], "min_great_success_index": 8},
+            {"name": "Knockdown Power", "ids": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], "min_great_success_index": 8},
+            {"name": "Stun Power", "ids": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 38, 40], "min_great_success_index": 8},
             {"name": "Inflict Poison", "ids": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60], "min_great_success_index": 8},
             {"name": "Inflict Torpor", "ids": [61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80], "min_great_success_index": 8},
             {"name": "Inflict Sleep", "ids": [81, 82, 83, 84, 85, 85, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100], "min_great_success_index": 8},
@@ -46,7 +46,7 @@
         ],
         "stats": [
             {"name": "Endurance", "ids": [451, 452, 453, 454, 455, 456, 457, 458, 459, 460], "min_great_success_index": 5},
-            {"name": "Healing Power", "ids": [461, 462, 463, 464, 465, 466, 467, 468, 469, 470], "min_great_success_index": 5},
+            {"name": "Recovery Limit", "ids": [461, 462, 463, 464, 465, 466, 467, 468, 469, 470], "min_great_success_index": 5},
             {"name": "Fire Resist", "ids": [471, 472, 473, 474, 475, 476, 477, 478, 479, 480], "min_great_success_index": 8},
             {"name": "Ice Resist", "ids": [481, 482, 483, 484, 485, 486, 487, 488, 489, 490], "min_great_success_index": 8},
             {"name": "Thunder Resist", "ids": [491, 492, 493, 494, 495, 496, 497, 498, 499, 500], "min_great_success_index": 8},
@@ -60,7 +60,7 @@
             {"name": "Resist Poison", "ids": [571, 572, 573, 574, 575, 576, 577, 578, 579, 580], "min_great_success_index": 8},
             {"name": "Resist Torpor", "ids": [581, 582, 583, 584, 585, 586, 587, 588, 589, 590], "min_great_success_index": 8},
             {"name": "Resist Sleep", "ids": [591, 592, 593, 594, 595, 596, 597, 598, 599, 600], "min_great_success_index": 8},
-            {"name": "Resist Knockout", "ids": [601, 602, 603, 604, 605, 606, 607, 608, 609, 610], "min_great_success_index": 8},
+            {"name": "Resist Stun", "ids": [601, 602, 603, 604, 605, 606, 607, 608, 609, 610], "min_great_success_index": 8},
             {"name": "Resist Drenching", "ids": [611, 612, 613, 614, 615, 616, 617, 618, 619, 620], "min_great_success_index": 8},
             {"name": "Resist Tarring", "ids": [621, 622, 623, 624, 625, 626, 627, 628, 629, 630], "min_great_success_index": 8},
             {"name": "Resist Skill Stifling", "ids": [631, 632, 633, 634, 635, 636, 637, 638, 639, 640], "min_great_success_index": 8},
