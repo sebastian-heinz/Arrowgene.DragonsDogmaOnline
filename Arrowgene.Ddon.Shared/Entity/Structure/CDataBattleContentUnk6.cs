@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public uint Unk0 { get; set; }
-        public byte Unk1 { get; set; }
+        public byte CurrentContentId { get; set; } // If this is not 0 when embarking, it will report "There are members with different progress"
         public CDataBattleContentSituationData BattleContentSituationData {  get; set; }
         public List<CDataBattleContentAvailableRewards> BattleContentAvailableRewardsList {  get; set; }
         public bool Unk4 {  get; set; }
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override void Write(IBuffer buffer, CDataBattleContentUnk6 obj)
             {
                 WriteUInt32(buffer, obj.Unk0);
-                WriteByte(buffer, obj.Unk1);
+                WriteByte(buffer, obj.CurrentContentId);
                 WriteEntity(buffer, obj.BattleContentSituationData);
                 WriteEntityList(buffer, obj.BattleContentAvailableRewardsList);
                 WriteBool(buffer, obj.Unk4);
@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 CDataBattleContentUnk6 obj = new CDataBattleContentUnk6();
                 obj.Unk0 = ReadUInt32(buffer);
-                obj.Unk1 = ReadByte(buffer);
+                obj.CurrentContentId = ReadByte(buffer);
                 obj.BattleContentSituationData = ReadEntity<CDataBattleContentSituationData>(buffer);
                 obj.BattleContentAvailableRewardsList = ReadEntityList<CDataBattleContentAvailableRewards>(buffer);
                 obj.Unk4 = ReadBool(buffer);

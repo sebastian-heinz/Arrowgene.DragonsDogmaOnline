@@ -1,11 +1,9 @@
-using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Logging;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -19,20 +17,63 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBattleContentPartyMemberInfoUpdateRes Handle(GameClient client, C2SBattleContentPartyMemberInfoUpdateReq request)
         {
-            EntitySerializer<S2CBattleContentInfoListRes> serializer = EntitySerializer.Get<S2CBattleContentInfoListRes>();
-            S2CBattleContentInfoListRes pcap = serializer.Read(InGameDump.Dump_93.AsBuffer());
-
-
             S2CBattleContentPartyMemberInfoUpdateNtc ntc = new S2CBattleContentPartyMemberInfoUpdateNtc()
             {
                 CharacterId = client.Character.CharacterId,
-                Pos = 0,
-                BattleContentSituationData = new CDataBattleContentSituationData()
+                Location = 0,
+                BattleContentSituationData = new CDataBattleContentSituationData
                 {
-                    
+                    GameMode = GameMode.BitterblackMaze,
+                    StartTime = 1,
+                    RewardReceived = false,
+                    Unk3 = false,
+                    RewardBonus = BattleContentRewardBonus.Normal,
+                    ReportReset = 0,
+                    ReportSearchResults = 0,
+                    Unk7 = 0,
+                    Unk8 = 0,
+                    Unktime = 0,
+                    ContentId = 2,
+                    Unk11 = 0
                 },
-                // Progress = item.Unk0,
-                // Unk0 = item.Unk1,
+                BattleContentAvailableRewardsList =
+                [
+                    new CDataBattleContentAvailableRewards
+                    {
+                        Id = 10,
+                        Amount = 1
+                    },
+                    new CDataBattleContentAvailableRewards
+                    {
+                        Id = 2,
+                        Amount = 1
+                    },
+                    new CDataBattleContentAvailableRewards
+                    {
+                        Id = 11,
+                        Amount = 1
+                    },
+                    new CDataBattleContentAvailableRewards
+                    {
+                        Id = 3,
+                        Amount = 1
+                    },
+                    new CDataBattleContentAvailableRewards
+                    {
+                        Id = 12,
+                        Amount = 1
+                    },
+                    new CDataBattleContentAvailableRewards
+                    {
+                        Id = 4,
+                        Amount = 1
+                    },
+                    new CDataBattleContentAvailableRewards
+                    {
+                        Id = 13,
+                        Amount = 1
+                    }
+                ],
                 Status = true
             };
             client.Send(ntc);
@@ -41,4 +82,3 @@ namespace Arrowgene.Ddon.GameServer.Handler
         }
     }
 }
-

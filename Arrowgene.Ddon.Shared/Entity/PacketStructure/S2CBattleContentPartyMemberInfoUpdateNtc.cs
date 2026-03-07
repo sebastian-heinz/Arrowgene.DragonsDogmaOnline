@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public uint CharacterId { get; set; }
-        public byte Pos {  get; set; }
+        public byte Location {  get; set; } // If this is not 0, then an error shows up "There are members in a different location"
         public CDataBattleContentSituationData BattleContentSituationData {  get; set; }
         public List<CDataBattleContentAvailableRewards> BattleContentAvailableRewardsList {  get; set; }
         public bool Status { get; set; }
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CBattleContentPartyMemberInfoUpdateNtc obj)
             {
                 WriteUInt32(buffer, obj.CharacterId);
-                WriteByte(buffer, obj.Pos);
+                WriteByte(buffer, obj.Location);
                 WriteEntity(buffer, obj.BattleContentSituationData);
                 WriteEntityList(buffer, obj.BattleContentAvailableRewardsList);
                 WriteBool(buffer, obj.Status);
@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CBattleContentPartyMemberInfoUpdateNtc obj = new S2CBattleContentPartyMemberInfoUpdateNtc();
                 obj.CharacterId = ReadUInt32(buffer);
-                obj.Pos = ReadByte(buffer);
+                obj.Location = ReadByte(buffer);
                 obj.BattleContentSituationData = ReadEntity<CDataBattleContentSituationData>(buffer);
                 obj.BattleContentAvailableRewardsList = ReadEntityList<CDataBattleContentAvailableRewards>(buffer);
                 obj.Status = ReadBool(buffer);

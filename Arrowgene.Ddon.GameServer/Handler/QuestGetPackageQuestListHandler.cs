@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             return new()
             {
-                Unk0 = request.Unk0
+                StageNo = request.StageNo
             };
         }
     }

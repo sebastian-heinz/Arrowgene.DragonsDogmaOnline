@@ -7,8 +7,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.L2C_GET_GAME_SESSION_KEY_RES;
 
-        public string SessionKey { get; set; } = string.Empty;
-        public uint Unknown { get; set; }
+        public string SessionKey { get; set; } = string.Empty; // MtString
+        public ushort GameServerUniqueID { get; set; } // 0 means some error during the login occurred
 
         public class Serializer : PacketEntitySerializer<L2CGetGameSessionKeyRes>
         {
@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteServerResponse(buffer, obj);
                 WriteMtString(buffer, obj.SessionKey);
-                WriteUInt32(buffer, obj.Unknown);
+                WriteUInt16(buffer, obj.GameServerUniqueID);
             }
 
             public override L2CGetGameSessionKeyRes Read(IBuffer buffer)
@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 L2CGetGameSessionKeyRes obj = new L2CGetGameSessionKeyRes();
                 ReadServerResponse(buffer, obj);
                 obj.SessionKey = ReadMtString(buffer);
-                obj.Unknown = ReadUInt32(buffer);
+                obj.GameServerUniqueID = ReadUInt16(buffer);
                 return obj;
             }
         }

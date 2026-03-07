@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Logging;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.TypeInspectors;
@@ -48,6 +49,7 @@ namespace Arrowgene.Ddon.Shared.Network
 
     public abstract class StructurePacket : Packet, IStructurePacket
     {
+        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(StructurePacket));
         public static ISerializer YamlSerializer { get; } = new SerializerBuilder()
             .WithTypeInspector(inspector => new MyTypeInspector(inspector))
             .WithTypeConverter(new ByteArrayConverter())
@@ -72,7 +74,15 @@ namespace Arrowgene.Ddon.Shared.Network
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(PrintHeader());
             stringBuilder.Append(Environment.NewLine);
-            YamlSerializer.Serialize(new IndentedTextWriter(new StringWriter(stringBuilder)), this);
+            try
+            {
+                YamlSerializer.Serialize(new IndentedTextWriter(new StringWriter(stringBuilder)), this);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("Failed to serialize structure packet, can not dump.");
+                Logger.Exception(e);
+            }
             return stringBuilder.ToString();
         }
 

@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public uint Unk0 { get; set; }
         public byte Unk1 { get; set; }
-        public uint Unk2 { get; set; }
+        public uint UnknownFlag { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SBattleContentPartyMemberInfoUpdateReq>
         {
@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteUInt32(buffer, obj.Unk0);
                 WriteByte(buffer, obj.Unk1);
-                WriteUInt32(buffer, obj.Unk2);
+                WriteUInt32(buffer, obj.UnknownFlag);
             }
 
             public override C2SBattleContentPartyMemberInfoUpdateReq Read(IBuffer buffer)
@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 C2SBattleContentPartyMemberInfoUpdateReq obj = new C2SBattleContentPartyMemberInfoUpdateReq();
                 obj.Unk0 = ReadUInt32(buffer);
                 obj.Unk1 = ReadByte(buffer);
-                obj.Unk2 = ReadUInt32(buffer);
+                obj.UnknownFlag = ReadUInt32(buffer);
                 return obj;
             }
         }

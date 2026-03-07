@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class GetCharacterListHandler : LoginRequestPacketHandler<C2LGetCharacterListReq, L2CGetCharacterListRes>
+    public sealed class GetCharacterListHandler : LoginRequestPacketHandler<C2LGetCharacterListReq, L2CGetCharacterListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GetCharacterListHandler));
 
@@ -83,6 +83,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 cResponse.ClanNameShort = c.ClanName.ShortName;
                 res.CharacterList.Add(cResponse);
             }
+            
+            // Add additional dead login token clean up
+            Database.DeleteTokenByAccountId(client.Account.Id);
 
             return res;
         }

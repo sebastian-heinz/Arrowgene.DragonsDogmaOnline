@@ -1,37 +1,29 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
-namespace Arrowgene.Ddon.LoginServer.Handler
+namespace Arrowgene.Ddon.LoginServer.Handler;
+
+public sealed class ClientChallengeHandler(DdonLoginServer server) : LoginRequestPacketHandler<C2LClientChallengeReq, L2CClientChallengeRes>(server)
 {
-    public class ClientChallengeHandler : LoginRequestPacketHandler<C2LClientChallengeReq, L2CClientChallengeRes>
+    private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientChallengeHandler));
+
+    public override L2CClientChallengeRes Handle(LoginClient client, C2LClientChallengeReq request)
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientChallengeHandler));
-
-
-        public ClientChallengeHandler(DdonLoginServer server) : base(server)
+        Challenge.Response challenge = client.HandleChallenge(request);
+        if (challenge.Error)
         {
+            Logger.Error(client, "Failed client challenge.");
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_LOGIN_FAILED);
         }
 
-        public override L2CClientChallengeRes Handle(LoginClient client, C2LClientChallengeReq request)
+        return new L2CClientChallengeRes
         {
-            Challenge.Response challenge = client.HandleChallenge(request);
-            if (challenge.Error)
-            {
-                Logger.Error(client, "Failed CertChallenge");
-                throw new ResponseErrorException(Shared.Model.ErrorCode.ERROR_CODE_AUTH_LOGIN_FAILED);
-            }
-
-            return new L2CClientChallengeRes()
-            {
-                PasswordSrcSize = challenge.DecryptedBlowFishKeyLength,
-                PasswordEncSize = challenge.EncryptedBlowFishKeyLength,
-                PasswordEnc = challenge.EncryptedBlowFishPassword
-            };
-        }
+            PasswordSrcSize = challenge.DecryptedBlowFishKeyLength,
+            PasswordEncSize = challenge.EncryptedBlowFishKeyLength,
+            PasswordEnc = challenge.EncryptedBlowFishPassword
+        };
     }
 }

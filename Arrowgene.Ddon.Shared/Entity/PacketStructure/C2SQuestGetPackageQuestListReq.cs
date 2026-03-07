@@ -7,19 +7,19 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_QUEST_GET_PACKAGE_QUEST_LIST_REQ;
 
-        public uint Unk0 { get; set; }
+        public uint StageNo { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SQuestGetPackageQuestListReq>
         {
             public override void Write(IBuffer buffer, C2SQuestGetPackageQuestListReq obj)
             {
-                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.StageNo);
             }
 
             public override C2SQuestGetPackageQuestListReq Read(IBuffer buffer)
             {
                 C2SQuestGetPackageQuestListReq obj = new C2SQuestGetPackageQuestListReq();
-                obj.Unk0 = ReadUInt32(buffer);
+                obj.StageNo = ReadUInt32(buffer);
                 return obj;
             }
         }

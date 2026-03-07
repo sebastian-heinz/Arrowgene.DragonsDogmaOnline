@@ -45,17 +45,74 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_MATCHING_PLAY_ENTRY_IS_NOT_READY, $"Leader didn't enter yet");
             }
 
-            // This NTC will force the player into the dungeon and skip the board
-            S2CBattleContentAreaChangeNtc ntc = new S2CBattleContentAreaChangeNtc()
+            S2CBattleContentPartyMemberInfoRes res = new()
             {
-                // Unk0 = 2, // client.Character.NormalCharacterId,
-                StageId = leader.NextBBMStageId,
-                StartPos = 0,
-                Unk4 = true,
+                Unk0 =
+                [
+                    new CDataBattleContentUnk6
+                    {
+                        Unk0 = 2,
+                        CurrentContentId = 0,
+                        BattleContentSituationData = new CDataBattleContentSituationData
+                        {
+                            GameMode = GameMode.BitterblackMaze,
+                            StartTime = 1,
+                            RewardReceived = false,
+                            Unk3 = false,
+                            RewardBonus = BattleContentRewardBonus.Normal,
+                            ReportReset = 0,
+                            ReportSearchResults = 0,
+                            Unk7 = 0,
+                            Unk8 = 0,
+                            Unktime = 0,
+                            ContentId = 2,
+                            Unk11 = 0
+                        },
+                        BattleContentAvailableRewardsList =
+                        [
+                            new CDataBattleContentAvailableRewards
+                            {
+                                Id = 10,
+                                Amount = 1
+                            },
+                            new CDataBattleContentAvailableRewards
+                            {
+                                Id = 2,
+                                Amount = 1
+                            },
+                            new CDataBattleContentAvailableRewards
+                            {
+                                Id = 11,
+                                Amount = 1
+                            },
+                            new CDataBattleContentAvailableRewards
+                            {
+                                Id = 3,
+                                Amount = 1
+                            },
+                            new CDataBattleContentAvailableRewards
+                            {
+                                Id = 12,
+                                Amount = 1
+                            },
+                            new CDataBattleContentAvailableRewards
+                            {
+                                Id = 4,
+                                Amount = 1
+                            },
+                            new CDataBattleContentAvailableRewards
+                            {
+                                Id = 13,
+                                Amount = 1
+                            },
+                        ],
+                        Unk4 = true
+                    }
+                ],
+                Unk1 = true
             };
-            client.Send(ntc);
 
-            return new S2CBattleContentPartyMemberInfoRes();
+            return res;
         }
     }
 }

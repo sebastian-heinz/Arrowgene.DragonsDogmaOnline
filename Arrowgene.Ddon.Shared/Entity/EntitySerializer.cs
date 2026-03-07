@@ -545,6 +545,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SBattleContentContentFirstPhaseChangeReq.Serializer());
             Create(new C2SBattleContentContentResetReq.Serializer());
             Create(new C2SBattleContentGetContentStatusFromOmReq.Serializer());
+            Create(new C2SBattleContentGetPhaseToChangeFromOmReq.Serializer());
+            Create(new C2SBattleContentPhaseEntryBeginRecruitmentReq.Serializer());
+            Create(new C2SBattleContentPhaseEntryReadyCancelReq.Serializer());
             Create(new C2SBattleContentGetRewardReq.Serializer());
             Create(new C2SBattleContentInfoListReq.Serializer());
             Create(new C2SBattleContentInstantClearInfoReq.Serializer());
@@ -1066,6 +1069,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CAreaRankUpReadyNtc.Serializer());
 
             Create(new S2CBattleContentAreaChangeNtc.Serializer());
+            Create(new S2CBattleContentPhaseEntryReadyNtc.Serializer());
             Create(new S2CBattleContentCharacterInfoRes.Serializer());
             Create(new S2CBattleContentClearContentNtc.Serializer());
             Create(new S2CBattleContentClearTierNtc.Serializer());
@@ -1075,6 +1079,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CBattleContentContentResetNtc.Serializer());
             Create(new S2CBattleContentContentResetRes.Serializer());
             Create(new S2CBattleContentGetContentStatusFromOmRes.Serializer());
+            Create(new S2CBattleContentGetPhaseToChangeFromOmRes.Serializer());
+            Create(new S2CBattleContentPhaseEntryBeginRecruitmentRes.Serializer());
+            Create(new S2CBattleContentPhaseEntryReadyCancelRes.Serializer());
             Create(new S2CBattleContentGetRewardRes.Serializer());
             Create(new S2CBattleContentGetRewardsNtc.Serializer());
             Create(new S2CBattleContentInfoListRes.Serializer());

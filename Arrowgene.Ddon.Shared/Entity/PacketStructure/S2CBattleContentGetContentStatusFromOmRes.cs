@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public GameMode GameMode { get; set; }
         public uint NotifyJobLock { get; set; } // Related to either starting new or continuing?
         public uint Unk2 { get; set; }
-        public uint Unk3 { get; set; }
+        public uint RouteIsNotInProgress { get; set; }
         public uint Unk4 { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CBattleContentGetContentStatusFromOmRes>
@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, (uint) obj.GameMode);
                 WriteUInt32(buffer, obj.NotifyJobLock);
                 WriteUInt32(buffer, obj.Unk2);
-                WriteUInt32(buffer, obj.Unk3);
+                WriteUInt32(buffer, obj.RouteIsNotInProgress);
                 WriteUInt32(buffer, obj.Unk4);
             }
 
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.GameMode = (GameMode) ReadUInt32(buffer);
                 obj.NotifyJobLock = ReadUInt32(buffer);
                 obj.Unk2 = ReadUInt32(buffer);
-                obj.Unk3 = ReadUInt32(buffer);
+                obj.RouteIsNotInProgress = ReadUInt32(buffer);
                 obj.Unk4 = ReadUInt32(buffer);
                 return obj;
             }

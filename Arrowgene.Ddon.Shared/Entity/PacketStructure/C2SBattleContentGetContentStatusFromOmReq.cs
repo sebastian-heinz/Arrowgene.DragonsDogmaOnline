@@ -1,6 +1,5 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -9,6 +8,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_BATTLE_CONTENT_GET_CONTENT_STATUS_FROM_OM_REQ;
 
+        /// <summary>
+        /// Uses the same data structures as C2SBattleContentGetPhaseToChangeFromOmReq
+        /// </summary>
         public C2SBattleContentGetContentStatusFromOmReq()
         {
             StageLayoutId = new CDataStageLayoutId();

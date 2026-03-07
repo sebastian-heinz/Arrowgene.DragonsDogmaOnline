@@ -220,8 +220,6 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, DbConnection? connectionIn = null) { return true; }
         public void DeleteAllStorageItems(DbConnection connection, uint characterId) { }
         public void DeleteAllEquipItems(uint commonId, DbConnection? connectionIn = null) { }
-        public bool DeleteToken(string token) { return true; }
-        public bool DeleteTokenByAccountId(int accountId) { return true; }
         public bool DeleteWalletPoint(uint characterId, WalletType type) { return true; }
         public DbConnection OpenNewConnection() { return null; }
         public DbConnection OpenExistingConnection() { return null; }
@@ -315,12 +313,12 @@ namespace Arrowgene.Ddon.Test.Database
         public Pawn SelectPawn(DbConnection connection, uint pawnId) { return new Pawn(); }
         public List<Pawn> SelectPawnsByCharacterId(uint characterId, DbConnection? connectionIn = null) { return new List<Pawn>(); }
         public List<ReleasedWarpPoint> SelectReleasedWarpPoints(uint characterId) { return new List<ReleasedWarpPoint>(); }
-        public GameToken SelectToken(string tokenStr) { return new GameToken(); }
-        public GameToken SelectTokenByAccountId(int accountId) { return new GameToken(); }
+        public GameToken SelectToken(string tokenStr, DbConnection? connectionIn = null) { return new GameToken(); }
+        public bool ReplaceToken(GameToken token, DbConnection? connectionIn = null) { return true; }
+        public bool DeleteTokenByAccountId(int accountId, DbConnection? connectionIn = null) { return true; }
         public List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId) { return new List<EquipItem>(); }
         public Storages SelectAllStoragesByCharacterId(uint characterId) { return new Storages(new Dictionary<StorageType, ushort>()); }
         public bool SetMeta(DatabaseMeta meta) { return true; }
-        public bool SetToken(GameToken token) { return true; }
         public bool UpdateAccount(Account account) { return true; }
         public int UpdateBazaarExhibiton(BazaarExhibition exhibition) { return 1; }
         public bool UpdateCharacterArisenProfile(Character character) { return true; }

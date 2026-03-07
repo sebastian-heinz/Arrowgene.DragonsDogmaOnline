@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public BattleContentRewardBonus RewardBonus { get; set; }
         public uint ReportReset { get; set; } // Related to reset progress (Lyka gets ! in menu if > 0 and RewardReceived = true)
         public uint ReportSearchResults { get; set; } // 0x18 (Lyka gets ! in menu)
-        public uint Unk7 { get; set; }
+        public uint Unk7 { get; set; } // values in pcapcs: 0, 1, 23, it is only not 0 when Unktime is set to a non zero value
         public byte Unk8 { get; set; } // Impacts "Status:" some how
         public ulong Unktime { get; set; } // Reset time?
         public uint ContentId { get; set; } // Corresponds with the "ID" in the BattleContentStageList

@@ -1,14 +1,10 @@
+using System;
+using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
-using YamlDotNet.Core.Tokens;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -60,10 +56,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             return new S2CBattleContentGetContentStatusFromOmRes()
             {
                 GameMode = GameMode.BitterblackMaze,
-                NotifyJobLock = contentInProgress ? 1U : 0U,
-                Unk2 = 2,
-                Unk3 = 3,
-                Unk4 = 4,
+                NotifyJobLock = 0, //contentInProgress ? 1U : 0U,
+                Unk2 = 0,
+                RouteIsNotInProgress = 1, // "Cannot enter because another route is in progress": 0 = display, 1 = skip for regular, 
+                Unk4 = 0
             };
 
             // 0, 0, 0, 0 says can't do content

@@ -31,17 +31,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.Database.UpdateBBMProgress(client.Character.CharacterId, progress);
             }
 
-            var contentStatus = BitterblackMazeManager.GetUpdatedContentStatus(Server, client.Character);
-            S2CBattleContentContentEntryNtc ntc = new S2CBattleContentContentEntryNtc()
+            // var contentStatus = BitterblackMazeManager.GetUpdatedContentStatus(Server, client.Character);
+            // S2CBattleContentContentEntryNtc ntc = new S2CBattleContentContentEntryNtc()
+            // {
+            //     GameMode = GameMode.BitterblackMaze,
+            // };
+            // ntc.BattleContentStatusList.Add(contentStatus);
+            // client.Send(ntc);
+            //
+            // S2CBattleContentProgressNtc ntc2 = new S2CBattleContentProgressNtc();
+            // ntc2.BattleContentStatusList.Add(contentStatus);
+            // client.Send(ntc2);
+            
+            S2CBattleContentPhaseEntryReadyNtc phaseEntryReadyNtc = new()
             {
-                GameMode = GameMode.BitterblackMaze,
+                Unk0 = 2,
+                Unk1 = 0
             };
-            ntc.BattleContentStatusList.Add(contentStatus);
-            client.Send(ntc);
-
-            S2CBattleContentProgressNtc ntc2 = new S2CBattleContentProgressNtc();
-            ntc2.BattleContentStatusList.Add(contentStatus);
-            client.Send(ntc2);
+            client.Send(phaseEntryReadyNtc);
 
             return new S2CBattleContentContentEntryRes();
         }

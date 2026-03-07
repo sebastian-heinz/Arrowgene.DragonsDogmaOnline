@@ -1,11 +1,8 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -19,10 +16,36 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBattleContentInstantClearInfoRes Handle(GameClient client, C2SBattleContentInstantClearInfoReq request)
         {
-            // Not sure what this does, can't seem to make anything show up
-            // I think it must be related to the ready up select menu, but not sure
-            var result = new S2CBattleContentInstantClearInfoRes();
-            return result;
+            S2CBattleContentInstantClearInfoRes res = new S2CBattleContentInstantClearInfoRes
+            {
+                Unk0 =
+                [
+                    new CDataBattleContentUnk4
+                    {
+                        Unk0 = 2,
+                        Unk1 = 0,
+                        UnknownString = "Bitterblack Maze Rotunda: Netherworld 1",
+                        WalletPoints =
+                        [
+                            new CDataWalletPoint
+                            {
+                                Type = WalletType.Gold,
+                                Value = 123
+                            }
+                        ],
+                        Unk3 =
+                        [
+                            new CDataBattleContentUnk5
+                            {
+                                Unk0 = 2,
+                                Unk1 = 2
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            return res;
         }
     }
 }

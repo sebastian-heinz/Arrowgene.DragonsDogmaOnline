@@ -1,85 +1,57 @@
-﻿using Arrowgene.Ddon.Shared.Model;
+﻿using System.Data.Common;
+using System.Linq;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core;
 
 public partial class DdonSqlDb : SqlDb
 {
-    private const string SqlInsertToken =
-        "INSERT INTO \"ddon_game_token\" (\"account_id\", \"character_id\", \"token\", \"created\") VALUES (@account_id, @character_id, @token, @created);";
-
-    private const string SqlUpdateToken =
-        "UPDATE \"ddon_game_token\" SET \"character_id\"=@character_id, \"token\"=@token, \"created\"=@created WHERE \"account_id\" = @account_id;";
-
-    private const string SqlSelectTokenByAccountId =
-        "SELECT \"token\", \"account_id\", \"character_id\", \"token\", \"created\" FROM \"ddon_game_token\" WHERE \"account_id\" = @account_id;";
-
+    private static readonly string[] GameTokenFields = ["account_id", "character_id", "token", "created"];
+    private static readonly string[] GameTokenKeyFields = ["account_id"];
+    private static readonly string[] GameTokenNonKeyFields = GameTokenFields.Except(GameTokenKeyFields).ToArray();
+    private static readonly string SqlSelectToken = $"SELECT {BuildQueryField(GameTokenFields)} FROM \"ddon_game_token\" WHERE \"token\" = @token;";
+    private static readonly string SqlInsertToken = $"INSERT INTO \"ddon_game_token\" ({BuildQueryField(GameTokenFields)}) VALUES ({BuildQueryInsert(GameTokenFields)});";
+    private static readonly string SqlUpdateToken = $"UPDATE \"ddon_game_token\" SET {BuildQueryUpdate(GameTokenFields)} WHERE \"account_id\" = @account_id;";
     private const string SqlDeleteTokenByAccountId = "DELETE FROM \"ddon_game_token\" WHERE \"account_id\"=@account_id;";
-    private const string SqlSelectToken = "SELECT \"token\", \"account_id\", \"character_id\", \"token\", \"created\" FROM \"ddon_game_token\" WHERE \"token\" = @token;";
     private const string SqlDeleteToken = "DELETE FROM \"ddon_game_token\" WHERE \"token\"=@token;";
+    private readonly string SqlUpsertToken =
+        $"""
+         INSERT INTO "ddon_game_token" ({BuildQueryField(GameTokenFields)}) VALUES ({BuildQueryInsert(GameTokenFields)}) 
+         ON CONFLICT ("account_id") DO UPDATE SET {BuildQueryUpdateWithPrefix("EXCLUDED.", GameTokenNonKeyFields)};
+         """;
 
-    public override bool SetToken(GameToken token)
+    public override bool ReplaceToken(GameToken token, DbConnection? connectionIn = null)
     {
-        int rowsAffected = ExecuteNonQuery(SqlUpdateToken, command =>
-        {
-            AddParameter(command, "@account_id", token.AccountId);
-            AddParameter(command, "@character_id", token.CharacterId);
-            AddParameter(command, "@token", token.Token);
-            AddParameter(command, "@created", token.Created);
-        });
-        if (rowsAffected > NoRowsAffected) return true;
-
-        rowsAffected = ExecuteNonQuery(SqlInsertToken, command =>
-        {
-            AddParameter(command, "@account_id", token.AccountId);
-            AddParameter(command, "@character_id", token.CharacterId);
-            AddParameter(command, "@token", token.Token);
-            AddParameter(command, "@created", token.Created);
-        });
-
-        return rowsAffected > NoRowsAffected;
-    }
-
-    public override GameToken SelectTokenByAccountId(int accountId)
-    {
-        GameToken token = null;
-        ExecuteReader(SqlSelectTokenByAccountId, command => { AddParameter(command, "@account_id", accountId); }, reader =>
-        {
-            if (reader.Read())
+        return ExecuteQuerySafe(connectionIn,
+            connection => { return ExecuteNonQuery(connection, SqlUpsertToken, command =>
             {
-                token = new GameToken();
-                token.AccountId = GetInt32(reader, "account_id");
-                token.CharacterId = GetUInt32(reader, "character_id");
-                token.Token = GetString(reader, "token");
-                token.Created = GetDateTime(reader, "created");
-            }
-        });
-        return token;
+                AddParameter(command, "@account_id", token.AccountId);
+                AddParameter(command, "@character_id", token.CharacterId);
+                AddParameter(command, "@token", token.Token);
+                AddParameter(command, "@created", token.Created);
+            }) == 1; });
     }
 
-    public override GameToken SelectToken(string tokenStr)
+    public override GameToken SelectToken(string tokenStr, DbConnection? connectionIn = null)
     {
         GameToken token = null;
         ExecuteReader(SqlSelectToken, command => { AddParameter(command, "@token", tokenStr); }, reader =>
         {
             if (reader.Read())
             {
-                token = new GameToken();
-                token.AccountId = GetInt32(reader, "account_id");
-                token.CharacterId = GetUInt32(reader, "character_id");
-                token.Token = GetString(reader, "token");
-                token.Created = GetDateTime(reader, "created");
+                token = new GameToken
+                {
+                    AccountId = GetInt32(reader, "account_id"),
+                    CharacterId = GetUInt32(reader, "character_id"),
+                    Token = GetString(reader, "token"),
+                    Created = GetDateTime(reader, "created")
+                };
             }
         });
         return token;
     }
 
-    public override bool DeleteToken(string token)
-    {
-        int rowsAffected = ExecuteNonQuery(SqlDeleteToken, command => { AddParameter(command, "@token", token); });
-        return rowsAffected > NoRowsAffected;
-    }
-
-    public override bool DeleteTokenByAccountId(int accountId)
+    public override bool DeleteTokenByAccountId(int accountId, DbConnection? connectionIn = null)
     {
         int rowsAffected = ExecuteNonQuery(SqlDeleteTokenByAccountId, command => { AddParameter(command, "@account_id", accountId); });
         return rowsAffected > NoRowsAffected;

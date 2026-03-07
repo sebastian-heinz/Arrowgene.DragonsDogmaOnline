@@ -12,22 +12,22 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
 
-        public uint Unk0 { get; set; }
-        public uint Unk1 { get; set; }
+        public uint TargetContentId { get; set; }
+        public uint UnknownFlag { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SBattleContentPartyMemberInfoReq>
         {
             public override void Write(IBuffer buffer, C2SBattleContentPartyMemberInfoReq obj)
             {
-                WriteUInt32(buffer, obj.Unk0);
-                WriteUInt32(buffer, obj.Unk1);
+                WriteUInt32(buffer, obj.TargetContentId);
+                WriteUInt32(buffer, obj.UnknownFlag);
             }
 
             public override C2SBattleContentPartyMemberInfoReq Read(IBuffer buffer)
             {
                 C2SBattleContentPartyMemberInfoReq obj = new C2SBattleContentPartyMemberInfoReq();
-                obj.Unk0 = ReadUInt32(buffer);
-                obj.Unk1 = ReadUInt32(buffer);
+                obj.TargetContentId = ReadUInt32(buffer);
+                obj.UnknownFlag = ReadUInt32(buffer);
                 return obj;
             }
         }

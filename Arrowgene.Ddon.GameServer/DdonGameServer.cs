@@ -237,6 +237,9 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new BattleContentInfoListHandler(this));
             AddHandler(new BattleContentGetContentStatusFromOmHandler(this));
+            AddHandler(new BattleContentGetPhaseToChangeFromOmHandler(this));
+            AddHandler(new BattleContentPhaseEntryBeginRecruitmentHandler(this));
+            AddHandler(new BattleContentPhaseEntryReadyCancelHandler(this));
             AddHandler(new BattleContentContentEntryHandler(this));
             AddHandler(new BattleContentInstantClearInfoHandler(this));
             AddHandler(new BattleContentPartyMemberInfoHandler(this));

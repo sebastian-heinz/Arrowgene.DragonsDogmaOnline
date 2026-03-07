@@ -57,6 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Character = Server.CharacterManager.SelectCharacter(client, bbmCharacterId);
                 client.Character.BbmCharacterId = client.Character.CharacterId;
                 client.Character.CharacterId = originalCharacterId;
+                Server.CharacterManager.SelectPawns(client.Character);
             }
             else
             {
@@ -120,8 +121,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             bbmCharacter.StatusInfo = normalCharacter.StatusInfo;
             bbmCharacter.Job = normalCharacter.Job;
             bbmCharacter.JewelrySlotNum = 1;
-            bbmCharacter.MyPawnSlotNum = 0;
-            bbmCharacter.RentalPawnSlotNum = 0;
+            bbmCharacter.MyPawnSlotNum = normalCharacter.MyPawnSlotNum;
+            bbmCharacter.RentalPawnSlotNum = normalCharacter.RentalPawnSlotNum;
             bbmCharacter.MatchingProfile = normalCharacter.MatchingProfile;
             bbmCharacter.ArisenProfile = normalCharacter.ArisenProfile;
             bbmCharacter.HideEquipHead = normalCharacter.HideEquipHead;

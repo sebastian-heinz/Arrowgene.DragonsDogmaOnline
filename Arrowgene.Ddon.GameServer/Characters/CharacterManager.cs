@@ -319,7 +319,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return acquirableSkills;
         }
 
-        private void SelectPawns(Character character, DbConnection? connectionIn = null)
+        public void SelectPawns(Character character, DbConnection? connectionIn = null)
         {
             character.Pawns = Server.Database.SelectPawnsByCharacterId(character.ContentCharacterId, connectionIn);
 

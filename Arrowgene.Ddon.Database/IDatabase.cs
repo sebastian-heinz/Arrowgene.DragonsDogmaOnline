@@ -254,11 +254,9 @@ public interface IDatabase
     bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo);
 
     // GameToken
-    bool SetToken(GameToken token);
-    GameToken SelectTokenByAccountId(int accountId);
-    GameToken SelectToken(string tokenStr);
-    bool DeleteTokenByAccountId(int accountId);
-    bool DeleteToken(string token);
+    bool ReplaceToken(GameToken token, DbConnection? connectionIn = null);
+    GameToken SelectToken(string tokenStr, DbConnection? connectionIn = null);
+    bool DeleteTokenByAccountId(int accountId, DbConnection? connectionIn = null);
 
     // Connections
     bool InsertConnection(Connection connection);

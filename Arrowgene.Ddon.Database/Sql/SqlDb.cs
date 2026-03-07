@@ -410,11 +410,9 @@ public abstract class SqlDb : IDatabase
     public abstract bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null);
     public abstract bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut, DbConnection? connectionIn = null);
     public abstract bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo);
-    public abstract bool SetToken(GameToken token);
-    public abstract GameToken SelectTokenByAccountId(int accountId);
-    public abstract GameToken SelectToken(string tokenStr);
-    public abstract bool DeleteTokenByAccountId(int accountId);
-    public abstract bool DeleteToken(string token);
+    public abstract bool ReplaceToken(GameToken token, DbConnection? connectionIn = null);
+    public abstract GameToken SelectToken(string tokenStr, DbConnection? connectionIn = null);
+    public abstract bool DeleteTokenByAccountId(int accountId, DbConnection? connectionIn = null);
     public abstract bool InsertConnection(Connection connection);
     public abstract List<Connection> SelectConnections();
     public abstract List<Connection> SelectConnectionsByAccountId(int accountId);

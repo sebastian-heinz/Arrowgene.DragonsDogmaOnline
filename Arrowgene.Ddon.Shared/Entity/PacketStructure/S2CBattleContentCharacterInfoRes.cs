@@ -14,11 +14,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public S2CBattleContentCharacterInfoRes()
         {
             SituationData = new CDataBattleContentSituationData();
-            Unk2List = new List<CDataBattleContentAvailableRewards>();
+            AvailableRewardsList = new List<CDataBattleContentAvailableRewards>();
         }
 
         public CDataBattleContentSituationData SituationData { get; set; }
-        public List<CDataBattleContentAvailableRewards> Unk2List { get; set; }
+        public List<CDataBattleContentAvailableRewards> AvailableRewardsList { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CBattleContentCharacterInfoRes>
         {
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteServerResponse(buffer, obj);
                 WriteEntity(buffer, obj.SituationData);
-                WriteEntityList(buffer, obj.Unk2List);
+                WriteEntityList(buffer, obj.AvailableRewardsList);
             }
 
             public override S2CBattleContentCharacterInfoRes Read(IBuffer buffer)
@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CBattleContentCharacterInfoRes obj = new S2CBattleContentCharacterInfoRes();
                 ReadServerResponse(buffer, obj);
                 obj.SituationData = ReadEntity<CDataBattleContentSituationData>(buffer);
-                obj.Unk2List = ReadEntityList<CDataBattleContentAvailableRewards>(buffer);
+                obj.AvailableRewardsList = ReadEntityList<CDataBattleContentAvailableRewards>(buffer);
                 return obj;
             }
         }
