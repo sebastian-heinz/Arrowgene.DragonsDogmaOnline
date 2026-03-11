@@ -3,7 +3,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Networking.Tcp;
+using Arrowgene.Networking.SAEAServer;
 
 namespace Arrowgene.Ddon.Server
 {
@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Server
         {
             base.Initialize(identity, name, write);
         }
-        
+
         public override void Configure(object loggerTypeConfig, object identityConfig)
         {
             base.Configure(loggerTypeConfig, identityConfig);
@@ -54,31 +54,40 @@ namespace Arrowgene.Ddon.Server
             }
         }
 
-        public void Info(ITcpSocket socket, string message)
+        public void Error(ClientHandle clientHandle, string message)
         {
-            Info($"[{socket.Identity}] {message}");
-        }
-
-        public void Debug(ITcpSocket socket, string message)
-        {
-            Debug($"[{socket.Identity}] {message}");
-        }
-
-        public void Error(ITcpSocket socket, string message)
-        {
-            Error($"[{socket.Identity}] {message}");
-        }
-
-        public void Exception(ITcpSocket socket, Exception exception)
-        {
-            if (exception == null)
+            if (clientHandle.TrySnapshot(out ClientSnapshot clientSnapshot))
             {
-                Write(LogLevel.Error, $"{socket.Identity} Exception was null.", null);
+                Error(clientSnapshot, message);
+                return;
             }
-            else
+
+            Error($"[Id:{clientHandle.ClientId}][Gen:{clientHandle.Generation}] {message}");
+        }
+
+        public void Error(ClientSnapshot clientSnapshot, string message)
+        {
+            Error($"{clientSnapshot.Identity} {message}");
+        }
+
+        public void Exception(ClientHandle clientHandle, Exception exception)
+        {
+            if (clientHandle.TrySnapshot(out ClientSnapshot clientSnapshot))
             {
-                Write(LogLevel.Error, $"{socket.Identity} {exception}", exception);
+                Exception(clientSnapshot, exception);
+                return;
             }
+
+            Write(
+                LogLevel.Error,
+                $"[Id:{clientHandle.ClientId}][Gen:{clientHandle.Generation}] {exception}",
+                exception
+            );
+        }
+
+        public void Exception(ClientSnapshot clientSnapshot, Exception exception)
+        {
+            Write(LogLevel.Error, $"{clientSnapshot.Identity} {exception}", exception);
         }
 
         public void LogPacket(Client client, IPacket packet)
@@ -88,6 +97,7 @@ namespace Arrowgene.Ddon.Server
                 Error("Can not log packet (_serverSetting == null)");
                 return;
             }
+
             switch (packet.Source)
             {
                 case PacketSource.Client:
@@ -166,7 +176,7 @@ namespace Arrowgene.Ddon.Server
                 Error("Can not log unhandled packet (_serverSetting == null)");
                 return;
             }
-            
+
             if (!_serverSetting.LogUnknownPackets)
             {
                 return;

@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.Server
             ServerSetting.Id = 1;
             ServerSetting.Name = "Login";
             ServerSetting.ServerPort = 52100;
-            ServerSetting.ServerSocketSettings.Identity = "Login";
+            ServerSetting.TcpServerSettings.Identity = "Login";
 
             AccountRequired = false;
             NoOperationTimeOutTime = 14400;

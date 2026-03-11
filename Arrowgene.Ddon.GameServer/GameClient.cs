@@ -5,14 +5,14 @@ using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Networking.Tcp;
 using System;
+using Arrowgene.Networking.SAEAServer;
 
 namespace Arrowgene.Ddon.GameServer
 {
     public class GameClient : Client
     {
-        public GameClient(ITcpSocket socket, PacketFactory packetFactory, DdonGameServer server) : base(socket, packetFactory)
+        public GameClient(ClientHandle clientHandle, PacketFactory packetFactory, DdonGameServer server) : base(clientHandle, packetFactory)
         {
             UpdateIdentity();
             InstanceGatheringItemManager = new InstanceGatheringItemManager(this, server);
@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public void UpdateIdentity()
         {
-            string newIdentity = $"[GameClient@{Socket.Identity}]";
+            string newIdentity = $"[GameClient@{ClientHandle.Identity}]";
             if (Account != null)
             {
                 newIdentity += $"[Acc:({Account.Id}){Account.NormalName}]";

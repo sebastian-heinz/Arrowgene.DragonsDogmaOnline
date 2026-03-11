@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 throw new ResponseErrorException(Shared.Model.ErrorCode.ERROR_CODE_SYSTEM_INTERNAL);
             }
 
-            if (Server.ServerSetting.ServerSetting.ServerSocketSettings.DebugMode)
+            if (Server.ServerSetting.ServerSetting.TcpServerSettings.DebugMode)
             {
                 Logger.Info(client, $"CamelliaKey: {Util.ToHexString(challenge.CamelliaKey)}");
             }

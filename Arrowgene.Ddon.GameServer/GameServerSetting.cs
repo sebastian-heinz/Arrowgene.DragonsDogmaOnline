@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer
                 ServerSetting.Id = 10;
                 ServerSetting.Name = "Game";
                 ServerSetting.ServerPort = 52000;
-                ServerSetting.ServerSocketSettings.Identity = "Game";
+                ServerSetting.TcpServerSettings.Identity = "Game";
             }
         }
 
@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer
             ServerSetting.Id = 10;
             ServerSetting.Name = "Game";
             ServerSetting.ServerPort = 52000;
-            ServerSetting.ServerSocketSettings.Identity = "Game";
+            ServerSetting.TcpServerSettings.Identity = "Game";
         }
     }
 }

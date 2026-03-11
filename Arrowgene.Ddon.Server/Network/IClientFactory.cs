@@ -1,9 +1,9 @@
-﻿using Arrowgene.Networking.Tcp;
+﻿using Arrowgene.Networking.SAEAServer;
 
 namespace Arrowgene.Ddon.Server.Network
 {
     public interface IClientFactory<TClient> where TClient : Client
     {
-        TClient NewClient(ITcpSocket socket);
+        TClient NewClient(ClientHandle clientHandle);
     }
 }

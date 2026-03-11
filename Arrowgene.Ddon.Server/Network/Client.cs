@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Networking.Tcp;
+using Arrowgene.Networking.SAEAServer;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -13,7 +12,7 @@ namespace Arrowgene.Ddon.Server.Network
     {
         private readonly ServerLogger Logger;
 
-        protected readonly ITcpSocket Socket;
+        protected readonly ClientHandle ClientHandle;
         private readonly PacketFactory _packetFactory;
         private Challenge _challenge;
 
@@ -24,13 +23,13 @@ namespace Arrowgene.Ddon.Server.Network
          */
         private bool _challengeCompleted;
 
-        public Client(ITcpSocket socket, PacketFactory packetFactory)
+        public Client(ClientHandle clientHandle, PacketFactory packetFactory)
         {
             Logger = LogProvider.Logger<ServerLogger>(GetType());
-            Socket = socket;
+            ClientHandle = clientHandle;
             _packetFactory = packetFactory;
             _challenge = null;
-            Identity = socket.Identity;
+            Identity = clientHandle.Identity;
             _challengeCompleted = false;
         }
 
@@ -46,7 +45,7 @@ namespace Arrowgene.Ddon.Server.Network
 
         public void Close()
         {
-            Socket.Close();
+            ClientHandle.Disconnect();
         }
 
         public List<IPacket> Receive(byte[] data)
@@ -127,7 +126,7 @@ namespace Arrowgene.Ddon.Server.Network
         /// </summary>
         public void SendRaw(byte[] data)
         {
-            Socket.Send(data);
+            ClientHandle.Send(data);
         }
 
         public void InitializeChallenge()

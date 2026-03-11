@@ -2,7 +2,7 @@
  * This file is part of Arrowgene.Ddon.GameServer
  *
  * Arrowgene.Ddon.GameServer is a server implementation for the game "Dragons Dogma Online".
- * Copyright (C) 2019-2022 DDON Team
+ * Copyright (C) 2019-2026 DDON Team
  *
  * Github: https://github.com/sebastian-heinz/Ddo-server
  *
@@ -41,10 +41,9 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Networking.Tcp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Arrowgene.Networking.SAEAServer;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -52,7 +51,8 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
-        public DdonGameServer(GameServerSetting setting, GameSettings gameSettings, IDatabase database, AssetRepository assetRepository)
+        public DdonGameServer(GameServerSetting setting, GameSettings gameSettings, IDatabase database,
+            AssetRepository assetRepository)
             : base(ServerType.Game, setting.ServerSetting, database, assetRepository)
         {
             ServerSetting = new GameServerSetting(setting);
@@ -205,10 +205,13 @@ namespace Arrowgene.Ddon.GameServer
             Logger.Info($"ClientLookup, Disconnect: {ClientLookup.GetAll().Count}");
         }
 
-        public override GameClient NewClient(ITcpSocket socket)
+        public override GameClient NewClient(ClientHandle clientHandle)
         {
-            GameClient newClient = new GameClient(socket,
-                new PacketFactory(ServerSetting.ServerSetting, PacketIdResolver.GamePacketIdResolver), this);
+            GameClient newClient = new GameClient(
+                clientHandle,
+                new PacketFactory(ServerSetting.ServerSetting, PacketIdResolver.GamePacketIdResolver),
+                this
+            );
             ClientLookup.Add(newClient);
             return newClient;
         }
@@ -222,7 +225,7 @@ namespace Arrowgene.Ddon.GameServer
         private void LoadPacketHandler()
         {
             SetFallbackHandler(new FallbackHandler<GameClient>(this));
-            
+
             AddHandler(new AchievementGetReceivableRewardListHandler(this));
             AddHandler(new AchievementGetProgressListHandler(this));
             AddHandler(new AchievementGetRewardListHandler(this));
@@ -280,10 +283,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CharacterPawnGoldenReviveHandler(this));
             AddHandler(new CharacterPawnPointReviveHandler(this));
             AddHandler(new CharacterSetOnlineStatusHandler(this));
-			AddHandler(new CharacterEditGetShopPriceHandler(this));
-			AddHandler(new CharacterEditUpdateCharacterEditParamHandler(this));
+            AddHandler(new CharacterEditGetShopPriceHandler(this));
+            AddHandler(new CharacterEditUpdateCharacterEditParamHandler(this));
             AddHandler(new CharacterEditUpdateCharacterEditParamExHandler(this));
-			AddHandler(new CharacterEditUpdatePawnEditParamHandler(this));
+            AddHandler(new CharacterEditUpdatePawnEditParamHandler(this));
             AddHandler(new CharacterEditUpdatePawnEditParamExHandler(this));
             AddHandler(new CharacterCharacterDeadHandler(this));
             AddHandler(new CharacterCharacterDownCancelHandler(this));
@@ -475,7 +478,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
             AddHandler(new ChatSendTellMsgHandler(this));
-            
+
             AddHandler(new LobbyLobbyJoinHandler(this));
             AddHandler(new LobbyLobbyLeaveHandler(this));
             AddHandler(new LobbyLobbyChatMsgHandler(this));
@@ -595,9 +598,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetAdventureGuideQuestNoticeHandler(this));
             AddHandler(new QuestGetAreaBonusListHandler(this));
             AddHandler(new QuestGetAreaInfoListHandler(this));
-			AddHandler(new QuestGetCycleContentsNewsListHandler(this));
+            AddHandler(new QuestGetCycleContentsNewsListHandler(this));
             AddHandler(new QuestGetCycleContentsStateListHandler(this));
-			AddHandler(new QuestGetEndContentsGroupHandler(this));
+            AddHandler(new QuestGetEndContentsGroupHandler(this));
             AddHandler(new QuestGetEndContentsRecruitListHandler(this));
             AddHandler(new QuestGetLevelBonusListHandler(this));
             AddHandler(new QuestGetLightQuestList(this));
@@ -638,10 +641,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new RankingRankListHandler(this));
             AddHandler(new RankingRankListByCharacterIdHandler(this));
 
-			AddHandler(new EntryBoardEntryBoardListHandler(this));
-			AddHandler(new EntryBoardEntryBoardItemCreateHandler(this));
-			AddHandler(new EntryBoardEntryBoardItemForceStartHandler(this));
-			AddHandler(new EntryBoardEntryBoardItemInfoMyselfHandler(this));
+            AddHandler(new EntryBoardEntryBoardListHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemCreateHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemForceStartHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemInfoMyselfHandler(this));
             AddHandler(new EntryBoardEntryBoardItemReadyHandler(this));
             AddHandler(new EntryBoardEntryBoardItemLeaveHandler(this));
             AddHandler(new EntryBoardEntryItemInfoChangeHandler(this));
@@ -741,8 +744,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new StageGetSpAreaChangeInfoHandler(this));
 
             AddHandler(new StampBonusCheckHandler(this));
-			AddHandler(new StampBonusGetListHandler(this));
-			AddHandler(new StampBonusReceiveDailyHandler(this));
+            AddHandler(new StampBonusGetListHandler(this));
+            AddHandler(new StampBonusReceiveDailyHandler(this));
             AddHandler(new StampBonusReceiveTotalHandler(this));
 
             AddHandler(new SupportPointSupportPointGetRateHandler(this));
