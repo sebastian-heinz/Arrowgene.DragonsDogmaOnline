@@ -1660,5 +1660,108 @@ namespace Arrowgene.Ddon.Server.Settings
             }
         }
         private const uint _RentalPointConversionRate = 10;
+
+        /// <summary>
+        /// The maximum number of effects that can be sealed in BBM using red marks.
+        /// </summary>
+        [DefaultValue(_DispelSealMax)]
+        public uint DispelSealMax
+        {
+            set
+            {
+                SetSetting("DispelSealMax", value);
+            }
+            get
+            {
+                return TryGetSetting("DispelSealMax", _DispelSealMax);
+            }
+        }
+        private const uint _DispelSealMax = 80;
+
+        /// <summary>
+        /// The base rate for each seal in BBM, paid using red marks.
+        /// The first seal costs N, the second seal costs 2N, the third 3N, and so on.
+        /// </summary>
+        [DefaultValue(_DispelSealCostRate)]
+        public uint DispelSealCostRate
+        {
+            set
+            {
+                SetSetting("DispelSealCostRate", value);
+            }
+            get
+            {
+                return TryGetSetting("DispelSealCostRate", _DispelSealCostRate);
+            }
+        }
+        private const uint _DispelSealCostRate = 2;
+
+        /// <summary>
+        /// The cost of resetting the seals in BBM, paid using red marks.
+        /// </summary>
+        [DefaultValue(_DispelSealResetRate)]
+        public uint DispelSealResetRate
+        {
+            set
+            {
+                SetSetting("DispelSealResetRate", value);
+            }
+            get
+            {
+                return TryGetSetting("DispelSealResetRate", _DispelSealResetRate);
+            }
+        }
+        private const uint _DispelSealResetRate = 500;
+
+        /// <summary>
+        /// The number of reset tickets given for BBM weekly.
+        /// </summary>
+        [DefaultValue(_BBMWeeklyResetTickets)]
+        public uint BBMWeeklyResetTickets
+        {
+            set
+            {
+                SetSetting("BBMWeeklyResetTickets", value);
+            }
+            get
+            {
+                return TryGetSetting("BBMWeeklyResetTickets", _BBMWeeklyResetTickets);
+            }
+        }
+        private const uint _BBMWeeklyResetTickets = 3;
+
+        /// <summary>
+        /// The maximum number of times you can reset BBM using GG, each week.
+        /// </summary>
+        [DefaultValue(_BBMWeeklyGGResets)]
+        public uint BBMWeeklyGGResets
+        {
+            set
+            {
+                SetSetting("BBMWeeklyGGResets", value);
+            }
+            get
+            {
+                return TryGetSetting("BBMWeeklyGGResets", _BBMWeeklyGGResets);
+            }
+        }
+        private const uint _BBMWeeklyGGResets = 6;
+
+        /// <summary>
+        /// The cost of resetting BBM using GG.
+        /// </summary>
+        [DefaultValue(_BBMResetGGCost)]
+        public uint BBMResetGGCost
+        {
+            set
+            {
+                SetSetting("BBMResetGGCost", value);
+            }
+            get
+            {
+                return TryGetSetting("BBMResetGGCost", _BBMResetGGCost);
+            }
+        }
+        private const uint _BBMResetGGCost = 1;
     }
 }

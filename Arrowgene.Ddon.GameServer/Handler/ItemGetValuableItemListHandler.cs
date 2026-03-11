@@ -1,6 +1,12 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -18,10 +24,46 @@ namespace Arrowgene.Ddon.GameServer.Handler
             //TODO: Implement this properly.
             //This is enough to prevent the client from hanging if you accidentally use this menu.
             var res = new S2CItemGetValuableItemListRes();
-            res.Unk0 = 0;
-            res.Unk1 = 0;
+
+            foreach (var storageType in ItemManager.BothStorageTypes)
+            {
+                var storage = client.Character.Storage.GetStorage(storageType);
+                res.EmptySlotNumList.Add(new CDataStorageEmptySlotNum()
+                {
+                    StorageType = storageType,
+                    Slots = storage.EmptySlots()
+                });
+            }
+
+            foreach (var valuableItem in ValuableItemQuestRewards)
+            {
+                if (client.Character.HasQuestCompleted(valuableItem.QuestId) && client.Character.Storage.FindItemsByIdInStorage(ItemManager.EquipmentStorages, valuableItem.ItemId).Count == 0)
+                {
+                    res.ValuableItems.Add(new()
+                    {
+                        ItemId = valuableItem.ItemId,
+                        WalletType = WalletType.Gold,
+                        Price = (uint)(Server.AssetRepository.ClientItemInfos[valuableItem.ItemId].Price * 100)
+                    });
+                }
+            }
 
             return res;
         }
+
+        private static readonly List<(QuestId QuestId, ItemId ItemId)> ValuableItemQuestRewards =
+        [
+            (QuestId.VocationEmblemTrialFighter, ItemId.EmblemStoneFighter),
+            (QuestId.VocationEmblemTrialPriest, ItemId.EmblemStonePriest),
+            (QuestId.VocationEmblemTrialHunter, ItemId.EmblemStoneHunter),
+            (QuestId.VocationEmblemTrialShieldSage, ItemId.EmblemStoneShieldSage),
+            (QuestId.VocationEmblemTrialSeeker, ItemId.EmblemStoneSeeker),
+            (QuestId.VocationEmblemTrialSorcerer, ItemId.EmblemStoneSorcerer),
+            (QuestId.VocationEmblemTrialElementArcher, ItemId.EmblemStoneElementArcher),
+            (QuestId.VocationEmblemTrialWarrior, ItemId.EmblemStoneWarrior),
+            (QuestId.VocationEmblemTrialAlchemist, ItemId.EmblemStoneAlchemist),
+            (QuestId.VocationEmblemTrialSpiritLancer, ItemId.EmblemStoneSpiritLancer),
+            (QuestId.VocationEmblemTrialHighScepter, ItemId.EmblemStoneHighScepter),
+        ];
     }
 }

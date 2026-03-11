@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -25,7 +26,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 foreach (var uid in emblemData.UIDs)
                 {
-                    var item = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, uid).Item2.Item2;
+                    var item = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, uid)?.Item2.Item2;
+
+                    if (item is null)
+                    {
+                        continue;
+                    }
+
                     result.JobEmblemList.Add(new CDataJobEmblem()
                     {
                         Job = jobId,
@@ -42,46 +49,44 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            result.EmblemSettings.LevelingDataList = Server.GameSettings.EmblemSettings.LevelingData
+            result.EmblemSettings.LevelingDataList = [.. Server.GameSettings.EmblemSettings.LevelingData
                 .Select(x => new CDataJobEmblemLevelData()
                 {
                     Level = x.Level,
                     PPAmount = x.PPCost,
                     EPGain = x.EP,
-                }).ToList();
+                })];
 
-            result.EmblemSettings.StatCostList = Server.GameSettings.EmblemSettings.StatUpgradeCost
+            result.EmblemSettings.StatCostList = [.. Server.GameSettings.EmblemSettings.StatUpgradeCost
                 .Select(x => new CDataJobEmblemStatCostData()
                 {
                     StatLevel = x.Level,
                     EPAmount = x.EPAmount,
-                }).ToList();
+                })];
 
             result.EmblemSettings.StatUpgradeDataList = Server.ScriptManager.JobEmblemStatModule.GetData();
 
-            result.EmblemSettings.CrestSlotRestrictionList = Server.GameSettings.EmblemSettings.InheritanceUnlockLevels
+            result.EmblemSettings.CrestSlotRestrictionList = [.. Server.GameSettings.EmblemSettings.InheritanceUnlockLevels
                 .OrderBy(x => x.UnlockLevel)
                 .Select(x => new CDataJobEmblemSlotRestriction()
                 {
                     LevelUnlocked = x.UnlockLevel,
-                })
-                .ToList();
+                })];
 
-            result.EmblemSettings.EmblemCrestInheritanceBaseChanceList = Server.GameSettings.EmblemSettings.InheritanceUnlockLevels
+            result.EmblemSettings.EmblemCrestInheritanceBaseChanceList = [.. Server.GameSettings.EmblemSettings.InheritanceUnlockLevels
                 .Select((x, index) => new CDataJobEmblemCrestInheritanceBaseChance()
                 {
                     Slot = (byte)index,
                     BaseChanceAmount = x.BaseChance
-                })
-                .ToList();
+                })];
 
-            result.EmblemSettings.InheritanceIncreaseChanceItemList = Server.GameSettings.EmblemSettings.InheritanceChanceIncreaseItems
+            result.EmblemSettings.InheritanceIncreaseChanceItemList = [.. Server.GameSettings.EmblemSettings.InheritanceChanceIncreaseItems
                 .Select(x => new CDataJobEmblemInhertianceIncreaseChanceItem()
                 {
                     ItemId = x.ItemId,
                     AmountConsumed = x.AmountConsumed,
                     PercentIncrease = x.PercentIncrease,
-                }).ToList();
+                })];
 
 
             result.EmblemSettings.EmblemPointResetGGCostList = new()

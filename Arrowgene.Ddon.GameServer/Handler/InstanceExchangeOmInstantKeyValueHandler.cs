@@ -19,18 +19,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Logger.Debug($"OM: Key={request.Key}, Value={request.Value}, OldValue={oldValue}");
 
-            S2CInstanceExchangeOmInstantKeyValueNtc ntc = new S2CInstanceExchangeOmInstantKeyValueNtc();
-            ntc.StageId = client.Character.Stage.Id;
-            ntc.Key = request.Key;
-            ntc.Value = request.Value;
-            ntc.OldValue = oldValue;
-            client.Send(ntc);
+            S2CInstanceExchangeOmInstantKeyValueNtc ntc = new()
+            {
+                StageId = client.Character.Stage.Id,
+                Key = request.Key,
+                Value = request.Value,
+                OldValue = oldValue
+            };
 
-            S2CInstanceExchangeOmInstantKeyValueRes res = new S2CInstanceExchangeOmInstantKeyValueRes();
-            res.StageId = client.Character.Stage.Id;
-            res.Key = request.Key;
-            res.Value = request.Value;
-            res.OldValue = oldValue;
+            if (client.Party.ExmInProgress)
+            {
+                // TODO: Hacky workaround for possible issue regarding EXM progresses?
+                client.Send(ntc);
+            }
+            else
+            {
+                client.Party.SendToAll(ntc);
+            }
+
+            S2CInstanceExchangeOmInstantKeyValueRes res = new()
+            {
+                StageId = client.Character.Stage.Id,
+                Key = request.Key,
+                Value = request.Value,
+                OldValue = oldValue
+            };
 
             return res;
         }

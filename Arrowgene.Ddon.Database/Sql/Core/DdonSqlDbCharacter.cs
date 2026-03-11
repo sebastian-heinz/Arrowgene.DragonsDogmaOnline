@@ -385,6 +385,7 @@ public partial class DdonSqlDb : SqlDb
         character.AchievementProgress = SelectAchievementProgress(character.CharacterId, conn);
         character.AchievementUniqueCrafts = SelectAchievementUniqueCrafts(character.CharacterId, conn);
         character.UnlockableItems = SelectUnlockedItems(character.CharacterId, conn);
+        character.DispelSeals = SelectDispelSeals(character.CharacterId, conn);
     }
 
     public override bool UpdateMyPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null)

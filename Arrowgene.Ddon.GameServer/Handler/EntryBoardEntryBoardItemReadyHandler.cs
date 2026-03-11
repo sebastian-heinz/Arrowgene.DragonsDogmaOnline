@@ -49,12 +49,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var hostClient = Server.ClientLookup.GetClientByCharacterId(data.PartyLeaderCharacterId);
                 party.AddHost(hostClient);
 
-                S2CPartyPartyInviteAcceptNtc inviteAcceptNtc = new S2CPartyPartyInviteAcceptNtc();
-                inviteAcceptNtc.ServerId = (ushort)Server.Id;
-                inviteAcceptNtc.PartyId = party.Id;
-                inviteAcceptNtc.StageId = hostClient.Character.Stage.Id;
-                inviteAcceptNtc.PositionId = 0;
-                inviteAcceptNtc.MemberIndex = 0;
+                S2CPartyPartyInviteAcceptNtc inviteAcceptNtc = new()
+                {
+                    ServerId = (ushort)Server.Id,
+                    PartyId = party.Id,
+                    StageId = hostClient.Character.Stage.Id,
+                    PositionId = 0,
+                    MemberIndex = 0
+                };
 
                 hostClient.Enqueue(inviteAcceptNtc, packetQueue);
 
@@ -65,10 +67,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     var memberClient = Server.ClientLookup.GetClientByCharacterId(characterId);
                     try
                     {
-                        var invitedMember = party.Invite(memberClient, hostClient, false) ??
-                            throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INTERNAL_ERROR, $"Failed to invite member to EXM party ({characterId}:{party.Id}:{data.EntryItem.Id})");
-                        var partyMember = party.Accept(memberClient) ??
-                            throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INTERNAL_ERROR, $"Failed to accept EXM party invite ({characterId}:{party.Id}:{data.EntryItem.Id})");
+                        // Skip all the invitation handling and just jam them directly into the party.
+                        var partyMember = party.ForceAccept(memberClient)
+                            ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INTERNAL_ERROR, $"Failed to handle EXM party invite ({characterId}:{party.Id}:{data.EntryItem.Id})");
 
                         inviteAcceptNtc.MemberIndex = i;
                         memberClient.Enqueue(inviteAcceptNtc, packetQueue);

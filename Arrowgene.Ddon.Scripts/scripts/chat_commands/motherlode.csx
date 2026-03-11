@@ -64,6 +64,7 @@ public class ChatCommand : IChatCommand
         {"GM", WalletType.GoldenDragonMark},
         {"SM", WalletType.SilverDragonMark},
         {"RM", WalletType.RedDragonMark},
+        {"RT", WalletType.BitterblackMazeResetTicket}
     };
 
     private static readonly uint DefaultAmount = 10000;

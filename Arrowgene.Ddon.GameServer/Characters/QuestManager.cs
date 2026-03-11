@@ -42,7 +42,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// </summary>
         private static readonly HashSet<uint> KnownBadQuestScheduleIds = new HashSet<uint>()
         {
-            25077, 43645, 43646, 47734, 47736, 47737, 47738, 47739, 49692, 77644, 151381, 208640, 233576, 259411, 259412, 287378, 315624
+            25077, 43645, 43646, 47734, 47735, 47736, 47737, 47738, 47739, 49692, 77644, 151381, 208640, 233576, 259411, 259412, 287378, 315624
         };
 
         private static void AddQuestToCategory(Quest quest)
@@ -188,7 +188,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             if (!gQuests.ContainsKey(questScheduleId))
             {
-                if (!KnownBadQuestScheduleIds.Contains(questScheduleId))
+                if (!KnownBadQuestScheduleIds.Contains(questScheduleId) && !IsBoardQuest(questScheduleId))
                 {
                     Logger.Error($"GetQuestByScheduleId: Invalid questScheduleId {questScheduleId}");
                 }
@@ -3441,6 +3441,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static bool IsBoardQuest(Quest quest)
         {
             return IsBoardQuest(quest.QuestId);
+        }
+
+        public static bool IsBoardQuest(uint questScheduleId)
+        {
+            return QuestScheduleId.GetType(questScheduleId) == QuestScheduleId.ScheduleIdType.Board;
         }
 
         public static bool IsTutorialQuest(QuestId questId)

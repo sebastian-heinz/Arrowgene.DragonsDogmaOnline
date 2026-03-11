@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 uint sortId = 0;
                 foreach (var item in shopCategory.Items)
                 {
-                    var itemResult = item.AsCDataDispelBaseItem(client.Character.Job);
+                    var itemResult = item.AsCDataDispelBaseItem(client.Character.Job, client.Character.DispelSeals);
                     itemResult.SortId = sortId++;
                     res.DispelBaseItemList.Add(itemResult);
                 }

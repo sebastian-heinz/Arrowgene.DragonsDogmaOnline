@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.Server.Network;
 
 namespace Arrowgene.Ddon.Server
@@ -21,7 +22,7 @@ namespace Arrowgene.Ddon.Server
         {
             lock (_lock)
             {
-                return new List<TClient>(_clients);
+                return [.. _clients.Where(x => x.IsAlive)];
             }
         }
 

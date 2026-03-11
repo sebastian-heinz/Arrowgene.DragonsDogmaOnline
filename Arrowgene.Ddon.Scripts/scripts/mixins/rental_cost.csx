@@ -23,7 +23,7 @@ public class Mixin : IRentalCostMixin
         uint craft = pawnListEntry.PawnListData.CraftRank;
 
         uint maxLevel = client.Character.CharacterJobDataList.Select(x => x.Lv).Max();
-        uint maxCraft = client.Character.Pawns.Select(x => x.CraftData.CraftRank).Max();
+        uint maxCraft = client.Character.Pawns.Select(x => x.CraftData.CraftRank).DefaultIfEmpty().Max();
 
         uint deltaLevel = level > maxLevel ? level - maxLevel : 0;
         uint deltaCraft = craft > maxCraft ? craft - maxCraft : 0;

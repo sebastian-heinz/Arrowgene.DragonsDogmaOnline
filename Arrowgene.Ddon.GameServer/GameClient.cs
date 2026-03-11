@@ -4,6 +4,7 @@ using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using System;
 using Arrowgene.Networking.SAEAServer;
@@ -23,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public void UpdateIdentity()
         {
-            string newIdentity = $"[GameClient@{ClientHandle.Identity}]";
+            string newIdentity = $"[GameClient#{Id}@{Socket.Identity}]";
             if (Account != null)
             {
                 newIdentity += $"[Acc:({Account.Id}){Account.NormalName}]";
@@ -62,5 +63,6 @@ namespace Arrowgene.Ddon.GameServer
         // TODO: Place somewhere else more sensible
         public uint LastWarpPointId { get; set; }
         public DateTime LastWarpDateTime { get; set; }
+        public S2CLobbyLobbyDataMsgNotice LastLobbyDataMsg { get; set; }
     }
 }

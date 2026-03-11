@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -128,8 +129,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         equipElement.Add = appraisalCrest.Amount;
                         break;
                     case AppraisalCrestType.BitterBlackEarring:
-                        equipElement.CrestId = AppraisalManager.RollBitterBlackMazeEarringCrest(character.Job);
-                        equipElement.Add = AppraisalManager.RollBitterBlackMazeEarringPercent(character.Job);
+                        equipElement.CrestId = AppraisalManager.RollBitterBlackMazeEarringCrest(character.DispelSeals, character.Job);
+
+                        var mixin = Server.ScriptManager.MixinModule.Get<IBitterblackEarringMixin>("bitterblack_earring");
+                        equipElement.Add = mixin.RollBitterBlackMazeEarringPercent(character.Job);
+                        break;
+                    case AppraisalCrestType.BitterBlackBracelet:
+                        equipElement.CrestId = AppraisalManager.RollBitterBlackMazeBraceletCrest(character.DispelSeals);
+                        equipElement.Add = appraisalCrest.Amount;
                         break;
                 }
 

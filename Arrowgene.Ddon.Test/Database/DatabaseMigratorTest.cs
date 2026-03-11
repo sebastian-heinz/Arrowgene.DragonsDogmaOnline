@@ -287,7 +287,7 @@ namespace Arrowgene.Ddon.Test.Database
         public Account SelectAccountByName(string accountName) { return new Account(); }
         public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId, DbConnection? connectionIn = null) { return new List<BazaarExhibition>(); }
         public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(List<uint> itemIds, uint excludedCharacterId, DbConnection? connectionIn = null) { return new List<BazaarExhibition>(); }
-        public List<AbilityId> SelectAllUnlockedSecretAbilities(uint commonId) { return new List<AbilityId>(); }
+        public List<AbilityId> SelectAllUnlockedSecretAbilities(uint commonId, DbConnection? connectionIn = null) { return new List<AbilityId>(); }
         public BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId) { return new BazaarExhibition(); }
         public List<QuestBoxRewards> SelectBoxRewardItems(uint commonId, DbConnection? connectionIn = null) { return new List<QuestBoxRewards>(); }
         public Character SelectCharacter(uint characterId, DbConnection? connectionIn = null) { return new Character(); }
@@ -385,15 +385,17 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateBBMProgress(uint characterId, BitterblackMazeProgress progress, DbConnection? connectionIn = null) { return true; }
         public bool RemoveBBMProgress(uint characterId) { return true; }
         public BitterblackMazeProgress SelectBBMProgress(uint characterId) { return new BitterblackMazeProgress(); }
-        public bool InsertBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks) { return true; }
-        public bool UpdateBBMRewards(uint characterId, BitterblackMazeRewards rewards, DbConnection? connectionIn = null) { return true; }
-        public bool RemoveBBMRewards(uint characterId) { return true; }
-        public BitterblackMazeRewards SelectBBMRewards(uint characterId, DbConnection? connectionIn = null) { return new BitterblackMazeRewards(); }
-        public bool InsertBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure, DbConnection? connectionIn = null) { return true; }
-        public bool InsertBBMContentTreasure(uint characterId, uint contentId, uint amount, DbConnection? connectionIn = null) { return true; }
-        public bool UpdateBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure) { return true; }
-        public bool UpdateBBMContentTreasure(uint characterId, uint contentId, uint amount) { return true; }
-        public bool RemoveBBMContentTreasure(uint characterId) { return true; }
+        public bool InsertBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks, uint stageId, DbConnection? connectionIn = null) { return true; }
+        public bool UpdateBBMRewards(uint characterId, BitterblackMazeMarkRewards rewards, DbConnection? connectionIn = null) { return true; }
+        public bool RemoveBBMRewards(uint characterId, DbConnection? connectionIn = null) { return true; }
+        public Dictionary<uint, BitterblackMazeMarkRewards> SelectBBMRewards(uint characterId, DbConnection? connectionIn = null) { return new(); }
+        public bool ResetBBMResetTicketStatus(DbConnection? connectionIn = null) { return true; }
+        public bool InsertBBMResetTicketStatus(uint characterId, DbConnection? connectionIn = null) { return true; }
+        public uint SelectBBMGGReset(uint characterId, DbConnection? connectionIn = null) { return 0; }
+        public bool InsertBBMGGReset(uint characterId, DbConnection? connectionIn = null) { return true; }
+        public bool ResetBBMGGReset(DbConnection? connectionIn = null) { return true; }
+        public bool InsertBBMContentTreasure(uint characterId, uint stageId, uint groupId, uint index, DbConnection? connectionIn = null) { return true; }
+        public bool RemoveBBMContentTreasure(uint characterId, DbConnection? connectionIn = null) { return true; }
         public List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId, DbConnection? connectionIn = null) { return new List<BitterblackMazeTreasure>(); }
         public List<uint> SelectOfficialPawns(DbConnection? connectionIn = null) { return []; }
         public List<uint> SelectAllPlayerPawns(uint limit = 100) { return new List<uint>(); }
@@ -530,6 +532,10 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertRentalPawnFeedback(uint characterId, RentalPawn pawn, List<CDataPawnFeedback> pawnFeedbacks, DbConnection? connectionIn = null) { return true; }
         public List<CDataPawnHistory> SelectPawnHistory(uint pawnId, DbConnection? connectionIn = null) { return []; }
         public CDataPawnTotalScore SelectPawnTotalScore(uint pawnId, DbConnection? connectionIn = null) { return new(); }
+
+        public HashSet<uint> SelectDispelSeals(uint characterId, DbConnection? connectionIn = null) { return []; }
+        public bool InsertDispelSeal(uint characterId, uint sealIndex, DbConnection? connectionIn = null) { return true; }
+        public bool DeleteDispelSeal(uint characterId, uint sealIndex, DbConnection? connectionIn = null) { return true; }
 
         public bool UpsertEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo, DbConnection? connectionIn = null) { return true; }
 

@@ -2,6 +2,7 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Npgsql;
 using System;
 using System.Data.SQLite;
 using System.Linq;
@@ -39,16 +40,30 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 if (ex.ErrorCode == (int)SQLiteErrorCode.Busy)
                 {
-                    response = new TResStruct();
-                    response.Error = (uint)ErrorCode.ERROR_CODE_DB_DEAD_LOCK;
+                    response = new TResStruct
+                    {
+                        Error = (uint)ErrorCode.ERROR_CODE_DB_DEAD_LOCK
+                    };
                 }
                 else
                 {
-                    response = new TResStruct();
-                    response.Error = (uint)ErrorCode.ERROR_CODE_DB_FAILURE;
+                    response = new TResStruct
+                    {
+                        Error = (uint)ErrorCode.ERROR_CODE_DB_FAILURE
+                    };
                 }
                 client.Send(response);
                 client.Close(); // Do not tolerate SqLiteExceptions because of desync issues.
+                throw;
+            }
+            catch (PostgresException ex)
+            {
+                response = new TResStruct
+                {
+                    Error = (uint)ErrorCode.ERROR_CODE_DB_FAILURE
+                };
+                client.Send(response);
+                client.Close();
                 throw;
             }
             catch (NotImplementedException ex)

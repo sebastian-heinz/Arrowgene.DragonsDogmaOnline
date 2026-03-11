@@ -698,7 +698,7 @@ public partial class DdonSqlDb : SqlDb
         AddParameter(command, "@name", pawn.Name);
         AddParameter(command, "@hm_type", pawn.HmType);
         AddParameter(command, "@pawn_type", (byte)pawn.PawnType);
-        AddParameter(command, "@pawn_state", (byte)pawn.PawnState);
+        AddParameter(command, "@pawn_state", (byte)(pawn.PawnState == PawnState.Party ? PawnState.None : pawn.PawnState));
         AddParameter(command, "@training_points", pawn.TrainingPoints);
         AddParameter(command, "@available_training", pawn.AvailableTraining);
         AddParameter(command, "@is_official_pawn", false);

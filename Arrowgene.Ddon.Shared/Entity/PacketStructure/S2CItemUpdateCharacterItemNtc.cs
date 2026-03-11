@@ -10,17 +10,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.S2C_ITEM_UPDATE_CHARACTER_ITEM_NTC;
 
-        public S2CItemUpdateCharacterItemNtc()
-        {
-            UpdateType=0;
-            UpdateItemList=new List<CDataItemUpdateResult>();
-            UpdateWalletList=new List<CDataUpdateWalletPoint>();
-        }
-
-        // See ItemNoticeType
-        public ItemNoticeType UpdateType;
-        public List<CDataItemUpdateResult> UpdateItemList;
-        public List<CDataUpdateWalletPoint> UpdateWalletList;
+        public ItemNoticeType UpdateType { get; set; }
+        public List<CDataItemUpdateResult> UpdateItemList { get; set; } = [];
+        public List<CDataUpdateWalletPoint> UpdateWalletList { get; set; } = [];
 
         public class Serializer : PacketEntitySerializer<S2CItemUpdateCharacterItemNtc>
         {

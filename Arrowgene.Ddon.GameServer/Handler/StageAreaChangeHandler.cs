@@ -46,6 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Server.HubManager.UpdateLobbyContextOnStageChange(client, previousStageId, packet.StageId);
             Server.RentalPawnManager.HandleStageAreaChange(client, previousStageId, packet.StageId);
             Server.PartnerPawnManager.HandleStageAreaChange(client, previousStageId, packet.StageId);
+            Server.BitterblackMazeManager.HandleBBMResetTicketHandout(client, packet.StageId).Send();
 
             foreach (var pawn in client.Character.Pawns)
             {

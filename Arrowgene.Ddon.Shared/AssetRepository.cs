@@ -69,6 +69,7 @@ namespace Arrowgene.Ddon.Shared
         public const string QuestScheduleIdKey = "QuestScheduleId.csv";
         public const string CraftAddStatusKey = "CraftAddStatus.json";
         public const string SkillDataKey = "SkillData.json";
+        public const string TrainingRoomKey = "TrainingRoom.json";
 
         public const string QuestAssestKey = "quests";
         public const string EpitaphAssestKey = "epitaph";
@@ -139,6 +140,7 @@ namespace Arrowgene.Ddon.Shared
             LightQuestAsset = new();
             CraftAddStatusAsset = new();
             SkillData = new([], [], []);
+            TrainingRoomAsset = [];
         }
 
         public Dictionary<ErrorCode, ClientErrorCode> ClientErrorCodes { get; private set; }
@@ -190,6 +192,7 @@ namespace Arrowgene.Ddon.Shared
         public SkillDataAsset SkillData { get; private set; }
         public Dictionary<QuestId, uint> QuestScheduleIdAsset { get; private set; }
         public CraftAddStatusAsset CraftAddStatusAsset { get; private set; }
+        public List<TrainingRoomEntry> TrainingRoomAsset { get; private set; }
 
         public void Initialize()
         {
@@ -240,6 +243,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => QuestScheduleIdAsset = value, QuestScheduleIdKey, new QuestScheduleIdCsv());
             RegisterAsset(value => SkillData = value, SkillDataKey, new SkillDataAssetDeserializer());
             RegisterAsset(value => CraftAddStatusAsset = value, CraftAddStatusKey, new CraftAddStatusAssetReader());
+            RegisterAsset(value => TrainingRoomAsset = value, TrainingRoomKey, new JsonReaderWriter<List<TrainingRoomEntry>>());
 
             // This must be set before calling QuestAssetDeserializer and EpitaphTrialAssetDeserializer
             var commonEnemyDeserializer = new AssetCommonDeserializer(this.NamedParamAsset);

@@ -21181,6 +21181,50 @@
             "spot_pos_id": 0
         },
         {
+            "location": "Eastern Zandora",
+            "type": "liquids",
+            "is_spot": false,
+            "name": "Blessed Drop",
+            "item_id": 7831,
+            "item_level": 9,
+            "area_id": 11,
+            "stage_id": 1,
+            "area_rank_minimum": 0,
+            "weather": [
+                "Fine",
+                "Cloudy",
+                "Rainy"
+            ],
+            "valid_period": "0:00,23:59",
+            "quality": 0,
+            "min_amount": 1,
+            "max_amount": 0,
+            "spot_stage_layout_id": null,
+            "spot_pos_id": 0
+        },
+        {
+            "location": "Eastern Zandora",
+            "type": "liquids",
+            "is_spot": false,
+            "name": "Healing Drop",
+            "item_id": 7829,
+            "item_level": 7,
+            "area_id": 11,
+            "stage_id": 1,
+            "area_rank_minimum": 0,
+            "weather": [
+                "Fine",
+                "Cloudy",
+                "Rainy"
+            ],
+            "valid_period": "0:00,23:59",
+            "quality": 0,
+            "min_amount": 1,
+            "max_amount": 0,
+            "spot_stage_layout_id": null,
+            "spot_pos_id": 0
+        },
+        {
             "location": "Eastern Zandora: Shrine of Resentment",
             "type": "sand",
             "is_spot": false,
@@ -47819,6 +47863,28 @@
             "spot_pos_id": 0
         },
         {
+            "location": "Mergoda Ruins",
+            "type": "ore",
+            "is_spot": false,
+            "name": "Chipped Gold Lump",
+            "item_id": 8025,
+            "item_level": 10,
+            "area_id": 12,
+            "stage_id": 76,
+            "area_rank_minimum": 0,
+            "weather": [
+                "Fine",
+                "Cloudy",
+                "Rainy"
+            ],
+            "valid_period": "0:00,23:59",
+            "quality": 0,
+            "min_amount": 1,
+            "max_amount": 0,
+            "spot_stage_layout_id": null,
+            "spot_pos_id": 0
+        },
+        {
             "location": "Mergoda Ruins: Mergoda Ruins Lower Level",
             "type": "lumber",
             "is_spot": false,
@@ -48363,6 +48429,28 @@
             "spot_pos_id": 0
         },
         {
+            "location": "Morrow Forest: Invading Demons Cave",
+            "type": "gemstones",
+            "is_spot": false,
+            "name": "Agate",
+            "item_id": 7894,
+            "item_level": 7,
+            "area_id": 16,
+            "stage_id": 417,
+            "area_rank_minimum": 0,
+            "weather": [
+                "Fine",
+                "Cloudy",
+                "Rainy"
+            ],
+            "valid_period": "0:00,23:59",
+            "quality": 0,
+            "min_amount": 1,
+            "max_amount": 0,
+            "spot_stage_layout_id": null,
+            "spot_pos_id": 0
+        },
+        {
             "location": "Elan Water Grove: Dancing Rainbow Cave Depths",
             "type": "gemstones",
             "is_spot": true,
@@ -48701,6 +48789,50 @@
             "name": "Scroll of Great Sorcery",
             "item_id": 8009,
             "item_level": 7,
+            "area_id": 14,
+            "stage_id": 425,
+            "area_rank_minimum": 0,
+            "weather": [
+                "Fine",
+                "Cloudy",
+                "Rainy"
+            ],
+            "valid_period": "0:00,23:59",
+            "quality": 0,
+            "min_amount": 1,
+            "max_amount": 0,
+            "spot_stage_layout_id": null,
+            "spot_pos_id": 0
+        },
+        {
+            "location": "Elan Water Grove: Wisteria Arbor Withering Well",
+            "type": "ore",
+            "is_spot": false,
+            "name": "Hematite",
+            "item_id": 7861,
+            "item_level": 6,
+            "area_id": 14,
+            "stage_id": 425,
+            "area_rank_minimum": 0,
+            "weather": [
+                "Fine",
+                "Cloudy",
+                "Rainy"
+            ],
+            "valid_period": "0:00,23:59",
+            "quality": 0,
+            "min_amount": 1,
+            "max_amount": 0,
+            "spot_stage_layout_id": null,
+            "spot_pos_id": 0
+        },
+        {
+            "location": "Elan Water Grove: Wisteria Arbor Withering Well",
+            "type": "ore",
+            "is_spot": false,
+            "name": "White Bone Rock",
+            "item_id": 15946,
+            "item_level": 50,
             "area_id": 14,
             "stage_id": 425,
             "area_rank_minimum": 0,
@@ -49840,7 +49972,7 @@
         },
         {
             "location": "Elan Water Grove: Visiting Square",
-            "type": "Other",
+            "type": "other",
             "is_spot": true,
             "name": "Fallen Soldier Stone",
             "item_id": 17899,

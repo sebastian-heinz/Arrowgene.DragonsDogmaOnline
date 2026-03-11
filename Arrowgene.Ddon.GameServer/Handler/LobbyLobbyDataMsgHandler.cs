@@ -40,6 +40,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
+                // Cache this for later use.
+                client.LastLobbyDataMsg = res;
+
                 // We are in one of the common areas where players can see eachother
                 foreach (GameClient otherClient in Server.ClientLookup.GetAll())
                 {

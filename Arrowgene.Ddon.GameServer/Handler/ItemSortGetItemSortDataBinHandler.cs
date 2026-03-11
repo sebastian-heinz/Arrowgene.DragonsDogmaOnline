@@ -10,15 +10,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemSortGetItemSortDataBinHandler));
 
-
         public ItemSortGetItemSortDataBinHandler(DdonGameServer server) : base(server)
         {
         }
 
         public override S2CItemSortGetItemSortdataBinRes Handle(GameClient client, C2SItemSortGetItemSortDataBinReq request)
         {
-            S2CItemSortGetItemSortdataBinNtc ntc = new S2CItemSortGetItemSortdataBinNtc();
-            S2CItemSortGetItemSortdataBinRes res = new S2CItemSortGetItemSortdataBinRes();
+            S2CItemSortGetItemSortdataBinRes res = new();
+
             foreach (var item in request.SortList)
             {
                 StorageType storageType = (StorageType)item.Value; // why the hell is it U32 then
@@ -31,10 +30,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 };
 
                 res.SortData.Add(cdata);
-                ntc.SortData.Add(cdata);
             }
 
-            client.Send(ntc); // Whats the ntc for if the res has the same info
+            S2CItemSortGetItemSortdataBinNtc ntc = new()
+            {
+                SortData = res.SortData
+            };
+
+            client.Send(ntc);
 
             return res;
         }

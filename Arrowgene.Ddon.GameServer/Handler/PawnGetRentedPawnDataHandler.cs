@@ -1,8 +1,10 @@
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -27,11 +29,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 PawnId = pawn.PawnId,
                 PawnInfo = pawn.CDataPawnInfo,
             };
-            result.PawnInfo.AbilityCostMax = Server.CharacterManager.GetMaxAugmentAllocation(pawn);
 
+            var mixin = Server.ScriptManager.MixinModule.Get<IRentalCostMixin>("rental_cost");
             PacketQueue queue = new();
             Server.Database.ExecuteInTransaction(connection =>
             {
+                HashSet<uint> clanPawns = [.. Server.Database.SelectClanPawns(client.Character.ClanId, limit: 1000, connectionIn: connection)];
+
                 //S2C_PAWN_GET_PAWN_PROFILE_NTC
                 var profileNtc = new S2CPawnGetPawnProfileNtc()
                 {
@@ -40,6 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     OwnerBaseInfo = Server.Database.SelectCommunityCharacterBaseInfo(pawn.OwningCharacterId, connection),
                     PawnProfile = pawn.CharacterProfile.CDataArisenProfile,
                     Comment = pawn.CharacterProfile.Comment,
+                    RentalCost = mixin.GetRentalCost(client, pawn.CDataRegisterdPawnList, clanPawns.Contains(pawn.PawnId))
                 };
                 client.Enqueue(profileNtc, queue);
 

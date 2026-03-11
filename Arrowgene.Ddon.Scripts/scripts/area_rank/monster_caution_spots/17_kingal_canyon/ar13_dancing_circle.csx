@@ -6,23 +6,26 @@ public class MonsterSpotInfo : IMonsterSpotInfo
     public override QuestAreaId AreaId => QuestAreaId.KingalCanyon;
     public override uint RequiredAreaRank => 13;
 
-    public class NamedParamId
-    {
-        public const uint Mutated = 1290;
-    }
-
     public override void Initialize()
     {
         var enemies = new List<InstancedEnemy>()
         {
-            LibDdon.Enemy.CreateAuto(EnemyId.SeverelyInfectedDemon, 78, 0, isBoss: true)
+            LibDdon.Enemy.CreateAuto(EnemyId.SeverelyInfectedDemon, 78, 0),
+            LibDdon.Enemy.CreateAuto(EnemyId.SeverelyInfectedDemon, 78, 1),
+            LibDdon.Enemy.CreateAuto(EnemyId.SeverelyInfectedDemon, 78, 2),
+            LibDdon.Enemy.CreateAuto(EnemyId.SeverelyInfectedDemon, 78, 3),
+            LibDdon.Enemy.CreateAuto(EnemyId.SeverelyInfectedDemon, 78, 4),
+            LibDdon.Enemy.CreateAuto(EnemyId.SeverelyInfectedDemon, 78, 5)
         };
 
-        var dropsTable = LibDdon.Enemy.GetDropsTable(enemies[0]).Clone()
-        .AddDrop(ItemId.JetBlackPelt, 1, 2, DropRate.VERY_COMMON)
-        .AddDrop(ItemId.JetBlackFur, 1, 3, DropRate.VERY_COMMON)
-        .AddDrop(ItemId.Kingalite, 1, 2, DropRate.COMMON);
-        enemies[0].SetDropsTable(dropsTable);
+        foreach (var enemy in enemies)
+        {
+            var dropsTable = LibDdon.Enemy.GetDropsTable(enemy).Clone()
+                .AddDrop(ItemId.JetBlackPelt, 1, 2, DropRate.COMMON)
+                .AddDrop(ItemId.JetBlackFur, 1, 3, DropRate.COMMON)
+                .AddDrop(ItemId.Kingalite, 1, 2, DropRate.UNCOMMON);
+            enemy.SetDropsTable(dropsTable);
+        }
 
         AddEnemies(enemies);
     }

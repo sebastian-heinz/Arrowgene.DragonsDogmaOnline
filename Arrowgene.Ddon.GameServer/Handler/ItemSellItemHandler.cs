@@ -1,9 +1,12 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -31,10 +34,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 foreach (CDataStorageItemUIDList consumeItem in request.ConsumeItemList)
                 {
-                    var ntcData = Server.ItemManager.ConsumeItemByUId(Server, client.Character, consumeItem.StorageType, consumeItem.ItemUId, consumeItem.Num, connection);
-                    ntc.UpdateItemList.Add(ntcData);
+                    List<StorageType> targetStorage = [];
+                    if (consumeItem.StorageType == StorageType.ReceiveInItemBagCraft)
+                    {
+                        targetStorage = ItemManager.ItemBagStorageTypes;
+                    }
+                    else if (consumeItem.StorageType == StorageType.ReceiveInStorageCraft)
+                    {
+                        targetStorage = ItemManager.BoxStorageTypes;
+                    }
+                    else
+                    {
+                        targetStorage = [consumeItem.StorageType];                    
+                    }
 
-                    uint goldValue = Server.AssetRepository.ClientItemInfos[ntcData.ItemList.ItemId].Price;
+                    var ntcData = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, targetStorage, consumeItem.ItemUId, consumeItem.Num, connection);
+                    ntc.UpdateItemList.AddRange(ntcData);
+
+                    uint goldValue = Server.AssetRepository.ClientItemInfos[ntcData.First().ItemList.ItemId].Price;
                     uint amountToAdd = goldValue * consumeItem.Num;
                     totalAmountToAdd += amountToAdd;
                 }

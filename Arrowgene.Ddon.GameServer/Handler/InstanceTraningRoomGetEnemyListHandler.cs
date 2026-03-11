@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -16,34 +17,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         }
 
         public override S2CInstanceTraningRoomGetEnemyListRes Handle(GameClient client, C2SInstanceTraningRoomGetEnemyListReq request)
-        {   
+        {
             // These OptionIds are intepreted in InstanceTraningRoomSetEnemyHandler.
-            return new S2CInstanceTraningRoomGetEnemyListRes()
+            return new()
             {
-                MaxLv = 100,
-                InfoList = new List<CDataTraningRoomEnemyHeader>()
+                MaxLv = client.Character.CharacterJobDataList.Max(x => x.Lv) + 10,
+                InfoList = [.. Server.AssetRepository.TrainingRoomAsset.Select((x, i) => new CDataTraningRoomEnemyHeader()
                 {
-                    new CDataTraningRoomEnemyHeader()
-                    {
-                        OptionId = 1,
-                        Name = "Orc Soldiers"
-                    },
-                    new CDataTraningRoomEnemyHeader()
-                    {
-                        OptionId = 2,
-                        Name = "Cyclops"
-                    },
-                    new CDataTraningRoomEnemyHeader()
-                    {
-                        OptionId = 3,
-                        Name = "Ogre"
-                    },
-                    new CDataTraningRoomEnemyHeader()
-                    {
-                        OptionId = 4,
-                        Name = "Training Dummy Zuhl"
-                    },
-                }
+                    Name = x.EntryName,
+                    OptionId = (uint)(i + 1)
+                })]
             };
         }
     }

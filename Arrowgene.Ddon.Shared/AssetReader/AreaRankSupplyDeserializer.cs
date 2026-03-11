@@ -36,12 +36,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 var minRank = areaRankSupplyInfo.GetProperty("MinRank").GetUInt32();
                 var supplies = JsonSerializer.Deserialize<List<CDataBorderSupplyItem>>(areaRankSupplyInfo.GetProperty("SupplyItemInfoList"));
 
-                if (!asset.ContainsKey(areaId))
+                if (!asset.TryGetValue(areaId, out List<AreaRankSupply> areaRankSupply))
                 {
-                    asset[areaId] = new();
+                    areaRankSupply = [];
+                    asset[areaId] = areaRankSupply;
                 }
 
-                asset[areaId].Add(new AreaRankSupply()
+                areaRankSupply.Add(new AreaRankSupply()
                 {
                     AreaId = areaId,
                     MinRank = minRank,

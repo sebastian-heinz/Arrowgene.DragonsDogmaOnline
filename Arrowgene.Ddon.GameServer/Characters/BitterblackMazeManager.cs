@@ -1,20 +1,20 @@
-using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Appraisal;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Linq;
+using System.Text;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
-    public class BitterblackMazeManager
+    public class BitterblackMazeManager(DdonGameServer server)
     {
         private static readonly uint BitterblackBraceletItemId = 21651;
         private static readonly uint BitterblackEarringItemId = 23711;
@@ -22,15 +22,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static readonly byte BBM_ROTUNDA_LV_CAP = 50;
         public static readonly byte BBM_ABYSS_LV_CAP = 55;
 
+        public DdonGameServer Server { get; private set; } = server;
+
         private static uint ShouldReportProgress(BitterblackMazeProgress progress)
         {
-            return (uint) ((progress.ContentId == 0 && progress.StartTime > 0) ? 1 : 0);
+            return (uint)((progress.ContentId == 0 && progress.StartTime > 0) ? 1 : 0);
         }
 
-        private static uint ShouldReportSearchResults(BitterblackMazeProgress progress, BitterblackMazeRewards rewards)
+        private static uint ShouldReportSearchResults(BitterblackMazeProgress progress, IEnumerable<BitterblackMazeMarkRewards> rewards)
         {
-            bool rewardPresent = (rewards.GoldMarks > 0 || rewards.SilverMarks > 0 || rewards.RedMarks > 0);
-            return (uint) ((rewardPresent && progress.Tier == 0 && progress.StartTime > 0) ? 1 : 0);
+            bool rewardPresent = rewards.Any(x => x.Any);
+            return (uint)((rewardPresent && progress.Tier == 0 && progress.StartTime > 0) ? 1 : 0);
         }
 
         public static uint LevelCap(BitterblackMazeProgress progress)
@@ -53,28 +55,23 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var progress = character.BbmProgress;
 
             var rewards = server.Database.SelectBBMRewards(character.CharacterId, connectionIn);
+            var openedChests = server.Database.SelectBBMContentTreasure(character.CharacterId, connectionIn);
 
             var availableRewards = new List<CDataBattleContentAvailableRewards>();
-            var trackedRewards = server.Database.SelectBBMContentTreasure(character.CharacterId, connectionIn);
-            foreach (var stage in server.AssetRepository.BitterblackMazeAsset.Stages)
+
+            foreach (var (mode, stageId, tier, contentId) in gBossStages)
             {
-                var matches = trackedRewards.Select(x => x.ContentId == stage.Value.ContentId).ToList();
-                if (matches.Count == 0)
+                var closedChests = gSealedChestDrops
+                    .Where(x => x.Key.Item1.Id == stageId
+                        && (x.Value == ChestType.Earring || x.Value == ChestType.Bracelet)
+                        && !openedChests.Any(y => x.Key.Item1.Equals(y.LayoutId) && x.Key.Item2 == y.Index)
+                    ).Select(x => x.Key);
+
+                availableRewards.Add(new CDataBattleContentAvailableRewards()
                 {
-                    availableRewards.Add(new CDataBattleContentAvailableRewards()
-                    {
-                        Id = stage.Value.ContentId,
-                        Amount = 1,
-                    });
-                }
-                else
-                {
-                    availableRewards.Add(new CDataBattleContentAvailableRewards()
-                    {
-                        Id = stage.Value.ContentId,
-                        Amount = 0,
-                    });
-                }
+                    Id = contentId,
+                    Amount = (byte)closedChests.Count(),
+                });
             }
 
             var contentStatus = new CDataBattleContentStatus()
@@ -84,9 +81,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     GameMode = GameMode.BitterblackMaze,
                     ContentId = progress.ContentId,
                     StartTime = progress.StartTime,
-                    RewardBonus = BattleContentRewardBonus.Normal,
-                    RewardReceived = availableRewards.All(x => x.Amount == 0),
-                    ReportSearchResults = ShouldReportSearchResults(progress, rewards), // This needs to be set after killing last boss? (or maybe between tiers if you exit?)
+                    RewardBonus = BattleContentRewardBonus.Normal, // This gets set to UP when resetting with GG.
+                    RewardReceived = rewards.Count > 0 && !rewards.Values.Any(x => x.Any),
+                    ReportSearchResults = ShouldReportSearchResults(progress, rewards.Values), // This needs to be set after killing last boss? (or maybe between tiers if you exit?)
                     ReportReset = ShouldReportProgress(progress),
                     Unk7 = 23, // Value from pcap, not sure what it does
                 },
@@ -98,7 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static PacketQueue HandleTierClear(DdonGameServer server, GameClient client, Character character, StageLayoutId stageId, DbConnection? connectionIn = null)
         {
             PacketQueue packets = new();
-            
+
             var progress = character.BbmProgress;
 
             var match = server.AssetRepository.BitterblackMazeAsset.Stages.Select(x => x.Value).Where(x => x.ContentId == progress.ContentId).FirstOrDefault()
@@ -126,7 +123,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     Unk0 = progress.ContentId,
                     ContentName = (match.ContentMode == BattleContentMode.Rotunda) ? "Bitterblack Maze Rotunda" : "Bitterblack Maze Abyss",
-                    ClearTime = (ulong) (DateTimeOffset.UtcNow.ToUnixTimeSeconds() - (long) progress.StartTime)
+                    ClearTime = (ulong)(DateTimeOffset.UtcNow.ToUnixTimeSeconds() - (long)progress.StartTime)
                 };
                 client.Enqueue(clearNtc, packets);
 
@@ -145,11 +142,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var rewards = server.Database.SelectBBMRewards(character.CharacterId, connectionIn);
             // TODO: handle BattleContentRewardBonus.Up (some sort of reward bonus)
             // TODO: Is there a reason we wouldn't get a reward here?
-            var marks = GetMarksForStage(server.AssetRepository.BitterblackMazeAsset, stageId);
-            rewards.GoldMarks += marks.Gold;
-            rewards.SilverMarks += marks.Silver;
-            rewards.RedMarks += marks.Red;
-            server.Database.UpdateBBMRewards(character.CharacterId, rewards, connectionIn);
+            var (gold, silver, red) = GetMarksForStage(server.AssetRepository.BitterblackMazeAsset, stageId);
+
+            if (!rewards.TryGetValue(stageId.Id, out var existingReward))
+            {
+                server.Database.InsertBBMRewards(character.CharacterId, gold, silver, red, stageId.Id, connectionIn);
+            }
 
             // Update the situation information
             S2CBattleContentProgressNtc progressNtc = new S2CBattleContentProgressNtc();
@@ -164,7 +162,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return itemId == BitterblackMazeManager.BitterblackBraceletItemId || itemId == BitterblackMazeManager.BitterblackEarringItemId;
         }
 
-        public static Item ApplyCrest(IDatabase database, Character character, Item item, DbConnection? connectionIn = null)
+        public Item ApplyCrest(Character character, Item item, DbConnection? connectionIn = null)
         {
             // Don't allow crests to be applied if it's already gotten one by the Dispel Handler.
             if (item.EquipElementParamList.Any())
@@ -172,31 +170,124 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return item;
             }
 
-            if (item.ItemId == BitterblackMazeManager.BitterblackBraceletItemId)
+            try
             {
-                uint crestId = BitterBlackMazeRewards.BraceletRolls[Random.Shared.Next(BitterBlackMazeRewards.BraceletRolls.Count)];
-                item.EquipElementParamList.Add(new CDataEquipElementParam()
+                if (item.ItemId == BitterblackMazeManager.BitterblackBraceletItemId)
                 {
-                    SlotNo = 1,
-                    CrestId = crestId,
-                });
-                database.InsertCrest(character.CommonId, item.UId, 1, crestId, 0, connectionIn);
+                    uint crestId = AppraisalManager.RollBitterBlackMazeBraceletCrest(character.DispelSeals);
+                    item.EquipElementParamList.Add(new CDataEquipElementParam()
+                    {
+                        SlotNo = 1,
+                        CrestId = crestId,
+                    });
+                    Server.Database.InsertCrest(character.CommonId, item.UId, 1, crestId, 0, connectionIn);
+                }
+                else
+                {
+                    uint crestId = AppraisalManager.RollBitterBlackMazeEarringCrest(character.DispelSeals, character.Job);
+                    var mixin = Server.ScriptManager.MixinModule.Get<IBitterblackEarringMixin>("bitterblack_earring");
+                    ushort add = mixin.RollBitterBlackMazeEarringPercent(character.Job);
+                    item.EquipElementParamList.Add(new CDataEquipElementParam()
+                    {
+                        SlotNo = 1,
+                        CrestId = crestId,
+                        Add = add
+                    });
+                    Server.Database.InsertCrest(character.CommonId, item.UId, 1, crestId, add, connectionIn);
+                }
             }
-            else
+            catch (ResponseErrorException ex) when (ex.ErrorCode == ErrorCode.ERROR_CODE_DISPEL_NO_OPTIONS)
             {
-                var rolls = BitterBlackMazeRewards.EarringRolls[character.Job];
-                uint crestId = rolls[Random.Shared.Next(rolls.Count)];
-                ushort add = AppraisalManager.RollBitterBlackMazeEarringPercent(character.Job);
-                item.EquipElementParamList.Add(new CDataEquipElementParam()
-                {
-                    SlotNo = 1,
-                    CrestId = crestId,
-                    Add = add
-                });
-                database.InsertCrest(character.CommonId, item.UId, 1, crestId, add, connectionIn);
+                // The player has sealed all the available affixes, leaving a blank bracelet or earring.
+                // Don't raise an error because it's awkward to disrupt the gathering UI flow.
             }
 
             return item;
+        }
+
+        public PacketQueue HandleBBMResetTicketHandout(GameClient client, uint stageId)
+        {
+            PacketQueue queue = new();
+
+            if (stageId != Stage.BitterblackMazeCove.StageId)
+            {
+                return queue;
+            }
+
+            var targetTickets = Server.GameSettings.GameServerSettings.BBMWeeklyResetTickets;
+            var resetWallet = client.Character.WalletPointList.Where(x => x.Type == WalletType.BitterblackMazeResetTicket).First();
+
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                bool notRecieved = Server.Database.InsertBBMResetTicketStatus(client.Character.CharacterId, connection);
+                if (notRecieved && resetWallet.Value != targetTickets)
+                {
+                    if (resetWallet.Value > targetTickets)
+                    {
+                        // Do nothing if you have excess tickets?
+                        //client.Enqueue(Server.WalletManager.RemoveFromWalletNtc2(client.Character, WalletType.BitterblackMazeResetTicket, resetWallet.Value - targetTickets, connection), queue);
+                    }
+                    else
+                    {
+                        client.Enqueue(Server.WalletManager.AddToWalletNtc(client, client.Character, WalletType.BitterblackMazeResetTicket, targetTickets - resetWallet.Value, connectionIn: connection), queue);
+                    }
+                }
+            });
+            
+            return queue;
+        }
+
+        public List<string> GenerateProgressReportString(GameClient client)
+        {
+            Dictionary<uint, BitterblackMazeMarkRewards> rewards = [];
+            HashSet<uint> openedChests = [];
+            Server.Database.ExecuteInTransaction(connectionIn =>
+            {
+                rewards = server.Database.SelectBBMRewards(client.Character.CharacterId, connectionIn);
+                openedChests = [.. server.Database.SelectBBMContentTreasure(client.Character.CharacterId, connectionIn).Select(x => x.LayoutId.Id)];
+            });
+
+            StringBuilder sbChests = new();
+            StringBuilder sbMarks = new();
+            StringBuilder sbTotalMarks = new();
+            sbChests.Append("==CHEST REWARDS==");
+            sbMarks.Append("==MARK REWARDS==");
+            foreach (var (mode, stageId, tier, contentId) in gBossStages)
+            {
+                string stageName = $"{mode} {tier}";
+
+                if (rewards.TryGetValue(stageId, out var markReward))
+                {
+                    if (markReward.Any)
+                    {
+                        sbMarks.Append($"\n{stageName}: Can Claim");
+                    }
+                    else
+                    {
+                        sbMarks.Append($"\n{stageName}: Claimed");
+                    }
+                }
+                else
+                {
+                    sbMarks.Append($"\n{stageName}: Can Earn");
+                }
+
+                if (openedChests.Contains(stageId))
+                {
+                    sbChests.Append($"\n{stageName}: Claimed");
+                }
+                else
+                {
+                    sbChests.Append($"\n{stageName}: Can Earn");
+                }
+            }
+
+            sbTotalMarks.Append("==PENDING MARKS==");
+            sbTotalMarks.Append($"\nGold Marks: {rewards.Sum(x => x.Value.GoldMarks)}");
+            sbTotalMarks.Append($"\nSilver Marks: {rewards.Sum(x => x.Value.SilverMarks)}");
+            sbTotalMarks.Append($"\nRed Marks: {rewards.Sum(x => x.Value.RedMarks)}");
+
+            return [sbChests.ToString(), sbMarks.ToString(), sbTotalMarks.ToString()];
         }
 
         internal enum ChestType
@@ -303,6 +394,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [(new StageLayoutId(685, 0, 200), 0)] = ChestType.Earring,
         };
 
+        private static List<(BattleContentMode Mode, uint StageId, uint Tier, uint ContentId)> gBossStages = [
+            (BattleContentMode.Rotunda, 603, 1, 2),
+            (BattleContentMode.Rotunda, 604, 2, 3),
+            (BattleContentMode.Rotunda, 605, 3, 4),
+            (BattleContentMode.Abyss, 682, 1, 10),
+            (BattleContentMode.Abyss, 683, 2, 11),
+            (BattleContentMode.Abyss, 684, 3, 12),
+            (BattleContentMode.Abyss, 685, 4, 13),
+        ];
+
         public static List<InstancedGatheringItem> RollChestLoot(DdonGameServer server, Character character, StageLayoutId stageId, uint pos)
         {
             JobId jobId = character.ActiveCharacterJobData.Job;
@@ -330,8 +431,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // Check to see if player claimed loot already
                 // If not, populate it in the chest loot table
-                var treasure = server.Database.SelectBBMContentTreasure(character.CharacterId).Where(x => x.ContentId == character.BbmProgress.ContentId).ToList();
-                if (treasure.Count == 0)
+                var isNewChest = server.Database.InsertBBMContentTreasure(character.CharacterId, stageId.Id, stageId.GroupId, pos);
+                if (isNewChest)
                 {
                     uint itemId;
                     uint quality;

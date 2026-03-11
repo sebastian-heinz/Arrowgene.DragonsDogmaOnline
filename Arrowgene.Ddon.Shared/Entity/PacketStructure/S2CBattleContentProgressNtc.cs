@@ -7,14 +7,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CBattleContentProgressNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_BATTLE_71_19_16_NTC;
+        public PacketId Id => PacketId.S2C_BATTLE_CONTENT_PROGRESS_NTC;
 
-        public S2CBattleContentProgressNtc()
-        {
-            BattleContentStatusList = new List<CDataBattleContentStatus>();
-        }
-
-        public List<CDataBattleContentStatus> BattleContentStatusList { get; set; }
+        public List<CDataBattleContentStatus> BattleContentStatusList { get; set; } = [];
 
         public class Serializer : PacketEntitySerializer<S2CBattleContentProgressNtc>
         {

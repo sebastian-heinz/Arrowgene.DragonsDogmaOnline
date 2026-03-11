@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -23,34 +24,44 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // Claim marks
             var rewards = Server.Database.SelectBBMRewards(client.Character.CharacterId);
-            List<CDataUpdateWalletPoint> results = new List<CDataUpdateWalletPoint>();
-            if (rewards.GoldMarks > 0)
+            List<CDataUpdateWalletPoint> results = [];
+
+            uint goldMarks = (uint)rewards.Values.Sum(x => x.GoldMarks);
+            uint silverMarks = (uint)rewards.Values.Sum(x => x.SilverMarks);
+            uint redMarks = (uint)rewards.Values.Sum(x => x.RedMarks);
+
+            if (goldMarks > 0)
             {
-                results.Add(Server.WalletManager.AddToWallet(client.Character, WalletType.GoldenDragonMark, rewards.GoldMarks));
-                rewards.GoldMarks = 0;
+                results.Add(Server.WalletManager.AddToWallet(client.Character, WalletType.GoldenDragonMark, goldMarks));
             }
 
-            if (rewards.SilverMarks > 0)
+            if (silverMarks > 0)
             {
-                results.Add(Server.WalletManager.AddToWallet(client.Character, WalletType.SilverDragonMark, rewards.SilverMarks));
-                rewards.SilverMarks = 0;
+                results.Add(Server.WalletManager.AddToWallet(client.Character, WalletType.SilverDragonMark, silverMarks));
             }
 
-            if (rewards.RedMarks > 0)
+            if (redMarks > 0)
             {
-                results.Add(Server.WalletManager.AddToWallet(client.Character, WalletType.RedDragonMark, rewards.RedMarks));
-                rewards.RedMarks = 0;
+                results.Add(Server.WalletManager.AddToWallet(client.Character, WalletType.RedDragonMark, redMarks));
+            }
+
+            foreach(var reward in rewards.Values)
+            {
+                reward.GoldMarks = 0;
+                reward.SilverMarks = 0;
+                reward.RedMarks = 0;
+                Server.Database.UpdateBBMRewards(client.Character.CharacterId, reward);
             }
 
             if (results.Count > 0)
             {
-                S2CItemUpdateCharacterItemNtc updateWalletNtc = new S2CItemUpdateCharacterItemNtc();
-                updateWalletNtc.UpdateType = ItemNoticeType.Default;
-                updateWalletNtc.UpdateWalletList = results;
+                S2CItemUpdateCharacterItemNtc updateWalletNtc = new()
+                {
+                    UpdateType = ItemNoticeType.Default,
+                    UpdateWalletList = results
+                };
                 client.Send(updateWalletNtc);
             }
-
-            Server.Database.UpdateBBMRewards(client.Character.CharacterId, rewards);
 
             // Update Situation Data
             S2CBattleContentProgressNtc progressNtc = new S2CBattleContentProgressNtc();

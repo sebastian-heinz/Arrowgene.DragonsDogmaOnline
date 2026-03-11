@@ -43,7 +43,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion,
             StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3
         };
-        public static readonly List<StorageType> BbmEmbodyStorages = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob };
+
+        public static readonly List<StorageType> BbmEmbodyStorages =
+        [
+            StorageType.StorageBoxNormal, 
+            StorageType.ItemBagConsumable,
+            StorageType.ItemBagMaterial, 
+            StorageType.ItemBagEquipment, 
+            StorageType.ItemBagJob,
+            StorageType.CharacterEquipment
+        ];
 
         private static readonly Dictionary<ItemId, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<ItemId, (WalletType Type, uint Amount)>() {
             {ItemId.CoinPouch1G, (WalletType.Gold, 1)},
@@ -588,7 +597,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 database.ReplaceStorageItem(character.ContentCharacterId, destinationStorageType, slot, newItemNum, item, connectionIn);
                 if (BitterblackMazeManager.IsMazeReward(item.ItemId))
                 {
-                    item = BitterblackMazeManager.ApplyCrest(database, character, item, connectionIn);
+                    item = _Server.BitterblackMazeManager.ApplyCrest(character, item, connectionIn);
                 }
                 else if (_Server.JobEmblemManager.IsEmblemItem((ItemId) item.ItemId))
                 {
@@ -648,7 +657,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 database.ReplaceStorageItem(character.ContentCharacterId, destinationStorageType, slot, newItemNum, item, connectionIn);
                 if (BitterblackMazeManager.IsMazeReward(item.ItemId))
                 {
-                    item = BitterblackMazeManager.ApplyCrest(database, character, item, connectionIn);
+                    item = _Server.BitterblackMazeManager.ApplyCrest(character, item, connectionIn);
                 }
 
                 CDataItemUpdateResult result = new CDataItemUpdateResult();

@@ -95,6 +95,7 @@ namespace Arrowgene.Ddon.GameServer
             LightQuestManager = new LightQuestManager(this);
             RentalPawnManager = new RentalPawnManager(this);
             OrbUnlockManager = new OrbUnlockManager(this);
+            BitterblackMazeManager = new BitterblackMazeManager(this);
 
             S2CStageGetStageListRes stageListPacket =
                 EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
@@ -139,7 +140,7 @@ namespace Arrowgene.Ddon.GameServer
         public JobOrbUnlockManager JobOrbUnlockManager { get; }
         public JobEmblemManager JobEmblemManager { get; }
         public RentalPawnManager RentalPawnManager { get; }
-
+        public BitterblackMazeManager BitterblackMazeManager { get; }
         public ChatLogHandler ChatLogHandler { get; }
         public LightQuestManager LightQuestManager { get; }
 
@@ -369,6 +370,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new DispelGetDispelItemSettingsHandler(this));
             AddHandler(new DispelGetDispelItemListHandler(this));
             AddHandler(new DispelExchangeDispelItemHandler(this));
+            AddHandler(new DispelGetLockSettingsHandler(this));
+            AddHandler(new DispelLockSettingsHandler(this));
 
             AddHandler(new EquipChangeCharacterEquipHandler(this));
             AddHandler(new EquipChangeCharacterEquipJobItemHandler(this));
@@ -450,6 +453,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemEmbodyItemsHandler(this));
             AddHandler(new ItemChangeAttrDiscardHandler(this));
             AddHandler(new ItemGetEquipRareTypeItemsHandler(this));
+            AddHandler(new ItemRecoveryValuableItemHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobChangePawnJobHandler(this));

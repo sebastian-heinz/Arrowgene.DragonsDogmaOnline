@@ -119,7 +119,10 @@ namespace Arrowgene.Ddon.Shared.Network
 
         public bool Equals(PacketId other)
         {
-            return GroupId == other.GroupId && HandlerId == other.HandlerId && HandlerSubId == other.HandlerSubId;
+            return GroupId == other.GroupId 
+                && HandlerId == other.HandlerId 
+                && HandlerSubId == other.HandlerSubId
+                && ServerType == other.ServerType;
         }
 
         public override bool Equals(object obj)
@@ -284,7 +287,8 @@ namespace Arrowgene.Ddon.Shared.Network
 // Group: 2 - (CHARACTER)
         public static readonly PacketId C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ = new PacketId(2, 0, 1, "C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_DECIDE_CHARACTER_ID_RES = new PacketId(2, 0, 2, "S2C_CHARACTER_DECIDE_CHARACTER_ID_RES", ServerType.Game, PacketSource.Server); // キャラクター確定に
-        public static readonly PacketId S2C_CHARACTER_2_1_1 = new PacketId(2, 1, 1, "S2C_CHARACTER_2_1_1", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_GET_CHEAT_INFO_REQ = new PacketId(2, 1, 1, "S2C_GET_CHEAT_INFO_REQ", ServerType.Game, PacketSource.Server); // Yes, this pair is backwards, it's more like a notice?
+        public static readonly PacketId C2S_GET_CHEAT_INFO_RES = new PacketId(2, 1, 2, "C2S_GET_CHEAT_INFO_RES", ServerType.Game, PacketSource.Client); // Yes, this pair is backwards, it's more like a notice?
         public static readonly PacketId C2S_CHARACTER_CHARACTER_SEARCH_REQ = new PacketId(2, 2, 1, "C2S_CHARACTER_CHARACTER_SEARCH_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_CHARACTER_SEARCH_RES = new PacketId(2, 2, 2, "S2C_CHARACTER_CHARACTER_SEARCH_RES", ServerType.Game, PacketSource.Server); // キャラクター検索に
         public static readonly PacketId S2C_CHARACTER_ADD_WALLET_POINT_NTC = new PacketId(2, 3, 16, "S2C_CHARACTER_ADD_WALLET_POINT_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_2_3_16_NTC");
@@ -2125,7 +2129,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_BATTLE_CONTENT_PHASE_ENTRY_GET_RECRUITMENT_STATE_RES = new PacketId(71, 9, 2, "S2C_BATTLE_CONTENT_PHASE_ENTRY_GET_RECRUITMENT_STATE_RES", ServerType.Game, PacketSource.Server); // 一斉ステージ移動待ち受け状態取得に
         public static readonly PacketId C2S_BATTLE_CONTENT_PHASE_ENTRY_READY_REQ = new PacketId(71, 10, 1, "C2S_BATTLE_CONTENT_PHASE_ENTRY_READY_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_BATTLE_CONTENT_PHASE_ENTRY_READY_RES = new PacketId(71, 10, 2, "S2C_BATTLE_CONTENT_PHASE_ENTRY_READY_RES", ServerType.Game, PacketSource.Server); // 一斉ステージ移動準備に
-        public static readonly PacketId S2C_BATTLE_71_10_16_NTC = new PacketId(71, 10, 16, "S2C_BATTLE_71_10_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_BATTLE_CONTENT_PHASE_ENTRY_READY_NTC = new PacketId(71, 10, 16, "S2C_BATTLE_CONTENT_PHASE_ENTRY_READY_NTC", ServerType.Game, PacketSource.Server, "S2C_BATTLE_71_10_16_NTC");
         public static readonly PacketId C2S_BATTLE_CONTENT_PHASE_ENTRY_READY_CANCEL_REQ = new PacketId(71, 11, 1, "C2S_BATTLE_CONTENT_PHASE_ENTRY_READY_CANCEL_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_BATTLE_CONTENT_PHASE_ENTRY_READY_CANCEL_RES = new PacketId(71, 11, 2, "S2C_BATTLE_CONTENT_PHASE_ENTRY_READY_CANCEL_RES", ServerType.Game, PacketSource.Server); // 一斉ステージ移動準備キャンセルに
         public static readonly PacketId S2C_BATTLE_CONTENT_AREA_CHANGE_NTC = new PacketId(71, 12, 16, "S2C_BATTLE_CONTENT_AREA_CHANGE_NTC", ServerType.Game, PacketSource.Server, "S2C_BATTLE_71_12_16_NTC");
@@ -2138,7 +2142,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_BATTLE_CONTENT_INSTANT_CLEAR_INFO_RES = new PacketId(71, 17, 2, "S2C_BATTLE_CONTENT_INSTANT_CLEAR_INFO_RES", ServerType.Game, PacketSource.Server); // バトルコンテンツ即時クリア情報取得
         public static readonly PacketId C2S_BATTLE_CONTENT_CHARACTER_INFO_REQ = new PacketId(71, 18, 1, "C2S_BATTLE_CONTENT_CHARACTER_INFO_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_BATTLE_CONTENT_CHARACTER_INFO_RES = new PacketId(71, 18, 2, "S2C_BATTLE_CONTENT_CHARACTER_INFO_RES", ServerType.Game, PacketSource.Server); // バトルコンテンツ：進行情報の取得
-        public static readonly PacketId S2C_BATTLE_71_19_16_NTC = new PacketId(71, 19, 16, "S2C_BATTLE_71_19_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_BATTLE_CONTENT_PROGRESS_NTC = new PacketId(71, 19, 16, "S2C_BATTLE_CONTENT_PROGRESS_NTC", ServerType.Game, PacketSource.Server, "S2C_BATTLE_71_19_16_NTC");
         public static readonly PacketId C2S_BATTLE_CONTENT_PARTY_MEMBER_INFO_REQ = new PacketId(71, 20, 1, "C2S_BATTLE_CONTENT_PARTY_MEMBER_INFO_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_RES = new PacketId(71, 20, 2, "S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_RES", ServerType.Game, PacketSource.Server); // パーティメンバのバトルコンテンツ情報を取得
         public static readonly PacketId C2S_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_REQ = new PacketId(71, 21, 1, "C2S_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_REQ", ServerType.Game, PacketSource.Client);
@@ -2215,7 +2219,8 @@ namespace Arrowgene.Ddon.Shared.Network
 // Group: 2 - (CHARACTER)
             AddPacketIdEntry(packetIds, C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_DECIDE_CHARACTER_ID_RES);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_2_1_1);
+            AddPacketIdEntry(packetIds, S2C_GET_CHEAT_INFO_REQ);
+            AddPacketIdEntry(packetIds, C2S_GET_CHEAT_INFO_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_CHARACTER_SEARCH_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_CHARACTER_SEARCH_RES);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_ADD_WALLET_POINT_NTC);
@@ -4056,7 +4061,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_PHASE_ENTRY_GET_RECRUITMENT_STATE_RES);
             AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_PHASE_ENTRY_READY_REQ);
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_PHASE_ENTRY_READY_RES);
-            AddPacketIdEntry(packetIds, S2C_BATTLE_71_10_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_PHASE_ENTRY_READY_NTC);
             AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_PHASE_ENTRY_READY_CANCEL_REQ);
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_PHASE_ENTRY_READY_CANCEL_RES);
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_AREA_CHANGE_NTC);
@@ -4069,7 +4074,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_INSTANT_CLEAR_INFO_RES);
             AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_CHARACTER_INFO_REQ);
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_CHARACTER_INFO_RES);
-            AddPacketIdEntry(packetIds, S2C_BATTLE_71_19_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_PROGRESS_NTC);
             AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_PARTY_MEMBER_INFO_REQ);
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_RES);
             AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_REQ);

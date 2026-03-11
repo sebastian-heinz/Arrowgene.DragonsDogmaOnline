@@ -147,11 +147,11 @@ namespace Arrowgene.Ddon.Cli
 
             if (result != CommandResultType.Exit)
             {
-                Logger.Info("Press `e'-key to exit.");
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                while (keyInfo.Key != ConsoleKey.E)
+                Logger.Info("Type 'e' and press enter to exit.");
+                int input = Console.Read();
+                while (char.ToLower((char)input) != 'e')
                 {
-                    keyInfo = Console.ReadKey();
+                    input = Console.Read();
                 }
             }
 

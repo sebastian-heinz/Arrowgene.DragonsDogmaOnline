@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         public ItemId ItemId { get; set; }
         public byte Category { get; set; }
-        public ushort Price { get; set; }
+        public uint Price { get; set; }
         public byte StackLimit { get; set; }
         public byte Rank { get; set; }
         public string Name { get; set; }

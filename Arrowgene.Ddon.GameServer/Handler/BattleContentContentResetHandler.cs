@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -43,6 +44,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBattleContentContentResetRes Handle(GameClient client, C2SBattleContentContentResetReq request)
         {
+            PacketQueue queue = new();
+            bool isPaidRequest = request.ResetIndex > 0;
+
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+
             // Add back equipment templates
             client.Character.EquipmentTemplate = new EquipmentTemplate(Server.AssetRepository.BitterblackMazeAsset.GenerateStarterEquipment(), Server.AssetRepository.BitterblackMazeAsset.GenerateStarterJobEquipment());
 
@@ -64,40 +70,72 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Server.Database.CreateListItems(connection, client.Character, StorageType.ItemBagConsumable, Server.AssetRepository.BitterblackMazeAsset.GenerateStarterConsumableItems());
                     Server.Database.CreateListItems(connection, client.Character, StorageType.ItemBagJob, Server.AssetRepository.BitterblackMazeAsset.GenerateStarterJobItems());
                 }
+
+                if (isPaidRequest)
+                {
+                    // Pay ticket cost.
+                    switch (request.ResetIndex)
+                    {
+                        case 1:
+                            updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.BitterblackMazeResetTicket, 1, connection));
+                            break;
+                        case 2:
+                            // TODO: Do all the premium reset stuff; better starting gear (IR 11, e.g. Sublime Set) and rewards. 
+                            updateCharacterItemNtc.UpdateWalletList.Add(
+                                Server.WalletManager.RemoveFromWallet(client.Character, WalletType.GoldenGemstones, Server.GameSettings.GameServerSettings.BBMResetGGCost, connection)
+                            );
+                            Server.Database.InsertBBMGGReset(client.Character.CharacterId, connection);
+                            break;
+
+                    }
+
+                    // Reset mark reward tracking
+                    Server.Database.RemoveBBMRewards(client.Character.CharacterId, connection);
+
+                    // Reset treasure tracking.
+                    Server.Database.RemoveBBMContentTreasure(client.Character.CharacterId, connection);
+                }
+
+                //job and consumable items added for Bitterblack Maze needs to be updated to the Client
+                updateItemList.AddRange(GetRefreshInventoryList(client.Character, StorageType.ItemBagConsumable));
+                updateItemList.AddRange(GetRefreshInventoryList(client.Character, StorageType.ItemBagJob));
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.SwitchingStorage;
+                updateCharacterItemNtc.UpdateItemList = updateItemList;
+
+                client.Enqueue(updateCharacterItemNtc, queue);
+
+                // Add back equipment
+                client.Character.Equipment = client.Character.Storage.GetCharacterEquipment();
+
+                // Reset EXP
+                queue.AddRange(Server.ExpManager.ResetExpData(client, client.Character, connection));
+
+                // Set current job back to level 1 stats
+                queue.AddRange(Server.JobManager.SetJob(client, client.Character, client.Character.Job, connection));
+
+                // Reset progress
+                client.Character.BbmProgress.StartTime = 0;
+                client.Character.BbmProgress.ContentId = 0;
+                client.Character.BbmProgress.Tier = 0;
+                client.Character.BbmProgress.KilledDeath = false;
+                Server.Database.UpdateBBMProgress(client.Character.CharacterId, client.Character.BbmProgress, connection);
+
+                // Update the situation information
+                S2CBattleContentProgressNtc ntc2 = new()
+                {
+                    BattleContentStatusList = [BitterblackMazeManager.GetUpdatedContentStatus(Server, client.Character, connection)]
+                };
+                client.Enqueue(ntc2, queue);
             });
 
-            //job and consumable items added for Bitterblack Maze needs to be updated to the Client
-            updateItemList.AddRange(GetRefreshInventoryList(client.Character, StorageType.ItemBagConsumable));
-            updateItemList.AddRange(GetRefreshInventoryList(client.Character, StorageType.ItemBagJob));
-            
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
-            {
-                UpdateType = ItemNoticeType.SwitchingStorage,
-                UpdateItemList = updateItemList
-            };
-            client.Send(updateCharacterItemNtc);
+            // Restore to maximum life in case of equipment shenanigans.
+            var ntc3 = client.Character.S2CContextGetLobbyPlayerContextNtc;
+            ntc3.Context.PlayerInfo.HP = uint.MaxValue;
+            ntc3.Context.PlayerInfo.WhiteHP = uint.MaxValue;
+            ntc3.Context.PlayerInfo.Stamina = uint.MaxValue;
+            client.Enqueue(ntc3, queue);
 
-            // Add back equipment
-            client.Character.Equipment = client.Character.Storage.GetCharacterEquipment();
-
-            // Reset EXP
-            Server.ExpManager.ResetExpData(client, client.Character);
-
-            // Set current job back to level 1 stats
-            var jobResults = Server.JobManager.SetJob(client, client.Character, client.Character.Job);
-            jobResults.Send();
-
-            // Reset progress
-            client.Character.BbmProgress.StartTime = 0;
-            client.Character.BbmProgress.ContentId = 0;
-            client.Character.BbmProgress.Tier = 0;
-            client.Character.BbmProgress.KilledDeath = false;
-            Server.Database.UpdateBBMProgress(client.Character.CharacterId, client.Character.BbmProgress);
-
-            // Update the situation information
-            S2CBattleContentProgressNtc ntc2 = new S2CBattleContentProgressNtc();
-            ntc2.BattleContentStatusList.Add(BitterblackMazeManager.GetUpdatedContentStatus(Server, client.Character));
-            client.Send(ntc2);
+            queue.Send();
 
             return new S2CBattleContentContentResetRes();
         }

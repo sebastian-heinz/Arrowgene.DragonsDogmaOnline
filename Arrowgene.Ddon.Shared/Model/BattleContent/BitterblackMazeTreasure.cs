@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Model.BattleContent
 {
     public class BitterblackMazeTreasure
     {
-        public uint ContentId {  get; set; }
-        public uint Amount {  get; set; }
+        public StageLayoutId LayoutId { get; set; }
+        public uint Index { get; set; }
     }
 }

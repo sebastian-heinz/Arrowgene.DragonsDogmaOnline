@@ -523,11 +523,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Logger.Error("Failed to insert BBM progress");
             }
 
-            if (!Database.InsertBBMRewards(character.CharacterId, 0, 0, 0))
-            {
-                Logger.Error("Failed to insert BBM rewards");
-            }
-
             L2CCreateCharacterDataNtc ntc = new L2CCreateCharacterDataNtc();
             ntc.Result = character.CharacterId; // Value will show up in DecideCharacterIdHandler as CharacterId
             client.Send(ntc);

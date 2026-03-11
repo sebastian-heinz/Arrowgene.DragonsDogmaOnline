@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 "ddon_character"."character_id", 
                 "ddon_character"."first_name", 
                 "ddon_character"."last_name", 
-                "ddon_clan_param"."name"
+                "ddon_clan_param"."short_name"
             FROM "ddon_character"
             LEFT OUTER JOIN "ddon_clan_membership" on "ddon_character"."character_id" = "ddon_clan_membership"."character_id"
             LEFT OUTER JOIN "ddon_clan_param" on "ddon_clan_param"."clan_id" = "ddon_clan_membership"."clan_id"
@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {BuildQueryField("ddon_rental_pawn_feedback", RentalPawnFeedbackFields)},
                 "ddon_character"."first_name" as "debtor_first_name", 
                 "ddon_character"."last_name" as "debtor_last_name", 
-                "ddon_clan_param"."name" as "debtor_clan_name"
+                "ddon_clan_param"."short_name" as "debtor_clan_name"
             FROM "ddon_rental_pawn_feedback"
             LEFT OUTER JOIN "ddon_character" on "ddon_character"."character_id" = "ddon_rental_pawn_feedback"."hiring_character_id"
             LEFT OUTER JOIN "ddon_clan_membership" on "ddon_rental_pawn_feedback"."hiring_character_id" = "ddon_clan_membership"."character_id"
@@ -194,7 +194,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 FirstName = GetString(reader, "first_name"),
                                 LastName = GetString(reader, "last_name")
                             };
-                            data.ClanName = GetStringNullable(reader, "name") ?? string.Empty;
+                            data.ClanName = GetStringNullable(reader, "short_name") ?? string.Empty;
                         }
                     }
                 );
@@ -218,12 +218,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     AddParameter(command, "@adventure_count", pawn.MaxAdventureCount - pawn.AdventureCount);
                     AddParameter(command, "@craft_count", pawn.MaxCraftCount - pawn.CraftCount);
                     AddParameter(command, "@kill_count", pawn.KillCount);
-                    AddParameter(command, "@appearance_score", pawnFeedbacks.Where(x => x.Type == 0).FirstOrDefault()?.Value, System.Data.DbType.Byte);
-                    AddParameter(command, "@appearance_comment", pawnFeedbacks.Where(x => x.Type == 0).FirstOrDefault()?.CommentNo, System.Data.DbType.Byte);
-                    AddParameter(command, "@combat_score", pawnFeedbacks.Where(x => x.Type == 1).FirstOrDefault()?.Value, System.Data.DbType.Byte);
-                    AddParameter(command, "@combat_comment", pawnFeedbacks.Where(x => x.Type == 1).FirstOrDefault()?.CommentNo, System.Data.DbType.Byte);
-                    AddParameter(command, "@craft_score", pawnFeedbacks.Where(x => x.Type == 2).FirstOrDefault()?.Value, System.Data.DbType.Byte);
-                    AddParameter(command, "@craft_comment", pawnFeedbacks.Where(x => x.Type == 2).FirstOrDefault()?.CommentNo, System.Data.DbType.Byte);
+                    AddParameter(command, "@appearance_score", pawnFeedbacks.Where(x => x.Type == 0).FirstOrDefault()?.Value);
+                    AddParameter(command, "@appearance_comment", pawnFeedbacks.Where(x => x.Type == 0).FirstOrDefault()?.CommentNo);
+                    AddParameter(command, "@combat_score", pawnFeedbacks.Where(x => x.Type == 1).FirstOrDefault()?.Value);
+                    AddParameter(command, "@combat_comment", pawnFeedbacks.Where(x => x.Type == 1).FirstOrDefault()?.CommentNo);
+                    AddParameter(command, "@craft_score", pawnFeedbacks.Where(x => x.Type == 2).FirstOrDefault()?.Value);
+                    AddParameter(command, "@craft_comment", pawnFeedbacks.Where(x => x.Type == 2).FirstOrDefault()?.CommentNo);
                 }
                 ) == 1;
             });

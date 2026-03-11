@@ -32,10 +32,51 @@ public class ChatCommand : IChatCommand
 
         sb.Append($"Weather:{server.WeatherManager.GetWeather()} ({weatherIndex}) ");
         sb.Append($"{remainingSeconds}/{server.WeatherManager.WeatherLoopList[weatherIndex].TimeSec} seconds; ");
-        sb.Append($"Moon: {currentMoon}/{WeatherManager.GameTimeMoonAges}");
+        sb.Append($"Moon: {MoonPhaseName(currentMoon)} ({currentMoon}/{WeatherManager.GameTimeMoonAges})");
 
         responses.Add(ChatResponse.ServerChat(client, sb.ToString()));
     }
+
+    private static string MoonPhaseName(uint age)
+    {
+        if (age == 0)
+        {
+            return "New Moon";
+        }
+        else if (age >= 1 && age <= 6)
+        {
+            return "Waxing Crescent";
+        }
+        else if (age == 7)
+        {
+            return "First Quarter";
+        }
+        else if (age >= 8 && age <= 14)
+        {
+            return "Waxing Gibbous";
+        }
+        else if (age == 15)
+        {
+            return "Full Moon";
+        }
+        else if (age >= 16 && age <= 21)
+        {
+            return "Waning Gibbous";
+        }
+        else if (age == 22)
+        {
+            return "Last Quarter";
+        }
+        else if (age >= 23 && age <= 29)
+        {
+            return "Waning Crescent";
+        }
+        else
+        {
+            return "Unknown Phase";
+        }
+    }
+
 }
 
 return new ChatCommand();

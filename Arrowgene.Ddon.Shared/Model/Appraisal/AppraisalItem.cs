@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Microsoft.VisualBasic;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 namespace Arrowgene.Ddon.Shared.Model.Appraisal
@@ -19,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
         public List<AppraisalBaseItem> BaseItems { get; set; } // RequiredItems
         public List<AppraisalLotteryItem> LootPool { get; set; } // Potential Rewards
 
-        public CDataDispelBaseItem AsCDataDispelBaseItem(JobId jobId)
+        public CDataDispelBaseItem AsCDataDispelBaseItem(JobId jobId, HashSet<uint> seals)
         {
             var obj = new CDataDispelBaseItem()
             {
@@ -85,12 +86,25 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
                                 });
                             }
                             break;
-                        case AppraisalCrestType.BitterBlackEarring:
-                            foreach (var roll in BitterBlackMazeRewards.EarringRolls[jobId])
+                        case AppraisalCrestType.BitterBlackBracelet:
+                            foreach (var roll in BitterblackMazeRewards.AppraisalData.Where(x => x.BaseItem == ItemId.BitterblackBracelet
+                                && !seals.Contains(x.SealIndex)))
                             {
                                 item.CrestLot.Add(new CDataDispelLotCrest()
                                 {
-                                    CrestItemId = roll
+                                    CrestItemId = (uint)roll.CrestId
+                                });
+                            }
+                            break;
+                        case AppraisalCrestType.BitterBlackEarring:
+                            foreach (var roll in BitterblackMazeRewards.AppraisalData
+                                .Where(x => x.BaseItem == ItemId.BitterblackEarring
+                                            && x.SpecificJob == jobId
+                                            && !seals.Contains(x.SealIndex)))
+                            {
+                                item.CrestLot.Add(new CDataDispelLotCrest()
+                                {
+                                    CrestItemId = (uint)roll.CrestId
                                 });
                             }
                             break;

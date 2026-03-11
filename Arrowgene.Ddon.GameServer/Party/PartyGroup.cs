@@ -250,6 +250,22 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public PlayerPartyMember ForceAccept(GameClient client)
+        {
+            if (client == null)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_MEMBER_NOT_FOUND, $"[PartyId:{Id}][Accept] (client == null)");
+            }
+
+            PlayerPartyMember partyMember = CreatePartyMember(client);
+
+            lock (_lock)
+            {
+                int slotIndex = TakeSlot(partyMember);
+                partyMember.JoinState = JoinState.Prepare;
+                return partyMember;
+            }
+        }
         public PlayerPartyMember AddHost(GameClient client)
         {
             if (client == null)
@@ -327,7 +343,10 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 if (!Clients.Contains(client))
                 {
-                    Logger.Error(client, $"[PartyId:{Id}][Leave(GameClient)] not part of this party");
+                    // TODO: Suppressing this log message for now; it spams the log and is usually not helpful.
+                    // This is partly due to an order of operations problem when quitting the game.
+
+                    //Logger.Error(client, $"[PartyId:{Id}][Leave(GameClient)] not part of this party");
                     return;
                 }
 

@@ -624,8 +624,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             AddJp(client, characterToJpExpTo, gainedJp, rewardType, questType, connectionIn).Send();
         }
 
-        public void ResetExpData(GameClient client, CharacterCommon characterCommon)
+        public PacketQueue ResetExpData(GameClient client, CharacterCommon characterCommon, DbConnection? connectionIn = null)
         {
+            PacketQueue queue = new();
+
             foreach (var jobData in client.Character.CharacterJobDataList)
             {
                 if (jobData.Lv == 1 && jobData.Exp == 0)
@@ -649,7 +651,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         ExtraBonusExp = 0,
                         TotalExp = jobData.Exp
                     };
-                    client.Send(expNtc);
+                    client.Enqueue(expNtc, queue);
 
                     // Inform client of lvl up
                     S2CJobCharacterJobLevelUpNtc lvlNtc = new()
@@ -660,7 +662,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         TotalJobPoint = 0,
                         CharacterLevelParam = character.CDataCharacterLevelParam
                     };
-                    client.Send(lvlNtc);
+                    client.Enqueue(lvlNtc, queue);
 
                     // Inform other party members
                     S2CJobCharacterJobLevelUpMemberNtc lvlMemberNtc = new()
@@ -670,7 +672,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         Level = jobData.Lv,
                         CharacterLevelParam = character.CDataCharacterLevelParam
                     };
-                    client.Party.SendToAllExcept(lvlMemberNtc, client);
+                    client.Party.EnqueueToAllExcept(lvlMemberNtc, queue, client);
                 }
                 else if (characterCommon is Pawn pawn)
                 {
@@ -681,7 +683,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         ExtraBonusExp = 0,
                         TotalExp = jobData.Exp
                     };
-                    client.Send(expNtc);
+                    client.Enqueue(expNtc, queue);
 
                     // Inform client of lvl up
                     S2CJobPawnJobLevelUpNtc lvlNtc = new()
@@ -693,7 +695,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         TotalJobPoint = 0,
                         CharacterLevelParam = pawn.CDataCharacterLevelParam
                     };
-                    client.Send(lvlNtc);
+                    client.Enqueue(lvlNtc, queue);
 
                     // Inform other party members
                     S2CJobPawnJobLevelUpMemberNtc lvlMemberNtc = new()
@@ -704,11 +706,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         Level = jobData.Lv,
                         CharacterLevelParam = pawn.CDataCharacterLevelParam
                     };
-                    client.Party.SendToAllExcept(lvlMemberNtc, client);
+                    client.Party.EnqueueToAllExcept(lvlMemberNtc, queue, client);
                 }
 
-                _Server.Database.UpdateCharacterJobData(characterCommon.CommonId, jobData);
+                _Server.Database.UpdateCharacterJobData(characterCommon.CommonId, jobData, connectionIn);
             }
+
+            return queue;
         }
 
         public static uint TotalExpToLevelUpTo(uint level, GameMode gameMode)

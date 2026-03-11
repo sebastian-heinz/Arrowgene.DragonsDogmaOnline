@@ -42,7 +42,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 (StorageType storageType, Tuple<ushort, Item, uint> itemProps) = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, uid);
                 var (slotNo, item, amount) = itemProps;
 
-                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(client.Character, item, storageType, slotNo, 0, 0));
                 item.EquipStatParamList = Server.JobEmblemManager.GetEquipStatParamList(emblemData);
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(client.Character, item, storageType, slotNo, 1, 1));
             }

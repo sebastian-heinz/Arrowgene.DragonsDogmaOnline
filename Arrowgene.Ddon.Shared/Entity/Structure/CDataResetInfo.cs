@@ -1,7 +1,5 @@
 using Arrowgene.Buffers;
-using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure;
 
@@ -14,9 +12,9 @@ public class CDataResetInfo
     }
 
     public CDataResetInfoUnk0 Unk0 { get; set; }
-    public bool Unk1 { get; set; }
-    public uint Unk2 { get; set; }
-    public uint Unk3 { get; set; }
+    public bool TrackUses { get; set; }
+    public uint MaxUses { get; set; }
+    public uint CurrentUses { get; set; }
     public List<CDataWalletPoint> WalletPoints {  get; set; }
 
     public class Serializer : EntitySerializer<CDataResetInfo>
@@ -24,9 +22,9 @@ public class CDataResetInfo
         public override void Write(IBuffer buffer, CDataResetInfo obj)
         {
             WriteEntity(buffer, obj.Unk0);
-            WriteBool(buffer, obj.Unk1);
-            WriteUInt32(buffer, obj.Unk2);
-            WriteUInt32(buffer, obj.Unk3);
+            WriteBool(buffer, obj.TrackUses);
+            WriteUInt32(buffer, obj.MaxUses);
+            WriteUInt32(buffer, obj.CurrentUses);
             WriteEntityList(buffer, obj.WalletPoints);
         }
 
@@ -34,9 +32,9 @@ public class CDataResetInfo
         {
             CDataResetInfo obj = new CDataResetInfo();
             obj.Unk0 = ReadEntity<CDataResetInfoUnk0>(buffer);
-            obj.Unk1 = ReadBool(buffer);
-            obj.Unk2 = ReadUInt32(buffer);
-            obj.Unk3 = ReadUInt32(buffer);
+            obj.TrackUses = ReadBool(buffer);
+            obj.MaxUses = ReadUInt32(buffer);
+            obj.CurrentUses = ReadUInt32(buffer);
             obj.WalletPoints = ReadEntityList<CDataWalletPoint>(buffer);
             return obj;
         }

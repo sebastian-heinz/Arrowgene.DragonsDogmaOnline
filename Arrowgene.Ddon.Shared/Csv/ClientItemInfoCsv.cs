@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             {
                 if (!uint.TryParse(properties[0], out uint itemId)) return null;
                 if (!byte.TryParse(properties[1], out byte category)) return null;
-                if (!ushort.TryParse(properties[2], out ushort price)) return null;
+                if (!uint.TryParse(properties[2], out uint price)) return null;
                 if (!byte.TryParse(properties[3], out byte stackLimit)) return null;
                 if (!byte.TryParse(properties[4], out byte rank)) return null;
 
