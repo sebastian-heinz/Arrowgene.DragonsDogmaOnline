@@ -27,10 +27,12 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Combat Bottoms", 
           "item_id": 963,
           "num": 1
         },
         {
+          "comment": "Gala Extract",
           "item_id": 36,
           "num": 3
         }
@@ -49,7 +51,7 @@
             "layer_no": 1
           },
           "npc_id": "WhiteKnight0",
-          "message_id": 8629,
+          "message_id": 8627,
           "flags": [
             {
               "type": "QstLayout",
@@ -61,6 +63,14 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Accept",
+          "result_commands": [
+            {
+              "comment": "Idle dialogue",
+              "type": "QstTalkChg",
+              "Param1": 504,
+              "Param2": 8634
+            }
+          ],
           "set_flags": [ 6 ],
           "check_flags": [ 1, 2, 3, 4, 5 ]
         },
@@ -72,7 +82,7 @@
             "layer_no": 1
           },
           "npc_id": "WhiteKnight0",
-          "message_id": 8633
+          "message_id": 8631
         }
       ]
     },

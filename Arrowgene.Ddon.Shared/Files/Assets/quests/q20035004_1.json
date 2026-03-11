@@ -1,0 +1,142 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Wandering Knights (II)",
+  "quest_id": 20035004,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1620
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1480
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 210
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Mystery Organs",
+          "item_id": 7744,
+          "num": 1
+        },
+        {
+          "comment": "Enhanced Pickaxe",
+          "item_id": 9401,
+          "num": 3
+        },
+        {
+          "comment": "Strong Gala Extract",
+          "item_id": 9363,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 90,
+        "group_id": 4
+      },
+      "comment": "Group 1 - Undead Warriors",
+      "starting_index": 4,
+      "enemies": [
+        {
+          "comment": "Vigilant Undead Warrior",
+          "enemy_id": "0x010504",
+          "named_enemy_params_id": 53,
+          "level": 45,
+          "exp": 203
+        },
+        {
+          "comment": "Vigilant Undead Warrior",
+          "enemy_id": "0x010504",
+          "named_enemy_params_id": 53,
+          "level": 45,
+          "exp": 203
+        },
+        {
+          "comment": "Vigilant Undead Warrior",
+          "enemy_id": "0x010504",
+          "named_enemy_params_id": 53,
+          "level": 45,
+          "exp": 203
+        },
+        {
+          "comment": "Vigilant Undead Warrior",
+          "enemy_id": "0x010504",
+          "named_enemy_params_id": 53,
+          "level": 45,
+          "exp": 203
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 90,
+        "group_id": 3
+      },
+      "comment": "Group 2 - Ghouls",
+      "starting_index": 4,
+      "enemies": [
+        {
+          "comment": "Brutal Ghoul",
+          "enemy_id": "0x015503",
+          "named_enemy_params_id": 54,
+          "level": 45,
+          "exp": 3700,
+          "is_boss": true
+        },
+        {
+          "comment": "Brutal Ghoul",
+          "enemy_id": "0x015503",
+          "named_enemy_params_id": 54,
+          "level": 45,
+          "exp": 3700,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "blocks": [
+        {
+          "type": "DiscoverEnemy",
+          "groups": [ 0 ]
+        },
+        {
+          "type": "KillGroup",
+          "announce_type": "Accept",
+          "reset_group": false,
+          "groups": [ 0 ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "groups": [ 1 ]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "SpawnGroup",
+          "groups": [ 1 ]
+        }
+      ]
+    }
+  ]
+}

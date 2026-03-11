@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Corpse-Eater's Horn",
           "item_id": 7751,
           "num": 1
         },
         {
+          "comment": "Drómi",
           "item_id": 7958,
           "num": 1
         },
         {
+          "comment": "Throwing Knife",
           "item_id": 9398,
           "num": 3
         }
@@ -44,6 +47,7 @@
       "type": "random",
       "loot_pool": [
         {
+          "comment": "Gold Ore",
           "item_id": 7859,
           "num": 2,
           "chance": 0.7
@@ -57,47 +61,47 @@
         "id": 173,
         "group_id": 1
       },
-      "placement_type": "manual",
+      "starting_index": 4,
       "enemies": [
         {
+          "comment": "Vigilant Frost Corpse Punisher",
+          "enemy_id": "0x010511",
+          "named_enemy_params_id": 53,
+          "level": 44,
+          "exp": 235,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Frost Corpse Punisher",
+          "enemy_id": "0x010511",
+          "named_enemy_params_id": 53,
+          "level": 44,
+          "exp": 235,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Frost Corpse Punisher",
+          "enemy_id": "0x010511",
+          "named_enemy_params_id": 53,
+          "level": 44,
+          "exp": 235,
+          "is_boss": false
+        },
+        {
+          "comment": "Brutal Ghoul",
           "enemy_id": "0x015503",
           "named_enemy_params_id": 54,
           "level": 44,
-          "exp": 6364,
-          "is_boss": true,
-          "index": 8
+          "exp": 4240,
+          "is_boss": true
         },
         {
+          "comment": "Brutal Ghoul",
           "enemy_id": "0x015503",
           "named_enemy_params_id": 54,
           "level": 44,
-          "exp": 6364,
-          "is_boss": true,
-          "index": 0
-        },
-        {
-          "enemy_id": "0x010511",
-          "named_enemy_params_id": 53,
-          "level": 44,
-          "exp": 5354,
-          "is_boss": false,
-          "index": 5
-        },
-        {
-          "enemy_id": "0x010511",
-          "named_enemy_params_id": 53,
-          "level": 44,
-          "exp": 5354,
-          "is_boss": false,
-          "index": 6
-        },
-        {
-          "enemy_id": "0x010511",
-          "named_enemy_params_id": 53,
-          "level": 44,
-          "exp": 5354,
-          "is_boss": false,
-          "index": 4
+          "exp": 4240,
+          "is_boss": true
         }
       ]
     }
@@ -119,11 +123,19 @@
         "layer_no": 1
       },
       "npc_id": "StrangeMan",
-      "message_id": 11372
+      "message_id": 11243
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 507,
+          "Param2": 11249
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -158,7 +170,7 @@
       },
       "announce_type": "Update",
       "npc_id": "StrangeMan",
-      "message_id": 11842
+      "message_id": 11246
     }
   ]
 }

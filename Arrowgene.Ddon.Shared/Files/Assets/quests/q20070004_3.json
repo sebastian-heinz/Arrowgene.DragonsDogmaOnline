@@ -1,0 +1,127 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Perfect Warrior (Calamity)",
+  "quest_id": 20070004,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 151,
+  "variant_index": 3,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 6930
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 3960
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 490
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Magick+",
+          "item_id": 11720,
+          "num": 1
+        },
+        {
+          "comment": "Azure Dragonscale",
+          "item_id": 7931,
+          "num": 1
+        },
+        {
+          "comment": "Dark Metal",
+          "item_id": 7887,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 68,
+        "group_id": 9
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Red-Hot Giga Machina (Gigant Machina)",
+          "enemy_id": "0x015850",
+          "named_enemy_params_id": 611,
+          "level": 60,
+          "exp": 5440,
+          "is_boss": true,
+          "index": 2
+        },
+        {
+          "comment": "Pale Ice Wyrm (Wyrm)",
+          "enemy_id": "0x015701",
+          "named_enemy_params_id": 610,
+          "level": 60,
+          "exp": 9860,
+          "is_boss": true,
+          "index": 4
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1066,
+          "comment": "Spawns Lent NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Lent",
+      "message_id": 11274
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 520,
+          "Param2": 11278
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Lent",
+      "message_id": 11277
+    }
+  ]
+}

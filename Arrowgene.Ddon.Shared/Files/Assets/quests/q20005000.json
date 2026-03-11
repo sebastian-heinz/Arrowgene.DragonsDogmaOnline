@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Wizard's Ring",
           "item_id": 8948,
           "num": 1
         },
         {
+          "comment": "Sphinx Hair",
           "item_id": 7810,
           "num": 1
         },
         {
+          "comment": "Herb Salad",
           "item_id": 9407,
           "num": 2
         }
@@ -49,11 +52,12 @@
       },
       "enemies": [
         {
+          "comment": "Young Sphinx",
           "enemy_id": "0x015302",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 459,
+          "start_think_tbl_no": 1,
           "level": 14,
-          "exp": 934,
+          "exp": 2116,
           "is_boss": true
         }
       ]

@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Palm Flower",
           "item_id": 83,
           "num": 1
         },
         {
+          "comment": "Lockpick",
           "item_id": 59,
           "num": 3
         },
         {
+          "comment": "Pickaxe",
           "item_id": 57,
           "num": 3
         }
@@ -48,7 +51,7 @@
         "id": 66
       },
       "npc_id": "Vanessa0",
-      "message_id": 10800
+      "message_id": 11103
     },
     {
       "type": "DeliverItems",
@@ -58,13 +61,22 @@
       },
       "npc_id": "Vanessa0",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "type": "QstTalkChg",
+          "Param1": 11,
+          "Param2": 11114,
+          "comment": "Idle dialogue"
+        }
+      ],
       "items": [
         {
+          "comment": "Healing Elixir",
           "id": 7552,
           "amount": 3
         }
       ],
-      "message_id": 10737
+      "message_id": 12000
     },
     {
       "type": "DeliverItems",
@@ -74,13 +86,22 @@
       },
       "npc_id": "Vanessa0",
       "announce_type": "Update",
+      "result_commands": [
+        {
+          "type": "QstTalkChg",
+          "Param1": 11,
+          "Param2": 11114,
+          "comment": "Idle dialogue"
+        }
+      ],
       "items": [
         {
+          "comment": "Hematite",
           "id": 7861,
           "amount": 3
         }
       ],
-      "message_id": 10737
+      "message_id": 11111
     }
   ]
 }

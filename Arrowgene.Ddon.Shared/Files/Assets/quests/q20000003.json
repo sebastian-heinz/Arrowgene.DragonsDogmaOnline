@@ -27,10 +27,12 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Apprentice's Coat",
           "item_id": 458,
           "num": 1
         },
         {
+          "comment": "Gala Extract",
           "item_id": 36,
           "num": 2
         }
@@ -53,6 +55,14 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Accept",
+          "result_commands": [
+            {
+              "comment": "Idle dialogue",
+              "type": "QstTalkChg",
+              "Param1": 3,
+              "Param2": 10732
+            }
+          ],
           "set_flags": [ 9 ],
           "check_flags": [ 1, 2, 3, 4, 5, 6, 7, 8 ]
         },
@@ -68,6 +78,14 @@
         {
           "type": "TalkToNpc",
           "announce_type": "Update",
+          "result_commands": [
+            {
+              "comment": "Idle dialogue",
+              "type": "QstTalkChg",
+              "Param1": 3,
+              "Param2": 10732
+            }
+          ],
           "stage_id": {
             "id": 66,
             "group_id": 0

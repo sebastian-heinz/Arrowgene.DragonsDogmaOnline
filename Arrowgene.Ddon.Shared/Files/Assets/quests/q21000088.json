@@ -1,0 +1,152 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Good Old Days",
+    "quest_id": 21000088,
+    "base_level": 68,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MergodaRuins",
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 10665
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 2243
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 290
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Electrum Plate",
+                    "item_id": 7891,
+                    "num": 1
+                },
+                {
+                    "comment": "Superior Strong Gala Extract",
+                    "item_id": 9364,
+                    "num": 3
+                },
+                {
+                    "comment": "Panacea",
+                    "item_id": 41,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 84,
+                "group_id": 5
+            },
+            "comment": "Needs correct EXP values",
+            "placement_type": "manual",
+            "enemies": [
+                {
+                    "comment": "Drake",
+                    "enemy_id": "0x015700",
+                    "level": 68,
+                    "exp": 10788,
+                    "is_boss": true,
+                    "index": 12
+                },
+                {
+                    "comment": "Lux Corpse Torturer",
+                    "enemy_id": "0x010519",
+                    "level": 68,
+                    "exp": 788,
+                    "index": 13
+                },
+                {
+                    "comment": "Lux Corpse Torturer",
+                    "enemy_id": "0x010519",
+                    "level": 68,
+                    "exp": 788,
+                    "repop_count": 1,
+                    "repop_wait_second": 10,
+                    "index": 14
+                },
+                {
+                    "comment": "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 68,
+                    "exp": 788,
+                    "index": 15
+                },
+                {
+                    "comment": "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 68,
+                    "exp": 788,
+                    "index": 16
+                },
+                {
+                    "comment": "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 68,
+                    "exp": 788,
+                    "index": 18
+                },
+                {
+                    "comment": "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 68,
+                    "exp": 788,
+                    "index": 19
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 63,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Theodor",
+            "message_id": 17417
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 10, 
+                "Param2": 17418,
+                "comment": "Idle dialogue"
+                }
+            ],
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 63,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Theodor",
+            "message_id": 17419
+        }
+    ]
+}

@@ -1,9 +1,9 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "Ambush In The Wells Depths",
+  "comment": "Ambush In The Well's Depths (II)",
   "quest_id": 20005002,
-  "base_level": 11,
+  "base_level": 15,
   "minimum_item_rank": 0,
   "discoverable": false,
   "area_id": "HidellPlains",
@@ -13,27 +13,29 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 520
+      "amount": 410
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 30
+      "amount": 70
     },
     {
       "type": "exp",
-      "amount": 660
+      "amount": 740
     },
     {
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 489,
-          "num": 1
+          "comment": "Iron Ore Fragment",
+          "item_id": 7853,
+          "num": 5
         },
         {
-          "item_id": 9368,
-          "num": 2
+          "comment": "Lantern Kindling",
+          "item_id": 55,
+          "num": 3
         }
       ]
     }
@@ -46,52 +48,50 @@
       },
       "enemies": [
         {
-          "enemy_id": "0x015800",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 12,
-          "exp": 186,
-          "is_boss": false
+          "comment": "Vigilant Orc Vanguard",
+          "enemy_id": "0x015802",
+          "named_enemy_params_id": 53,
+          "level": 15,
+          "exp": 98
         },
         {
-          "enemy_id": "0x015800",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 12,
-          "exp": 186,
-          "is_boss": false
+          "comment": "Vigilant Orc Vanguard",
+          "enemy_id": "0x015802",
+          "named_enemy_params_id": 53,
+          "level": 15,
+          "exp": 98,
+          "repop_count": 1,
+          "repop_wait_second": 5
         },
         {
-          "enemy_id": "0x015800",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 12,
-          "exp": 186,
-          "is_boss": false
+          "comment": "Vigilant Orc Vanguard",
+          "enemy_id": "0x015802",
+          "named_enemy_params_id": 53,
+          "level": 15,
+          "exp": 98
         },
         {
-          "enemy_id": "0x015800",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 12,
-          "exp": 186,
-          "is_boss": false
+          "comment": "Vigilant Orc Tosser",
+          "enemy_id": "0x015801",
+          "named_enemy_params_id": 53,
+          "level": 15,
+          "exp": 98,
+          "repop_count": 1,
+          "repop_wait_second": 5
         },
         {
-          "enemy_id": "0x015800",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 12,
-          "exp": 186,
-          "is_boss": false
+          "comment": "Vigilant Orc Tosser",
+          "enemy_id": "0x015801",
+          "named_enemy_params_id": 53,
+          "level": 15,
+          "exp": 98
         },
         {
-          "enemy_id": "0x015800",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 12,
-          "exp": 186,
-          "is_boss": false
+          "comment": "Vigilant Orc Tosser",
+          "enemy_id": "0x015801",
+          "named_enemy_params_id": 53,
+          "level": 15,
+          "exp": 98
         }
       ]
     }

@@ -1,0 +1,94 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Witch of the Forest (II)",
+  "quest_id": 20050006,
+  "base_level": 15,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeForest",
+  "news_image": 114,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 80
+    },
+    {
+      "type": "exp",
+      "amount": 330
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Linen",
+          "item_id": 7936,
+          "num": 2
+        },
+        {
+          "comment": "Superior Healing Potion",
+          "item_id": 35,
+          "num": 2
+        },
+        {
+          "comment": "Meatloaf",
+          "item_id": 9408,
+          "num": 1
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "comment": "Rough Thread",
+          "item_id": 7952,
+          "num": 1,
+          "chance": 1.0
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 16
+      },
+      "npc_id": "Emerada0",
+      "message_id": 13111
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 16,
+        "group_id": 1
+      },
+      "npc_id": "Emerada0",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 4501,
+          "Param2": 14837
+        }
+      ],
+      "items": [
+        {
+          "comment": "White Seashell",
+          "id": 8016,
+          "amount": 5
+        }
+      ],
+      "message_id": 13114
+    }
+  ]
+}

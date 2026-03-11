@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Deft Gloves",
           "item_id": 920,
           "num": 1
         },
         {
+          "comment": "Three-Herb Salad",
           "item_id": 9410,
           "num": 1
         },
         {
+          "comment": "Interventive",
           "item_id": 9374,
           "num": 3
         }
@@ -47,42 +50,61 @@
         "id": 72,
         "group_id": 17
       },
+      "placement_type": "manual",
       "enemies": [
         {
-          "enemy_id": "0x010309",
-          "level": 26,
-          "exp": 300,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010309",
-          "level": 26,
-          "exp": 300,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010309",
-          "level": 26,
-          "exp": 300,
-          "is_boss": false
-        },
-        {
+          "comment": "Vigilant Skeleton Knight",
           "enemy_id": "0x010301",
-          "level": 26,
-          "exp": 300,
-          "is_boss": false
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 117,
+          "is_boss": false,
+          "index": 1
         },
         {
+          "comment": "Vigilant Skeleton Knight",
           "enemy_id": "0x010301",
-          "level": 26,
-          "exp": 300,
-          "is_boss": false
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 117,
+          "is_boss": false,
+          "index": 2
         },
         {
+          "comment": "Vigilant Skeleton Knight",
           "enemy_id": "0x010301",
-          "level": 26,
-          "exp": 300,
-          "is_boss": false
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 117,
+          "is_boss": false,
+          "index": 10
+        },
+        {
+          "comment": "Vigilant Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 128,
+          "is_boss": false,
+          "index": 11
+        },
+        {
+          "comment": "Vigilant Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 128,
+          "is_boss": false,
+          "index": 11
+        },
+        {
+          "comment": "Vigilant Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 128,
+          "is_boss": false,
+          "index": 11
         }
       ]
     }

@@ -1,0 +1,78 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Tunnel Beast (II)",
+  "quest_id": 20045003,
+  "base_level": 30,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "VoldenMines",
+  "news_image": 533,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 990
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 150
+    },
+    {
+      "type": "exp",
+      "amount": 1380
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Pauldron",
+          "item_id": 1013,
+          "num": 1
+        },
+        {
+          "comment": "Battler Bracelet",
+          "item_id": 8972,
+          "num": 1
+        },
+        {
+          "comment": "Wild Steak",
+          "item_id": 9412,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 101,
+        "group_id": 5
+      },
+      "enemies": [
+        {
+          "comment": "Brutal Ogre",
+          "enemy_id": "0x015500",
+          "named_enemy_params_id": 54,
+          "level": 30,
+          "exp": 2300,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Raging Demonic Bird (Rare Species)",
+  "quest_id": 20075002,
+  "base_level": 57,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 142,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1880
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 300
+    },
+    {
+      "type": "exp",
+      "amount": 2630
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 2
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 2
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 309
+      },
+      "enemies": [
+        {
+          "comment": "Stone Shadow Cockatrice (Cockatrice)",
+          "enemy_id": "0x015301",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 612,
+          "level": 57,
+          "exp": 6058,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

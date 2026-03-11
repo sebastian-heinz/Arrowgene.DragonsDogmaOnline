@@ -1,0 +1,217 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Volden Poisonous Springs Investigation (II)",
+  "quest_id": 20040008,
+  "base_level": 25,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "VoldenMines",
+  "news_image": 84,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 820
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 680
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 110
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Black Tar",
+          "item_id": 7841,
+          "num": 2
+        },
+        {
+          "comment": "Meatloaf",
+          "item_id": 9408,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 178
+      },
+      "starting_index": 4,
+      "enemies": [
+        {
+          "comment": "Vigilant Sludgeman",
+          "enemy_id": "0x010510",
+          "named_enemy_params_id": 53,
+          "level": 25,
+          "exp": 130,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Sludgeman",
+          "enemy_id": "0x010510",
+          "named_enemy_params_id": 53,
+          "level": 25,
+          "exp": 130,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Sludgeman",
+          "enemy_id": "0x010510",
+          "named_enemy_params_id": 53,
+          "level": 25,
+          "exp": 130,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Sludgeman",
+          "enemy_id": "0x010510",
+          "named_enemy_params_id": 53,
+          "level": 25,
+          "exp": 130,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1051,
+          "comment": "Spawns Man510 NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Man510",
+      "message_id": 11421
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 510,
+          "Param2": 13327
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 2,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1171,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1172,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1173,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 1,
+        "group_id": 3,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1171,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1172,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1173,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 1,
+        "group_id": 4,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1171,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1172,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1173,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Man510",
+      "message_id": 13324
+    }
+  ]
+}

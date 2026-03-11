@@ -1,0 +1,141 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Thugs of the Forest (II)",
+  "quest_id": 20060003,
+  "base_level": 41,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeGrove",
+  "news_image": 126,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1350
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Northern Oregano",
+          "item_id": 9064,
+          "num": 3
+        },
+        {
+          "comment": "Sprite's Talisman",
+          "item_id": 9390,
+          "num": 1
+        },
+        {
+          "comment": "Blue Whiskey",
+          "item_id": 9417,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 142
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Brutal Redcap Fighter",
+          "enemy_id": "0x011111",
+          "named_enemy_params_id": 54,
+          "level": 41,
+          "exp": 166,
+          "repop_count": 1,
+          "repop_wait_time": 10,
+          "index": 3
+        },
+        {
+          "comment": "Brutal Sling Redcap",
+          "enemy_id": "0x011112",
+          "named_enemy_params_id": 54,
+          "level": 41,
+          "exp": 166,
+          "repop_count": 1,
+          "repop_wait_time": 10,
+          "index": 4
+        },
+        {
+          "comment": "Brutal Sling Redcap",
+          "enemy_id": "0x011112",
+          "named_enemy_params_id": 54,
+          "level": 41,
+          "exp": 166,
+          "repop_count": 1,
+          "repop_wait_time": 10,
+          "index": 5
+        },
+        {
+          "comment": "Brutal Redcap Fighter",
+          "enemy_id": "0x011111",
+          "named_enemy_params_id": 54,
+          "level": 41,
+          "exp": 166,
+          "repop_count": 1,
+          "repop_wait_time": 10,
+          "index": 9
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 22,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Ivan",
+      "message_id": 13298
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 522,
+          "Param2": 13303
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 22,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Ivan",
+      "message_id": 13301
+    }
+  ]
+}

@@ -1,0 +1,371 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Gemstones: Absolutely No Entry!",
+  "quest_id": 21000091,
+  "base_level": 68,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MergodaRuins",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 5925
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2243
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1740
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Prism Crystal",
+          "item_id": 11808,
+          "num": 3
+        },
+        {
+          "comment": "Mergoda Medal",
+          "item_id": 11010,
+          "num": 1
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 424,
+        "group_id": 7
+      },
+      "comment": "Enemies drop up to 13500 RC",
+      "enemies": [
+        {
+          "comment": "Gemstone-Bearing Damned Golem",
+          "enemy_id": "0x015103",
+          "named_enemy_params_id": 1118,
+          "level": 68,
+          "exp": 5804,
+          "drop_items": [
+            {
+              "item_id": 8029,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8025,
+              "item_min": 1,
+              "item_max": 7,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7871,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.7
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Gemstone-Bearing Wight",
+          "enemy_id": "0x015600",
+          "named_enemy_params_id": 1118,
+          "level": 68,
+          "exp": 3442,
+          "drop_items": [
+            {
+              "item_id": 7729,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.5
+            },
+            {
+              "item_id": 7804,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7769,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.3
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Gemstone-Bearing Wight",
+          "enemy_id": "0x015600",
+          "named_enemy_params_id": 1118,
+          "level": 68,
+          "exp": 3442,
+          "drop_items": [
+            {
+              "item_id": 7729,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.5
+            },
+            {
+              "item_id": 7804,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7769,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.3
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Gemstone-Bearing Wight",
+          "enemy_id": "0x015600",
+          "named_enemy_params_id": 1118,
+          "level": 68,
+          "exp": 3442,
+          "drop_items": [
+            {
+              "item_id": 7729,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.5
+            },
+            {
+              "item_id": 7804,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7769,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.3
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Gemstone-Bearing Damned Wolf",
+          "enemy_id": "0x010208",
+          "named_enemy_params_id": 1118,
+          "level": 68,
+          "exp": 304,
+          "drop_items": [
+            {
+              "item_id": 7781,
+              "item_min": 1,
+              "item_max": 5,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8025,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.7
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Gemstone-Bearing Damned Wolf",
+          "enemy_id": "0x010208",
+          "named_enemy_params_id": 1118,
+          "level": 68,
+          "exp": 304,
+          "drop_items": [
+            {
+              "item_id": 7781,
+              "item_min": 1,
+              "item_max": 5,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8025,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.7
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Gemstone-Bearing Damned Wolf",
+          "enemy_id": "0x010208",
+          "named_enemy_params_id": 1118,
+          "level": 68,
+          "exp": 304,
+          "drop_items": [
+            {
+              "item_id": 7781,
+              "item_min": 1,
+              "item_max": 5,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8025,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.7
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Gemstone-Bearing Damned Wolf",
+          "enemy_id": "0x010208",
+          "named_enemy_params_id": 1118,
+          "level": 68,
+          "exp": 304,
+          "drop_items": [
+            {
+              "item_id": 7781,
+              "item_min": 1,
+              "item_max": 5,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8025,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.7
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Gemstone-Bearing Damned Wolf",
+          "enemy_id": "0x010208",
+          "named_enemy_params_id": 1118,
+          "level": 68,
+          "exp": 304,
+          "drop_items": [
+            {
+              "item_id": 7781,
+              "item_min": 1,
+              "item_max": 5,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8025,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.7
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

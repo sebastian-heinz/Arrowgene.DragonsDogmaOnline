@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "A Petition to Rid of Demons in Ruins",
+  "comment": "A Petition to Rid of Demons in Ruins (II)",
   "quest_id": 20000004,
   "base_level": 16,
   "minimum_item_rank": 0,
@@ -33,13 +33,14 @@
           "num": 3
         },
         {
-          "comment": "Recovery Decoction",
-          "item_id": 9373,
+          "comment": "Poison Flask",
+          "item_id": 9395,
           "num": 2
         },
         {
+          "comment": "Lantern Kindling",
           "item_id": 55,
-          "num": 2
+          "num": 3
       }
       ]
     }
@@ -50,69 +51,52 @@
         "id": 88,
         "group_id": 5
       },
+      "starting_index": 2,
       "enemies": [
         {
+          "comment": "Vigilant Skeleton",
           "enemy_id": "0x010300",
-          "start_think_tbl_no": 2,
-          "named_enemy_params_id": 54,
+          "named_enemy_params_id": 53,
           "level": 16,
-          "exp": 310
+          "exp": 60,
+          "repop_count": 1,
+          "repop_wait_second": 5
         },
         {
+          "comment": "Vigilant Skeleton",
           "enemy_id": "0x010300",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
+          "named_enemy_params_id": 53,
           "level": 16,
-          "exp": 310
+          "exp": 60,
+          "repop_count": 1,
+          "repop_wait_second": 5
         },
         {
+          "comment": "Vigilant Skeleton",
           "enemy_id": "0x010300",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
+          "named_enemy_params_id": 53,
           "level": 16,
-          "exp": 310
+          "exp": 60,
+          "repop_count": 1,
+          "repop_wait_second": 5
         },
         {
+          "comment": "Vigilant Skeleton",
           "enemy_id": "0x010300",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
+          "named_enemy_params_id": 53,
           "level": 16,
-          "exp": 310
+          "exp": 60,
+          "repop_count": 1,
+          "repop_wait_second": 5
         },
         {
+          "comment": "Vigilant Skeleton",
           "enemy_id": "0x010300",
-          "start_think_tbl_no": 2,
-          "named_enemy_params_id": 54,
+          "named_enemy_params_id": 53,
           "level": 16,
-          "exp": 310
-        },
-        {
-          "enemy_id": "0x010300",
-          "start_think_tbl_no": 2,
-          "named_enemy_params_id": 54,
-          "level": 16,
-          "exp": 310
-        },
-        {
-          "enemy_id": "0x010300",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
-          "level": 16,
-          "exp": 310
-        },
-        {
-          "enemy_id": "0x010300",
-          "start_think_tbl_no": 2,
-          "named_enemy_params_id": 54,
-          "level": 16,
-          "exp": 310
-        },
-        {
-          "enemy_id": "0x010300",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
-          "level": 16,
-          "exp": 310
+          "exp": 60,
+          "repop_count": 1,
+          "repop_wait_second": 5
         }
       ]
     }
@@ -129,6 +113,14 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 4,
+          "Param2": 10720
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -144,7 +136,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Joseph",
-      "message_id": 10718
+      "message_id": 10717
     }
   ]
 }

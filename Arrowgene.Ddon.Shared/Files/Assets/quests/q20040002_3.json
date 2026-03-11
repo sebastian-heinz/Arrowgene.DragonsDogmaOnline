@@ -1,9 +1,9 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "A Territorial Dispute",
+  "comment": "A Territorial Dispute (Bounty)",
   "quest_id": 20040002,
-  "base_level": 38,
+  "base_level": 30,
   "minimum_item_rank": 0,
   "discoverable": true,
   "area_id": "VoldenMines",
@@ -13,31 +13,34 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 1250
+      "amount": 1780
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 250
+      "amount": 190
     },
     {
       "type": "exp",
-      "amount": 1750
+      "amount": 2490
     },
     {
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 9260,
-          "num": 1
+          "comment": "Small Thief's Key",
+          "item_id": 9429,
+          "num": 3
         },
         {
-          "item_id": 9390,
-          "num": 1
+          "comment": "Interventive",
+          "item_id": 9374,
+          "num": 3
         },
         {
-          "item_id": 9066,
-          "num": 2
+          "comment": "Mellow Ale",
+          "item_id": 9413,
+          "num": 1
         }
       ]
     }
@@ -48,16 +51,15 @@
         "id": 1,
         "group_id": 185
       },
-      "placement_type": "manual",
       "enemies": [
         {
-          "enemy_id": "0x015300",
+          "comment": "Bounty Golem",
+          "enemy_id": "0x015100",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 56,
-          "level": 38,
-          "exp": 6254,
-          "is_boss": true,
-          "index": 0
+          "named_enemy_params_id": 470,
+          "level": 30,
+          "exp": 2750,
+          "is_boss": true
         }
       ]
     }
@@ -71,11 +73,19 @@
         "layer_no": 1
       },
       "npc_id": "Gilstan",
-      "message_id": 11830
+      "message_id": 11072
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 2000,
+          "Param2": 11077
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -93,7 +103,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Gilstan",
-      "message_id": 11835
+      "message_id": 11075
     }
   ]
 }

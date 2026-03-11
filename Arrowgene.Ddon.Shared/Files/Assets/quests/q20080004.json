@@ -1,12 +1,12 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Lovely Vintage",
+    "comment": "An Irreplaceable Treasure",
     "quest_id": 20080004,
     "base_level": 56,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",		
+    "area_id": "EasternZandora",
     "rewards": [
         {
             "type": "exp",
@@ -26,16 +26,19 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Demon Arming Points",
                     "item_id": 8022,
                     "num": 1
                 },
                 {
+                    "comment": "Rainbow Eye Gem",
                     "item_id": 7731,
                     "num": 1
                 },
                 {
-                    "item_id": 7554,
-                    "num": 2					
+                    "comment": "Alkahest",
+                    "item_id": 7833,
+                    "num": 2
                 }
             ]
         }
@@ -52,11 +55,19 @@
                 "layer_no": 1
             },
             "npc_id": "Hunter0",
-            "message_id": 11372
+            "message_id": 8690
         },
         {
             "type": "CollectItem",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 541,
+                    "Param2": 8696
+                }
+            ],
             "stage_id": {
                 "id": 92,
                 "group_id": 1,
@@ -74,7 +85,7 @@
                 {"type": "QstLayout", "action": "Set", "value": 1773, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1777, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1768, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1769, "comment": "Spawns Glowing Item"}				
+                {"type": "QstLayout", "action": "Set", "value": 1769, "comment": "Spawns Glowing Item"}
             ]
         },
         {
@@ -97,7 +108,7 @@
                 {"type": "QstLayout", "action": "Set", "value": 1773, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1777, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1768, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1769, "comment": "Spawns Glowing Item"}	
+                {"type": "QstLayout", "action": "Set", "value": 1769, "comment": "Spawns Glowing Item"}
             ]
         },
         {
@@ -120,10 +131,10 @@
                 {"type": "QstLayout", "action": "Set", "value": 1773, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1777, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1768, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1769, "comment": "Spawns Glowing Item"}				
+                {"type": "QstLayout", "action": "Set", "value": 1769, "comment": "Spawns Glowing Item"}
             ]
         },
-        {			
+        {
             "type": "NewTalkToNpc",
             "stage_id": {
                 "id": 1,
@@ -132,7 +143,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Hunter0",
-            "message_id": 11842
+            "message_id": 8693
         }
     ]
 }

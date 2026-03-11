@@ -1,0 +1,107 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Separation and Completion (II)",
+    "quest_id": 20990001,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MergodaRuins",
+    "variant_index": 1,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1810
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 180
+        },
+        {
+            "type": "exp",
+            "amount": 1210
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Star Sphene",
+                    "item_id": 7914,
+                    "num": 3
+                },
+                {
+                    "comment": "Superior Healing Remedy",
+                    "item_id": 7555,
+                    "num": 5
+                },
+                {
+                    "comment": "Superior Strong Gala Extract",
+                    "item_id": 9364,
+                    "num": 5
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 63
+            },
+            "npc_id": "Theodor",
+            "message_id": 11486
+        },
+        {
+            "type": "DeliverItems",
+            "stage_id": {
+                "id": 63,
+                "group_id": 1
+            },
+            "npc_id": "Theodor",
+            "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 10, 
+                "Param2": 12021,
+                "comment": "Idle dialogue"
+                }
+            ],
+            "items": [
+                {
+                    "comment": "Griffin Beak",
+                    "id": 7758,
+                    "amount": 3
+                }
+            ],
+            "message_id": 12017
+        },
+        {
+            "type": "DeliverItems",
+            "stage_id": {
+                "id": 63,
+                "group_id": 1
+            },
+            "npc_id": "Theodor",
+            "announce_type": "Update",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 10, 
+                "Param2": 12021,
+                "comment": "Idle dialogue"
+                }
+            ],
+            "items": [
+                {
+                    "comment": "Dragon Hide",
+                    "id": 7928,
+                    "amount": 3
+                }
+            ],
+            "message_id": 12018
+        }
+    ]
+}

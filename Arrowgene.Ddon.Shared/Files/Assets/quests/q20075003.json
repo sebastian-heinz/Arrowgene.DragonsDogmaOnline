@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Marbled Beast-Steak",
           "item_id": 7726,
           "num": 3
         },
         {
+          "comment": "Enhanced Pickaxe",
           "item_id": 9401,
           "num": 3
         },
         {
+          "comment": "Superior Quality Gala Extract",
           "item_id": 9362,
           "num": 3
         }
@@ -44,11 +47,13 @@
       "type": "random",
       "loot_pool": [
         {
+          "comment": "King Bay Leaf",
           "item_id": 7983,
           "num": 3,
           "chance": 0.6
         },
         {
+          "comment": "Fireproof Earrings",
           "item_id": 9000,
           "num": 1,
           "chance": 0.4
@@ -62,54 +67,61 @@
         "id": 1,
         "group_id": 284
       },
+      "placement_type": "manual",
       "enemies": [
         {
-          "enemy_id": "0x015810",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
-          "level": 43,
-          "exp": 5264,
-          "is_boss": false
-        },
-        {
+          "comment": "Brutal Captain Orc",
           "enemy_id": "0x015820",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 54,
+          "named_enemy_params_id": 54,
           "level": 43,
-          "exp": 5264,
-          "is_boss": false
+          "exp": 537,
+          "is_boss": false,
+          "index": 2
         },
         {
+          "comment": "Vigilant Orc Blitzer",
           "enemy_id": "0x015811",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "named_enemy_params_id": 53,
           "level": 43,
-          "exp": 5264,
-          "is_boss": false
+          "exp": 258,
+          "is_boss": false,
+          "index": 5
         },
         {
+          "comment": "Vigilant Orc Blitzer",
           "enemy_id": "0x015811",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "named_enemy_params_id": 53,
           "level": 43,
-          "exp": 5264,
-          "is_boss": false
+          "exp": 258,
+          "is_boss": false,
+          "index": 6
         },
         {
+          "comment": "Vigilant Orc Blitzer",
           "enemy_id": "0x015811",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "named_enemy_params_id": 53,
           "level": 43,
-          "exp": 5264,
-          "is_boss": false
+          "exp": 258,
+          "is_boss": false,
+          "index": 7
         },
         {
-          "enemy_id": "0x015811",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "comment": "Vigilant Orc Battler",
+          "enemy_id": "0x015810",
+          "named_enemy_params_id": 53,
           "level": 43,
-          "exp": 5264,
-          "is_boss": false
+          "exp": 299,
+          "is_boss": false,
+          "index": 11
+        },
+        {
+          "comment": "Vigilant Orc Battler",
+          "enemy_id": "0x015810",
+          "named_enemy_params_id": 53,
+          "level": 43,
+          "exp": 299,
+          "is_boss": false,
+          "index": 12
         }
       ]
     }

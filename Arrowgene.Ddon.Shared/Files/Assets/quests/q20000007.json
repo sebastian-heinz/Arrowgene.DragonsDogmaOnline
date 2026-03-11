@@ -27,10 +27,12 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Wind Cloak",
           "item_id": 9739,
           "num": 1
         },
         {
+          "comment": "Antidote",
           "item_id": 37,
           "num": 2
         }
@@ -44,26 +46,23 @@
         "id": 161,
         "group_id": 0
       },
+      "starting_index": 2,
       "enemies": [
         {
-          "enemy_id": "0x011002",
-          "level": 3,
-          "exp": 140,
-          "is_boss": false,
-          "hm_present_no": 47
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 46,
+          "level": 9,
+          "exp": 55
         },
         {
-          "enemy_id": "0x011002",
-          "level": 3,
-          "exp": 140,
-          "is_boss": false,
-          "hm_present_no": 47
-        },
-        {
-          "enemy_id": "0x010200",
-          "level": 3,
-          "exp": 94,
-          "is_boss": false
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 46,
+          "level": 9,
+          "exp": 55
         }
       ]
     },
@@ -73,20 +72,39 @@
         "id": 161,
         "group_id": 2
       },
+      "starting_index": 2,
       "enemies": [
         {
-          "enemy_id": "0x011002",
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 46,
           "level": 9,
-          "exp": 140,
-          "is_boss": false,
-          "hm_present_no": 47
+          "exp": 55
         },
         {
-          "enemy_id": "0x011002",
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 46,
           "level": 9,
-          "exp": 140,
-          "is_boss": false,
-          "hm_present_no": 47
+          "exp": 55
+        },
+        {
+          "comment": "Vigilant Rogue Hunter",
+          "enemy_id": "0x011002",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 47,
+          "level": 9,
+          "exp": 55
+        },
+        {
+          "comment": "Vigilant Rogue Hunter",
+          "enemy_id": "0x011002",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 47,
+          "level": 9,
+          "exp": 55
         }
       ]
     }
@@ -104,7 +122,15 @@
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1303,
+          "Param2": 10986
+        }
+      ]
     },
     {
       "type": "KillGroup",

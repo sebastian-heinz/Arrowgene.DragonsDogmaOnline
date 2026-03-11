@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "Dweller In The Darkness",
+  "comment": "Dweller In The Darkness (II)",
   "quest_id": 20005003,
   "base_level": 30,
   "minimum_item_rank": 0,
@@ -28,14 +28,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Advance Helm",
           "item_id": 845,
           "num": 1
         },
         {
-          "item_id": 2243,
+          "comment": "Vagrant's Mask",
+          "item_id": 631,
           "num": 1
         },
         {
+          "comment": "Enhanced Lockpick",
           "item_id": 9403,
           "num": 2
         }
@@ -50,10 +53,12 @@
       },
       "enemies": [
         {
+          "comment": "Brutal Ogre",
           "enemy_id": "0x015500",
+          "named_enemy_params_id": 54,
           "start_think_tbl_no": 2,
           "level": 30,
-          "exp": 5446,          
+          "exp": 2300,          
           "is_boss": true
         }
       ]

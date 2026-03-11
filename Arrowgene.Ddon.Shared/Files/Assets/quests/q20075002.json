@@ -27,32 +27,37 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Gold Ingot",
           "item_id": 7877,
           "num": 2
         },
         {
+          "comment": "Witch's Brew",
           "item_id": 9421,
           "num": 1
         },
         {
+          "comment": "Enhanced Pickaxe",
           "item_id": 9401,
           "num": 2
         }
       ]
-  },
+    },
+    {
+      "type": "random",
+      "loot_pool": [
         {
-              "type": "random",
-              "loot_pool": [
-                {
-                  "item_id": 9303,
-                  "num": 1,
-                  "chance": 0.4
-                },
-                {
-                  "item_id": 7852,
-                  "num": 3,
-                  "chance": 0.6
-                }
+          "comment": "Crest of Ice Warding",
+          "item_id": 9303,
+          "num": 1,
+          "chance": 0.4
+        },
+        {
+          "comment": "Sandcrystal",
+          "item_id": 7852,
+          "num": 3,
+          "chance": 0.6
+        }
       ]
     }
   ],
@@ -62,16 +67,15 @@
         "id": 1,
         "group_id": 309
       },
-      "placement_type": "manual",
       "enemies": [
         {
+          "comment": "Brutal Cockatrice",
           "enemy_id": "0x015301",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 54,
+          "named_enemy_params_id": 54,
           "level": 45,
-          "exp": 6476,
-          "is_boss": true,
-          "index": 0
+          "exp": 5050,
+          "is_boss": true
         }
       ]
     }

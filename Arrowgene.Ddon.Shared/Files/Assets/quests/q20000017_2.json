@@ -1,0 +1,128 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Fabio's Collectibles (III)",
+  "quest_id": 20000017,
+  "base_level": 24,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 420
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 50
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Monster Gallstone",
+          "item_id": 7865,
+          "num": 3
+        },
+        {
+          "comment": "Interventive",
+          "item_id": 9374,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "message_id": 11373
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 12,
+          "Param2": 11856
+        }
+      ],
+      "items": [
+        {
+          "comment": "Scroll of Fire",
+          "id": 8011,
+          "amount": 1
+        }
+      ],
+      "message_id": 11848
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 12,
+          "Param2": 11856
+        }
+      ],
+      "items": [
+        {
+          "comment": "Scroll of Ice",
+          "id": 8012,
+          "amount": 1
+        }
+      ],
+      "message_id": 11849
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 12,
+          "Param2": 11856
+        }
+      ],
+      "items": [
+        {
+          "comment": "Scroll of Thunder",
+          "id": 8013,
+          "amount": 1
+        }
+      ],
+      "message_id": 11853
+    }
+  ]
+}

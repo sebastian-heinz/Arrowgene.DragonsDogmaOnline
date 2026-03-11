@@ -6,7 +6,7 @@
     "base_level": 47,
     "minimum_item_rank": 0,
     "discoverable": false,
-  "area_id": "EasternZandora",	
+    "area_id": "EasternZandora",
     "rewards": [
         {
             "type": "wallet",
@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Crest of Sheer Protection",
                     "item_id": 9289,
                     "num": 1
                 },
                 {
+                    "comment": "Crest of Sheer Intelligence",
                     "item_id": 9293,
                     "num": 1
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 1
                 }
@@ -43,33 +46,51 @@
     "enemy_groups" : [
         {
             "stage_id": {
-                "id": 60,
-                "group_id": 1
+                "id": 65,
+                "group_id": 0
             },
             "enemies": [
                 {
+                    "comment": "Brutal Skeleton Warrior",
                     "enemy_id": "0x010302",
+                    "named_enemy_params_id": 54,
                     "level": 47,
-                    "exp": 1250,
-                    "is_boss": false
-        },
-        {
+                    "exp": 224
+                },
+                {
+                    "comment": "Brutal Skeleton Warrior",
                     "enemy_id": "0x010302",
+                    "named_enemy_params_id": 54,
                     "level": 47,
-                    "exp": 1250,
-                    "is_boss": false
-        },
-        {
+                    "exp": 224
+                },
+                {
+                    "comment": "Brutal Ghost Mail",
                     "enemy_id": "0x010311",
+                    "named_enemy_params_id": 54,
                     "level": 47,
-                    "exp": 1350,
-                    "is_boss": false
-        },
-        {
+                    "exp": 576
+                },
+                {
+                    "comment": "Brutal Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "named_enemy_params_id": 54,
+                    "level": 47,
+                    "exp": 224
+                },
+                {
+                    "comment": "Brutal Ghost Mail",
                     "enemy_id": "0x010311",
+                    "named_enemy_params_id": 54,
                     "level": 47,
-                    "exp": 1350,
-                    "is_boss": false					
+                    "exp": 576
+                },
+                {
+                    "comment": "Brutal Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "named_enemy_params_id": 54,
+                    "level": 47,
+                    "exp": 224
                 }
             ]
         }

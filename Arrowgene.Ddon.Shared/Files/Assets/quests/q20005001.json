@@ -60,12 +60,12 @@
     },
     {
       "type": "exp",
-      "amount": 510
+      "amount": 310
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 420
+      "amount": 260
     },
     {
       "type": "wallet",
@@ -82,28 +82,28 @@
       "starting_index": 6,
       "enemies": [
         {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
+          "comment": "Vigilant Redcap Fighter",
+          "enemy_id": "0x011111",
           "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
           "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "exp": 50
         },
         {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
+          "comment": "Vigilant Redcap Sling",
+          "enemy_id": "0x011112",
           "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
           "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "exp": 50
         },
         {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
+          "comment": "Vigilant Redcap Sling",
+          "enemy_id": "0x011112",
           "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
           "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "exp": 50
         }
       ]
     },
@@ -112,31 +112,31 @@
         "id": 1,
         "group_id": 28
       },
-      "starting_index": 6,
+      "starting_index": 10,
       "enemies": [
         {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
+          "comment": "Vigilant Redcap Fighter",
+          "enemy_id": "0x011111",
           "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
           "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "exp": 50
         },
         {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
+          "comment": "Vigilant Redcap Sling",
+          "enemy_id": "0x011112",
           "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
           "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "exp": 50
         },
         {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
+          "comment": "Vigilant Redcap Sling",
+          "enemy_id": "0x011112",
           "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
           "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "exp": 50
         }
       ]
     },
@@ -145,47 +145,31 @@
         "id": 1,
         "group_id": 6
       },
-      "starting_index": 6,
+      "starting_index": 7,
       "enemies": [
         {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
+          "comment": "Vigilant Redcap Fighter",
+          "enemy_id": "0x011111",
           "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
           "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "exp": 50
         },
         {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
+          "comment": "Vigilant Redcap Sling",
+          "enemy_id": "0x011112",
           "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
           "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "exp": 50
         },
         {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
+          "comment": "Vigilant Redcap Sling",
+          "enemy_id": "0x011112",
           "named_enemy_params_id": 53,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x011110",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
           "level": 8,
-          "exp": 94,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "exp": 50
         }
       ]
     }

@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "Whispers of the Dark",
+  "comment": "Whispers of the Dark (II)",
   "quest_id": 20005004,
   "base_level": 25,
   "minimum_item_rank": 0,
@@ -28,19 +28,19 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "rock rmor",
-          "item_id": 547,
+          "comment": "Grand Surcoat",
+          "item_id": 550,
           "num": 1
         },
         {
-          "comment": "sorc coat",
+          "comment": "Sorcerer's Coat",
           "item_id": 761,
           "num": 1
         },
         {
-          "comment": "demon amulet",
-          "item_id": 9383,
-          "num": 2
+          "comment": "Black Skull",
+          "item_id": 7769,
+          "num": 1
         }
       ]
     }
@@ -51,14 +51,56 @@
         "id": 88,
         "group_id": 4
       },
+      "starting_index": 6,
       "enemies": [
         {
-          "comment": "Wight",
+          "comment": "Brutal Wight",
           "enemy_id": "0x015600",
-          "named_enemy_params_id": 56,
+          "named_enemy_params_id": 54,
+          "start_think_tbl_no": 2,
           "level": 25,
-          "exp": 3742,
+          "exp": 1430,
           "is_boss": true
+        },
+        {
+          "comment": "Skeleton Knight",
+          "enemy_id": "0x010301",
+          "start_think_tbl_no": 8,
+          "repop_count": 2,
+          "level": 23,
+          "exp": 102,
+          "is_required": false,
+          "is_manual_set": true
+        },
+        {
+          "comment": "Skeleton Knight",
+          "enemy_id": "0x010301",
+          "start_think_tbl_no": 8,
+          "repop_count": 1,
+          "level": 23,
+          "exp": 102,
+          "is_required": false,
+          "is_manual_set": true
+        },
+        {
+          "comment": "Skeleton Knight",
+          "enemy_id": "0x010301",
+          "start_think_tbl_no": 8,
+          "repop_count": 1,
+          "level": 23,
+          "exp": 102,
+          "is_required": false,
+          "is_manual_set": true
+        },
+        {
+          "comment": "Skeleton Knight",
+          "enemy_id": "0x010301",
+          "start_think_tbl_no": 8,
+          "repop_count": 2,
+          "level": 23,
+          "exp": 102,
+          "is_required": false,
+          "is_manual_set": true
         }
       ]
     }

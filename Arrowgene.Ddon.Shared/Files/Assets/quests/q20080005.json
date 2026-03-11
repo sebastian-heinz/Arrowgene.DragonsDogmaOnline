@@ -6,7 +6,7 @@
     "base_level": 48,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",		
+    "area_id": "EasternZandora",
     "rewards": [
         {
             "type": "wallet",
@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Glossy Black Feather",
                     "item_id": 7818,
                     "num": 1
                 },
                 {
+                    "comment": "Enhanced Lockpick",
                     "item_id": 9403,
                     "num": 3
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 1
                 }
@@ -43,6 +46,7 @@
             "type": "random",
             "loot_pool": [
                 {
+                    "comment": "Gleipnir",
                     "item_id": 7959,
                     "num": 1,
                     "chance": 1.0
@@ -56,13 +60,15 @@
                 "id": 1,
                 "group_id": 477
             },
+            "starting_index": 2,
             "enemies": [
                 {
+                    "comment": "Brutal Black Griffin",
                     "enemy_id": "0x015303",
-                    "named_enemy_params_id": 53,
-                    "level": 48,
-                    "exp": 6824,
-                    "is_boss": true							
+                    "named_enemy_params_id": 54,
+                    "level": 46,
+                    "exp": 5112,
+                    "is_boss": true
                 }
             ]
         }
@@ -76,11 +82,19 @@
                 "layer_no": 1
             },
             "npc_id": "Salamis",
-            "message_id": 11372
+            "message_id": 8706
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 1812,
+                    "Param2": 8712
+                }
+            ],
             "groups": [0]
         },
         {
@@ -94,11 +108,11 @@
             "stage_id": {
                 "id": 61,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
             "npc_id": "Salamis",
-            "message_id": 11835
+            "message_id": 8709
         }
     ]
 }

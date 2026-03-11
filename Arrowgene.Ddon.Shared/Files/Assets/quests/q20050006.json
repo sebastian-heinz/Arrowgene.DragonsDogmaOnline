@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "The Witch of the Forest (Lestania Herbs)",
+  "comment": "The Witch of the Forest",
   "quest_id": 20050006,
   "base_level": 13,
   "minimum_item_rank": 0,
@@ -37,7 +37,7 @@
           "num": 3
         },
         {
-          "comment": "Mushroom Saute",
+          "comment": "Mushroom Sauté",
           "item_id": 1351,
           "num": 1
         }
@@ -51,7 +51,7 @@
         "id": 16
       },
       "npc_id": "Emerada0",
-      "message_id": 10800
+      "message_id": 11429
     },
     {
       "type": "DeliverItems",
@@ -61,13 +61,22 @@
       },
       "npc_id": "Emerada0",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 4501,
+          "Param2": 14837
+        }
+      ],
       "items": [
         {
+          "comment": "Lestania Herb",
           "id": 7976,
           "amount": 5
         }
       ],
-      "message_id": 10737
+      "message_id": 13113
     }
   ]
 }

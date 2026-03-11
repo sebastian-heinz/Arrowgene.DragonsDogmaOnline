@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Black Iron Ingot",
                     "item_id": 7878,
                     "num": 1
                 },
                 {
+                    "comment": "Enhanced Lumber Knife",
                     "item_id": 9402,
                     "num": 3
                 },
                 {
+                    "comment": "Strong Gala Extract",
                     "item_id": 9363,
                     "num": 3
                 }
@@ -43,6 +46,7 @@
             "type": "random",
             "loot_pool": [
                 {
+                    "comment": "Healing Potion",
                     "item_id": 34,
                     "num": 9,
                     "chance": 1.0
@@ -56,13 +60,14 @@
                 "id": 1,
                 "group_id": 447
             },
+            "starting_index": 1,
             "enemies": [
                 {
+                    "comment": "Brutal Golem",
                     "enemy_id": "0x015100",
-                    "start_think_tbl_no": 3,
-                    "named_enemy_params_id": 53,
+                    "named_enemy_params_id": 54,
                     "level": 47,
-                    "exp": 6824,
+                    "exp": 3600,
                     "is_boss": true
                 }
             ]
@@ -77,11 +82,19 @@
                 "layer_no": 1
             },
             "npc_id": "Rick",
-            "message_id": 11372
+            "message_id": 16043
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 1807,
+                    "Param2": 16044
+                }
+            ],
             "groups": [0]
         },
         {
@@ -99,7 +112,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Rick",
-            "message_id": 11835
+            "message_id": 16045
         }
     ]
 }

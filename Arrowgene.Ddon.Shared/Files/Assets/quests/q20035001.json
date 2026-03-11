@@ -12,29 +12,32 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 1320
+      "amount": 1150
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 260
+      "amount": 230
     },
     {
       "type": "exp",
-      "amount": 1080
+      "amount": 1610
     },
     {
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Golem Magickal Rock",
+          "item_id": 7866,
+          "num": 1
+        },
+        {
+          "comment": "Lapis Lazuli",
           "item_id": 7902,
           "num": 3
         },
         {
-          "item_id": 9384,
-          "num": 2
-        },
-        {
+          "comment": "Old Forest Dwellers' Key",
           "item_id": 9066,
           "num": 2
         }
@@ -47,11 +50,14 @@
         "id": 69,
         "group_id": 6
       },
+      "starting_index": 1,
       "enemies": [
         {
+          "comment": "Keywarden Golem",
           "enemy_id": "0x015100",
+          "named_enemy_params_id": 387,
           "level": 35,
-          "exp": 6000,
+          "exp": 3000,
           "is_boss": true
         }
       ]

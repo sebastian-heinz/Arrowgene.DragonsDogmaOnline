@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Dignity Boots",
           "item_id": 9709,
           "num": 1
         },
         {
+          "comment": "Five-Herb Salad",
           "item_id": 9414,
           "num": 1
         },
         {
+          "comment": "Sprite's Amulet",
           "item_id": 9384,
           "num": 2
         }
@@ -47,11 +50,14 @@
         "id": 100,
         "group_id": 4
       },
+      "starting_index": 11,
       "enemies": [
         {
+          "comment": "Brutal Ogre",
           "enemy_id": "0x015500",
+          "named_enemy_params_id": 54,
           "level": 32,
-          "exp": 5400,
+          "exp": 2420,
           "is_boss": true
         }
       ]

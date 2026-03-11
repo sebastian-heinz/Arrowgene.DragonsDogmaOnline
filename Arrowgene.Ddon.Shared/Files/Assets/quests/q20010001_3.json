@@ -1,0 +1,171 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Boat's Buddy (Bounty)",
+    "quest_id": 20010001,
+    "base_level": 10,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "BreyaCoast",
+    "news_image": 22,
+    "variant_index": 3,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 440
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 30
+        },
+        {
+            "type": "exp",
+            "amount": 550
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Superior Healing Potion",
+                    "item_id": 35,
+                    "num": 2
+                },
+                {
+                    "comment": "Superior Gala Extract",
+                    "item_id": 61,
+                    "num": 2
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 83
+            },
+            "starting_index": 4,
+            "enemies": [
+                {
+                    "comment": "Bounty Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 468,
+                    "level": 9,
+                    "exp": 43,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Bounty Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 468,
+                    "level": 9,
+                    "exp": 43,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Bounty Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 468,
+                    "level": 9,
+                    "exp": 43,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Bounty Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 468,
+                    "level": 9,
+                    "exp": 43,
+                    "is_boss": false
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 83
+            },
+            "starting_index": 8,
+            "enemies": [
+                {
+                    "comment": "Bounty Saurian",
+                    "enemy_id": "0x010400",
+                    "named_enemy_params_id": 468,
+                    "level": 9,
+                    "exp": 45,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Bounty Saurian",
+                    "enemy_id": "0x010400",
+                    "named_enemy_params_id": 468,
+                    "level": 9,
+                    "exp": 45,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Bounty Saurian",
+                    "enemy_id": "0x010400",
+                    "named_enemy_params_id": 468,
+                    "level": 9,
+                    "exp": 45,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Bounty Giant Saurian",
+                    "enemy_id": "0x010401",
+                    "named_enemy_params_id": 468,
+                    "level": 9,
+                    "exp": 84,
+                    "is_boss": false
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 1,
+                "group_id": 0
+            },
+            "npc_id": "Walter",
+            "message_id": 10801
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 1200,
+                    "Param2": 10806
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [ 1 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Walter",
+            "message_id": 10804
+        }
+    ]
+}

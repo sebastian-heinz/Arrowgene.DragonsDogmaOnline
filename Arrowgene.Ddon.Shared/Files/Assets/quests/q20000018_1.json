@@ -1,0 +1,118 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Fabio and Monster-Slaying (II)",
+  "quest_id": 20000018,
+  "base_level": 18,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 1,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 830
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 590
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 90
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Ranger Cuisses",
+          "item_id": 679,
+          "num": 1
+        },
+        {
+          "comment": "Conqueror's Periapt",
+          "item_id": 42,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 21
+      },
+      "starting_index": 1,
+      "enemies": [
+        {
+          "comment": "Vigilant Dread Ape",
+          "enemy_id": "0x015502",
+          "named_enemy_params_id": 53,
+          "level": 18,
+          "exp": 1358,
+          "is_boss": true
+        },
+        {
+          "comment": "Vigilant Brute Ape",
+          "enemy_id": "0x015504",
+          "named_enemy_params_id": 53,
+          "level": 18,
+          "exp": 141,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Brute Ape",
+          "enemy_id": "0x015504",
+          "named_enemy_params_id": 53,
+          "level": 18,
+          "exp": 141,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "message_id": 11862
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 12,
+          "Param2": 10823
+        }
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "announce_type": "Update",
+      "npc_id": "Fabio0",
+      "message_id": 11865
+    }
+  ]
+}

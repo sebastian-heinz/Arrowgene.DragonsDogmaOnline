@@ -1,0 +1,167 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Hometown Concerns",
+  "quest_id": 21000002,
+  "base_level": 57,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BreyaCoast",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2965
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1880
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 235
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Mithril Ingot",
+          "item_id": 7880,
+          "num": 2
+        },
+        {
+          "comment": "Moonglow",
+          "item_id": 7981,
+          "num": 5
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 133,
+        "group_id": 2
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Scarlet Defender",
+          "enemy_id": "0x011074",
+          "hm_present_no": 91,
+          "level": 57,
+          "exp": 329,
+          "index": 0
+        },
+        {
+          "comment": "Scarlet Hunter",
+          "enemy_id": "0x011072",
+          "hm_present_no": 89,
+          "level": 57,
+          "exp": 329,
+          "index": 1
+        },
+        {
+          "comment": "Scarlet Hunter",
+          "enemy_id": "0x011072",
+          "hm_present_no": 89,
+          "level": 57,
+          "exp": 329,
+          "index": 2
+        },
+        {
+          "comment": "Scarlet Hunter",
+          "enemy_id": "0x011072",
+          "hm_present_no": 89,
+          "level": 57,
+          "exp": 329,
+          "index": 5
+        },
+        {
+          "comment": "Scarlet Warrior",
+          "enemy_id": "0x011076",
+          "hm_present_no": 93,
+          "level": 57,
+          "exp": 329,
+          "index": 7
+        },
+        {
+          "comment": "Scarlet Warrior",
+          "enemy_id": "0x011076",
+          "hm_present_no": 93,
+          "level": 57,
+          "exp": 329,
+          "index": 9
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 17
+      },
+      "npc_id": "Gloria",
+      "message_id": 17040
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 17
+      },
+      "npc_id": "Gloria",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1208,
+          "Param2": 17041
+        }
+      ],
+      "items": [
+        {
+          "comment": "Drómi",
+          "id": 7958,
+          "amount": 2
+        }
+      ],
+      "message_id": 17042
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1208,
+          "Param2": 17043
+        }
+      ],
+      "groups": [0]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 17
+      },
+      "announce_type": "Update",
+      "npc_id": "Gloria",
+      "message_id": 17044
+    }
+  ]
+}

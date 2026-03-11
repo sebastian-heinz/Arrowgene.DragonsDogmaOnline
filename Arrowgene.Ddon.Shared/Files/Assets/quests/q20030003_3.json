@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "The Timeless Castle",
+  "comment": "The Timeless Castle (IV)",
   "quest_id": 20030003,
   "base_level": 58,
   "minimum_item_rank": 0,
@@ -28,23 +28,22 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "Crest of Incineration",
+          "comment": "Dragon Fang",
           "item_id": 7763,
           "num": 1
         },
         {
-          "comment": "Exquisite Fried Meat",
+          "comment": "Thick Dragonscale",
           "item_id": 7929,
           "num": 1
         },
         {
-          "comment": "Three-Herb Salad",
+          "comment": "Behemoth Fang",
           "item_id": 7799,
           "num": 1
         }
       ]
-  
-  }
+    }
   ],
   "enemy_groups": [
     {
@@ -54,15 +53,15 @@
       },
       "placement_type": "manual",
       "enemies": [
-        
         {
+          "comment": "Legendary Behemoth",
           "enemy_id": "0x015709",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 57,
+          "start_think_tbl_no": 1,
           "level": 58,
-          "exp": 26700,
+          "exp": 9296,
           "is_boss": true,
-          "index": 2
+          "index": 4
         }
       ]
     }
@@ -76,11 +75,19 @@
         "layer_no": 1
       },
       "npc_id": "Urda",
-      "message_id": 11372
+      "message_id": 11197
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1502,
+          "Param2": 11202
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -98,7 +105,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Urda",
-      "message_id": 11842
+      "message_id": 11200
     }
   ]
 }

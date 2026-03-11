@@ -27,10 +27,12 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Trooper's Vest",
           "item_id": 9604,
           "num": 1
         },
         {
+          "comment": "Thief's Mask",
           "item_id": 489,
           "num": 1
         }
@@ -41,27 +43,34 @@
     {
       "stage_id": {
         "id": 1,
-        "group_id": 85
+        "group_id": 86
       },
+      "position_index": 5,
       "enemies": [
         {
+          "comment": "Vigilant Rogue Hunter",
           "enemy_id": "0x011002",
+          "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 140,
+          "exp": 62,
           "is_boss": false,
           "hm_present_no": 47
         },
         {
+          "comment": "Vigilant Rogue Hunter",
           "enemy_id": "0x011002",
+          "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 140,
+          "exp": 62,
           "is_boss": false,
           "hm_present_no": 47
         },
         {
+          "comment": "Vigilant Rogue Hunter",
           "enemy_id": "0x011002",
+          "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 140,
+          "exp": 62,
           "is_boss": false,
           "hm_present_no": 47
         }
@@ -89,11 +98,18 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1207,
+          "Param2": 10788
+        }
+      ],
       "groups": [ 0 ]
     },
     {
       "type": "KillGroup",
-
       "announce_type": "Update",
       "reset_group": false,
       "groups": [ 0 ]

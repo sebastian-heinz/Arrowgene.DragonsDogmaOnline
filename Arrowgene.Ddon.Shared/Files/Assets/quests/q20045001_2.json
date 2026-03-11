@@ -1,0 +1,131 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Messenger From the Underworld (III)",
+  "quest_id": 20045001,
+  "base_level": 55,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "VoldenMines",
+  "news_image": 96,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1510
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "exp",
+      "amount": 1810
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Sand of Reminiscence",
+          "item_id": 9441,
+          "num": 1
+        },
+        {
+          "comment": "Demonic Gem",
+          "item_id": 7911,
+          "num": 1
+        },
+        {
+          "comment": "Cracked Black Horn",
+          "item_id": 7753,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 72,
+        "group_id": 17
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Shadow Goblin",
+          "enemy_id": "0x011130",
+          "level": 55,
+          "exp": 223,
+          "is_boss": false,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 1
+        },
+        {
+          "comment": "Shadow Goblin",
+          "enemy_id": "0x011130",
+          "level": 55,
+          "exp": 223,
+          "is_boss": false,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 2
+        },
+        {
+          "comment": "Shadow Goblin",
+          "enemy_id": "0x011130",
+          "level": 55,
+          "exp": 223,
+          "is_boss": false,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 10
+        },
+        {
+          "comment": "Shadow Sling Goblin",
+          "enemy_id": "0x011132",
+          "level": 55,
+          "exp": 236,
+          "is_boss": false,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 11
+        },
+        {
+          "comment": "Shadow Sling Goblin",
+          "enemy_id": "0x011132",
+          "level": 55,
+          "exp": 236,
+          "is_boss": false,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 12
+        },
+        {
+          "comment": "Shadow Sling Goblin",
+          "enemy_id": "0x011132",
+          "level": 55,
+          "exp": 236,
+          "is_boss": false,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 13
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

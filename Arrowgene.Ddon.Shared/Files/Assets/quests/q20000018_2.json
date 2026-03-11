@@ -1,0 +1,107 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Fabio and Monster-Slaying (III)",
+  "quest_id": 20000018,
+  "base_level": 24,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 1,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1100
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 790
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 120
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Pyrite",
+          "item_id": 9061,
+          "num": 5
+        },
+        {
+          "comment": "Conqueror's Amulet",
+          "item_id": 9381,
+          "num": 1
+        },
+        {
+          "comment": "Purifying Decoction",
+          "item_id": 9372,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 21
+      },
+      "starting_index": 1,
+      "enemies": [
+        {
+          "comment": "Brutal Armored Cyclops",
+          "enemy_id": "0x015002",
+          "named_enemy_params_id": 54,
+          "level": 24,
+          "exp": 2597,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "message_id": 11862
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 12,
+          "Param2": 10823
+        }
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "announce_type": "Update",
+      "npc_id": "Fabio0",
+      "message_id": 11865
+    }
+  ]
+}

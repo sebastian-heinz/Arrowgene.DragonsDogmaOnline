@@ -28,57 +28,60 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "Victory Bracers",
+          "comment": "Resolver Arms",
           "item_id": 924,
           "num": 1
         },
         {
-          "comment": "Demon Amulet",
-          "item_id": 2324,
+          "comment": "Iron Bracers",
+          "item_id": 712,
           "num": 1
         },
         {
-          "comment": "Enhanced Lockpick",
+          "comment": "Three-Herb Salad",
           "item_id": 9410,
           "num": 2
         }
       ]
-  },
-  {
+    },
+    {
       "type": "random",
       "loot_pool": [
-          {
-              "item_id": 1015,
-              "num": 1,
-              "chance": 0.3
-          },
-          {
-            "item_id": 7875,
-            "num": 2,
-            "chance": 0.3
+        {
+          "comment": "Survivor's Cape",
+          "item_id": 1015,
+          "num": 1,
+          "chance": 0.3
         },
         {
+          "comment": "Silver Ingot",
+          "item_id": 7875,
+          "num": 2,
+          "chance": 0.3
+        },
+        {
+          "comment": "Ancient Grimoire",
           "item_id": 7764,
           "num": 1,
           "chance": 0.3
-      }
+        }
       ]
-  }
-],
+    }
+  ],
   "enemy_groups": [
     {
       "stage_id": {
         "id": 154,
         "group_id": 2
       },
-        "placement_type": "manual",
+      "placement_type": "manual",
       "enemies": [
         {
+          "comment": "Brutal Wight",
           "enemy_id": "0x015600",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 54,
+          "named_enemy_params_id": 54,
           "level": 32,
-          "exp": 5636,
+          "exp": 1757,
           "is_boss": true,
           "index": 7
         }
@@ -102,11 +105,19 @@
         "layer_no": 1
       },
       "npc_id": "Gerd1",
-      "message_id": 11372
+      "message_id": 11403
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "type": "QstTalkChg",
+          "Param1": 7,
+          "Param2": 11969,
+          "comment": "Idle dialogue"
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -141,7 +152,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Gerd1",
-      "message_id": 11842
+      "message_id": 11967
     }
   ]
 }

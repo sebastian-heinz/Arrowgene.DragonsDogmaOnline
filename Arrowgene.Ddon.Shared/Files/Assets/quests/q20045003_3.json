@@ -1,0 +1,98 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Tunnel Beast (Calamity)",
+  "quest_id": 20045003,
+  "base_level": 55,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "VoldenMines",
+  "news_image": 533,
+  "variant_index": 3,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 3630
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 420
+    },
+    {
+      "type": "exp",
+      "amount": 5420
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Thick Dragonscale",
+          "item_id": 7929,
+          "num": 1
+        },
+        {
+          "comment": "Behemoth Fang",
+          "item_id": 7799,
+          "num": 2
+        },
+        {
+          "comment": "Smoky Quartz",
+          "item_id": 7908,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 101,
+        "group_id": 5
+      },
+      "position_type": "manual",
+      "enemies": [
+        {
+          "comment": "Dangerous Empress Ghost",
+          "enemy_id": "0x015605",
+          "named_enemy_params_id": 56,
+          "level": 55,
+          "exp": 4095,
+          "is_boss": true,
+          "index": 5
+        },
+        {
+          "comment": "Dangerous Empress Ghost",
+          "enemy_id": "0x015605",
+          "named_enemy_params_id": 56,
+          "level": 55,
+          "exp": 4095,
+          "is_boss": true,
+          "index": 6
+        },
+        {
+          "comment": "Cave Raider (Behemoth)",
+          "enemy_id": "0x015709",
+          "named_enemy_params_id": 529,
+          "level": 55,
+          "exp": 8960,
+          "is_boss": true,
+          "index": 9
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

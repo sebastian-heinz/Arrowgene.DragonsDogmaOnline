@@ -1,0 +1,125 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Wicked Pursuer (Calamity II)",
+  "quest_id": 20100003,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DeenanWoods",
+  "news_image": 562,
+  "variant_index": 3,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 3960
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 490
+    },
+    {
+      "type": "exp",
+      "amount": 6930
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Protection+",
+          "item_id": 11740,
+          "num": 1
+        },
+        {
+          "comment": "Spectral Dragon Fang",
+          "item_id": 9453,
+          "num": 1
+        },
+        {
+          "comment": "Magick Lion's Large Mane",
+          "item_id": 9437,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 114,
+        "group_id": 0
+      },
+      "starting_index": 7,
+      "enemies": [
+        {
+          "comment": "Sharp Fang Mist Dragon (Mist Drake)",
+          "enemy_id": "0x015710",
+          "named_enemy_params_id": 624,
+          "level": 60,
+          "exp": 9860,
+          "is_boss": true
+        },
+        {
+          "comment": "Wicked Clawed White Lion (White Chimera)",
+          "enemy_id": "0x015202",
+          "named_enemy_params_id": 625,
+          "level": 60,
+          "exp": 6162,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1082,
+          "comment": "Spawns StrangeMan NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 114,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "StrangeMan",
+      "message_id": 11347
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [ 
+        { 
+          "type": "QstTalkChg", 
+          "Param1": 507, 
+          "Param2": 11351,
+          "comment": "Idle dialogue"
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 114,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "StrangeMan",
+      "message_id": 11350
+    }
+  ]
+}

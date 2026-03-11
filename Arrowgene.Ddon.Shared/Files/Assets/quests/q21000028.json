@@ -1,0 +1,280 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Jewelry: The Source of the Nightmare",
+  "quest_id": 21000028,
+  "base_level": 70,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 18420
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2309
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 300
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Mysree Medal",
+          "item_id": 11001,
+          "num": 1
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 1
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 430,
+        "group_id": 17
+      },
+      "comment": "Up to nine Unappraised Star Trinket (Soldier) drops",
+      "enemies": [
+        {
+          "comment": "Jewelry-Bearing Nightmare",
+          "enemy_id": "0x015305",
+          "named_enemy_params_id": 1121,
+          "level": 70,
+          "exp": 10108,
+          "drop_items": [
+            {
+              "item_id": 7819,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7746,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 13479,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 1,
+              "drop_chance": 1.0
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Shadow Goblin Leader",
+          "enemy_id": "0x011160",
+          "level": 70,
+          "exp": 1535
+        },
+        {
+          "comment": "Shadow Goblin Leader",
+          "enemy_id": "0x011160",
+          "level": 70,
+          "exp": 1535
+        },
+        {
+          "comment": "Shadow Goblin Leader",
+          "enemy_id": "0x011160",
+          "level": 70,
+          "exp": 1535
+        },
+        {
+          "comment": "Shadow Goblin Leader",
+          "enemy_id": "0x011160",
+          "level": 70,
+          "exp": 1535
+        },
+        {
+          "comment": "Jewelry-Bearing Shadow Goblin",
+          "enemy_id": "0x011130",
+          "named_enemy_params_id": 1121,
+          "level": 70,
+          "exp": 1535,
+          "drop_items": [
+            {
+              "item_id": 7911,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7753,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 9441,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.6
+            },
+            {
+              "item_id": 13479,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ],
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Jewelry-Bearing Shadow Goblin",
+          "enemy_id": "0x011130",
+          "named_enemy_params_id": 1121,
+          "level": 70,
+          "exp": 1535,
+          "drop_items": [
+            {
+              "item_id": 7911,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7753,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 9441,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.6
+            },
+            {
+              "item_id": 13479,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ],
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Jewelry-Bearing Shadow Goblin",
+          "enemy_id": "0x011130",
+          "named_enemy_params_id": 1121,
+          "level": 70,
+          "exp": 1535,
+          "drop_items": [
+            {
+              "item_id": 7911,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7753,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 9441,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.6
+            },
+            {
+              "item_id": 13479,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ],
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Jewelry-Bearing Shadow Goblin",
+          "enemy_id": "0x011130",
+          "named_enemy_params_id": 1121,
+          "level": 70,
+          "exp": 1535,
+          "drop_items": [
+            {
+              "item_id": 7911,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7753,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 9441,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.6
+            },
+            {
+              "item_id": 13479,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ],
+          "repop_count": 1,
+          "repop_wait_second": 10
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

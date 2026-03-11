@@ -21,7 +21,7 @@
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 130
+      "amount": 190
     },
     {
       "type": "select",
@@ -50,54 +50,61 @@
         "id": 238,
         "group_id": 9
       },
+      "starting_index": 5,
       "enemies": [
         {
-          "comment": "Wight",
+          "comment": "Brutal Wight",
           "enemy_id": "0x015600",
           "named_enemy_params_id": 54,
-          "level": 30,
           "start_think_tbl_no": 2,
-          "is_boss": true,
-          "is_manual_set": false,
-          "exp": 5446
+          "level": 30,
+          "exp": 1664,
+          "is_boss": true
         },
         {
-          "comment": "Stout Undead",
-          "enemy_id": "0x010502",
-          "is_manual_set": true,
-          "level": 28,
-          "exp": 874
-        },
-        {
-          "comment": "Wight",
+          "comment": "Brutal Wight",
           "enemy_id": "0x015600",
           "named_enemy_params_id": 54,
-          "level": 30,
           "start_think_tbl_no": 2,
-          "is_boss": true,
-          "is_manual_set": false,
-          "exp": 5446
+          "level": 30,
+          "exp": 1664,
+          "is_boss": true
         },
         {
           "comment": "Stout Undead",
           "enemy_id": "0x010502",
-          "is_manual_set": true,
+          "start_think_tbl_no": 8,
           "level": 28,
-          "exp": 874
+          "exp": 134,
+          "is_required": false,
+          "is_manual_set": true
         },
         {
           "comment": "Stout Undead",
           "enemy_id": "0x010502",
-          "is_manual_set": true,
+          "start_think_tbl_no": 8,
           "level": 28,
-          "exp": 874
+          "exp": 134,
+          "is_required": false,
+          "is_manual_set": true
         },
         {
           "comment": "Stout Undead",
           "enemy_id": "0x010502",
-          "is_manual_set": true,
+          "start_think_tbl_no": 8,
           "level": 28,
-          "exp": 874
+          "exp": 134,
+          "is_required": false,
+          "is_manual_set": true
+        },
+        {
+          "comment": "Stout Undead",
+          "enemy_id": "0x010502",
+          "start_think_tbl_no": 8,
+          "level": 28,
+          "exp": 134,
+          "is_required": false,
+          "is_manual_set": true
         }
       ]
     }
@@ -111,7 +118,7 @@
         "layer_no": 1
       },
       "npc_id": "Christoph",
-      "message_id": 11011,
+      "message_id": 11010,
       "flags": [
         {
           "type": "QstLayout",
@@ -123,7 +130,15 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 513,
+          "Param2": 11016
+        }
+      ]
     },
     {
       "type": "KillGroup",
@@ -140,7 +155,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Christoph",
-      "message_id": 11014
+      "message_id": 11013
     }
   ]
 }

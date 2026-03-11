@@ -1,0 +1,138 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Wicked Pursuer (II)",
+  "quest_id": 20100003,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DeenanWoods",
+  "news_image": 562,
+  "variant_index": 1,
+  "rewards": [
+	{
+	  "type": "wallet",
+	  "wallet_type": "Gold",
+	  "amount": 1480
+	},
+	{
+	  "type": "wallet",
+	  "wallet_type": "RiftPoints",
+	  "amount": 270
+	},
+	{
+	  "type": "exp",
+	  "amount": 2420
+	},
+	{
+	  "type": "select",
+	  "loot_pool": [
+		{
+		  "comment": "Cockatrice Liquor",
+		  "item_id": 7842,
+		  "num": 1
+		},
+		{
+		  "comment": "Darkness Defense Earrings",
+		  "item_id": 9004,
+		  "num": 1
+		},
+		{
+		  "comment": "Demon's Talisman",
+		  "item_id": 9389,
+		  "num": 1
+		}
+	  ]
+	}
+  ],
+  "enemy_groups": [
+	{
+	  "stage_id": {
+		"id": 114,
+		"group_id": 0
+	  },
+	  "starting_index": 6,
+	  "enemies": [
+		{
+		  "comment": "Dangerous Cockatrice",
+		  "enemy_id": "0x015301",
+		  "named_enemy_params_id": 56,
+		  "start_think_tbl_no": 1,
+		  "level": 45,
+		  "exp": 5050,
+		  "is_boss": true
+		},
+		{
+		  "comment": "Vigilant Harpy",
+		  "enemy_id": "0x010600",
+		  "named_enemy_params_id": 53,
+		  "start_think_tbl_no": 2,
+		  "level": 45,
+		  "exp": 126,
+		  "repop_count": 1,
+		  "repop_wait_second": 10
+		},
+		{
+		  "comment": "Vigilant Harpy",
+		  "enemy_id": "0x010600",
+		  "named_enemy_params_id": 53,
+		  "start_think_tbl_no": 2,
+		  "level": 45,
+		  "exp": 126,
+		  "repop_count": 1,
+		  "repop_wait_second": 10
+		}
+	  ]
+	}
+  ],
+  "blocks": [
+	{
+	  "type": "NewNpcTalkAndOrder",
+	  "flags": [
+		{
+		  "type": "QstLayout",
+		  "action": "Set",
+		  "value": 1082,
+		  "comment": "Spawns StrangeMan NPC"
+		}
+	  ],
+	  "stage_id": {
+		"id": 114,
+		"group_id": 1,
+		"layer_no": 1
+	  },
+	  "npc_id": "StrangeMan",
+	  "message_id": 11345
+	},
+	{
+	  "type": "SeekOutEnemiesAtMarkedLocation",
+	  "announce_type": "Accept",
+	  "result_commands": [ 
+		{ 
+		  "type": "QstTalkChg", 
+		  "Param1": 507, 
+		  "Param2": 11351,
+		  "comment": "Idle dialogue"
+		}
+	  ],
+	  "groups": [ 0 ]
+	},
+	{
+	  "type": "KillGroup",
+	  "announce_type": "Update",
+	  "reset_group": false,
+	  "groups": [ 0 ]
+	},
+	{
+	  "type": "NewTalkToNpc",
+	  "stage_id": {
+		"id": 114,
+		"group_id": 1,
+		"layer_no": 1
+	  },
+	  "announce_type": "Update",
+	  "npc_id": "StrangeMan",
+	  "message_id": 11348
+	}
+  ]
+}

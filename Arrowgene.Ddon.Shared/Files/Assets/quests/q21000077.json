@@ -1,0 +1,320 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Treasures: Where Fools Lie Buried",
+  "quest_id": 21000077,
+  "base_level": 65,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "EasternZandora",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 3940
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 12864
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 275
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Eastern Zandora Medal",
+          "item_id": 11008,
+          "num": 1
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 432,
+        "group_id": 10
+      },
+      "starting_index": 1,
+      "comment": "Up to 66000G",
+      "enemies": [
+        {
+          "comment": "Treasure-Bearing Shadow Chimera",
+          "enemy_id": "0x015203",
+          "named_enemy_params_id": 1119,
+          "level": 65,
+          "exp": 6120,
+          "drop_items": [
+            {
+              "item_id": 7911,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.3
+            },
+            {
+              "item_id": 7800,
+              "item_min": 1,
+              "item_max": 5,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7748,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 19508,
+              "item_min": 9,
+              "item_max": 9,
+              "quality": 0,
+              "drop_chance": 1.0
+            },
+            {
+              "item_id": 19508,
+              "item_min": 2,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Treasure-Bearing Shadow Chimera",
+          "enemy_id": "0x015203",
+          "named_enemy_params_id": 1119,
+          "level": 65,
+          "exp": 6120,
+          "drop_items": [
+            {
+              "item_id": 7911,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.3
+            },
+            {
+              "item_id": 7800,
+              "item_min": 1,
+              "item_max": 5,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7748,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 19508,
+              "item_min": 9,
+              "item_max": 9,
+              "quality": 0,
+              "drop_chance": 1.0
+            },
+            {
+              "item_id": 19508,
+              "item_min": 2,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Shadow Harpy",
+          "enemy_id": "0x010607",
+          "level": 65,
+          "exp": 788
+        },
+        {
+          "comment": "Shadow Harpy",
+          "enemy_id": "0x010607",
+          "level": 65,
+          "exp": 788
+        },
+        {
+          "comment": "Treasure-Bearing Dark Corpse Torturer",
+          "enemy_id": "0x010520",
+          "named_enemy_params_id": 1119,
+          "level": 65,
+          "exp": 468,
+          "drop_items": [
+            {
+              "item_id": 7741,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8024,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 19508,
+              "item_min": 9,
+              "item_max": 9,
+              "quality": 0,
+              "drop_chance": 1.0
+            },
+            {
+              "item_id": 19508,
+              "item_min": 2,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Treasure-Bearing Dark Corpse Torturer",
+          "enemy_id": "0x010520",
+          "named_enemy_params_id": 1119,
+          "level": 65,
+          "exp": 468,
+          "drop_items": [
+            {
+              "item_id": 7741,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8024,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 19508,
+              "item_min": 9,
+              "item_max": 9,
+              "quality": 0,
+              "drop_chance": 1.0
+            },
+            {
+              "item_id": 19508,
+              "item_min": 2,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Treasure-Bearing Dark Corpse Torturer",
+          "enemy_id": "0x010520",
+          "named_enemy_params_id": 1119,
+          "level": 65,
+          "exp": 468,
+          "drop_items": [
+            {
+              "item_id": 7741,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8024,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 19508,
+              "item_min": 9,
+              "item_max": 9,
+              "quality": 0,
+              "drop_chance": 1.0
+            },
+            {
+              "item_id": 19508,
+              "item_min": 2,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Treasure-Bearing Dark Corpse Torturer",
+          "enemy_id": "0x010520",
+          "named_enemy_params_id": 1119,
+          "level": 65,
+          "exp": 468,
+          "drop_items": [
+            {
+              "item_id": 7741,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8024,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 19508,
+              "item_min": 9,
+              "item_max": 9,
+              "quality": 0,
+              "drop_chance": 1.0
+            },
+            {
+              "item_id": 19508,
+              "item_min": 2,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

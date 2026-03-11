@@ -1,0 +1,79 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Sky Concealing Wings (IV)",
+  "quest_id": 20005000,
+  "base_level": 34,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "HidellPlains",
+  "news_image": 6,
+  "variant_index": 3,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 220
+    },
+    {
+      "type": "exp",
+      "amount": 1960
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Shock Warding",
+          "item_id": 9320,
+          "num": 1
+        },
+        {
+          "comment": "Throwing Knife",
+          "item_id": 9398,
+          "num": 2
+        },
+        {
+          "comment": "Demon's Amulet",
+          "item_id": 9383,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 30
+      },
+      "enemies": [
+        {
+          "comment": "Brutal Sphinx",
+          "enemy_id": "0x015302",
+          "named_enemy_params_id": 54,
+          "start_think_tbl_no": 1,
+          "level": 34,
+          "exp": 3496,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

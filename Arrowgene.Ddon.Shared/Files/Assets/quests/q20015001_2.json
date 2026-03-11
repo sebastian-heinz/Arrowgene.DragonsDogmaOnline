@@ -1,0 +1,78 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "That Which Tramples the Ground (Bounty)",
+  "quest_id": 20015001,
+  "base_level": 15,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BreyaCoast",
+  "news_image": 21,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1180
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 820
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 50
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Superior Healing Potion",
+          "item_id": 35,
+          "num": 2
+        },
+        {
+          "comment": "Superior Gala Extract",
+          "item_id": 61,
+          "num": 2
+        },
+        {
+          "comment": "Small Thief's Key",
+          "item_id": 9429,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 84
+      },
+      "enemies": [
+        {
+          "comment": "Bounty Armored Cyclops",
+          "enemy_id": "0x015002",
+          "named_enemy_params_id": 458,
+          "level": 15,
+          "exp": 2120,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

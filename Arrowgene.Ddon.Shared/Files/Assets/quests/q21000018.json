@@ -1,0 +1,162 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Heavily Occupied",
+  "quest_id": 21000018,
+  "base_level": 58,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BetlandPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 3017
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1913
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 240
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Gleipnir",
+          "item_id": 7959,
+          "num": 1
+        },
+        {
+          "comment": "Iron Ore Fragment",
+          "item_id": 7853,
+          "num": 5
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 120,
+        "group_id": 0
+      },
+      "starting_index": 4,
+      "enemies": [
+        {
+          "comment": "Colossus",
+          "enemy_id": "0x015020",
+          "level": 58,
+          "exp": 1676,
+          "is_boss": true
+        },
+        {
+          "comment": "Redcap Fighter",
+          "enemy_id": "0x011111",
+          "level": 58,
+          "exp": 335
+        },
+        {
+          "comment": "Redcap Fighter",
+          "enemy_id": "0x011111",
+          "level": 58,
+          "exp": 335
+        },
+        {
+          "comment": "Lux Skeleton",
+          "enemy_id": "0x010317",
+          "level": 58,
+          "exp": 335
+        },
+        {
+          "comment": "Lux Skeleton",
+          "enemy_id": "0x010317",
+          "level": 58,
+          "exp": 335
+        },
+        {
+          "comment": "Lux Skeleton",
+          "enemy_id": "0x010317",
+          "level": 58,
+          "exp": 335
+        },
+        {
+          "comment": "Lux Skeleton",
+          "enemy_id": "0x010317",
+          "level": 58,
+          "exp": 335
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 66
+      },
+      "npc_id": "Cyrus",
+      "message_id": 17073
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 66
+      },
+      "npc_id": "Cyrus",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1900,
+          "Param2": 17074
+        }
+      ],
+      "items": [
+        {
+          "comment": "Blow-Resistant Cloth",
+          "id": 7942,
+          "amount": 2
+        }
+      ],
+      "message_id": 17075
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1900,
+          "Param2": 17076
+        }
+      ],
+      "groups": [0]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 66
+      },
+      "announce_type": "Update",
+      "npc_id": "Cyrus",
+      "message_id": 17077
+    }
+  ]
+}

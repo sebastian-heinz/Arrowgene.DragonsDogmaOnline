@@ -1,9 +1,9 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "Confrontation With Scouts",
+  "comment": "Confrontation With Scouts (II)",
   "quest_id": 20005001,
-  "base_level": 8,
+  "base_level": 18,
   "minimum_item_rank": 0,
   "discoverable": false,
   "area_id": "HidellPlains",
@@ -32,47 +32,35 @@
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 8163,
+          "item_id": 8203,
           "num": 1,
-          "comment": "Blue-Edged Helm"
+          "comment": "Chain Hood"
         },
         {
-          "item_id": 9366,
+          "item_id": 9373,
+          "num": 3,
+          "comment": "Recovery Decoction"
+        },
+        {
+          "item_id": 1351,
           "num": 2,
-          "comment": "Waking Draught"
-        }
-      ]
-    },
-    {
-      "type": "random",
-      "loot_pool": [
-        {
-          "item_id": 34,
-          "num": 3,
-          "chance": 0.5,
-          "comment": "Healing Potion"
-        },
-        {
-          "item_id": 36,
-          "num": 3,
-          "chance": 0.5,
-          "comment": "Gala Extract"
+          "comment": "Mushroom Sauté"
         }
       ]
     },
     {
       "type": "exp",
-      "amount": 510
+      "amount": 710
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 420
+      "amount": 590
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 30
+      "amount": 70
     }
   ],
   "enemy_groups": [
@@ -81,31 +69,23 @@
         "id": 1,
         "group_id": 8
       },
-      "starting_index": 6,
+      "starting_index": 7,
       "enemies": [
         {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
-        },
-        {
+          "comment": "Vigilant Redcap Fighter",
           "enemy_id": "0x011111",
+          "named_enemy_params_id": 53,
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "level": 18,
+          "exp": 84
+        },
+        {
+          "comment": "Vigilant Redcap Sling",
+          "enemy_id": "0x011112",
+          "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
+          "level": 18,
+          "exp": 84
         }
       ]
     },
@@ -114,31 +94,23 @@
         "id": 1,
         "group_id": 28
       },
-      "starting_index": 6,
+      "starting_index": 11,
       "enemies": [
         {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x011110",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
-        },
-        {
+          "comment": "Vigilant Redcap Fighter",
           "enemy_id": "0x011111",
+          "named_enemy_params_id": 53,
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "level": 18,
+          "exp": 84
+        },
+        {
+          "comment": "Vigilant Redcap Sling",
+          "enemy_id": "0x011112",
+          "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
+          "level": 18,
+          "exp": 84
         }
       ]
     },
@@ -147,47 +119,40 @@
         "id": 1,
         "group_id": 6
       },
-      "starting_index": 6,
+      "starting_index": 7,
       "enemies": [
         {
-          "enemy_id": "0x011110",
+          "comment": "Brutal Redcap Sling",
+          "enemy_id": "0x011112",
+          "named_enemy_params_id": 54,
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "level": 18,
+          "exp": 84
         },
         {
-          "enemy_id": "0x011110",
+          "comment": "Brutal Redcap Sling",
+          "enemy_id": "0x011112",
+          "named_enemy_params_id": 54,
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "level": 18,
+          "exp": 84
         },
         {
-          "enemy_id": "0x011111",
+          "comment": "Brutal Redcap Sling",
+          "enemy_id": "0x011112",
+          "named_enemy_params_id": 54,
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "level": 18,
+          "exp": 84
         },
         {
-          "enemy_id": "0x011111",
+          "comment": "Brutal Cyclops",
+          "enemy_id": "0x015000",
+          "named_enemy_params_id": 54,
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x011111",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 458,
-          "level": 8,
-          "exp": 94,
-          "is_boss": false
+          "level": 18,
+          "exp": 2064,
+          "is_boss": true
         }
       ]
     }

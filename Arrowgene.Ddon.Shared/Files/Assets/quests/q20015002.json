@@ -45,40 +45,46 @@
         "id": 1,
         "group_id": 85
       },
+      "starting_index": 4,
       "enemies": [
         {
-          "comment": "Mist Fighter",
+          "comment": "Vigilant Mist Fighter",
           "enemy_id": "0x011030",
+          "named_enemy_params_id": 53,
           "level": 14,
-          "exp": 79,
+          "exp": 83,
           "hm_present_no": 68
         },
         {
-          "comment": "Mist Fighter",
+          "comment": "Vigilant Mist Fighter",
           "enemy_id": "0x011030",
+          "named_enemy_params_id": 53,
           "level": 14,
-          "exp": 79,
+          "exp": 83,
           "hm_present_no": 68
         },
         {
-          "comment": "Mist Hunter",
+          "comment": "Vigilant Mist Hunter",
           "enemy_id": "0x011031",
+          "named_enemy_params_id": 53,
           "level": 14,
-          "exp": 79,
+          "exp": 83,
           "hm_present_no": 69
         },
         {
-          "comment": "Mist Hunter",
+          "comment": "Vigilant Mist Hunter",
           "enemy_id": "0x011031",
+          "named_enemy_params_id": 53,
           "level": 14,
-          "exp": 79,
+          "exp": 83,
           "hm_present_no": 69
         },
         {
-          "comment": "Mist Hunter",
+          "comment": "Vigilant Mist Hunter",
           "enemy_id": "0x011031",
+          "named_enemy_params_id": 53,
           "level": 14,
-          "exp": 79,
+          "exp": 83,
           "hm_present_no": 69
         }
       ]

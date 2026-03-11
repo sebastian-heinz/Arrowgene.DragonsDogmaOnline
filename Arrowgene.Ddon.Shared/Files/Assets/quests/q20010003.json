@@ -32,7 +32,7 @@
           "num": 1
         },
         {
-          "comment": "Eyedrop",
+          "comment": "Eyedrops",
           "item_id": 39,
           "num": 3
         }
@@ -46,7 +46,7 @@
         "id": 1
       },
       "npc_id": "Rosa",
-      "message_id": 11000
+      "message_id": 11378
     },
     {
       "type": "TalkToNpc",
@@ -54,8 +54,16 @@
         "id": 47
       },
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1201,
+          "Param2": 11874
+        }
+      ],
       "npc_id": "Rudolfo",
-      "message_id": 10915
+      "message_id": 11870
     },
     {
       "type": "TalkToNpc",
@@ -64,8 +72,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Rosa",
-      "message_id": 11005
+      "message_id": 11871
     }
   ]
 }
-

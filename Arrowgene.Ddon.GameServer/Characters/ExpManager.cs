@@ -587,6 +587,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             PacketQueue packets = new(); // Only ever has one packet, but has to exist because there are problems with returning interface types
             CDataCharacterJobData? activeCharacterJobData = characterToJpExpTo.ActiveCharacterJobData;
+
+            uint totalJobPoint = activeCharacterJobData.JobPoint + gainedJp;
+            if (totalJobPoint > _Server.GameSettings.GameServerSettings.JobPointMax)
+            {
+                uint extra = (totalJobPoint - _Server.GameSettings.GameServerSettings.JobPointMax);
+                gainedJp = (extra > gainedJp) ? 0 : (gainedJp - extra);
+            }
+            
             activeCharacterJobData.JobPoint += gainedJp;
 
             if (characterToJpExpTo is Character)
@@ -613,8 +621,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 client.Enqueue(jpNtc, packets);
             }
 
-            // PERSIST CHANGES IN DB
-            _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData, connectionIn);
+            if (gainedJp > 0)
+            {
+                // PERSIST CHANGES IN DB
+                _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData, connectionIn);
+            }
 
             return packets;
         }

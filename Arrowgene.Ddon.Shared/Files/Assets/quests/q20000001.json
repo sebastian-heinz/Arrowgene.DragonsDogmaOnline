@@ -3,7 +3,7 @@
   "type": "World",
   "comment": "The Woes of A Merchant",
   "quest_id": 20000001,
-  "base_level": 8,
+  "base_level": 7,
   "minimum_item_rank": 0,
   "discoverable": true,
   "area_id": "HidellPlains",
@@ -12,7 +12,7 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 400
+      "amount": 190
     },
     {
       "type": "wallet",
@@ -21,18 +21,20 @@
     },
     {
       "type": "exp",
-      "amount": 260
+      "amount": 230
     },
     {
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 426,
+          "comment": "Green Grass Ring",
+          "item_id": 8928,
           "num": 1
         },
         {
-          "item_id": 34,
-          "num": 2
+          "comment": "Leather Bracelet",
+          "item_id": 8929,
+          "num": 1
         }
       ]
     }
@@ -64,10 +66,19 @@
       },
       "npc_id": "Peddler",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 509,
+          "Param2": 10742
+        }
+      ],
       "items": [
         {
-          "id": 8928,
-          "amount": 2
+          "comment": "Leather Bracelet",
+          "id": 8929,
+          "amount": 1
         }
       ],
       "message_id": 10737

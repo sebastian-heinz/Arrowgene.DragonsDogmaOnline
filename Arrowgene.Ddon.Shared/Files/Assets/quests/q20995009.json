@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Alchemic Wood",
                     "item_id": 9159,
                     "num": 1
                 },
                 {
+                    "comment": "Enhanced Lumber Knife",
                     "item_id": 9402,
                     "num": 3
                 },
                 {
+                    "comment": "Strong Gala Extract",
                     "item_id": 9363,
                     "num": 1
                 }
@@ -49,40 +52,44 @@
             "starting_index": 6,
             "enemies": [
                 {
+                    "comment": "Vigilant Alchemized Sling Goblin",
+                    "enemy_id": "0x011122",
+                    "named_enemy_params_id": 53,
+                    "level": 52,
+                    "exp": 205,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Alchemized Sling Goblin",
+                    "enemy_id": "0x011122",
+                    "named_enemy_params_id": 53,
+                    "level": 52,
+                    "exp": 205,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Alchemized Sling Goblin",
+                    "enemy_id": "0x011122",
+                    "named_enemy_params_id": 53,
+                    "level": 52,
+                    "exp": 205,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Alchemized Sling Goblin",
+                    "enemy_id": "0x011122",
+                    "named_enemy_params_id": 53,
+                    "level": 52,
+                    "exp": 205,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Brutal Silver Roar",
                     "enemy_id": "0x015505",
+                    "named_enemy_params_id": 54,
                     "level": 52,
-                    "exp": 14000,
+                    "exp": 3914,
                     "is_boss": true
-                },
-                {
-                    "enemy_id": "0x010103",
-                    "level": 52,
-                    "exp": 1500,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010103",
-                    "level": 52,
-                    "exp": 1500,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010103",
-                    "level": 52,
-                    "exp": 1500,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010103",
-                    "level": 52,
-                    "exp": 1500,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010103",
-                    "level": 52,
-                    "exp": 1500,
-                    "is_boss": false
                 }
             ]
         }

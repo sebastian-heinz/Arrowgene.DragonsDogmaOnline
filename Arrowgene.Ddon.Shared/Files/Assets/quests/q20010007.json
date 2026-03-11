@@ -50,25 +50,28 @@
         "id": 1,
         "group_id": 97
       },
-      "starting_index": 1,
+      "starting_index": 3,
       "enemies": [
         {
-          "comment": "Hobgoblin Fighter",
+          "comment": "Vigilant Sling Goblin (Rock)",
+          "enemy_id": "0x010103",
+          "named_enemy_params_id": 53,
+          "level": 19,
+          "exp": 72
+        },
+        {
+          "comment": "Vigilant Hobgoblin Fighter",
           "enemy_id": "0x010111",
+          "named_enemy_params_id": 53,
           "level": 19,
-          "exp": 85
+          "exp": 89
         },
         {
-          "comment": "Sling Hobgoblin (Oil flask)",
-          "enemy_id": "0x010112",
+          "comment": "Vigilant Hobgoblin Fighter",
+          "enemy_id": "0x010111",
+          "named_enemy_params_id": 53,
           "level": 19,
-          "exp": 85
-        },
-        {
-          "comment": "Hobgoblin Leader",
-          "enemy_id": "0x010113",
-          "level": 19,
-          "exp": 85
+          "exp": 89
         }
       ]
     },
@@ -77,31 +80,42 @@
         "id": 1,
         "group_id": 104
       },
-      "starting_index": 7,
+      "starting_index": 6,
       "enemies": [
         {
-          "comment": "Hobgoblin Fighter",
-          "enemy_id": "0x010111",
-          "level": 19,
-          "exp": 85
-        },
-        {
-          "comment": "Sling Hobgoblin (Oil flask)",
-          "enemy_id": "0x010112",
-          "level": 19,
-          "exp": 85
-        },
-        {
-          "comment": "Hobgoblin Fighter",
-          "enemy_id": "0x010111",
-          "level": 19,
-          "exp": 85
-        },
-        {
-          "comment": "Hobgoblin Leader",
+          "comment": "Brutal Hobgoblin Leader",
           "enemy_id": "0x010113",
+          "named_enemy_params_id": 54,
           "level": 21,
-          "exp": 150
+          "exp": 113
+        },
+        {
+          "comment": "Vigilant Hobgoblin Fighter",
+          "enemy_id": "0x010111",
+          "named_enemy_params_id": 53,
+          "level": 19,
+          "exp": 93
+        },
+        {
+          "comment": "Vigilant Hobgoblin Fighter",
+          "enemy_id": "0x010111",
+          "named_enemy_params_id": 53,
+          "level": 19,
+          "exp": 93
+        },
+        {
+          "comment": "Vigilant Sling Goblin (Rock)",
+          "enemy_id": "0x010103",
+          "named_enemy_params_id": 53,
+          "level": 19,
+          "exp": 72
+        },
+        {
+          "comment": "Vigilant Sling Goblin (Rock)",
+          "enemy_id": "0x010103",
+          "named_enemy_params_id": 53,
+          "level": 19,
+          "exp": 82
         }
       ]
     }
@@ -113,11 +127,19 @@
         "id": 26
       },
       "npc_id": "Persimmon",
-      "message_id": 10817
+      "message_id": 14777
     },
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1203,
+          "Param2": 14783
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -144,7 +166,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Persimmon",
-      "message_id": 10821
+      "message_id": 14780
     }
   ]
 }

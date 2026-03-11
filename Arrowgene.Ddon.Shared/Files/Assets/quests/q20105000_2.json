@@ -1,9 +1,9 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "The Snow-White Lion King",
+  "comment": "The Snow-White Lion King (Bounty)",
   "quest_id": 20105000,
-  "base_level": 43,
+  "base_level": 45,
   "minimum_item_rank": 0,
   "discoverable": false,
   "area_id": "DeenanWoods",
@@ -13,34 +13,48 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 1410
+      "amount": 2970
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 220
+      "amount": 230
     },
     {
       "type": "exp",
-      "amount": 1980
+      "amount": 4150
     },
     {
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Pure White Mane",
           "item_id": 7780,
           "num": 1
         },
         {
-          "item_id": 9003,
-          "num": 1
+          "comment": "Enhanced Lumber Knife",
+          "item_id": 9402,
+          "num": 3
         },
         {
-          "item_id": 9390,
+          "comment": "Dragon's Spit",
+          "item_id": 9399,
           "num": 1
         }
       ]
-    }
+  },
+  {
+      "type": "random",
+      "loot_pool": [
+          {
+              "comment": "Pearl Mushroom",
+              "item_id": 7999,
+              "num": 2,
+              "chance": 0.7
+          }
+      ]
+  }
   ],
   "enemy_groups": [
     {
@@ -48,48 +62,17 @@
         "id": 113,
         "group_id": 2
       },
-      "placement_type": "manual",
+      "starting_index": 4,
       "enemies": [
         {
+          "comment": "Bounty White Chimera",
           "enemy_id": "0x015202",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 54,
-          "level": 43,
-          "exp": 6824,
+          "named_enemy_params_id": 467,
+          "level": 45,
+          "exp": 5037,
           "is_boss": true,
-          "index": 0
-        },
-        {
-          "enemy_id": "0x010201",
-          "start_think_tbl_no": 1,
-		      "level": 41,
-          "exp": 4200,
-          "is_boss": false,
-          "index": 1
-        },
-        {
-          "enemy_id": "0x010201",
-          "start_think_tbl_no": 1,
-		      "level": 41,
-          "exp": 4200,
-          "is_boss": false,
-          "index": 3
-        },
-        {
-          "enemy_id": "0x010201",
-          "start_think_tbl_no": 1,
-		      "level": 41,
-          "exp": 4200,
-          "is_boss": false,
-          "index": 7
-        },
-        {
-          "enemy_id": "0x010201",
-          "start_think_tbl_no": 1,
-		      "level": 41,
-          "exp": 4200,
-          "is_boss": false,
-          "index": 8
+          "scale": 150
         }
       ]
     }

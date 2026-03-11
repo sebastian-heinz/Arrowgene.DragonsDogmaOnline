@@ -1,0 +1,107 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Ambush In The Well's Depths (Bounty)",
+  "quest_id": 20005002,
+  "base_level": 12,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "HidellPlains",
+  "news_image": 501,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 520
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 30
+    },
+    {
+      "type": "exp",
+      "amount": 660
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Healing Potion",
+          "item_id": 34,
+          "num": 3
+        },
+        {
+          "comment": "Gala Extract",
+          "item_id": 36,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 134,
+        "group_id": 0
+      },
+      "enemies": [
+        {
+          "comment": "Bounty Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 85
+        },
+        {
+          "comment": "Bounty Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 85
+        },
+        {
+          "comment": "Bounty Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 85
+        },
+        {
+          "comment": "Bounty Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 85
+        },
+        {
+          "comment": "Bounty Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 85
+        },
+        {
+          "comment": "Bounty Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 85
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

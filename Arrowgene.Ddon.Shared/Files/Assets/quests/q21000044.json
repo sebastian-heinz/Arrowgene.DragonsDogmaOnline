@@ -1,0 +1,184 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Merchant's Pride",
+  "quest_id": 21000044,
+  "base_level": 63,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "VoldenMines",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 6976
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2078
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 265
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Volden Quality Coal",
+          "item_id": 11770,
+          "num": 1
+        },
+        {
+          "comment": "Iron Ore Fragment",
+          "item_id": 7853,
+          "num": 5
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 410,
+        "group_id": 4
+      },
+      "placement_type": "manual",
+      "comment": "Likely needs correct XP values",
+      "enemies": [
+        {
+          "comment": "Ogre",
+          "enemy_id": "0x015500",
+          "level": 63,
+          "exp": 3844,
+          "is_boss": true,
+          "index": 3
+        },
+        {
+          "comment": "Flame Skeleton Brute",
+          "enemy_id": "0x010320",
+          "level": 63,
+          "exp": 756,
+          "index": 6
+        },
+        {
+          "comment": "Flame Skeleton Brute",
+          "enemy_id": "0x010320",
+          "level": 63,
+          "exp": 756,
+          "index": 7
+        },
+        {
+          "comment": "Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "level": 63,
+          "exp": 756,
+          "index": 8
+        },
+        {
+          "comment": "Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "level": 63,
+          "exp": 756,
+          "index": 9
+        },
+        {
+          "comment": "Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "level": 63,
+          "exp": 756,
+          "index": 10
+        },
+        {
+          "comment": "Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "level": 63,
+          "exp": 756,
+          "index": 11
+        },
+        {
+          "comment": "Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "level": 63,
+          "exp": 756,
+          "index": 12
+        },
+        {
+          "comment": "Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "level": 63,
+          "exp": 756,
+          "index": 13
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 1
+      },
+      "npc_id": "Dorothea",
+      "message_id": 17119
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 1
+      },
+      "npc_id": "Dorothea",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1600,
+          "Param2": 17120
+        }
+      ],
+      "items": [
+        {
+          "comment": "Scroll of Magickal Defense",
+          "id": 8010,
+          "amount": 2
+        }
+      ],
+      "message_id": 17121
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1600,
+          "Param2": 17122
+        }
+      ],
+      "groups": [0]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Dorothea",
+      "message_id": 17123
+    }
+  ]
+}

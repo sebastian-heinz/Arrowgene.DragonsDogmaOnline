@@ -32,7 +32,7 @@
           "num": 1
         },
         {
-          "comment": "Refreshing Remedys ",
+          "comment": "Refreshing Remedy",
           "item_id": 9375,
           "num": 3
         },
@@ -50,14 +50,15 @@
         "id": 1,
         "group_id": 196
       },
-        "placement_type": "manual",
+      "placement_type": "manual",
       "enemies": [
         {
+          "comment": "Brutal Colossus",
           "enemy_id": "0x015020",
+          "named_enemy_params_id": 54,
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
           "level": 30,
-          "exp": 5446,
+          "exp": 3080,
           "is_boss": true,
           "index": 5
         }
@@ -81,7 +82,7 @@
         "layer_no": 1
       },
       "npc_id": "WearyHarpy",
-      "message_id": 10800
+      "message_id": 11156
     },
     {
         "type": "NewDeliverItems",
@@ -92,13 +93,22 @@
         },
         "npc_id": "WearyHarpy",
         "announce_type": "Accept",
+        "result_commands": [
+          {
+            "type": "QstTalkChg",
+            "Param1": 526,
+            "Param2": 11162,
+            "comment": "Idle dialogue"
+          }
+        ],
         "items": [
             {
+                "comment": "Pine Lumber",
                 "id": 7968,
                 "amount": 1
             }
         ],
-        "message_id": 10737
+        "message_id": 11165
     },
     {
       "type": "NewDeliverItems",
@@ -109,13 +119,22 @@
       },
       "npc_id": "WearyHarpy",
       "announce_type": "Update",
+      "result_commands": [
+        {
+          "type": "QstTalkChg",
+          "Param1": 526,
+          "Param2": 11162,
+          "comment": "Idle dialogue"
+        }
+      ],
       "items": [
         {
+          "comment": "Clear Spring Water",
           "id": 7825,
           "amount": 5
         }
       ],
-      "message_id": 10737
+      "message_id": 11166
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
@@ -137,7 +156,7 @@
       },
       "announce_type": "Update",
       "npc_id": "WearyHarpy",
-      "message_id": 11842
+      "message_id": 11161
     }
   ]
 }

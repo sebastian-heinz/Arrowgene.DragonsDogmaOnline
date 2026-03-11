@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "The Snow-White Lion King",
+  "comment": "The Snow-White Lion King (II)",
   "quest_id": 20105000,
   "base_level": 43,
   "minimum_item_rank": 0,
@@ -13,44 +13,37 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 2970
+      "amount": 1410
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 230
+      "amount": 220
     },
     {
       "type": "exp",
-      "amount": 4150
+      "amount": 1980
     },
     {
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Pure White Mane",
           "item_id": 7780,
           "num": 1
         },
         {
-          "item_id": 9401,
-          "num": 3
+          "comment": "Holy Guard Earrings",
+          "item_id": 9003,
+          "num": 1
         },
         {
-          "item_id": 9399,
+          "comment": "Sprite's Talisman",
+          "item_id": 9390,
           "num": 1
         }
       ]
-  },
-  {
-      "type": "random",
-      "loot_pool": [
-          {
-              "item_id": 7999,
-              "num": 2,
-              "chance": 0.7
-          }
-      ]
-  }
+    }
   ],
   "enemy_groups": [
     {
@@ -58,17 +51,52 @@
         "id": 113,
         "group_id": 2
       },
-      "placement_type": "manual",
+      "starting_index": 4,
       "enemies": [
         {
+          "comment": "Brutal White Chimera",
           "enemy_id": "0x015202",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 467,
-          "level": 45,
-          "exp": 7260,
-          "is_boss": true,
-          "scale": 150,
-          "index": 0
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 4887,
+          "is_boss": true
+        },
+        {
+          "comment": "Vigilant Direwolf",
+          "enemy_id": "0x010201",
+          "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
+          "level": 41,
+          "exp": 151,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Direwolf",
+          "enemy_id": "0x010201",
+          "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
+          "level": 41,
+          "exp": 151,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Direwolf",
+          "enemy_id": "0x010201",
+          "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
+          "level": 41,
+          "exp": 151,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Direwolf",
+          "enemy_id": "0x010201",
+          "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
+          "level": 41,
+          "exp": 151,
+          "is_boss": false
         }
       ]
     }

@@ -1,0 +1,111 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "An Ancient Perseverance (II)",
+    "quest_id": 20085009,
+    "base_level": 49,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "area_id": "EasternZandora",
+    "variant_index": 1,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1340
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 210
+        },
+        {
+            "type": "exp",
+            "amount": 1610
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Cursed Skull",
+                    "item_id": 7772,
+                    "num": 1
+                },
+                {
+                    "comment": "Bone Meal",
+                    "item_id": 7850,
+                    "num": 3
+                },
+                {
+                    "comment": "Strong Gala Extract",
+                    "item_id": 9363,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 65,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment": "Brutal Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "named_enemy_params_id": 54,
+                    "level": 49,
+                    "exp": 232
+                },
+                {
+                    "comment": "Brutal Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "named_enemy_params_id": 54,
+                    "level": 49,
+                    "exp": 232
+                },
+                {
+                    "comment": "Brutal Skull Lord",
+                    "enemy_id": "0x010313",
+                    "named_enemy_params_id": 54,
+                    "level": 49,
+                    "exp": 1148
+                },
+                {
+                    "comment": "Brutal Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "named_enemy_params_id": 54,
+                    "level": 49,
+                    "exp": 232
+                },
+                {
+                    "comment": "Brutal Skull Lord",
+                    "enemy_id": "0x010313",
+                    "named_enemy_params_id": 54,
+                    "level": 49,
+                    "exp": 1148
+                },
+                {
+                    "comment": "Brutal Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "named_enemy_params_id": 54,
+                    "level": 49,
+                    "exp": 232
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [0]
+        }
+    ]
+}

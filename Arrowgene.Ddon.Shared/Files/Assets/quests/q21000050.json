@@ -1,0 +1,162 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Pain of Homesickness",
+  "quest_id": 21000050,
+  "base_level": 70,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DoweValley",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 12014
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2309
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 300
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Manticore's Scorpion Tail",
+          "item_id": 11805,
+          "num": 1
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 117,
+        "group_id": 2
+      },
+      "starting_index": 7,
+      "enemies": [
+        {
+          "comment": "Manticore",
+          "enemy_id": "0x015210",
+          "start_think_tbl_no": 1,
+          "level": 70,
+          "exp": 6675,
+          "is_boss": true
+        },
+        {
+          "comment": "Bolt Corpse Torturer",
+          "enemy_id": "0x010518",
+          "start_think_tbl_no": 1,
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Bolt Corpse Torturer",
+          "enemy_id": "0x010518",
+          "start_think_tbl_no": 1,
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Lux Corpse Torturer",
+          "enemy_id": "0x010519",
+          "start_think_tbl_no": 1,
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Lux Corpse Torturer",
+          "enemy_id": "0x010519",
+          "start_think_tbl_no": 1,
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Lux Corpse Torturer",
+          "enemy_id": "0x010519",
+          "start_think_tbl_no": 1,
+          "level": 70,
+          "exp": 1335
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 14
+      },
+      "npc_id": "Mubarak",
+      "message_id": 17256
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 14
+      },
+      "npc_id": "Mubarak",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1503,
+          "Param2": 17257
+        }
+      ],
+      "items": [
+        {
+          "comment": "Electrum Plate",
+          "id": 7891,
+          "amount": 2
+        }
+      ],
+      "message_id": 17258
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1600,
+          "Param2": 17259
+        }
+      ],
+      "groups": [0]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 14
+      },
+      "announce_type": "Update",
+      "npc_id": "Mubarak",
+      "message_id": 17260
+    }
+  ]
+}

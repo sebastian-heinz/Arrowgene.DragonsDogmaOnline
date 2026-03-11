@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Crest of Torpor",
           "item_id": 9241,
           "num": 1
         },
         {
+          "comment": "Mellow Ale",
           "item_id": 9413,
           "num": 1
         },
         {
+          "comment": "Old Thief's Small Key",
           "item_id": 9429,
           "num": 3
         }
@@ -49,10 +52,11 @@
       },
       "enemies": [
         {
+          "comment": "Vigilant Chimera",
           "enemy_id": "0x015200",
           "named_enemy_params_id": 53,
           "level": 30,
-          "exp": 4600,
+          "exp": 3000,
           "is_boss": true
         }
       ]

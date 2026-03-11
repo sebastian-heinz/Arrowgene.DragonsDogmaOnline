@@ -50,34 +50,39 @@
         "id": 34,
         "group_id": 0
       },
+      "starting_index": 5,
       "enemies": [
         {
-          "comment": "Mist Fighter",
-          "enemy_id": "0x011030",
-          "level": 19,
-          "exp": 85,
-          "hm_present_no": 68
-        },
-        {
-          "comment": "Mist Fighter",
-          "enemy_id": "0x011030",
-          "level": 19,
-          "exp": 85,
-          "hm_present_no": 68
-        },
-        {
-          "comment": "Mist Priest",
+          "comment": "Vigilant Mist Priest",
           "enemy_id": "0x011032",
+          "named_enemy_params_id": 53,
           "level": 19,
-          "exp": 85,
+          "exp": 106,
           "hm_present_no": 70
         },
         {
-          "comment": "Mist Priest",
+          "comment": "Vigilant Mist Priest",
           "enemy_id": "0x011032",
+          "named_enemy_params_id": 53,
           "level": 19,
-          "exp": 85,
+          "exp": 106,
           "hm_present_no": 70
+        },
+        {
+          "comment": "Vigilant Mist Fighter",
+          "enemy_id": "0x011030",
+          "named_enemy_params_id": 53,
+          "level": 19,
+          "exp": 106,
+          "hm_present_no": 68
+        },
+        {
+          "comment": "Vigilant Mist Fighter",
+          "enemy_id": "0x011030",
+          "named_enemy_params_id": 53,
+          "level": 19,
+          "exp": 106,
+          "hm_present_no": 68
         }
       ]
     }
@@ -89,11 +94,19 @@
         "id": 1
       },
       "npc_id": "Freud",
-      "message_id": 10800
+      "message_id": 11380
     },
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1210,
+          "Param2": 11889
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -109,7 +122,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Freud",
-      "message_id": 10805
+      "message_id": 11886
     }
   ]
 }

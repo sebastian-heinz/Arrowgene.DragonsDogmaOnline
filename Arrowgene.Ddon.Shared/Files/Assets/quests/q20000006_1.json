@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "The Evil Lurking in the Tombs",
+  "comment": "The Evil Lurking in the Tombs (II)",
   "quest_id": 20000006,
   "base_level": 34,
   "minimum_item_rank": 0,
@@ -28,17 +28,17 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "fire proved crest",
+          "comment": "Crest of Burn Warding",
           "item_id": 9314,
           "num": 1
         },
         {
-          "comment": "Healing Elixir",
+          "comment": "Superior Healing Elixir",
           "item_id": 7553,
-          "num": 3
+          "num": 2
         },
         {
-          "comment": "Sprite's Amulet",
+          "comment": "Conqueror's Amulet",
           "item_id": 9381,
           "num": 2
         }
@@ -51,16 +51,15 @@
         "id": 238,
         "group_id": 9
       },
+      "starting_index": 5,
       "enemies": [
         {
-          "comment": "Chim",
+          "comment": "Brutal Chimera",
           "enemy_id": "0x015200",
-          "named_enemy_params_id": 556,
+          "named_enemy_params_id": 54,
           "level": 34,
-          "start_think_tbl_no": 1,
-          "is_boss": true,
-          "is_manual_set": false,
-          "exp": 5834
+          "exp": 3240,
+          "is_boss": true
         }
       ]
     }
@@ -74,7 +73,7 @@
         "layer_no": 1
       },
       "npc_id": "Christoph",
-      "message_id": 11011,
+      "message_id": 11010,
       "flags": [
         {
           "type": "QstLayout",
@@ -86,7 +85,15 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 513,
+          "Param2": 11016
+        }
+      ]
     },
     {
       "type": "KillGroup",
@@ -103,7 +110,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Christoph",
-      "message_id": 11014
+      "message_id": 11013
     }
   ]
 }

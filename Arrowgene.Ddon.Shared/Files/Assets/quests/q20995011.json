@@ -3,7 +3,7 @@
     "type": "World",
     "comment": "The Shadow That Roams the Dead City",
     "quest_id": 20995011,
-    "base_level": 55,
+    "base_level": 56,
     "minimum_item_rank": 0,
     "discoverable": true,
     "area_id": "MergodaRuins",
@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Magick Gold Ingot",
                     "item_id": 7886,
                     "num": 1
                 },
                 {
+                    "comment": "Transmuted Gold Feather",
                     "item_id": 7822,
                     "num": 2
                 },
                 {
+                    "comment": "Superior Healing Remedy",
                     "item_id": 7555,
                     "num": 3
                 }
@@ -48,34 +51,32 @@
             },
             "enemies": [
                 {
+                    "comment": "Legendary Goliath",
                     "enemy_id": "0x015102",
-                    "level": 55,
-                    "exp": 21000,
+                    "named_enemy_params_id": 57,
+                    "level": 56,
+                    "exp": 7533,
                     "is_boss": true
                 },
                 {
+                    "comment": "Critical Alchemized Harpy",
                     "enemy_id": "0x010606",
-                    "level": 55,
-                    "exp": 2100,
-                    "is_boss": false
+                    "named_enemy_params_id": 56,
+                    "level": 56,
+                    "exp": 265,
+                    "is_boss": false,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
                 },
                 {
+                    "comment": "Critical Alchemized Harpy",
                     "enemy_id": "0x010606",
-                    "level": 55,
-                    "exp": 2100,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010606",
-                    "level": 55,
-                    "exp": 2100,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010606",
-                    "level": 55,
-                    "exp": 2100,
-                    "is_boss": false
+                    "named_enemy_params_id": 56,
+                    "level": 56,
+                    "exp": 265,
+                    "is_boss": false,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
                 }
             ]
         }
@@ -89,11 +90,19 @@
                 "layer_no": 1
             },
             "npc_id": "Theodor",
-            "message_id": 11372
+            "message_id": 16083
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 10, 
+                "Param2": 16084,
+                "comment": "Idle dialogue"
+                }
+            ],
             "groups": [0]
         },
         {
@@ -111,7 +120,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Theodor",
-            "message_id": 11842
+            "message_id": 16085
         }
     ]
 }

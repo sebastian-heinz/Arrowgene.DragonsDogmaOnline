@@ -6,7 +6,7 @@
     "base_level": 46,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",	
+    "area_id": "EasternZandora",
     "rewards": [
         {
             "type": "wallet",
@@ -26,16 +26,19 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Spiritual Will Fragment",
                     "item_id": 7889,
                     "num": 1
                 },
                 {
+                    "comment": "Strong Gala Extract",
                     "item_id": 9363,
                     "num": 3
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
-                    "num": 1					
+                    "num": 1
                 }
             ]
         },
@@ -43,6 +46,7 @@
             "type": "random",
             "loot_pool": [
                 {
+                    "comment": "Strong Gala Extract",
                     "item_id": 9363,
                     "num": 2,
                     "chance": 1.0
@@ -58,36 +62,33 @@
             },
             "enemies": [
                 {
+                    "comment": "Brutal Ghost Mail",
                     "enemy_id": "0x010311",
+                    "named_enemy_params_id": 54,
                     "start_think_tbl_no": 1,
-                    "named_enemy_params_id": 53,
                     "level": 46,
-                    "exp": 5540,
-                    "is_boss": false				
-        },
-        {
-                    "enemy_id": "0x010302",
-                    "start_think_tbl_no": 1,
-                    "named_enemy_params_id": 53,
-                    "level": 46,
-                    "exp": 5540,
-                    "is_boss": false				
-        },
-        {
-                    "enemy_id": "0x010302",
-                    "start_think_tbl_no": 1,
-                    "named_enemy_params_id": 53,
-                    "level": 46,
-                    "exp": 5540,
+                    "exp": 568,
                     "is_boss": false
-        },
-        {					
+                },
+                {
+                    "comment": "Vigilant Skeleton Warrior",
                     "enemy_id": "0x010302",
-                    "start_think_tbl_no": 1,
                     "named_enemy_params_id": 53,
+                    "start_think_tbl_no": 1,
                     "level": 46,
-                    "exp": 5540,
-                    "is_boss": false				
+                    "exp": 221,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "named_enemy_params_id": 53,
+                    "start_think_tbl_no": 1,
+                    "level": 46,
+                    "exp": 221,
+                    "is_boss": false,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
                 }
             ]
         }
@@ -101,11 +102,19 @@
                 "layer_no": 1
             },
             "npc_id": "Lara",
-            "message_id": 11372
+            "message_id": 16040
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 1814,
+                    "Param2": 16041
+                }
+            ],
             "groups": [0]
         },
         {
@@ -119,11 +128,11 @@
             "stage_id": {
                 "id": 61,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
             "npc_id": "Lara",
-            "message_id": 11835
+            "message_id": 16042
         }
     ]
 }

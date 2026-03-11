@@ -1,0 +1,78 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Mystery of Mysree Limestone Cave (II)",
+  "quest_id": 20055002,
+  "base_level": 55,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 536,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1510
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 240
+    },
+    {
+      "type": "exp",
+      "amount": 1810
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Writhing Live Bark",
+          "item_id": 9442,
+          "num": 1
+        },
+        {
+          "comment": "Ent Seed",
+          "item_id": 7992,
+          "num": 2
+        },
+        {
+          "comment": "Ent Branch",
+          "item_id": 7971,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 159,
+        "group_id": 13
+      },
+      "enemies": [
+        {
+          "comment": "Dangerous Ent",
+          "enemy_id": "0x015031",
+          "named_enemy_params_id": 56,
+          "level": 55,
+          "exp": 4160,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

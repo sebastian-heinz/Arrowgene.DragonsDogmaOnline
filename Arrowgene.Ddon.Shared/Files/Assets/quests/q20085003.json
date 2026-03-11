@@ -6,7 +6,7 @@
     "base_level": 46,
     "minimum_item_rank": 0,
     "discoverable": false,
-  "area_id": "EasternZandora",	
+    "area_id": "EasternZandora",
     "rewards": [
         {
             "type": "wallet",
@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Gold Ingot",
                     "item_id": 7877,
                     "num": 2
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 1
                 },
                 {
+                    "comment": "Healing Remedy",
                     "item_id": 7554,
                     "num": 3
                 }
@@ -46,30 +49,51 @@
                 "id": 1,
                 "group_id": 468
             },
+            "starting_index": 8,
             "enemies": [
                 {
-                    "enemy_id": "0x015800",
+                    "comment": "Brutal Grimwarg",
+                    "enemy_id": "0x010205",
+                    "named_enemy_params_id": 54,
                     "level": 46,
-                    "exp": 1200,
-                    "is_boss": false
-        },
-        {
-                    "enemy_id": "0x015800",
+                    "exp": 234,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
+                },
+                {
+                    "comment": "Brutal Grimwarg",
+                    "enemy_id": "0x010205",
+                    "named_enemy_params_id": 54,
                     "level": 46,
-                    "exp": 1200,
-                    "is_boss": false
-        },
-        {
-                    "enemy_id": "0x015800",
+                    "exp": 234
+                },
+                {
+                    "comment": "Brutal Grimwarg",
+                    "enemy_id": "0x010205",
+                    "named_enemy_params_id": 54,
                     "level": 46,
-                    "exp": 1200,
-                    "is_boss": false
-        },
-        {
+                    "exp": 234
+                },
+                {
+                    "comment": "Brutal Grimwarg",
+                    "enemy_id": "0x010205",
+                    "named_enemy_params_id": 54,
+                    "level": 46,
+                    "exp": 234
+                },
+                {
+                    "comment": "Brutal Grimwarg",
+                    "enemy_id": "0x010205",
+                    "named_enemy_params_id": 54,
+                    "level": 46,
+                    "exp": 234
+                },
+                {
+                    "comment": "Brutal Orc Captain",
                     "enemy_id": "0x015820",
-                    "level": 48,
-                    "exp": 1500,
-                    "is_boss": false					
+                    "named_enemy_params_id": 54,
+                    "level": 46,
+                    "exp": 564
                 }
             ]
         }

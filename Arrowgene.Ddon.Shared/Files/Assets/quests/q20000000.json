@@ -7,7 +7,7 @@
   "minimum_item_rank": 0,
   "discoverable": true,
   "area_id": "HidellPlains",
-  "news_image":  8,
+  "news_image": 8,
   "rewards": [
     {
       "type": "exp",
@@ -50,62 +50,51 @@
         "id": 85,
         "group_id": 7
       },
+      "starting_index": 7,
       "enemies": [
         {
-          "comment": "Skeleton Sorc",
+          "comment": "Brutal Skeleton Sorcerer",
           "enemy_id": "0x010309",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 54,
+          "start_think_tbl_no": 1,
           "level": 21,
-          "exp": 510
+          "exp": 106
         },
         {
-          "comment": "Skeleton Knight",
+          "comment": "Brutal Skeleton Sorcerer",
           "enemy_id": "0x010309",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 54,
-          "level": 18,
-          "exp": 384
-        },
-        {
-          "comment": "Skeleton Knight",
-          "enemy_id": "0x010301",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 18,
-          "exp": 384
-        },
-        {
-          "comment": "Skeleton Knight",
-          "enemy_id": "0x010301",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 18,
-          "exp": 384
-        },
-        {
-          "comment": "Skeleton Knight",
-          "enemy_id": "0x010301",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 18,
-          "exp": 384
-        },
-        {
-          "comment": "Skeleton Knight",
-          "enemy_id": "0x010301",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 18,
-          "exp": 384
-        },
-        {
-          "comment": "Skeleton Sorc",
-          "enemy_id": "0x010309",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
           "level": 21,
-          "exp": 510
+          "exp": 106
+        },
+        {
+          "comment": "Vigilant Skeleton Knight",
+          "enemy_id": "0x010301",
+          "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
+          "level": 18,
+          "exp": 85,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Vigilant Skeleton Knight",
+          "enemy_id": "0x010301",
+          "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
+          "level": 18,
+          "exp": 85
+        },
+        {
+          "comment": "Vigilant Skeleton Knight",
+          "enemy_id": "0x010301",
+          "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
+          "level": 18,
+          "exp": 85,
+          "repop_count": 1,
+          "repop_wait_second": 5
         }
       ]
     }
@@ -119,7 +108,7 @@
         "layer_no": 1
       },
       "npc_id": "Gordon",
-      "message_id": 8620,
+      "message_id": 8619,
       "flags": [
         {
           "type": "QstLayout",
@@ -131,6 +120,14 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1309,
+          "Param2": 8625
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -148,8 +145,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Gordon",
-      "message_id": 8623
+      "message_id": 8622
     }
   ]
 }
-

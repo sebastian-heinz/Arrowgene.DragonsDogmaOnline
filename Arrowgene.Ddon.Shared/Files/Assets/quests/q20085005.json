@@ -6,7 +6,7 @@
     "base_level": 47,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",
+    "area_id": "EasternZandora",
     "rewards": [
         {
             "type": "wallet",
@@ -26,17 +26,19 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Gleipnir",
                     "item_id": 7959,
                     "num": 1
                 },
                 {
+                    "comment": "Cockatrice Poison Gland",
                     "item_id": 7745,
                     "num": 1
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 1
-              
                 }
             ]
         }
@@ -50,11 +52,12 @@
             "placement_type": "manual",
             "enemies": [
                 {
+                    "comment": "Brutal Cockatrice",
                     "enemy_id": "0x015301",
+                    "named_enemy_params_id": 54,
                     "start_think_tbl_no": 1,
-                    "named_enemy_params_id": 53,
                     "level": 47,
-                    "exp": 6706,
+                    "exp": 5218,
                     "is_boss": true,
                     "index": 6
                 }
@@ -70,11 +73,19 @@
                 "layer_no": 1
             },
             "npc_id": "Sonya",
-            "message_id": 11372
+            "message_id": 16046
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 1808,
+                    "Param2": 16047
+                }
+            ],
             "groups": [0]
         },
         {
@@ -92,7 +103,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Sonya",
-            "message_id": 11835
+            "message_id": 16048
         }
     ]
 }

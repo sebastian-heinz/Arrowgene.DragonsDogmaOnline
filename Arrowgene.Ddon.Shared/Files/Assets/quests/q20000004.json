@@ -45,70 +45,53 @@
         "id": 88,
         "group_id": 5
       },
+      "starting_index": 2,
       "enemies": [
         {
-          "comment": "Undead (Male)",
+          "comment": "Vigilant Undead (Male)",
           "enemy_id": "0x010500",
           "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 214
+          "exp": 50,
+          "repop_count": 1,
+          "repop_wait_second": 5
         },
         {
-          "comment": "Undead (Male)",
-          "enemy_id": "0x010500",
-          "start_think_tbl_no": 2,
-          "named_enemy_params_id": 53,
-          "level": 13,
-          "exp": 214
-        },
-        {
-          "comment": "Undead (Male)",
-          "enemy_id": "0x010501",
-          "start_think_tbl_no": 2,
-          "named_enemy_params_id": 53,
-          "level": 13,
-          "exp": 214
-        },
-        {
-          "comment": "Undead (Male)",
-          "enemy_id": "0x010501",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 13,
-          "exp": 214
-        },
-        {
-          "comment": "Undead (Male)",
+          "comment": "Vigilant Undead (Male)",
           "enemy_id": "0x010500",
           "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 214
+          "exp": 50,
+          "repop_count": 1,
+          "repop_wait_second": 5
         },
         {
-          "comment": "Undead (Male)",
+          "comment": "Vigilant Undead (Male)",
           "enemy_id": "0x010500",
           "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 214
+          "exp": 50,
+          "repop_count": 1,
+          "repop_wait_second": 5
         },
         {
-          "comment": "Undead (Male)",
-          "enemy_id": "0x010501",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 13,
-          "exp": 214
-        },
-        {
-          "comment": "Undead (Male)",
+          "comment": "Vigilant Undead (Male)",
           "enemy_id": "0x010500",
           "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 214
+          "exp": 50
+        },
+        {
+          "comment": "Vigilant Undead (Male)",
+          "enemy_id": "0x010500",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 13,
+          "exp": 50
         }
       ]
     }
@@ -125,6 +108,14 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 4,
+          "Param2": 10720
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -140,7 +131,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Joseph",
-      "message_id": 10718
+      "message_id": 10717
     }
   ]
 }

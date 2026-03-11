@@ -1,0 +1,123 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Shadow That Roams the Dead City (Calamity)",
+    "quest_id": 20995011,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MergodaRuins",
+    "variant_index": 1,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 5080
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 3850
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 610
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Exquisite Metal Plate",
+                    "item_id": 8030,
+                    "num": 1
+                },
+                {
+                    "comment": "Dirty Sheet Metal",
+                    "item_id": 8029,
+                    "num": 2
+                },
+                {
+                    "comment": "Alchemized Armor Plate",
+                    "item_id": 8031,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 84,
+                "group_id": 9
+            },
+            "enemies": [
+                {
+                    "comment": "Titan Soldier - Prototype (Damned Golem)",
+                    "enemy_id": "0x015103",
+                    "named_enemy_params_id": 526,
+                    "level": 55,
+                    "exp": 4992,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Titan Soldier - Type II (Goliath)",
+                    "enemy_id": "0x015102",
+                    "named_enemy_params_id": 525,
+                    "level": 55,
+                    "exp": 7440,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Titan Soldier - Type II (Goliath)",
+                    "enemy_id": "0x015102",
+                    "named_enemy_params_id": 525,
+                    "level": 55,
+                    "exp": 7440,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 63,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Theodor",
+            "message_id": 16083
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 10, 
+                "Param2": 16084,
+                "comment": "Idle dialogue"
+                }
+            ],
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 63,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Theodor",
+            "message_id": 16085
+        }
+    ]
+}

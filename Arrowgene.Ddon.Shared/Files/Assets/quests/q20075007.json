@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Dragonleather",
           "item_id": 7941,
           "num": 2
         },
         {
+          "comment": "Wild Steak",
           "item_id": 9412,
           "num": 2
         },
         {
+          "comment": "Harvest Salad",
           "item_id": 9418,
           "num": 1
         }
@@ -47,35 +50,54 @@
         "id": 123,
         "group_id": 1
       },
+      "position_index": 8,
       "enemies": [
         {
-          "enemy_id": "0x015800",
-          "level": 44,
-          "exp": 1100,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015800",
-          "level": 44,
-          "exp": 1100,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015800",
-          "level": 44,
-          "exp": 1100,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015800",
-          "level": 44,
-          "exp": 1100,
-          "is_boss": false
-        },
-        {
+          "comment": "Dangerous Captain Orc",
           "enemy_id": "0x015820",
+          "named_enemy_params_id": 56,
           "level": 44,
-          "exp": 1300,
+          "exp": 1274,
+          "is_boss": false
+        },
+        {
+          "comment": "Brutal Orc Battler",
+          "enemy_id": "0x015810",
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 299,
+          "is_boss": false
+        },
+        {
+          "comment": "Brutal Orc Battler",
+          "enemy_id": "0x015810",
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 299,
+          "is_boss": false
+        },
+        {
+          "comment": "Brutal Orc Battler",
+          "enemy_id": "0x015810",
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 299,
+          "is_boss": false
+        },
+        {
+          "comment": "Brutal Orc Trooper",
+          "enemy_id": "0x015812",
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 258,
+          "is_boss": false
+        },
+        {
+          "comment": "Brutal Orc Trooper",
+          "enemy_id": "0x015812",
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 258,
           "is_boss": false
         }
       ]

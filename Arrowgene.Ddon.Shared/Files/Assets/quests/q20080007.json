@@ -6,7 +6,7 @@
     "base_level": 47,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",	
+    "area_id": "EasternZandora",
     "rewards": [
         {
             "type": "wallet",
@@ -26,17 +26,20 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Shadowy Claw",
                     "item_id": 7800,
                     "num": 1
                 },
                 {
+                    "comment": "Enhanced Pickaxe",
                     "item_id": 9401,
                     "num": 3
                 },
                 {
+                    "comment": "Healing Elixir",
                     "item_id": 7554,
                     "num": 3
-                
+
                 }
             ]
         }
@@ -50,13 +53,14 @@
             "placement_type": "manual",
             "enemies": [
                 {
+                    "comment": "Brutal Shadow Chimera",
                     "enemy_id": "0x015203",
+                    "named_enemy_params_id": 54,
                     "start_think_tbl_no": 1,
-		            "named_enemy_params_id": 53,
                     "level": 47,
-                    "exp": 6706,
-                    "is_boss": true,	
-                    "index": 0					
+                    "exp": 4912,
+                    "is_boss": true,
+                    "index": 3
                 }
             ]
         }
@@ -73,11 +77,19 @@
                 "layer_no": 1
             },
             "npc_id": "Man511",
-            "message_id": 11372
+            "message_id": 11452
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 511,
+                    "Param2": 13273
+                }
+            ],
             "groups": [0]
         },
         {
@@ -91,11 +103,11 @@
             "stage_id": {
                 "id": 1,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
             "npc_id": "Man511",
-            "message_id": 11835
+            "message_id": 13270
         }
     ]
 }

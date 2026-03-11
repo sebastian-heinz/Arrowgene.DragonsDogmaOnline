@@ -10,7 +10,7 @@
     "rewards": [
         {
             "type": "exp",
-            "amount": 3630
+            "amount": 2960
         },
         {
             "type": "wallet",
@@ -20,21 +20,24 @@
         {
             "type": "wallet",
             "wallet_type": "RiftPoints",
-            "amount": 360
+            "amount": 330
         },
         {
             "type": "select",
             "loot_pool": [
                 {
-                    "item_id": 7823,
-                    "num": 1
+                    "comment": "Alkahest",
+                    "item_id": 7833,
+                    "num": 2
                 },
                 {
+                    "comment": "Alchemized Armor Plate",
                     "item_id": 8031,
                     "num": 2
                 },
                 {
-                    "item_id": 9378,
+                    "comment": "Superior Healing Remedy",
+                    "item_id": 7555,
                     "num": 2
                 }
             ]
@@ -49,25 +52,17 @@
                 "layer_no": 0
                 
             },
-                "placement_type": "manual",
+            "placement_type": "manual",
             "enemies": [
                 {
+                    "comment": "Dangerous Alchemized Griffin",
                     "enemy_id": "0x015304",
                     "level": 55,
                     "start_think_tbl_no": 1,
-		            "named_enemy_params_id": 54,
-                    "exp": 19700,
+                    "named_enemy_params_id": 56,
+                    "exp": 5700,
                     "is_boss": true,
-                    "index": 15,
-                    "drop_items": [
-                        {
-                        "item_id": 7823,
-                        "item_min": 1,
-                        "item_max": 3,
-                        "quality": 1,
-                        "drop_chance": 0.9
-                      }
-                    ]
+                    "index": 11
                 }
             ]
         }
@@ -84,11 +79,19 @@
                 "layer_no": 1
             },
             "npc_id": "Eunike",
-            "message_id": 11372
+            "message_id": 16073
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 4742, 
+                "Param2": 16074,
+                "comment": "Idle dialogue"
+                }
+            ],
             "groups": [0]
         },
         {
@@ -106,7 +109,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Eunike",
-            "message_id": 11842
+            "message_id": 16075
         }
     ]
 }

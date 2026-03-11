@@ -50,57 +50,157 @@
         "id": 1,
         "group_id": 290
       },
-      "starting_index": 2,
+      "starting_index": 8,
       "enemies": [
         {
-          "comment": "Armored Cyclops (Club)",
+          "comment": "Brutal Cyclops (Club)",
           "enemy_id": "0x015003",
           "start_think_tbl_no": 1,
           "named_enemy_params_id": 54,
-          "level": 42,
-          "exp": 6706,
+          "level": 40,
+          "exp": 3445,
           "is_boss": true
         }
       ]
     }
   ],
-  "blocks": [
+  "processes": [
     {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 3
-      },
-      "npc_id": "Joseph",
-      "message_id": 11368
+      "comments": "Process 0",
+      "blocks": [
+        {
+          "type": "NpcTalkAndOrder",
+          "stage_id": {
+            "id": 3
+          },
+          "npc_id": "Joseph",
+          "message_id": 11368
+        },
+        {
+          "type": "DiscoverEnemy",
+          "announce_type": "Accept",
+          "result_commands": [
+            {
+              "comment": "Idle dialogue - Joseph",
+              "type": "QstTalkChg",
+              "Param1": 4,
+              "Param2": 11815
+            },
+            {
+              "comment": "Idle dialogue - Jordan",
+              "type": "QstTalkChg",
+              "Param1": 1707,
+              "Param2": 11807
+            }
+          ],
+          "groups": [ 0 ]
+        },
+        {
+          "type": "KillGroup",
+          "announce_type": "Update",
+          "reset_group": false,
+          "groups": [ 0 ]
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 5 ],
+          "check_flags": [ 1 , 2 , 3 , 4 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 3
+          },
+          "announce_type": "Update",
+          "npc_id": "Joseph",
+          "message_id": 11812
+        }
+      ]
     },
     {
-      "type": "DiscoverEnemy",
-      "announce_type": "Accept",
-      "groups": [ 0 ]
+      "comments": "Process 1",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 5 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 50
+          },
+          "npc_id": "Brandon",
+          "message_id": 11809
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [ 1 ]
+        }
+      ]
     },
     {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "reset_group": false,
-      "groups": [ 0 ]
+      "comments": "Process 2",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 5 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 53
+          },
+          "npc_id": "Emporio",
+          "message_id": 11810
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [ 2 ]
+        }
+      ]
     },
     {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 50
-      },
-      "announce_type": "Update",
-      "npc_id": "Brandon",
-      "message_id": 11809
+      "comments": "Process 3",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 5 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 53
+          },
+          "npc_id": "Sunny",
+          "message_id": 11811
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [ 3 ]
+        }
+      ]
     },
     {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 3
-      },
-      "announce_type": "Update",
-      "npc_id": "Joseph",
-      "message_id": 11812
+      "comments": "Process 4",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 5 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 53
+          },
+          "npc_id": "Johann",
+          "message_id": 11940
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [ 4 ]
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,108 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Lost Golden Child (II)",
+    "quest_id": 20990004,
+    "base_level": 56,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MergodaRuins",
+    "variant_index": 1,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 2150
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1840
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 240
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Demon Arming Points",
+                    "item_id": 8022,
+                    "num": 1
+                },
+                {
+                    "comment": "Pearl Shell",
+                    "item_id": 9796,
+                    "num": 1
+                },
+                {
+                    "comment": "Gold Thread",
+                    "item_id": 7743,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 84,
+                "group_id": 10
+            },
+            "starting_index": 1,
+            "enemies": [
+                {
+                    "comment": "Dangerous Gigant Machina",
+                    "enemy_id": "0x015850",
+                    "named_enemy_params_id": 56,
+                    "level": 56,
+                    "exp": 5184,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 237,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Metrophanes",
+            "message_id": 11488
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 2304, 
+                "Param2": 13251,
+                "comment": "Idle dialogue"
+                }
+            ],
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 237,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Metrophanes",
+            "message_id": 13248
+        }
+    ]
+}

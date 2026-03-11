@@ -1,13 +1,13 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Wings of Darkness",
+    "comment": "The Wings of Darkness (III)",
     "quest_id": 20080005,
     "base_level": 58,
     "minimum_item_rank": 0,
     "discoverable": true,
     "area_id": "EasternZandora",
-	"variant_index": 2,	
+    "variant_index": 2,
     "rewards": [
         {
             "type": "wallet",
@@ -27,14 +27,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Nightmare's Vocal Cords",
                     "item_id": 7746,
                     "num": 1
                 },
                 {
+                    "comment": "Demonic Fowl Feather",
                     "item_id": 7819,
                     "num": 1
                 },
                 {
+                    "comment": "Emerald",
                     "item_id": 7898,
                     "num": 1
                 }
@@ -44,6 +47,7 @@
             "type": "random",
             "loot_pool": [
                 {
+                    "comment": "Gleipnir",
                     "item_id": 7959,
                     "num": 1,
                     "chance": 1.0
@@ -57,13 +61,15 @@
                 "id": 1,
                 "group_id": 477
             },
+            "starting_index": 2,
             "enemies": [
                 {
+                    "comment": "Brutal Nightmare",
                     "enemy_id": "0x015305",
                     "named_enemy_params_id": 54,
                     "level": 58,
-                    "exp": 26700,
-                    "is_boss": true							
+                    "exp": 8831,
+                    "is_boss": true
                 }
             ]
         }
@@ -77,11 +83,19 @@
                 "layer_no": 1
             },
             "npc_id": "Salamis",
-            "message_id": 11372
+            "message_id": 8706
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 1812,
+                    "Param2": 8712
+                }
+            ],
             "groups": [0]
         },
         {
@@ -95,11 +109,11 @@
             "stage_id": {
                 "id": 61,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
             "npc_id": "Salamis",
-            "message_id": 11835
+            "message_id": 8709
         }
     ]
 }

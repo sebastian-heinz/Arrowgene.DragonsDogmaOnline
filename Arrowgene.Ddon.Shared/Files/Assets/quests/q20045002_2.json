@@ -1,0 +1,79 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Shadows Within the Cave (III)",
+  "quest_id": 20045002,
+  "base_level": 27,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "VoldenMines",
+  "news_image": 537,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1240
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 890
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 140
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Victory Bracers",
+          "item_id": 7758,
+          "num": 1
+        },
+        {
+          "comment": "Wine-Boiled Mushroom",
+          "item_id": 815,
+          "num": 1
+        },
+        {
+          "comment": "Concoction of Light",
+          "item_id": 9382,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 103,
+        "group_id": 1
+      },
+      "starting_index": 7,
+      "enemies": [
+        {
+          "comment": "Brutal Griffin",
+          "enemy_id": "0x015300",
+          "named_enemy_params_id": 54,
+          "level": 27,
+          "exp": 3525,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

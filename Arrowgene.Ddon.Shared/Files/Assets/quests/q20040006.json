@@ -11,17 +11,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 1180
+      "amount": 850
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 990
+      "amount": 710
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 150
+      "amount": 110
     },
     {
       "type": "select",
@@ -37,7 +37,7 @@
           "num": 3
         },
         {
-          "comment": "Demon Amulet",
+          "comment": "Demon's Amulet",
           "item_id": 9383,
           "num": 2
         }
@@ -52,37 +52,49 @@
       },
       "enemies": [
         {
+          "comment": "Vigilant Rogue Fighter",
           "enemy_id": "0x011000",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 26,
+          "exp": 118,
           "is_boss": false,
           "hm_present_no": 45
         },
         {
+          "comment": "Vigilant Rogue Fighter",
           "enemy_id": "0x011000",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 26,
+          "exp": 118,
           "is_boss": false,
           "hm_present_no": 45
         },
         {
+          "comment": "Vigilant Rogue Fighter",
           "enemy_id": "0x011000",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 26,
+          "exp": 118,
           "is_boss": false,
           "hm_present_no": 45
         },
         {
+          "comment": "Vigilant Rogue Seeker",
           "enemy_id": "0x011001",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 26,
+          "exp": 118,
           "is_boss": false,
-          "hm_present_no": 46
+          "hm_present_no": 46,
+          "repop_count": 1,
+          "repop_wait_second": 5
         },
         {
+          "comment": "Vigilant Rogue Seeker",
           "enemy_id": "0x011001",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 26,
+          "exp": 118,
           "is_boss": false,
           "hm_present_no": 46
         }
@@ -106,11 +118,19 @@
         "layer_no": 1
       },
       "npc_id": "Soldier0",
-      "message_id": 11372
+      "message_id": 11419
     },
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 536,
+          "Param2": 12241
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -128,7 +148,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Soldier0",
-      "message_id": 11842
+      "message_id": 12238
     }
   ]
 }

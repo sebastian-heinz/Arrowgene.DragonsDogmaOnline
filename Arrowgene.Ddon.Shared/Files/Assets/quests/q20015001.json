@@ -52,8 +52,9 @@
       },
       "enemies": [
         {
-          "comment": "Armored Cyclops",
+          "comment": "Vigilant Armored Cyclops",
           "enemy_id": "0x015002",
+          "named_enemy_params_id": 53,
           "level": 15,
           "exp": 2120,
           "is_boss": true

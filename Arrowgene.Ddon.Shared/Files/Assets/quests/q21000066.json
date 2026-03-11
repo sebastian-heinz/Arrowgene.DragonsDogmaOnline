@@ -1,0 +1,142 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Deathly Black Shadow",
+  "quest_id": 21000066,
+  "base_level": 68,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DeenanWoods",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2243
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "exp",
+      "amount": 10665
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Mirage Crystal",
+          "item_id": 11809,
+          "num": 3
+        },
+        {
+          "comment": "Soft Tectrix",
+          "item_id": 11799,
+          "num": 3
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 428,
+        "group_id": 3
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Cockatrice",
+          "enemy_id": "0x015301",
+          "level": 68,
+          "exp": 5925,
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "comment": "Bolt Grimwarg",
+          "enemy_id": "0x010211",
+          "level": 68,
+          "exp": 1185,
+          "index": 6
+        },
+        {
+          "comment": "Bolt Grimwarg",
+          "enemy_id": "0x010211",
+          "level": 68,
+          "exp": 1185,
+          "index": 7
+        },
+        {
+          "comment": "Ghost",
+          "enemy_id": "0x015620",
+          "level": 68,
+          "exp": 1185,
+          "index": 8
+        },
+        {
+          "comment": "Ghost",
+          "enemy_id": "0x015620",
+          "level": 68,
+          "exp": 1185,
+          "index": 9
+        },
+        {
+          "comment": "Ghost",
+          "enemy_id": "0x015620",
+          "level": 68,
+          "exp": 1185,
+          "index": 10
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 105,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "4502",
+      "message_id": 17315
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [ 
+        { 
+          "type": "QstTalkChg", 
+          "Param1": 4502, 
+          "Param2": 17316,
+          "comment": "Idle dialogue"
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 105,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "4502",
+      "message_id": 17317
+    }
+  ]
+}

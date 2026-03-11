@@ -1,0 +1,78 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Keeper of the Woods (II)",
+  "quest_id": 20105004,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 206,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1980
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 490
+    },
+    {
+      "type": "exp",
+      "amount": 3460
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Spectral Dragon Claw",
+          "item_id": 7802,
+          "num": 1
+        },
+        {
+          "comment": "Spectral Dragonscale",
+          "item_id": 7922,
+          "num": 1
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 109,
+        "group_id": 10
+      },
+      "starting_index": 3,
+      "enemies": [
+        {
+          "comment": "Mist Wyrm",
+          "enemy_id": "0x015711",
+          "level": 60,
+          "exp": 9860,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

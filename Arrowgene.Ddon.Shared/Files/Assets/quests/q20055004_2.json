@@ -1,0 +1,79 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Abductors' True Nature (III)",
+    "quest_id": 20055004,
+    "base_level": 31,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "area_id": "MysreeForest",
+    "news_image": 111,
+    "variant_index": 2,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1020
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 160
+        },
+        {
+            "type": "exp",
+            "amount": 1430
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Gooseneck Arm",
+                    "item_id": 605,
+                    "num": 1
+                },
+                {
+                    "comment": "Wine-Boiled Mushroom",
+                    "item_id": 9411,
+                    "num": 2
+                },
+                {
+                    "comment": "Throwblast",
+                    "item_id": 52,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 67,
+                "group_id": 4
+            },
+            "starting_index": 8,
+            "enemies": [
+                {
+                    "comment": "Brutal Troll",
+                    "enemy_id": "0x015040",
+                    "named_enemy_params_id": 54,
+                    "level": 31,
+                    "exp": 2574,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [ 0 ]
+        }
+    ]
+}

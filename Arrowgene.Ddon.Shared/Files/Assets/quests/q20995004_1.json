@@ -1,13 +1,13 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Abandoned Giant Warrior",
+    "comment": "The Abandoned Giant Warrior (II)",
     "quest_id": 20995004,
     "base_level": 56,
     "minimum_item_rank": 0,
     "discoverable": true,
     "area_id": "MergodaRuins",
-	"variant_index": 1,
+    "variant_index": 1,
     "rewards": [
         {
             "type": "exp",
@@ -27,14 +27,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Exquisite Metal Plate",
                     "item_id": 8030,
+                    "num": 1
+                },
+                {
+                    "comment": "Alchemized Armor Plate",
+                    "item_id": 8031,
                     "num": 2
                 },
                 {
-                    "item_id": 8031,
-                    "num": 3
-                },
-                {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 3
                 }
@@ -47,15 +50,14 @@
                 "id": 76,
                 "group_id": 5
             },
-                "placement_type": "manual",
+            "placement_type": "manual",
             "enemies": [
-             
                 {
+                    "comment": "Dangerous Goliath",
                     "enemy_id": "0x015102",
-                    "start_think_tbl_no": 1,
-		            "named_enemy_params_id": 56,
+                    "named_enemy_params_id": 56,
                     "level": 56,
-                    "exp": 21700,
+                    "exp": 7553,
                     "is_boss": true,
                     "index": 4
                 }
@@ -74,11 +76,19 @@
                 "layer_no": 1
             },
             "npc_id": "4740",
-            "message_id": 11372
+            "message_id": 16070
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 4740, 
+                "Param2": 16071,
+                "comment": "Idle dialogue"
+                }
+            ],
             "groups": [0]
         },
         {
@@ -96,7 +106,7 @@
             },
             "announce_type": "Update",
             "npc_id": "4740",
-            "message_id": 11842
+            "message_id": 16072
         }
     ]
 }

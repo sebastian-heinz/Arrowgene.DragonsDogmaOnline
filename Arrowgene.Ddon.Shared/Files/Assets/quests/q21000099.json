@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Reconnaissance Medal",
                     "item_id": 11779,
                     "num": 1
                 },
                 {
+                    "comment": "Superior Strong Gala Extract",
                     "item_id": 9364,
                     "num": 3
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 3
                 }
@@ -46,32 +49,106 @@
                 "id": 443,
                 "group_id": 2
             },
+            "comment": "Group 0 - Frost Machina and Gigant Machina (1675 BO)",
             "enemies": [
                 {
-                    "enemy_id": "0x015850",
+                    "comment": "Dragonforce-Bearing Frost Machina",
+                    "enemy_id": "0x015851",
+                    "named_enemy_params_id": 1198,
                     "level": 70,
-                    "exp": 85000,
+                    "exp": 9500,
+                    "blood_orbs": 927,
                     "is_boss": true
                 },
                 {
-                    "enemy_id": "0x015851",
+                    "comment": "Dragonforce-Bearing Gigant Machina",
+                    "enemy_id": "0x015850",
+                    "named_enemy_params_id": 1198,
                     "level": 70,
-                    "exp": 85000,
+                    "exp": 6080,
+                    "blood_orbs": 748,
                     "is_boss": true
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 443,
+                "group_id": 1
+            },
+            "comment": "Group 1 - Saurian Sages (334 BO)",
+            "enemies": [
+                {
+                    "comment": "Dragonforce-Bearing Saurian Sage",
+                    "enemy_id": "0x010430",
+                    "named_enemy_params_id": 1198,
+                    "level": 70,
+                    "exp": 456,
+                    "blood_orbs": 167
+                },
+                {
+                    "comment": "Dragonforce-Bearing Saurian Sage",
+                    "enemy_id": "0x010430",
+                    "named_enemy_params_id": 1198,
+                    "level": 70,
+                    "exp": 456,
+                    "blood_orbs": 167
+                },
+                {
+                    "comment": "Saurian Sage",
+                    "enemy_id": "0x010430",
+                    "level": 70,
+                    "exp": 456
+                },
+                {
+                    "comment": "Saurian Sage",
+                    "enemy_id": "0x010430",
+                    "level": 70,
+                    "exp": 456
+                },
+                {
+                    "comment": "Saurian Sage",
+                    "enemy_id": "0x010430",
+                    "level": 70,
+                    "exp": 456
+                },
+                {
+                    "comment": "Saurian Sage",
+                    "enemy_id": "0x010430",
+                    "level": 70,
+                    "exp": 456
+                },
+                {
+                    "comment": "Saurian Sage",
+                    "enemy_id": "0x010430",
+                    "level": 70,
+                    "exp": 456
                 }
             ]
         }
     ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
+    "processes": [
+        { 
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+                    "reset_group": false,
+                    "groups": [0,1]
+                }
+            ]
         },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [0]
+        { 
+            "blocks": [
+                {
+                    "type": "SpawnGroup",
+                    "groups": [1]
+                }
+            ]
         }
     ]
 }

@@ -1,0 +1,243 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Gemstones: Howls of the Beasts",
+  "quest_id": 21014024,
+  "base_level": 75,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "ElanWaterGrove",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 13765
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 4494
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1800
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Rainbow-Colored Claw",
+          "item_id": 15928,
+          "num": 1
+        },
+        {
+          "comment": "Bronze Tail Feather",
+          "item_id": 15962,
+          "num": 1
+        },
+        {
+          "comment": "Protected Beast's Green Fur",
+          "item_id": 16009,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 451,
+        "group_id": 9
+      },
+      "comment": "12000R. Repop mobs don't get the drop table override, compensating for now",
+      "enemies": [
+        {
+          "comment": "Gemstone-Bearing Bifröst",
+          "enemy_id": "0x015321",
+          "named_enemy_params_id": 1576,
+          "level": 75,
+          "exp": 10000,
+          "drop_items": [
+            {
+              "item_id": 15928,
+              "item_min": 1,
+              "item_max": 4,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7794,
+              "item_min": 30,
+              "item_max": 30,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Gemstone-Bearing Stymphalides",
+          "enemy_id": "0x010611",
+          "named_enemy_params_id": 1576,
+          "level": 75,
+          "exp": 680,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "drop_items": [
+            {
+              "item_id": 15962,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.3
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ]
+        },
+        {
+          "comment": "Gemstone-Bearing Stymphalides",
+          "enemy_id": "0x010611",
+          "named_enemy_params_id": 1576,
+          "level": 75,
+          "exp": 680,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "drop_items": [
+            {
+              "item_id": 15962,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.3
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ]
+        },
+        {
+          "comment": "Gemstone-Bearing Stymphalides",
+          "enemy_id": "0x010611",
+          "named_enemy_params_id": 1576,
+          "level": 75,
+          "exp": 680,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "drop_items": [
+            {
+              "item_id": 15962,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.3
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ]
+        },
+        {
+          "comment": "Gemstone-Bearing Green Guardian",
+          "enemy_id": "0x010210",
+          "named_enemy_params_id": 1576,
+          "level": 75,
+          "exp": 680,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "drop_items": [
+            {
+              "item_id": 16009,
+              "item_min": 1,
+              "item_max": 4,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ]
+        },
+        {
+          "comment": "Gemstone-Bearing Green Guardian",
+          "enemy_id": "0x010210",
+          "named_enemy_params_id": 1576,
+          "level": 75,
+          "exp": 680,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "drop_items": [
+            {
+              "item_id": 16009,
+              "item_min": 1,
+              "item_max": 4,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ]
+        },
+        {
+          "comment": "Gemstone-Bearing Green Guardian",
+          "enemy_id": "0x010210",
+          "named_enemy_params_id": 1576,
+          "level": 75,
+          "exp": 680,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "drop_items": [
+            {
+              "item_id": 16009,
+              "item_min": 1,
+              "item_max": 4,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

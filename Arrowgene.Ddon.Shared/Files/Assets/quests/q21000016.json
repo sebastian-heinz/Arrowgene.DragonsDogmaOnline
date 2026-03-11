@@ -1,0 +1,151 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Longing to Be an Adult",
+  "quest_id": 21000016,
+  "base_level": 65,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeForest",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 7092
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2144
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 275
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Phantom Metal",
+          "item_id": 7890,
+          "num": 1
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 67,
+        "group_id": 3
+      },
+      "starting_index": 10,
+      "enemies": [
+        {
+          "comment": "Ent",
+          "enemy_id": "0x015031",
+          "level": 65,
+          "exp": 3940,
+          "is_boss": true
+        },
+        {
+          "comment": "Brute Ape",
+          "enemy_id": "0x015504",
+          "level": 65,
+          "exp": 788
+        },
+        {
+          "comment": "Ent",
+          "enemy_id": "0x015031",
+          "level": 65,
+          "exp": 3940,
+          "is_boss": true
+        },
+        {
+          "comment": "Brute Ape",
+          "enemy_id": "0x015504",
+          "level": 65,
+          "exp": 788
+        },
+        {
+          "comment": "Brute Ape",
+          "enemy_id": "0x015504",
+          "level": 65,
+          "exp": 788
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 1
+      },
+      "npc_id": "Cain",
+      "message_id": 17066
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 1
+      },
+      "npc_id": "Cain",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1410,
+          "Param2": 17067
+        }
+      ],
+      "items": [
+        {
+          "comment": "Gold Thread",
+          "id": 7743,
+          "amount": 2
+        }
+      ],
+      "message_id": 17068
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1410,
+          "Param2": 17069
+        }
+      ],
+      "groups": [0]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Cain",
+      "message_id": 17070
+    }
+  ]
+}

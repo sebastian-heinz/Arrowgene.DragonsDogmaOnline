@@ -1,0 +1,136 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Incapable Courier (III)",
+  "quest_id": 20030006,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DoweValley",
+  "news_image": 62,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1200
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "exp",
+      "amount": 1000
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Eye Gem",
+          "item_id": 7730,
+          "num": 3
+        },
+        {
+          "comment": "Refreshing Remedy",
+          "item_id": 9375,
+          "num": 3
+        },
+        {
+          "comment": "Healing Remedy",
+          "item_id": 7554,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1043,
+          "comment": "Spawns LightlyEquippedSoldier NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "LightlyEquippedSoldier",
+      "message_id": 11992
+    },
+    {
+      "type": "NewDeliverItems",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "LightlyEquippedSoldier",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 539,
+          "Param2": 11996
+        }
+      ],
+      "items": [
+        {
+          "comment": "Healing Drop",
+          "id": 7829,
+          "amount": 8
+        }
+      ],
+      "message_id": 11995
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 2,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Kittredge",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 539,
+          "Param2": 11996
+        }
+      ],
+      "message_id": 11997
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 14,
+        "layer_no": 1
+      },
+      "npc_id": "Josh",
+      "announce_type": "Update",
+      "message_id": 11998,
+      "quest_id": 70000001
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "LightlyEquippedSoldier",
+      "message_id": 11999
+    }
+  ]
+}

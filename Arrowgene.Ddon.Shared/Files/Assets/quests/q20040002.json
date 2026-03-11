@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Battle Sallet",
           "item_id": 524,
           "num": 1
         },
         {
+          "comment": "Concoction of Light",
           "item_id": 9376,
           "num": 3
         },
         {
+          "comment": "Forest Dweller's Old Key",
           "item_id": 9066,
           "num": 1
         }
@@ -44,11 +47,13 @@
       "type": "random",
       "loot_pool": [
         {
+          "comment": "Ogre Fur",
           "item_id": 7776,
           "num": 1,
           "chance": 0.6
         },
         {
+          "comment": "Throwblast",
           "item_id": 52,
           "num": 3,
           "chance": 0.6
@@ -62,16 +67,15 @@
         "id": 1,
         "group_id": 185
       },
-      "placement_type": "manual",
       "enemies": [
         {
+          "comment": "Vigilant Griffin",
           "enemy_id": "0x015300",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "named_enemy_params_id": 53,
           "level": 26,
-          "exp": 4200,
-          "is_boss": true,
-          "index": 0
+          "exp": 3450,
+          "is_boss": true
         }
       ]
     }
@@ -85,11 +89,19 @@
         "layer_no": 1
       },
       "npc_id": "Gilstan",
-      "message_id": 11830
+      "message_id": 11071
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 2000,
+          "Param2": 11077
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -107,7 +119,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Gilstan",
-      "message_id": 11835
+      "message_id": 11074
     }
   ]
 }

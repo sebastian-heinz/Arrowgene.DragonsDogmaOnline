@@ -1,13 +1,13 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Lord of the Wastes",
+    "comment": "The Lord of the Wastes (II)",
     "quest_id": 20085000,
     "base_level": 55,
     "minimum_item_rank": 0,
     "discoverable": true,
     "area_id": "EasternZandora",
-    "variant_index": 1,	
+    "variant_index": 1,
     "rewards": [
         {
             "type": "wallet",
@@ -27,14 +27,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Phantom Metal",
                     "item_id": 7890,
                     "num": 1
                 },
                 {
+                    "comment": "Demon Arming Points",
                     "item_id": 8022,
                     "num": 2
                 },
                 {
+                    "comment": "Strong Gala Extract",
                     "item_id": 9363,
                     "num": 3
                 }
@@ -44,6 +47,7 @@
             "type": "random",
             "loot_pool": [
                 {
+                    "comment": "Healing Potion",
                     "item_id": 34,
                     "num": 9,
                     "chance": 1.0
@@ -57,38 +61,43 @@
                 "id": 149,
                 "group_id": 2
             },
+            "starting_index": 7,
             "enemies": [
                 {
+                    "comment": "Legendary Empress Ghost",
                     "enemy_id": "0x015605",
+                    "named_enemy_params_id": 57,
                     "start_think_tbl_no": 0,
-		            "named_enemy_params_id": 57,
                     "level": 55,
-                    "exp": 19700,
+                    "exp": 4095,
                     "is_boss": true
-        },
-        {
+                },
+                {
+                    "comment": "Dangerous Living Armor",
                     "enemy_id": "0x010306",
+                    "named_enemy_params_id": 56,
                     "start_think_tbl_no": 0,
-		            "named_enemy_params_id": 56,
                     "level": 55,
-                    "exp": 6476,
+                    "exp": 1120,
                     "is_boss": false
-        },
-        {					
+                },
+                {
+                    "comment": "Dangerous Living Armor",
                     "enemy_id": "0x010306",
+                    "named_enemy_params_id": 56,
                     "start_think_tbl_no": 0,
-		            "named_enemy_params_id": 56,
                     "level": 55,
-                    "exp": 6476,
+                    "exp": 1120,
                     "is_boss": false
-        },
-        {					
+                },
+                {
+                    "comment": "Dangerous Living Armor",
                     "enemy_id": "0x010306",
+                    "named_enemy_params_id": 56,
                     "start_think_tbl_no": 0,
-		            "named_enemy_params_id": 56,
                     "level": 55,
-                    "exp": 6476,
-                    "is_boss": false					
+                    "exp": 1120,
+                    "is_boss": false
                 }
             ]
         }
@@ -102,11 +111,19 @@
                 "layer_no": 1
             },
             "npc_id": "Casey",
-            "message_id": 11372
+            "message_id": 16037
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 1801,
+                    "Param2": 16038
+                }
+            ],
             "groups": [0]
         },
         {
@@ -120,11 +137,11 @@
             "stage_id": {
                 "id": 54,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
             "npc_id": "Casey",
-            "message_id": 11835
+            "message_id": 16039
         }
     ]
 }

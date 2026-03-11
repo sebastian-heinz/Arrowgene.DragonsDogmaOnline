@@ -12,7 +12,7 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 1050
+      "amount": 1090
     },
     {
       "type": "wallet",
@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Iron Bangles",
           "item_id": 818,
           "num": 1
         },
         {
+          "comment": "Wild Steak",
           "item_id": 9412,
           "num": 2
         },
         {
+          "comment": "Enhanced Pickaxe",
           "item_id": 9401,
           "num": 3
         }
@@ -45,14 +48,15 @@
     {
       "stage_id": {
         "id": 79,
-        "group_id": 2
+        "group_id": 0
       },
       "enemies": [
         {
-          "comment": "Sphinx",
+          "comment": "Vigilant Sphinx",
           "enemy_id": "0x015302",
+          "named_enemy_params_id": 53,
           "level": 32,
-          "exp": 7500,
+          "exp": 3358,
           "is_boss": true
         }
       ]

@@ -1,0 +1,150 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Crisis within a Cave (II)",
+  "quest_id": 20050002,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeForest",
+  "news_image": 533,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 990
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 190
+    },
+    {
+      "type": "exp",
+      "amount": 1230
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Protective Cloth",
+          "item_id": 7940,
+          "num": 2
+        },
+        {
+          "comment": "Strong Gala Extract",
+          "item_id": 9363,
+          "num": 3
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 159,
+        "group_id": 12
+      },
+      "enemies": [
+        {
+          "comment": "Vigilant Shadow Harpy",
+          "enemy_id": "0x010607",
+          "named_enemy_params_id": 53,
+          "level": 45,
+          "exp": 210,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Vigilant Shadow Harpy",
+          "enemy_id": "0x010607",
+          "named_enemy_params_id": 53,
+          "level": 45,
+          "exp": 210,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Vigilant Shadow Harpy",
+          "enemy_id": "0x010607",
+          "named_enemy_params_id": 53,
+          "level": 45,
+          "exp": 210
+        },
+        {
+          "comment": "Vigilant Shadow Wolf",
+          "enemy_id": "0x010206",
+          "named_enemy_params_id": 53,
+          "level": 45,
+          "exp": 236,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Vigilant Shadow Wolf",
+          "enemy_id": "0x010206",
+          "named_enemy_params_id": 53,
+          "level": 45,
+          "exp": 236,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Vigilant Shadow Wolf",
+          "enemy_id": "0x010206",
+          "named_enemy_params_id": 53,
+          "level": 45,
+          "exp": 236
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 13,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Cedric",
+      "message_id": 11029
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1405,
+          "Param2": 11034
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 13,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Cedric",
+      "message_id": 11032
+    }
+  ]
+}

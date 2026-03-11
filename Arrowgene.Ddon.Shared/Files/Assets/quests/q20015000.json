@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "From the Waters Depths",
+  "comment": "From the Water's Depths",
   "quest_id": 20015000,
   "base_level": 15,
   "minimum_item_rank": 0,
@@ -47,34 +47,39 @@
       },
       "enemies": [
         {
-          "comment": "Giant Saurian",
+          "comment": "Vigilant Giant Saurian",
           "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
           "level": 15,
-          "exp": 65
+          "exp": 104
         },
         {
-          "comment": "Giant Saurian",
+          "comment": "Vigilant Giant Saurian",
           "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
           "level": 15,
-          "exp": 65
+          "exp": 104
         },
         {
-          "comment": "Giant Saurian",
+          "comment": "Vigilant Giant Saurian",
           "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
           "level": 15,
-          "exp": 65
+          "exp": 104
         },
         {
-          "comment": "Giant Saurian",
+          "comment": "Vigilant Giant Saurian",
           "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
           "level": 15,
-          "exp": 65
+          "exp": 104
         },
         {
-          "comment": "Giant Saurian",
+          "comment": "Vigilant Giant Saurian",
           "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
           "level": 15,
-          "exp": 65
+          "exp": 104
         }
       ]
     }

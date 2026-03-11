@@ -1,0 +1,98 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Fluttering Calls of Death (Twelve Calamities II)",
+  "quest_id": 20055005,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 109,
+  "variant_index": 3,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 3960
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 390
+    },
+    {
+      "type": "exp",
+      "amount": 4750
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Dazzling",
+          "item_id": 9205,
+          "num": 1
+        },
+        {
+          "comment": "Nightmare's Vocal Cords",
+          "item_id": 7746,
+          "num": 1
+        },
+        {
+          "comment": "Writhing Live Bark",
+          "item_id": 9442,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 79,
+        "group_id": 0
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Black Widow (Nightmare)",
+          "enemy_id": "0x015305",
+          "named_enemy_params_id": 605,
+          "level": 60,
+          "exp": 9065,
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "comment": "Entangler (Ent)",
+          "enemy_id": "0x015031",
+          "named_enemy_params_id": 606,
+          "level": 60,
+          "exp": 4420,
+          "is_boss": true,
+          "index": 23
+        },
+        {
+          "comment": "Entangler (Ent)",
+          "enemy_id": "0x015031",
+          "named_enemy_params_id": 606,
+          "level": 60,
+          "exp": 4420,
+          "is_boss": true,
+          "index": 24
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

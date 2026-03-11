@@ -1,13 +1,13 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Obstructing Evil Statue",
+    "comment": "The Obstructing Evil Statue (III)",
     "quest_id": 20085004,
     "base_level": 57,
     "minimum_item_rank": 0,
     "discoverable": true,
     "area_id": "EasternZandora",
-	"variant_index": 2,
+    "variant_index": 2,
     "rewards": [
         {
             "type": "wallet",
@@ -27,14 +27,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Flame Crystal",
                     "item_id": 7913,
                     "num": 1
                 },
                 {
+                    "comment": "High Quality Magick Medal",
                     "item_id": 7870,
                     "num": 1
                 },
                 {
+                    "comment": "Lava Rock",
                     "item_id": 7869,
                     "num": 3
                 }
@@ -44,6 +47,7 @@
             "type": "random",
             "loot_pool": [
                 {
+                    "comment": "Healing Potion",
                     "item_id": 34,
                     "num": 9,
                     "chance": 1.0
@@ -59,11 +63,11 @@
             },
             "enemies": [
                 {
+                    "comment": "Dangerous Geo Golem",
                     "enemy_id": "0x015104",
-                    "start_think_tbl_no": 3,
                     "named_enemy_params_id": 56,
                     "level": 57,
-                    "exp": 23700,
+                    "exp": 5248,
                     "is_boss": true
                 }
             ]
@@ -78,11 +82,19 @@
                 "layer_no": 1
             },
             "npc_id": "Rick",
-            "message_id": 11372
+            "message_id": 16043
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 1807,
+                    "Param2": 16044
+                }
+            ],
             "groups": [0]
         },
         {
@@ -100,7 +112,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Rick",
-            "message_id": 11835
+            "message_id": 16045
         }
     ]
 }

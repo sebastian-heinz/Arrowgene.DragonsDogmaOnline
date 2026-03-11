@@ -1,0 +1,110 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Corpse-Eating White Demon (II)",
+  "quest_id": 20075005,
+  "base_level": 43,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 146,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1410
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 220
+    },
+    {
+      "type": "exp",
+      "amount": 1980
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "White Shining Sand",
+          "item_id": 7851,
+          "num": 3
+        },
+        {
+          "comment": "Three-Herb Salad",
+          "item_id": 9410,
+          "num": 2
+        },
+        {
+          "comment": "Demon's Talisman",
+          "item_id": 9389,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 301
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Brutal Silver Roar",
+          "enemy_id": "0x015505",
+		  "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 3401,
+          "is_boss": true,
+          "index": 5
+        },
+        {
+          "comment": "Vigilant Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+		  "named_enemy_params_id": 53,
+          "level": 43,
+          "exp": 188,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 14
+        },
+        {
+          "comment": "Vigilant Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+		  "named_enemy_params_id": 53,
+          "level": 43,
+          "exp": 188,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 15
+        },
+        {
+          "comment": "Vigilant Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+		  "named_enemy_params_id": 53,
+          "level": 43,
+          "exp": 188,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 16
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Monster Burning from Within",
+  "quest_id": 20095012,
+  "base_level": 48,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "ZandoraWastelands",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2210
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1580
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 250
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "High Quality Magick Medal",
+          "item_id": 7870,
+          "num": 1
+        },
+        {
+          "comment": "Enhanced Pickaxe",
+          "item_id": 9401,
+          "num": 3
+        },
+        {
+          "comment": "Healing Remedy",
+          "item_id": 7554,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 423
+      },
+      "enemies": [
+        {
+          "comment": "Brutal Geo Golem",
+          "enemy_id": "0x015104",
+          "named_enemy_params_id": 54,
+          "level": 48,
+          "exp": 4672,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 55,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Bayard",
+      "message_id": 16064
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 4504,
+          "Param2": 16065
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 55,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Bayard",
+      "message_id": 16066
+    }
+  ]
+}

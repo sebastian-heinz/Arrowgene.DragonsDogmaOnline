@@ -1,0 +1,109 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Cause of the Hot Springs Blockage (II)",
+  "quest_id": 20040004,
+  "base_level": 28,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "VoldenMines",
+  "news_image": 91,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 920
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 140
+    },
+    {
+      "type": "exp",
+      "amount": 1290
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Artisan's Boots",
+          "item_id": 9699,
+          "num": 1
+        },
+        {
+          "comment": "Healing Elixir",
+          "item_id": 7552,
+          "num": 3
+        },
+        {
+          "comment": "Angel's Amulet",
+          "item_id": 9382,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 152,
+        "group_id": 5
+      },
+      "starting_index": 7,
+      "enemies": [
+        {
+          "comment": "Brutal Colossus",
+          "enemy_id": "0x015020",
+          "named_enemy_params_id": 54,
+          "level": 28,
+          "exp": 2968,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 80,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Miles",
+      "message_id": 11087
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1612,
+          "Param2": 11093
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 80,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Miles",
+      "message_id": 11090
+    }
+  ]
+}

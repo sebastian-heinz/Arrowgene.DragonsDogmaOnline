@@ -1,0 +1,121 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Surge of Hellfire (II)",
+  "quest_id": 20105002,
+  "base_level": 43,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 210,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1410
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 220
+    },
+    {
+      "type": "exp",
+      "amount": 1980
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Blow-Resistant Cloth",
+          "item_id": 7942,
+          "num": 1
+        },
+        {
+          "comment": "Strong Gala Extract",
+          "item_id": 9363,
+          "num": 3
+        },
+        {
+          "comment": "Rare Meat Paté",
+          "item_id": 9420,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 70,
+        "group_id": 19
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Key Bearer Mole Troll",
+          "enemy_id": "0x015041",
+          "named_enemy_params_id": 391,
+          "level": 42,
+          "exp": 4020,
+          "is_boss": true,
+          "index": 5
+        },
+        {
+          "comment": "Brutal Mole Troll",
+          "enemy_id": "0x015041",
+          "named_enemy_params_id": 54,
+          "level": 42,
+          "exp": 4020,
+          "is_boss": true,
+          "index": 9
+        },
+        {
+          "comment": "Vigilant Harpy",
+          "enemy_id": "0x010600",
+          "named_enemy_params_id": 53,
+          "level": 42,
+          "exp": 119,
+          "index": 10
+        },
+        {
+          "comment": "Vigilant Harpy",
+          "enemy_id": "0x010600",
+          "named_enemy_params_id": 53,
+          "level": 42,
+          "exp": 119,
+          "index": 11
+        },
+        {
+          "comment": "Vigilant Harpy",
+          "enemy_id": "0x010600",
+          "named_enemy_params_id": 53,
+          "level": 42,
+          "exp": 119,
+          "index": 12
+        },
+        {
+          "comment": "Vigilant Harpy",
+          "enemy_id": "0x010600",
+          "named_enemy_params_id": 53,
+          "level": 42,
+          "exp": 119,
+          "index": 14
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

@@ -1,13 +1,13 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Dead Lord's Retainers",
+    "comment": "The Dead Lord's Retainer",
     "quest_id": 20085008,
     "base_level": 57,
     "minimum_item_rank": 0,
     "discoverable": false,
     "area_id": "EasternZandora",
-    "news_image": 168,		
+    "news_image": 168,
     "rewards": [
         {
             "type": "wallet",
@@ -21,20 +21,23 @@
         },
         {
             "type": "exp",
-            "amount": 2630
+            "amount": 2190
         },
         {
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Dark Metal",
                     "item_id": 7887,
                     "num": 1
                 },
                 {
+                    "comment": "Demon Arming Points",
                     "item_id": 8022,
                     "num": 1
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 3
                 }
@@ -47,13 +50,15 @@
                 "id": 92,
                 "group_id": 11
             },
+            "starting_index": 1,
             "enemies": [
                 {
+                    "comment": "Brutal Gigant Machina",
                     "enemy_id": "0x015850",
                     "named_enemy_params_id": 54,
-                    "level": 58,
-                    "exp": 26700,
-                    "is_boss": true				
+                    "level": 57,
+                    "exp": 5248,
+                    "is_boss": true
                 }
             ]
         }

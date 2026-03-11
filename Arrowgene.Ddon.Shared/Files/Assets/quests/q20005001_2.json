@@ -1,0 +1,219 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Confrontation With Scouts (Bounty)",
+  "quest_id": 20005001,
+  "base_level": 8,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "HidellPlains",
+  "news_image": 6,
+  "variant_index": 2,
+  "quest_layout_set_info_flags": [
+    {
+      "flag_no": 346,
+      "stage_no": 100,
+      "group_id": 8
+    },
+    {
+      "flag_no": 2213,
+      "stage_no": 100,
+      "group_id": 28
+
+    },
+    {
+      "flag_no": 886,
+      "stage_no": 100,
+      "group_id": 6
+    }
+  ],
+  "rewards": [
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9529,
+          "num": 1,
+          "comment": "Leather Stole"
+        },
+        {
+          "item_id": 9367,
+          "num": 2,
+          "comment": "Terry Cloth"
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "item_id": 7962,
+          "num": 3,
+          "chance": 1.0,
+          "comment": "Brown Wood"
+        }
+      ]
+    },
+    {
+      "type": "exp",
+      "amount": 510
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 420
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 30
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 8
+      },
+      "starting_index": 6,
+      "enemies": [
+        {
+          "comment": "Bounty Redcap Fighter",
+          "enemy_id": "0x011111",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 1,
+          "level": 8,
+          "exp": 50
+        },
+        {
+          "comment": "Bounty Redcap",
+          "enemy_id": "0x011110",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 1,
+          "level": 8,
+          "exp": 50
+        },
+        {
+          "comment": "Bounty Redcap",
+          "enemy_id": "0x011110",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 1,
+          "level": 8,
+          "exp": 50
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 28
+      },
+      "starting_index": 10,
+      "enemies": [
+        {
+          "comment": "Bounty Redcap Fighter",
+          "enemy_id": "0x011111",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 1,
+          "level": 8,
+          "exp": 50
+        },
+        {
+          "comment": "Bounty Redcap",
+          "enemy_id": "0x011110",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 1,
+          "level": 8,
+          "exp": 50
+        },
+        {
+          "comment": "Bounty Redcap",
+          "enemy_id": "0x011110",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 1,
+          "level": 8,
+          "exp": 50
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 6
+      },
+      "starting_index": 6,
+      "enemies": [
+        {
+          "comment": "Bounty Redcap Fighter",
+          "enemy_id": "0x011111",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 1,
+          "level": 8,
+          "exp": 50,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Bounty Redcap Fighter",
+          "enemy_id": "0x011111",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 1,
+          "level": 8,
+          "exp": 50
+        },
+        {
+          "comment": "Bounty Redcap",
+          "enemy_id": "0x011110",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 1,
+          "level": 8,
+          "exp": 50,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Bounty Redcap",
+          "enemy_id": "0x011110",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 1,
+          "level": 8,
+          "exp": 50
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Update",
+      "groups": [ 1 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 1 ]
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Update",
+      "groups": [ 2 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 2 ]
+    }
+  ]
+}

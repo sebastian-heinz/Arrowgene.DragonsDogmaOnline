@@ -1,0 +1,105 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "From the Water's Depths (Bounty)",
+  "quest_id": 20015000,
+  "base_level": 18,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BreyaCoast",
+  "news_image": 22,
+  "variant_index": 3,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 890
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 740
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 70
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "High-Grade Bottoms",
+          "item_id": 9689,
+          "num": 1
+        },
+        {
+          "comment": "Waking Draught",
+          "item_id": 7845,
+          "num": 3
+        },
+        {
+          "comment": "Terry Cloth",
+          "item_id": 9367,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 95
+      },
+      "enemies": [
+        {
+          "comment": "Bounty Hobgoblin",
+          "named_enemy_params_id": 458,
+          "enemy_id": "0x010110",
+          "level": 18,
+          "exp": 89
+        },
+        {
+          "comment": "Bounty Hobgoblin",
+          "named_enemy_params_id": 458,
+          "enemy_id": "0x010110",
+          "level": 18,
+          "exp": 89
+        },
+        {
+          "comment": "Bounty Hobgoblin",
+          "named_enemy_params_id": 458,
+          "enemy_id": "0x010110",
+          "level": 18,
+          "exp": 89
+        },
+        {
+          "comment": "Bounty Hobgoblin",
+          "named_enemy_params_id": 458,
+          "enemy_id": "0x010110",
+          "level": 18,
+          "exp": 89
+        },
+        {
+          "comment": "Bounty Hobgoblin",
+          "named_enemy_params_id": 458,
+          "enemy_id": "0x010110",
+          "level": 18,
+          "exp": 89
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

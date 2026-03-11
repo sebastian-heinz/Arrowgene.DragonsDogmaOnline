@@ -1,0 +1,93 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Woes of A Merchant (IV)",
+  "quest_id": 20000001,
+  "base_level": 16,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 10,
+  "variant_index": 3,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 700
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 50
+    },
+    {
+      "type": "exp",
+      "amount": 520
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Poison",
+          "item_id": 9239,
+          "num": 1
+        },
+        {
+          "comment": "Superior Healing Potion",
+          "item_id": 35,
+          "num": 2
+        },
+        {
+          "comment": "Lockpick",
+          "item_id": 59,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "stage_id": {
+        "id": 25,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Peddler",
+      "message_id": 10734,
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 985
+        }
+      ]
+    },
+    {
+      "type": "NewDeliverItems",
+      "stage_id": {
+        "id": 25,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Peddler",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 509,
+          "Param2": 10742
+        }
+      ],
+      "items": [
+        {
+          "comment": "Amethyst Pendant",
+          "id": 8978,
+          "amount": 2
+        }
+      ],
+      "message_id": 10737
+    }
+  ]
+}

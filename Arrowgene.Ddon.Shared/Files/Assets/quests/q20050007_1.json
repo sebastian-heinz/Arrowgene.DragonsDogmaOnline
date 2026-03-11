@@ -1,0 +1,147 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "An Ancient Gathering (II)",
+  "quest_id": 20050007,
+  "base_level": 25,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeForest",
+  "news_image": 110,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 680
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 110
+    },
+    {
+      "type": "exp",
+      "amount": 820
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Bloodstained Red Cloth",
+          "item_id": 7946,
+          "num": 1
+        },
+        {
+          "comment": "Angel's Amulet",
+          "item_id": 9382,
+          "num": 1
+        },
+        {
+          "comment": "Fortifier",
+          "item_id": 9377,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 66
+      },
+      "starting_index": 6,
+      "enemies": [
+        {
+          "comment": "Vigilant Redcap",
+          "enemy_id": "0x011110",
+          "named_enemy_params_id": 53,
+          "level": 25,
+          "exp": 106,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Vigilant Redcap",
+          "enemy_id": "0x011110",
+          "named_enemy_params_id": 53,
+          "level": 25,
+          "exp": 106
+        },
+        {
+          "comment": "Vigilant Redcap",
+          "enemy_id": "0x011110",
+          "named_enemy_params_id": 53,
+          "level": 25,
+          "exp": 106
+        },
+        {
+          "comment": "Vigilant Redcap Slinger",
+          "enemy_id": "0x011112",
+          "named_enemy_params_id": 53,
+          "level": 25,
+          "exp": 106,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Vigilant Redcap Slinger",
+          "enemy_id": "0x011112",
+          "named_enemy_params_id": 53,
+          "level": 25,
+          "exp": 106
+        },
+        {
+          "comment": "Vigilant Redcap Slinger",
+          "enemy_id": "0x011112",
+          "named_enemy_params_id": 53,
+          "level": 25,
+          "exp": 106
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 24,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Alma",
+      "message_id": 11430
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1411,
+          "Param2": 13321
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 24,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Alma",
+      "message_id": 13318
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Old Witch of the Woods (II)",
+  "quest_id": 20105006,
+  "base_level": 56,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 563,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1840
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 240
+    },
+    {
+      "type": "exp",
+      "amount": 1840
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Witch's Velvet",
+          "item_id": 7949,
+          "num": 1
+        },
+        {
+          "comment": "Witch's Grimoire",
+          "item_id": 7808,
+          "num": 1
+        },
+        {
+          "comment": "Smoky Quartz",
+          "item_id": 7908,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 163,
+        "group_id": 9
+      },
+      "starting_index": 3,
+      "enemies": [
+        {
+          "comment": "Empress Ghost",
+          "enemy_id": "0x015605",
+          "level": 56,
+          "exp": 4147,
+          "is_boss": true
+        },
+        {
+          "comment": "Grimwarg",
+          "enemy_id": "0x010205",
+          "level": 56,
+          "exp": 274
+        },
+        {
+          "comment": "Grimwarg",
+          "enemy_id": "0x010205",
+          "level": 56,
+          "exp": 274
+        },
+        {
+          "comment": "Grimwarg",
+          "enemy_id": "0x010205",
+          "level": 56,
+          "exp": 274
+        },
+        {
+          "comment": "Grimwarg",
+          "enemy_id": "0x010205",
+          "level": 56,
+          "exp": 274
+        },
+        {
+          "comment": "Grimwarg",
+          "enemy_id": "0x010205",
+          "level": 56,
+          "exp": 274
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

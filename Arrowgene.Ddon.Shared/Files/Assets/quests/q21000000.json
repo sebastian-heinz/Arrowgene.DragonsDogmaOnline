@@ -1,0 +1,401 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "High Difficulty: Lurking in the Shadows",
+  "quest_id": 21000000,
+  "base_level": 65,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 9457
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2144
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 275
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Firm Protection (Health)",
+          "item_id": 16070,
+          "num": 1
+        },
+        {
+          "comment": "Crest of Wisdom (Health)",
+          "item_id": 16074,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 87,
+        "group_id": 3
+      },
+      "starting_index": 5,
+      "enemies": [
+        {
+          "comment": "Alchemized Skeleton",
+          "enemy_id": "0x010312",
+          "level": 65,
+          "exp": 630,
+          "is_boss": true
+        },
+        {
+          "comment": "Alchemized Wolf",
+          "enemy_id": "0x010207",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Wolf",
+          "enemy_id": "0x010207",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Goblin",
+          "enemy_id": "0x011120",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Goblin",
+          "enemy_id": "0x011120",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Goblin",
+          "enemy_id": "0x011120",
+          "level": 65,
+          "exp": 630
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 406,
+        "group_id": 3
+      },
+      "starting_index": 10,
+      "enemies": [
+        {
+          "comment": "Damned Golem",
+          "enemy_id": "0x015103",
+          "level": 60,
+          "exp": 3026,
+          "is_boss": true
+        },
+        {
+          "comment": "Damned Goblin Fighter",
+          "enemy_id": "0x011125",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Damned Goblin Fighter",
+          "enemy_id": "0x011125",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Damned Wolf",
+          "enemy_id": "0x010208",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Damned Wolf",
+          "enemy_id": "0x010208",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Damned Wolf",
+          "enemy_id": "0x010208",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Damned Wolf",
+          "enemy_id": "0x010208",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Damned Wolf",
+          "enemy_id": "0x010208",
+          "level": 65,
+          "exp": 630
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 406,
+        "group_id": 7
+      },
+      "enemies": [
+        {
+          "comment": "Alchemized Skeleton",
+          "enemy_id": "0x010312",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Damned Goblin Fighter",
+          "enemy_id": "0x011125",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Damned Goblin Fighter",
+          "enemy_id": "0x011125",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Skeleton",
+          "enemy_id": "0x010312",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Damned Goblin Fighter",
+          "enemy_id": "0x011125",
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Gigant Machina",
+          "enemy_id": "0x015850",
+          "level": 60,
+          "exp": 3026,
+          "is_boss": true
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 406,
+        "group_id": 10
+      },
+      "starting_index": 5,
+      "enemies": [
+        {
+          "comment": "Goliath",
+          "enemy_id": "0x015102",
+          "start_think_tbl_no": 1,
+          "level": 65,
+          "exp": 15761,
+          "is_boss": true
+        },
+        {
+          "comment": "Alchemized Harpy",
+          "enemy_id": "0x010606",
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Harpy",
+          "enemy_id": "0x010606",
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Harpy",
+          "enemy_id": "0x010606",
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Harpy",
+          "enemy_id": "0x010606",
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Skeleton",
+          "enemy_id": "0x010312",
+          "start_think_tbl_no": 1,
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Skeleton",
+          "enemy_id": "0x010312",
+          "start_think_tbl_no": 1,
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Skeleton",
+          "enemy_id": "0x010312",
+          "start_think_tbl_no": 1,
+          "level": 65,
+          "exp": 630
+        },
+        {
+          "comment": "Alchemized Skeleton",
+          "enemy_id": "0x010312",
+          "start_think_tbl_no": 1,
+          "level": 65,
+          "exp": 630
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "blocks": [
+        {
+          "type": "NpcTalkAndOrder",
+          "stage_id": {
+            "id": 25
+          },
+          "npc_id": "Alfred",
+          "message_id": 17024
+        },
+        {
+          "type": "SeekOutEnemiesAtMarkedLocation",
+          "announce_type": "Accept",
+          "result_commands": [
+            {
+              "comment": "Idle dialogue",
+              "type": "QstTalkChg",
+              "Param1": 10,
+              "Param2": 17025
+            }
+          ],
+          "groups": [0]
+        },
+        {
+          "type": "KillGroup",
+          "announce_type": "Update",
+          "reset_group": false,
+          "groups": [ 0 ]
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [1],
+          "check_flags": [2]
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "check_flags": [3, 4, 5]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 25
+          },
+          "npc_id": "Alfred",
+          "message_id": 17026
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [1]
+        },
+        {
+          "type": "DiscoverEnemy",
+          "groups": [1]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "result_commands": [
+            {
+              "type": "MyQstFlagOn",
+              "Param1": 2
+            }
+          ],
+          "groups": [1]
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [3]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [1]
+        },
+        {
+          "type": "DiscoverEnemy",
+          "groups": [2]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "result_commands": [
+            {
+              "type": "MyQstFlagOn",
+              "Param1": 2
+            }
+          ],
+          "groups": [2]
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [4]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [1]
+        },
+        {
+          "type": "DiscoverEnemy",
+          "groups": [3]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "result_commands": [
+            {
+              "type": "MyQstFlagOn",
+              "Param1": 2
+            }
+          ],
+          "groups": [3]
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [5]
+        }
+      ]
+    }
+  ]
+}

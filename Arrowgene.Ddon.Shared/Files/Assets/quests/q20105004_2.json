@@ -1,0 +1,106 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Keeper of the Woods (Calamity)",
+  "quest_id": 20105004,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 206,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1480
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 230
+    },
+    {
+      "type": "exp",
+      "amount": 2070
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Smooth Dragonleather",
+          "item_id": 7927,
+          "num": 1
+        },
+        {
+          "comment": "Twinkle Star",
+          "item_id": 949,
+          "num": 1
+        },
+        {
+          "comment": "Sprite's Talisman",
+          "item_id": 9390,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 109,
+        "group_id": 10
+      },
+      "starting_index": 3,
+      "enemies": [
+        {
+          "comment": "Deenan Piercer (Angules)",
+          "enemy_id": "0x015708",
+          "named_enemy_params_id": 495,
+          "level": 45,
+          "exp": 7890,
+          "is_boss": true
+        },
+        {
+          "comment": "Dangerous Grimwarg",
+          "enemy_id": "0x010205",
+          "named_enemy_params_id": 56,
+          "level": 45,
+          "exp": 230,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Dangerous Grimwarg",
+          "enemy_id": "0x010205",
+          "named_enemy_params_id": 56,
+          "level": 45,
+          "exp": 230,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Dangerous Grimwarg",
+          "enemy_id": "0x010205",
+          "named_enemy_params_id": 56,
+          "level": 45,
+          "exp": 230,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

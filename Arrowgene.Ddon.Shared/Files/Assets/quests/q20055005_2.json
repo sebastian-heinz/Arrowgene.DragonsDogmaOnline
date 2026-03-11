@@ -1,0 +1,120 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Fluttering Calls of Death (Twelve Calamities)",
+  "quest_id": 20055005,
+  "base_level": 55,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 109,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 3630
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 390
+    },
+    {
+      "type": "exp",
+      "amount": 4710
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Phantom Metal",
+          "item_id": 7890,
+          "num": 1
+        },
+        {
+          "comment": "Sphinx Claw",
+          "item_id": 7747,
+          "num": 1
+        },
+        {
+          "comment": "Ent Seed",
+          "item_id": 7992,
+          "num": 2
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "comment": "Crest of Sleep Warding",
+          "item_id": 9333,
+          "num": 1,
+          "chance": 0.15
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "comment": "Crest of Sleep Prevention",
+          "item_id": 9334,
+          "num": 1,
+          "chance": 0.15
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 79,
+        "group_id": 0
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Lullaby Queen (Sphinx)",
+          "enemy_id": "0x015302",
+          "named_enemy_params_id": 530,
+          "level": 55,
+          "exp": 4945,
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "comment": "Deafening Ent (Ent)",
+          "enemy_id": "0x015031",
+          "named_enemy_params_id": 531,
+          "level": 55,
+          "exp": 4160,
+          "is_boss": true,
+          "index": 23
+        },
+        {
+          "comment": "Deafening Ent (Ent)",
+          "enemy_id": "0x015031",
+          "named_enemy_params_id": 531,
+          "level": 55,
+          "exp": 4160,
+          "is_boss": true,
+          "index": 24
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

@@ -12,7 +12,7 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 200
+      "amount": 120
     },
     {
       "type": "wallet",
@@ -21,7 +21,7 @@
     },
     {
       "type": "exp",
-      "amount": 370
+      "amount": 270
     },
     {
       "type": "select",
@@ -35,11 +35,6 @@
           "comment": "Small Thief Key",
           "item_id": 9429,
           "num": 3
-        },
-        {
-          "comment": "Sorcerer Hat",
-          "item_id": 8153,
-          "num": 1
         }
       ]
     }
@@ -51,7 +46,7 @@
         "id": 52
       },
       "npc_id": "Livian",
-      "message_id": 10800
+      "message_id": 11055
     },
     {
       "type": "DeliverItems",
@@ -61,13 +56,22 @@
       },
       "npc_id": "Livian",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1603,
+          "Param2": 11061
+        }
+      ],
       "items": [
         {
+          "comment": "Angelica",
           "id": 7982,
           "amount": 8
         }
       ],
-      "message_id": 10737
+      "message_id": 11058
     }
   ]
 }

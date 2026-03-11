@@ -1,0 +1,148 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Bound Spirit (II)",
+    "quest_id": 20080001,
+    "base_level": 50,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "EasternZandora",
+    "variant_index": 1,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1980
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1370
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 330
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Smoky Quartz",
+                    "item_id": 7908,
+                    "num": 1
+                },
+                {
+                    "comment": "Enhanced Lockpick",
+                    "item_id": 9403,
+                    "num": 3
+                },
+                {
+                    "comment": "Panacea",
+                    "item_id": 41,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 93,
+                "group_id": 3
+            },
+            "placement_type": "manual",
+            "enemies": [
+                {
+                    "comment": "Brutal Ghost Mail",
+                    "enemy_id": "0x010311",
+                    "named_enemy_params_id": 54,
+                    "level": 50,
+                    "exp": 600,
+                    "index": 8
+                },
+                {
+                    "comment": "Brutal Ghost Mail",
+                    "enemy_id": "0x010311",
+                    "named_enemy_params_id": 54,
+                    "level": 50,
+                    "exp": 600,
+                    "index": 9
+                },
+                {
+                    "comment": "Brutal Ghost Mail",
+                    "enemy_id": "0x010311",
+                    "named_enemy_params_id": 54,
+                    "level": 50,
+                    "exp": 600,
+                    "index": 10
+                },
+                {
+                    "comment": "Dangerous Empress Ghost",
+                    "enemy_id": "0x015605",
+                    "named_enemy_params_id": 56,
+                    "level": 50,
+                    "exp": 3840,
+                    "is_boss": true,
+                    "index": 2
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1070, "comment": "Spawns LingeringSkeleton NPC"}
+            ],
+            "stage_id": {
+                "id": 93,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "LingeringSkeleton",
+            "message_id": 11286
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 523,
+                    "Param2": 11292
+                }
+            ],
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "CollectItem",
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 93,
+                "group_id": 2,
+                "layer_no": 1
+            },
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1765, "comment": "Spawns Glowing Item"}
+            ]
+        },
+        {
+            "type": "NewTalkToNpc",
+            "stage_id": {
+                "id": 93,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "LingeringSkeleton",
+            "message_id": 11289
+        }
+    ]
+}

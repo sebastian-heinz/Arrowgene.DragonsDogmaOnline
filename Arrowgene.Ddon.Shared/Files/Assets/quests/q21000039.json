@@ -1,0 +1,252 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Jewelry: Truth Behind The Legend",
+  "quest_id": 21000039,
+  "base_level": 63,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BetlandPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 9302
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2078
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 265
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Betland Medal",
+          "item_id": 11005,
+          "num": 1
+        },
+        {
+          "comment": "Aliment Extractant",
+          "item_id": 8033,
+          "num": 1
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 431,
+        "group_id": 8
+      },
+      "comment": "Up to five Unappraised Moon Trinket (Soldier) drops",
+      "enemies": [
+        {
+          "comment": "Jewelry-Bearing Frost Machina",
+          "enemy_id": "0x015851",
+          "named_enemy_params_id": 1121,
+          "level": 63,
+          "exp": 8800,
+          "drop_items": [
+            {
+              "item_id": 11778,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 11759,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 1.0
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Jewelry-Bearing Frost Machina",
+          "enemy_id": "0x015851",
+          "named_enemy_params_id": 1121,
+          "level": 60,
+          "exp": 8500,
+          "drop_items": [
+            {
+              "item_id": 11778,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 11759,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 1.0
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Mudman",
+          "enemy_id": "0x010509",
+          "level": 63,
+          "exp": 775
+        },
+        {
+          "comment": "Mudman",
+          "enemy_id": "0x010509",
+          "level": 63,
+          "exp": 775
+        },
+        {
+          "comment": "Mudman",
+          "enemy_id": "0x010509",
+          "level": 63,
+          "exp": 775
+        },
+        {
+          "comment": "Mudman",
+          "enemy_id": "0x010509",
+          "level": 63,
+          "exp": 775
+        },
+        {
+          "comment": "Jewelry-Bearing Shadow Harpy",
+          "enemy_id": "0x010607",
+          "named_enemy_params_id": 1121,
+          "level": 63,
+          "exp": 264,
+          "drop_items": [
+            {
+              "item_id": 7911,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7783,
+              "item_min": 1,
+              "item_max": 4,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 9441,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 11759,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Jewelry-Bearing Shadow Harpy",
+          "enemy_id": "0x010607",
+          "named_enemy_params_id": 1121,
+          "level": 63,
+          "exp": 264,
+          "drop_items": [
+            {
+              "item_id": 7911,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7783,
+              "item_min": 1,
+              "item_max": 4,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 9441,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 11759,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Jewelry-Bearing Shadow Harpy",
+          "enemy_id": "0x010607",
+          "named_enemy_params_id": 1121,
+          "level": 63,
+          "exp": 264,
+          "drop_items": [
+            {
+              "item_id": 7911,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7783,
+              "item_min": 1,
+              "item_max": 4,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 9441,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 11759,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

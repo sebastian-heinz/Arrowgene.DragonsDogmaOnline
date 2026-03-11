@@ -27,18 +27,13 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "Knights Honor",
-          "item_id": 95,
-          "num": 1
+          "comment": "Iron Ore Fragment",
+          "item_id": 7853,
+          "num": 5
         },
         {
-          "comment": "Restorative",
-          "item_id": 9369,
-          "num": 3
-        },
-        {
-          "comment": "Superior Gala Extract",
-          "item_id": 61,
+          "comment": "Hot Gel",
+          "item_id": 9371,
           "num": 3
         }
       ]
@@ -61,11 +56,19 @@
         "layer_no": 1
       },
       "npc_id": "Peddler",
-      "message_id": 11372
+      "message_id": 8649
     },
     {
       "type": "CollectItem",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 509,
+          "Param2": 8654
+        }
+      ],
       "stage_id": {
         "id": 153,
         "group_id": 1,
@@ -123,7 +126,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Peddler",
-      "message_id": 11842
+      "message_id": 8652
     }
   ]
 }

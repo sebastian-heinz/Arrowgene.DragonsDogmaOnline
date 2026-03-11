@@ -1,0 +1,240 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Living Hell",
+  "quest_id": 21000070,
+  "base_level": 70,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "NorthernBetlandPlains",
+  "order_conditions": [ { "type": "AreaRank", "Param1": 9, "Param2": 13 } ],
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 12014
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2309
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 300
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Medusa's Serpent Hair",
+          "item_id": 13224,
+          "num": 1
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 334,
+        "group_id": 6
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Medusa",
+          "enemy_id": "0x015610",
+          "level": 70,
+          "exp": 7675,
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "comment": "Medusa",
+          "enemy_id": "0x015610",
+          "level": 70,
+          "exp": 7675,
+          "is_boss": true,
+          "index": 1
+        },
+        {
+          "comment": "Dark Corpse Punisher",
+          "enemy_id": "0x010516",
+          "start_think_tbl_no": 2,
+          "level": 70,
+          "exp": 1335,
+          "index": 5
+        },
+        {
+          "comment": "Dark Corpse Punisher",
+          "enemy_id": "0x010516",
+          "start_think_tbl_no": 2,
+          "level": 70,
+          "exp": 1335,
+          "index": 6
+        },
+        {
+          "comment": "Dark Corpse Punisher",
+          "enemy_id": "0x010516",
+          "start_think_tbl_no": 2,
+          "level": 70,
+          "exp": 1335,
+          "index": 7
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 334,
+        "group_id": 9
+      },
+      "enemies": [
+        {
+          "comment": "Infected Orc Vanguard (Severe)",
+          "enemy_id": "0x015815",
+          "infection_type": 2,
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Infected Orc Vanguard (Severe)",
+          "enemy_id": "0x015815",
+          "infection_type": 2,
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Infected Orc Vanguard (Severe)",
+          "enemy_id": "0x015815",
+          "infection_type": 2,
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Infected Orc Vanguard (Severe)",
+          "enemy_id": "0x015815",
+          "infection_type": 2,
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Infected Orc Vanguard (Severe)",
+          "enemy_id": "0x015815",
+          "infection_type": 2,
+          "level": 70,
+          "exp": 1335
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "blocks": [
+        {
+          "type": "DiscoverEnemy",
+          "groups": [0],
+          "result_commands": [ { "type": "QstLayoutFlagOn", "Param1": 3345 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "announce_type": "Accept",
+          "groups": [0],
+          "result_commands": [ { "type": "MyQstFlagOn",  "Param1": 2 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "groups": [1]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Group 0 boss HP check",
+          "type": "Raw",
+          "check_commands": [
+            { "type": "EmHpLess", "Param1": 825, "Param2": 6, "Param3": 0, "Param4": 40 } ,
+            { "type": "EmHpLess", "Param1": 825, "Param2": 6, "Param3": 1, "Param4": 40 }
+          ]
+        },
+        {
+          "type": "SpawnGroup",
+          "announce_type": "Update",
+          "groups": [1],
+          "check_commands": [
+            { "type": "MyQstFlagOff", "Param1": 0 },
+            { "type": "MyQstFlagOn",  "Param1": 1 }
+          ]
+        },
+        {
+          "comment": "Group 1 is dead and group 0 is still alive, update announcement",
+          "type": "Raw",
+          "result_commands": [ { "type": "UpdateAnnounce", "Param1": 3 } ]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 0 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 825, "Param2": 6, "Param3": 0 } ,
+              { "type": "DieEnemy", "Param1": 825, "Param2": 6, "Param3": 1 } ,
+              { "type": "DieEnemy", "Param1": 825, "Param2": 6, "Param3": 5 } ,
+              { "type": "DieEnemy", "Param1": 825, "Param2": 6, "Param3": 6 } ,
+              { "type": "DieEnemy", "Param1": 825, "Param2": 6, "Param3": 7 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [0]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 1 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 825, "Param2": 9, "Param3": 0 } ,
+              { "type": "DieEnemy", "Param1": 825, "Param2": 9, "Param3": 1 } ,
+              { "type": "DieEnemy", "Param1": 825, "Param2": 9, "Param3": 2 } ,
+              { "type": "DieEnemy", "Param1": 825, "Param2": 9, "Param3": 3 } ,
+              { "type": "DieEnemy", "Param1": 825, "Param2": 9, "Param3": 4 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [1]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Stylish Consideration (II)",
+  "quest_id": 20040000,
+  "base_level": 25,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "VoldenMines",
+  "news_image": 68,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 80
+    },
+    {
+      "type": "exp",
+      "amount": 310
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Combat Fabric",
+          "item_id": 7938,
+          "num": 2
+        },
+        {
+          "comment": "Purifying Decoction",
+          "item_id": 9372,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 52
+      },
+      "npc_id": "Livian",
+      "message_id": 11055
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 52,
+        "group_id": 1
+      },
+      "npc_id": "Livian",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1603,
+          "Param2": 11061
+        }
+      ],
+      "items": [
+        {
+          "comment": "Yellow Thyme",
+          "id": 7977,
+          "amount": 5
+        }
+      ],
+      "message_id": 11058
+    }
+  ]
+}

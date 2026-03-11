@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "Ambush In The Wells Depths",
+  "comment": "Ambush In The Well's Depths",
   "quest_id": 20005002,
   "base_level": 11,
   "minimum_item_rank": 0,
@@ -27,10 +27,12 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Thief's Mask",
           "item_id": 489,
           "num": 1
         },
         {
+          "comment": "Absorbent Cloth",
           "item_id": 9368,
           "num": 2
         }
@@ -44,54 +46,42 @@
         "group_id": 0
       },
       "enemies": [
-        
         {
-          "enemy_id": "0x015801",
-          "StartThinkTblNo": 1,
-          "named_enemy_params_id": 53,
-          "level": 11,
-          "exp": 160,
-          "is_boss": false
-        },
-        {
+          "comment": "Vigilant Orc Soldier",
           "enemy_id": "0x015800",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 160,
-          "is_boss": false
+          "exp": 80
         },
         {
-          "enemy_id": "0x015801",
-          "StartThinkTblNo": 1,
-          "named_enemy_params_id": 53,
-          "level": 11,
-          "exp": 160,
-          "is_boss": false
-        },
-        {
+          "comment": "Vigilant Orc Soldier",
           "enemy_id": "0x015800",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 160,
-          "is_boss": false
+          "exp": 80
         },
         {
+          "comment": "Vigilant Orc Soldier",
           "enemy_id": "0x015800",
-          "StartThinkTblNo": 1,
           "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 160,
-          "is_boss": false
+          "exp": 80
         },
         {
+          "comment": "Vigilant Orc Tosser",
           "enemy_id": "0x015801",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 160,
-          "is_boss": false
+          "exp": 80,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Vigilant Orc Tosser",
+          "enemy_id": "0x015801",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 80
         }
       ]
     }

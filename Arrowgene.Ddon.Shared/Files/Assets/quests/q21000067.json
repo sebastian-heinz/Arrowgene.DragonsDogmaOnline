@@ -1,0 +1,168 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Guardian of Ancient Remains",
+  "quest_id": 21000067,
+  "base_level": 68,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DeenanWoods",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2243
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "exp",
+      "amount": 10665
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Prism Crystal",
+          "item_id": 11808,
+          "num": 4
+        },
+        {
+          "comment": "Soft Tectrix",
+          "item_id": 11799,
+          "num": 3
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 426,
+        "group_id": 1
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Silver Roar",
+          "enemy_id": "0x015505",
+          "level": 68,
+          "exp": 3940,
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "comment": "Aqua Jelly",
+          "enemy_id": "0x010904",
+          "level": 68,
+          "exp": 1185,
+          "index": 1
+        },
+        {
+          "comment": "Aqua Jelly",
+          "enemy_id": "0x010904",
+          "level": 68,
+          "exp": 1185,
+          "index": 2
+        },
+        {
+          "comment": "Direwolf",
+          "enemy_id": "0x010201",
+          "level": 68,
+          "exp": 1185,
+          "index": 6
+        },
+        {
+          "comment": "Direwolf",
+          "enemy_id": "0x010201",
+          "level": 68,
+          "exp": 1185,
+          "index": 7
+        },
+        {
+          "comment": "Direwolf",
+          "enemy_id": "0x010201",
+          "level": 68,
+          "exp": 1185,
+          "index": 8
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 105,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "4502",
+      "message_id": 17323
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 105,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "4502",
+      "announce_type": "Accept",
+      "result_commands": [ 
+        { 
+          "type": "QstTalkChg", 
+          "Param1": 4502, 
+          "Param2": 17324,
+          "comment": "Idle dialogue"
+        }
+      ],
+      "items": [
+        {
+          "comment": "Spirit Silver Ingot",
+          "id": 7884,
+          "amount": 2
+        }
+      ],
+      "message_id": 17325
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [ 
+        { 
+          "type": "QstTalkChg", 
+          "Param1": 4502, 
+          "Param2": 17326,
+          "comment": "Idle dialogue"
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 105,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "4502",
+      "message_id": 17327
+    }
+  ]
+}

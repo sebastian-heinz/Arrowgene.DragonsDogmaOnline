@@ -1,0 +1,156 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Mysterious Monolith (IV)",
+  "quest_id": 20000005,
+  "base_level": 56,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 555,
+  "variant_index": 3,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1840
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1840
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Rainbow Eye Gem",
+          "item_id": 7731,
+          "num": 1
+        },
+        {
+          "comment": "Alkahest",
+          "item_id": 7833,
+          "num": 2
+        },
+        {
+          "comment": "Drilled Ore",
+          "item_id": 7863,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 146,
+        "group_id": 8
+      },
+      "starting_index": 5,
+      "enemies": [
+        {
+          "comment": "Dangerous Alchemy Eye",
+          "enemy_id": "0x015420",
+          "named_enemy_params_id": 56,
+          "level": 56,
+          "exp": 400,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Dangerous Alchemy Eye",
+          "enemy_id": "0x015420",
+          "named_enemy_params_id": 56,
+          "level": 56,
+          "exp": 400,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Dangerous Alchemy Eye",
+          "enemy_id": "0x015420",
+          "named_enemy_params_id": 56,
+          "level": 56,
+          "exp": 400
+        },
+        {
+          "comment": "Dangerous Alchemized Skeleton",
+          "enemy_id": "0x011121",
+          "named_enemy_params_id": 56,
+          "level": 56,
+          "exp": 520,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Dangerous Alchemized Skeleton",
+          "enemy_id": "0x011121",
+          "named_enemy_params_id": 56,
+          "level": 56,
+          "exp": 520
+        },
+        {
+          "comment": "Dangerous Alchemized Skeleton",
+          "enemy_id": "0x011121",
+          "named_enemy_params_id": 56,
+          "level": 56,
+          "exp": 520
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Freya",
+      "message_id": 10756,
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 987
+        }
+      ]
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 519,
+          "Param2": 10764
+        }
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Freya",
+      "message_id": 10759
+    }
+  ]
+}

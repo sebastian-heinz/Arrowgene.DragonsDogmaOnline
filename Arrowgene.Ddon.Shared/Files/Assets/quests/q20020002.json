@@ -1,0 +1,129 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Unexpected Training",
+  "quest_id": 20020002,
+  "base_level": 46,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BetlandPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1510
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 200
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Chipped Gold Lump",
+          "item_id": 8025,
+          "num": 2
+        },
+        {
+          "comment": "Enhanced Lumber Knife",
+          "item_id": 9402,
+          "num": 3
+        },
+        {
+          "comment": "Strong Gala Extract",
+          "item_id": 9363,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 147,
+        "group_id": 13
+      },
+      "starting_index": 1,
+      "enemies": [
+        {
+          "comment": "Vigilant Damned Golem",
+          "enemy_id": "0x015103",
+          "named_enemy_params_id": 53,
+          "level": 46,
+          "exp": 4429,
+          "is_boss": true
+        },
+        {
+          "comment": "Vigilant Alchemized Sling Goblin",
+          "enemy_id": "0x011122",
+          "named_enemy_params_id": 53,
+          "level": 46,
+          "exp": 184
+        },
+        {
+          "comment": "Vigilant Alchemized Sling Goblin",
+          "enemy_id": "0x011122",
+          "named_enemy_params_id": 53,
+          "level": 46,
+          "exp": 184
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 997,
+          "comment": "Spawns Gurdolin3"
+        }
+      ],
+      "stage_id": {
+        "id": 147,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Gurdolin3",
+      "message_id": 11116
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 501,
+          "Param2": 11122
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 147,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Gurdolin3",
+      "message_id": 11119
+    }
+  ]
+}

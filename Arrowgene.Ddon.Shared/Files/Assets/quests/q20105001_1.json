@@ -1,0 +1,120 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Foolish Occupiers (II)",
+  "quest_id": 20105001,
+  "base_level": 43,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 209,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1410
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "exp",
+      "amount": 1180
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Noblewoman's Corset",
+          "item_id": 986,
+          "num": 1
+        },
+        {
+          "comment": "Enhanced Lockpick",
+          "item_id": 9403,
+          "num": 3
+        },
+        {
+          "comment": "Harvest Salad",
+          "item_id": 9418,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 70,
+        "group_id": 7
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Brutal Ent",
+          "enemy_id": "0x015031",
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 3536,
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "comment": "Vigilant Giant Sulfur Saurian",
+          "enemy_id": "0x010411",
+          "named_enemy_params_id": 53,
+          "level": 42,
+          "exp": 229,
+          "index": 1
+        },
+        {
+          "comment": "Vigilant Giant Sulfur Saurian",
+          "enemy_id": "0x010411",
+          "named_enemy_params_id": 53,
+          "level": 42,
+          "exp": 229,
+          "index": 4
+        },
+        {
+          "comment": "Vigilant Giant Sulfur Saurian",
+          "enemy_id": "0x010411",
+          "named_enemy_params_id": 53,
+          "level": 42,
+          "exp": 229,
+          "index": 5
+        },
+        {
+          "comment": "Vigilant Giant Sulfur Saurian",
+          "enemy_id": "0x010411",
+          "named_enemy_params_id": 53,
+          "level": 42,
+          "exp": 229,
+          "index": 6
+        },
+        {
+          "comment": "Vigilant Giant Sulfur Saurian",
+          "enemy_id": "0x010411",
+          "named_enemy_params_id": 53,
+          "level": 42,
+          "exp": 229,
+          "index": 7
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

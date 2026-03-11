@@ -1,0 +1,86 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Deal with the Goblins",
+  "quest_id": 21000034,
+  "base_level": 63,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "VoldenMines",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 3786
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 5195
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 662
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Cursed Cloth",
+          "item_id": 7948,
+          "num": 2
+        },
+        {
+          "comment": "Large Scallop Shell",
+          "item_id": 8018,
+          "num": 5
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 1
+      },
+      "npc_id": "Chunk",
+      "message_id": 17108
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 95
+      },
+      "npc_id": "Ugau",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue - Chunk",
+          "type": "QstTalkChg",
+          "Param1": 1602,
+          "Param2": 17109
+        },
+        {
+          "comment": "Idle dialogue - Ugau",
+          "type": "QstTalkChg",
+          "Param1": 2001,
+          "Param2": 17110
+        }
+      ],
+      "items": [
+        {
+          "comment": "Ash Quartz",
+          "id": 11768,
+          "amount": 6
+        }
+      ],
+      "message_id": 17111
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "When The Black Fowl Crows (Bounty)",
+  "quest_id": 20105003,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 211,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2970
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "exp",
+      "amount": 4150
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Gold Ingot",
+          "item_id": 7877,
+          "num": 1
+        },
+        {
+          "comment": "Demon's Talisman",
+          "item_id": 9389,
+          "num": 1
+        },
+        {
+          "comment": "Old Forest Dwellers' Key",
+          "item_id": 9066,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 107,
+        "group_id": 6
+      },
+      "starting_index": 3,
+      "enemies": [
+        {
+          "comment": "Bounty Cockatrice",
+          "enemy_id": "0x015301",
+          "named_enemy_params_id": 512,
+          "level": 45,
+          "exp": 5050,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

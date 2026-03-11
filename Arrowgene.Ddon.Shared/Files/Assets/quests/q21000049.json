@@ -6,7 +6,7 @@
     "base_level": 63,
     "minimum_item_rank": 0,
     "discoverable": false,
-	"area_id": "BloodbaneIsle",	
+    "area_id": "BloodbaneIsle", 
     "rewards": [
         {
             "type": "wallet",
@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
-                    "item_id": 8033,
-                    "num": 1
-                },
-                {
+                    "comment": "Stalactite Tip",
                     "item_id": 11775,
                     "num": 3
                 },
                 {
+                    "comment": "Aliment Extractant",
+                    "item_id": 8033,
+                    "num": 1
+                },
+                {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 3
                 }
@@ -45,38 +48,92 @@
             "stage_id": {
                 "id": 321,
                 "group_id": 12
-            },			
+            },
+            "comment": "Named enemies drop a total of 1540 BO",     
             "enemies": [
                 {
+                    "comment": "Dragonforce-Bearing Infected Behemoth (Severe)",
                     "enemy_id": "0x015712",
+                    "named_enemy_params_id": 1128,
+                    "infection_type": 2,
                     "level": 63,
-                    "exp": 45000,
-                    "is_boss": true,
-                    "infection_type": 2	
-        },
-        {
+                    "exp": 10560,
+                    "blood_orbs": 154,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Dragonforce-Bearing Infected Snow Harpy (Severe)",
                     "enemy_id": "0x010612",
+                    "named_enemy_params_id": 1128,
+                    "infection_type": 2,
+                    "repop_count": 1,
+                    "repop_wait_second": 30,
                     "level": 63,
-                    "exp": 4000,
-                    "is_boss": false
-        },
-        {
+                    "exp": 422,
+                    "blood_orbs": 154
+                },
+                {
+                    "comment": "Dragonforce-Bearing Infected Snow Harpy (Severe)",
                     "enemy_id": "0x010612",
+                    "named_enemy_params_id": 1128,
+                    "infection_type": 2,
+                    "repop_count": 1,
+                    "repop_wait_second": 30,
                     "level": 63,
-                    "exp": 4000,
-                    "is_boss": false
-        },
-        {
+                    "exp": 422,
+                    "blood_orbs": 154
+                },
+                {
+                    "comment": "Dragonforce-Bearing Infected Snow Harpy (Severe)",
                     "enemy_id": "0x010612",
+                    "named_enemy_params_id": 1128,
+                    "infection_type": 2,
+                    "repop_count": 1,
+                    "repop_wait_second": 30,
                     "level": 63,
-                    "exp": 4000,
-                    "is_boss": false
-        },
-        {
+                    "exp": 422,
+                    "blood_orbs": 154
+                },
+                {
+                    "comment": "Dragonforce-Bearing Infected Snow Harpy (Severe)",
                     "enemy_id": "0x010612",
+                    "named_enemy_params_id": 1128,
+                    "infection_type": 2,
+                    "repop_count": 1,
+                    "repop_wait_second": 30,
                     "level": 63,
-                    "exp": 4000,
-                    "is_boss": false					
+                    "exp": 422,
+                    "blood_orbs": 154               
+                },
+                {
+                    "comment": "Dragonforce-Bearing Infected Snow Harpy (Severe)",
+                    "enemy_id": "0x010612",
+                    "named_enemy_params_id": 1128,
+                    "infection_type": 2,
+                    "level": 63,
+                    "exp": 422,
+                    "blood_orbs": 154               
+                },
+                {
+                    "comment": "Infected Snow Harpy (Severe)",
+                    "enemy_id": "0x010612",
+                    "infection_type": 2,
+                    "level": 63,
+                    "exp": 422          
+                },
+                {
+                    "comment": "Infected Snow Harpy (Severe)",
+                    "enemy_id": "0x010612",
+                    "infection_type": 2,
+                    "level": 63,
+                    "exp": 422          
+                },
+                {
+                    "comment": "Infected Snow Harpy (Severe)",
+                    "enemy_id": "0x010612",
+                    "infection_type": 2,
+                    "level": 63,
+                    "exp": 422          
                 }
             ]
         }

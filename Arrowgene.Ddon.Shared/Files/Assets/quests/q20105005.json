@@ -27,14 +27,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Marbled Beast-Steak",
                     "item_id": 7726,
                     "num": 3
                 },
                 {
+                    "comment": "Special Mushroom Dip",
                     "item_id": 9419,
                     "num": 1
                 },
                 {
+                    "comment": "Enhanced Pickaxe",
                     "item_id": 9401,
                     "num": 3
                 }
@@ -49,9 +52,11 @@
             },
             "enemies": [
                 {
+                    "comment": "Brutal Ent",
                     "enemy_id": "0x015031",
+                    "named_enemy_params_id": 54,
                     "level": 41,
-                    "exp": 10000,
+                    "exp": 3432,
                     "is_boss": true
                 }
             ]

@@ -1,0 +1,151 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Prized Knowledge",
+  "quest_id": 21000030,
+  "base_level": 63,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BetlandPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 6976
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2078
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 265
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Tomb Gravel",
+          "item_id": 11772,
+          "num": 3
+        },
+        {
+          "comment": "Cedar Wood",
+          "item_id": 7967,
+          "num": 2
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 431,
+        "group_id": 4
+      },
+      "starting_index": 4,
+      "enemies": [
+        {
+          "comment": "Ghoul",
+          "enemy_id": "0x015503",
+          "level": 60,
+          "exp": 3783,
+          "is_boss": true
+        },
+        {
+          "comment": "Ghoul",
+          "enemy_id": "0x015503",
+          "level": 60,
+          "exp": 3783,
+          "is_boss": true
+        },
+        {
+          "comment": "Dark Skeleton Brute",
+          "enemy_id": "0x010324",
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Dark Skeleton Brute",
+          "enemy_id": "0x010324",
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Dark Skeleton Brute",
+          "enemy_id": "0x010324",
+          "level": 60,
+          "exp": 756
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 66
+      },
+      "npc_id": "Cyrus",
+      "message_id": 17081
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 66
+      },
+      "npc_id": "Cyrus",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1900,
+          "Param2": 17082
+        }
+      ],
+      "items": [
+        {
+          "comment": "Blessed Drop",
+          "id": 7831,
+          "amount": 2
+        }
+      ],
+      "message_id": 17083
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1900,
+          "Param2": 17084
+        }
+      ],
+      "groups": [0]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 66
+      },
+      "announce_type": "Update",
+      "npc_id": "Cyrus",
+      "message_id": 17085
+    }
+  ]
+}

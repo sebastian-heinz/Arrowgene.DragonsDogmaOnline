@@ -1,0 +1,108 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Fort’s Supply Problems (II)",
+  "quest_id": 20020000,
+  "base_level": 17,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BetlandPlains",
+  "news_image": 49,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1200
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 70
+    },
+    {
+      "type": "exp",
+      "amount": 280
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Sorcerer's Hat",
+          "item_id": 8153,
+          "num": 1
+        },
+        {
+          "comment": "Interventive",
+          "item_id": 9374,
+          "num": 2
+        },
+        {
+          "comment": "Concoction of Light",
+          "item_id": 9376,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 66
+      },
+      "npc_id": "Vanessa0",
+      "message_id": 11103
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 66,
+        "group_id": 1
+      },
+      "npc_id": "Vanessa0",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "type": "QstTalkChg",
+          "Param1": 11,
+          "Param2": 11114,
+          "comment": "Idle dialogue"
+        }
+      ],
+      "items": [
+        {
+          "comment": "Healing Elixir",
+          "id": 7552,
+          "amount": 5
+        }
+      ],
+      "message_id": 12000
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 66,
+        "group_id": 1
+      },
+      "npc_id": "Vanessa0",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "type": "QstTalkChg",
+          "Param1": 11,
+          "Param2": 11114,
+          "comment": "Idle dialogue"
+        }
+      ],
+      "items": [
+        {
+          "comment": "Hematite",
+          "id": 7861,
+          "amount": 5
+        }
+      ],
+      "message_id": 11111
+    }
+  ]
+}

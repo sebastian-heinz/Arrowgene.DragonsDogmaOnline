@@ -1,7 +1,7 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "Dispatch A Clamor of Harpies",
+    "comment": "Dispatch A Clamor of Harpies!",
     "quest_id": 20015005,
     "base_level": 8,
     "minimum_item_rank": 0,
@@ -27,10 +27,12 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Cotton Hose",
                     "item_id": 506,
                     "num": 1
                 },
                 {
+                    "comment": "Linen Tunic",
                     "item_id": 8543,
                     "num": 1
                 }
@@ -45,27 +47,35 @@
             },
             "enemies": [
                 {
+                    "comment": "Vigilant Harpy",
                     "enemy_id": "0x010600",
-                    "level": 4,
-                    "exp": 94,
+                    "named_enemy_params_id": 53,
+                    "level": 8,
+                    "exp": 41,
                     "is_boss": false
                 },
                 {
+                    "comment": "Vigilant Harpy",
                     "enemy_id": "0x010600",
-                    "level": 4,
-                    "exp": 94,
+                    "named_enemy_params_id": 53,
+                    "level": 8,
+                    "exp": 41,
                     "is_boss": false
                 },
                 {
+                    "comment": "Vigilant Harpy",
                     "enemy_id": "0x010600",
-                    "level": 4,
-                    "exp": 94,
+                    "named_enemy_params_id": 53,
+                    "level": 8,
+                    "exp": 41,
                     "is_boss": false
                 },
                 {
+                    "comment": "Vigilant Harpy",
                     "enemy_id": "0x010600",
-                    "level": 4,
-                    "exp": 94,
+                    "named_enemy_params_id": 53,
+                    "level": 8,
+                    "exp": 41,
                     "is_boss": false
                 }
             ]

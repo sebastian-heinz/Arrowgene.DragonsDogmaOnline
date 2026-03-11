@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "Eliminate the Orc Platoon!",
+  "comment": "Eliminate the Orc Platoon! (II)",
   "quest_id": 20075003,
   "base_level": 44,
   "minimum_item_rank": 0,
@@ -28,14 +28,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Pigeon Blood",
           "item_id": 7910,
           "num": 1
         },
         {
+          "comment": "Small Thief's Key",
           "item_id": 9429,
           "num": 3
         },
         {
+          "comment": "Enhanced Lumber Knife",
           "item_id": 9402,
           "num": 3
         }
@@ -48,54 +51,61 @@
         "id": 1,
         "group_id": 284
       },
+      "placement_type": "manual",
       "enemies": [
         {
-          "enemy_id": "0x015810",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
-          "level": 44,
-          "exp": 5354,
-          "is_boss": false
-        },
-        {
+          "comment": "Brutal General Orc",
           "enemy_id": "0x015830",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 56,
-          "level": 44,
-          "exp": 5354,
-          "is_boss": false
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 1274,
+          "is_boss": false,
+          "index": 2
         },
         {
+          "comment": "Vigilant Orc Trooper",
+          "enemy_id": "0x015812",
+          "named_enemy_params_id": 53,
+          "level": 43,
+          "exp": 258,
+          "is_boss": false,
+          "index": 5
+        },
+        {
+          "comment": "Vigilant Orc Trooper",
+          "enemy_id": "0x015812",
+          "named_enemy_params_id": 53,
+          "level": 43,
+          "exp": 258,
+          "is_boss": false,
+          "index": 6
+        },
+        {
+          "comment": "Vigilant Orc Trooper",
+          "enemy_id": "0x015812",
+          "named_enemy_params_id": 53,
+          "level": 43,
+          "exp": 258,
+          "is_boss": false,
+          "index": 7
+        },
+        {
+          "comment": "Vigilant Orc Battler",
           "enemy_id": "0x015810",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
-          "level": 44,
-          "exp": 5354,
-          "is_boss": false
+          "named_enemy_params_id": 53,
+          "level": 43,
+          "exp": 299,
+          "is_boss": false,
+          "index": 11
         },
         {
-          "enemy_id": "0x015812",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
-          "level": 44,
-          "exp": 5354,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015812",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
-          "level": 44,
-          "exp": 5354,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015812",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
-          "level": 44,
-          "exp": 5354,
-          "is_boss": false
+          "comment": "Vigilant Orc Battler",
+          "enemy_id": "0x015810",
+          "named_enemy_params_id": 53,
+          "level": 43,
+          "exp": 299,
+          "is_boss": false,
+          "index": 12
         }
       ]
     }

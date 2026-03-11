@@ -1,0 +1,135 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Dragonforce: Call of Vengeful Spirits",
+  "quest_id": 21000027,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BreyaCoast",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1980
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 250
+    },
+    {
+      "type": "exp",
+      "amount": 9079
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Breya Medal",
+          "item_id": 11000,
+          "num": 1
+        },
+        {
+          "comment": "Aliment Extractant",
+          "item_id": 8033,
+          "num": 1
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 333,
+        "group_id": 8
+      },
+      "comment": "Needs correct XP values",
+      "enemies": [
+        {
+          "comment": "Dragonforce-Bearing Bolt Grimwarg",
+          "enemy_id": "0x010211",
+          "named_enemy_params_id": 1120,
+          "level": 60,
+          "exp": 756,
+          "blood_orbs": 149
+        },
+        {
+          "comment": "Dragonforce-Bearing Bolt Grimwarg",
+          "enemy_id": "0x010211",
+          "named_enemy_params_id": 1120,
+          "level": 60,
+          "exp": 756,
+          "blood_orbs": 149
+        },
+        {
+          "comment": "Dragonforce-Bearing Bolt Grimwarg",
+          "enemy_id": "0x010211",
+          "named_enemy_params_id": 1120,
+          "level": 60,
+          "exp": 756,
+          "blood_orbs": 149
+        },
+        {
+          "comment": "Ghost",
+          "enemy_id": "0x015620",
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Ghost",
+          "enemy_id": "0x015620",
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Ghost",
+          "enemy_id": "0x015620",
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Ghost",
+          "enemy_id": "0x015620",
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Dragonforce-Bearing Ghost Mail",
+          "enemy_id": "0x010311",
+          "named_enemy_params_id": 1120,
+          "level": 60,
+          "exp": 1125,
+          "blood_orbs": 149,
+          "is_boss": true
+        },
+        {
+          "comment": "Dragonforce-Bearing Ghost Mail",
+          "enemy_id": "0x010311",
+          "named_enemy_params_id": 1120,
+          "level": 60,
+          "exp": 1125,
+          "blood_orbs": 149,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

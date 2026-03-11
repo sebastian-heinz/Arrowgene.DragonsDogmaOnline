@@ -368,6 +368,25 @@ namespace Arrowgene.Ddon.Server.Settings
         private const uint _JobLevelMax = 120;
 
         /// <summary>
+        /// The maximum job points which a job can own at a given time.
+        /// job points past this point will trigger a UI message saying
+        /// you can't earn anymore.
+        /// </summary>
+        [DefaultValue(_JobPointMax)]
+        public uint JobPointMax
+        {
+            set
+            {
+                SetSetting("JobPointMax", value);
+            }
+            get
+            {
+                return TryGetSetting("JobPointMax", _JobPointMax);
+            }
+        }
+        private const uint _JobPointMax = 500000;
+
+        /// <summary>
         /// Maximum number of members in a single clan. 
         /// Shared with the login server.
         /// </summary>

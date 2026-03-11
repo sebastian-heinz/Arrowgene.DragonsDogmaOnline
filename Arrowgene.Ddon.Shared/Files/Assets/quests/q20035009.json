@@ -8,7 +8,6 @@
   "discoverable": false,
   "area_id": "DoweValley",
   "news_image": 64,
-  "variant_index": 0,
   "rewards": [
     {
       "type": "wallet",
@@ -28,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Dragon Hide",
           "item_id": 7928,
           "num": 3
         },
         {
+          "comment": "Wild Steak",
           "item_id": 9412,
           "num": 2
         },
         {
+          "comment": "Angel's Talisman",
           "item_id": 9388,
           "num": 1
         }
@@ -45,16 +47,19 @@
         "type": "random",
         "loot_pool": [
             {
+                "comment": "Small Thief's Key",
                 "item_id": 9429,
                 "num": 2,
                 "chance": 0.7
             },
             {
+                "comment": "Crest of Greater Power",
                 "item_id": 9196,
                 "num": 1,
                 "chance": 0.7
             },
             {
+                "comment": "Red Alloy Ingot",
                 "item_id": 7888,
                 "num": 1,
                 "chance": 0.7
@@ -70,10 +75,11 @@
       },
       "enemies": [
         {
+          "comment": "Dangerous Lindwurm",
           "enemy_id": "0x015707",
-          "named_enemy_params_id": 53,
+          "named_enemy_params_id": 56,
           "level": 36,
-          "exp_scheme": "Automatic",
+          "exp": 6466,
           "is_boss": true
         }
       ]

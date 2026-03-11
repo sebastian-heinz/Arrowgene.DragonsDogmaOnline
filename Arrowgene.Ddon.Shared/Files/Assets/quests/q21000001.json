@@ -1,0 +1,165 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Dancing Phantoms Down Below",
+  "quest_id": 21000001,
+  "base_level": 57,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2965
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1880
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 235
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Unappraised Moon Trinket (Soldier)",
+          "item_id": 11759,
+          "num": 1
+        },
+        {
+          "comment": "Iron Ore Fragment",
+          "item_id": 7853,
+          "num": 5
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 406,
+        "group_id": 1
+      },
+      "starting_index": 7,
+      "enemies": [
+        {
+          "comment": "Wight",
+          "enemy_id": "0x015600",
+          "level": 55,
+          "exp": 2836,
+          "is_boss": true
+        },
+        {
+          "comment": "Wight",
+          "enemy_id": "0x015600",
+          "level": 55,
+          "exp": 2836,
+          "is_boss": true
+        },
+        {
+          "comment": "Frost Skeleton Brute",
+          "enemy_id": "0x010321",
+          "level": 55,
+          "exp": 318
+        },
+        {
+          "comment": "Frost Skeleton Brute",
+          "enemy_id": "0x010321",
+          "level": 55,
+          "exp": 318
+        },
+        {
+          "comment": "Alchemy Eye",
+          "enemy_id": "0x015420",
+          "level": 57,
+          "exp": 329,
+          "repop_count": 1
+        },
+        {
+          "comment": "Alchemy Eye",
+          "enemy_id": "0x015420",
+          "level": 57,
+          "exp": 329,
+          "repop_count": 1
+        },
+        {
+          "comment": "Alchemy Eye",
+          "enemy_id": "0x015420",
+          "level": 57,
+          "exp": 329
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 25
+      },
+      "npc_id": "Alfred",
+      "message_id": 17035
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 25
+      },
+      "npc_id": "Alfred",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1313,
+          "Param2": 17036
+        }
+      ],
+      "items": [
+        {
+          "comment": "Drómi",
+          "id": 7958,
+          "amount": 2
+        }
+      ],
+      "message_id": 17037
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1313,
+          "Param2": 17038
+        }
+      ],
+      "groups": [0]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 25
+      },
+      "announce_type": "Update",
+      "npc_id": "Alfred",
+      "message_id": 17039
+    }
+  ]
+}

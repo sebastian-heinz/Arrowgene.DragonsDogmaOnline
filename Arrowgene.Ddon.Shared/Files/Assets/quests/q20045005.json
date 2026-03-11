@@ -27,10 +27,12 @@
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 7881,
+          "comment": "Saintly Hood",
+          "item_id": 734,
           "num": 1
         },
         {
+          "comment": "Old Forest Dwellers' Key",
           "item_id": 9066,
           "num": 1
         }
@@ -43,40 +45,54 @@
         "id": 96,
         "group_id": 2
       },
+      "starting_index": 5,
       "enemies": [
         {
-          "comment": "Rock Saurian",
+          "comment": "Vigilant Rock Saurian",
           "enemy_id": "0x010450",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 112,
           "is_boss": false
         },
         {
-          "comment": "Rock Saurian",
+          "comment": "Vigilant Rock Saurian",
           "enemy_id": "0x010450",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 112,
           "is_boss": false
         },
         {
-          "comment": "Rock Saurian",
+          "comment": "Vigilant Rock Saurian",
           "enemy_id": "0x010450",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 112,
           "is_boss": false
         },
         {
-          "comment": "Rock Saurian",
+          "comment": "Vigilant Rock Saurian",
           "enemy_id": "0x010450",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 112,
           "is_boss": false
         },
         {
-          "comment": "Rock Saurian",
+          "comment": "Vigilant Rock Saurian",
           "enemy_id": "0x010450",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 112,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Rock Saurian",
+          "enemy_id": "0x010450",
+          "named_enemy_params_id": 53,
+          "level": 27,
+          "exp": 112,
           "is_boss": false
         }
       ]

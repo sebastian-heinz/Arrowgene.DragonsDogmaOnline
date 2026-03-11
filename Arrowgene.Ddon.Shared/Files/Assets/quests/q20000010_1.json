@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "The Traveler's Scout",
+  "comment": "The Traveler's Scout (II)",
   "quest_id": 20000010,
   "base_level": 16,
   "minimum_item_rank": 0,
@@ -28,18 +28,18 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "Battle Shield",
-          "item_id": 94,
+          "comment": "Nostalgia Waistguard",
+          "item_id": 8353,
           "num": 1
         },
         {
-          "comment": "Lestania Wine",
-          "item_id": 9409,
-          "num": 1
+          "comment": "Concoction of Light",
+          "item_id": 9376,
+          "num": 2
         },
         {
-          "comment": "Water Flask",
-          "item_id": 9393,
+          "comment": "Recovery Decoction",
+          "item_id": 9373,
           "num": 3
         }
       ]
@@ -51,76 +51,66 @@
         "id": 1,
         "group_id": 38
       },
+      "placement_type": "manual",
       "enemies": [
         {
-          "comment": "Rogue Fighter",
+          "comment": "Vigilant Rogue Fighter",
           "enemy_id": "0x011000",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
+          "hm_present_no": 45,
           "level": 16,
-          "exp": 310,
-          "hm_present_no": 45
+          "exp": 81,
+          "index": 4
         },
         {
-          "comment": "Rogue Fighter",
+          "comment": "Vigilant Rogue Fighter",
           "enemy_id": "0x011000",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
+          "hm_present_no": 45,
           "level": 16,
-          "exp": 310,
-          "hm_present_no": 45
+          "exp": 81,
+          "index": 5
         },
         {
-          "comment": "Rogue Seeker",
-          "enemy_id": "0x011001",
-          "start_think_tbl_no": 1,
+          "comment": "Vigilant Rogue Fighter",
+          "enemy_id": "0x011000",
           "named_enemy_params_id": 53,
+          "hm_present_no": 45,
           "level": 16,
-          "exp": 310,
-          "hm_present_no": 45
+          "exp": 81,
+          "repop_count": 1,
+          "repop_wait_second": 5,
+          "index": 6
         },
         {
-          "comment": "Rogue Fighter",
+          "comment": "Vigilant Rogue Fighter",
           "enemy_id": "0x011000",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
+          "hm_present_no": 45,
           "level": 16,
-          "exp": 310,
-          "hm_present_no": 45
+          "exp": 81,
+          "index": 7
         },
         {
-          "comment": "Rogue Seeker",
+          "comment": "Vigilant Rogue Seeker",
           "enemy_id": "0x011001",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
+          "hm_present_no": 46,
           "level": 16,
-          "exp": 310,
-          "hm_present_no": 45
+          "exp": 81,
+          "repop_count": 1,
+          "repop_wait_second": 5,
+          "index": 9
         },
-        {"comment": "Rogue Seeker",
+        {
+          "comment": "Vigilant Rogue Seeker",
           "enemy_id": "0x011001",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
+          "hm_present_no": 46,
           "level": 16,
-          "exp": 310,
-          "hm_present_no": 45
-        },
-        {"comment": "Rogue Seeker",
-          "enemy_id": "0x011001",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 16,
-          "exp": 310,
-          "hm_present_no": 45
-        },
-        {"comment": "Rogue fighter",
-          "enemy_id": "0x011000",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 16,
-          "exp": 310,
-          "hm_present_no": 45
-        }                   
+          "exp": 81,
+          "index": 10
+        }                      
      ]
     }
   ],
@@ -145,7 +135,15 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 512,
+          "Param2": 11008
+        }
+      ]
     },
     {
       "type": "KillGroup",
@@ -162,7 +160,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Woman0",
-      "message_id": 11005
+      "message_id": 11003
     }
   ]
 }

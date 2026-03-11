@@ -1,13 +1,13 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "A Calamity at the Cathedral Ruins",
+  "comment": "A Calamity at the Cathedral Ruins (II)",
   "quest_id": 20000000,
   "base_level": 25,
   "minimum_item_rank": 0,
   "discoverable": true,
   "area_id": "HidellPlains",
-  "news_image":  8,
+  "news_image": 8,
   "variant_index": 1,
   "rewards": [
     {
@@ -28,19 +28,19 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "Iron Ingot",
-          "item_id": 7874,
+          "comment": "Drilled Plate Sheet",
+          "item_id": 7881,
           "num": 1
         },
         {
-          "comment": "Superior Healing Potion",
-          "item_id": 35,
-          "num": 3
+          "comment": "Healing Elixir",
+          "item_id": 7552,
+          "num": 2
         },
         {
-          "comment": "Throwing Rock",
-          "item_id": 9396,
-          "num": 2
+          "comment": "Concoction of Light",
+          "item_id": 9376,
+          "num": 3
         }
       ]
     }
@@ -51,67 +51,46 @@
         "id": 85,
         "group_id": 7
       },
+      "starting_index": 7,
       "enemies": [
         {
-          "comment": "Skeleton Sorc",
-          "enemy_id": "0x010309",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
-          "level": 23,
-          "exp": 604
-        },
-        {
-          "comment": "Skeleton Sorc",
-          "enemy_id": "0x010309",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
-          "level": 23,
-          "exp": 604
-        },
-        {
-          "comment": "Skeleton Sorc",
-          "enemy_id": "0x010309",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
-          "level": 23,
-          "exp": 604
-        },
-        {
-          "comment": "Skeleton Sorc",
-          "enemy_id": "0x010309",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
-          "level": 23,
-          "is_manual_set": true,
-          "exp": 604
-        },
-        {
-          "comment": "Skeleton Sorc",
-          "enemy_id": "0x010309",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
-          "level": 23,
-          "is_manual_set": true,
-          "exp": 604
-        },
-        {
-          "comment": "Skeleton Sorc",
-          "enemy_id": "0x010309",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
-          "level": 23,
-          "is_manual_set": true,
-          "exp": 604
-        },
-        {
-          "comment": "Wight",
+          "comment": "Vigilant Wight",
           "enemy_id": "0x015600",
+          "named_enemy_params_id": 53,
           "start_think_tbl_no": 2,
-          "named_enemy_params_id": 54,
           "level": 25,
-          "is_boss": true,
-          "is_manual_set": false,
-          "exp": 1336
+          "exp": 1430,
+          "is_boss": true
+        },
+        {
+          "comment": "Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 8,
+          "repop_count": 1,
+          "level": 23,
+          "exp": 113,
+          "is_required": false,
+          "is_manual_set": true
+        },
+        {
+          "comment": "Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 8,
+          "repop_count": 1,
+          "level": 23,
+          "exp": 113,
+          "is_required": false,
+          "is_manual_set": true
+        },
+        {
+          "comment": "Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 8,
+          "repop_count": 1,
+          "level": 23,
+          "exp": 113,
+          "is_required": false,
+          "is_manual_set": true
         }
       ]
     }
@@ -125,7 +104,7 @@
         "layer_no": 1
       },
       "npc_id": "Gordon",
-      "message_id": 8620,
+      "message_id": 8619,
       "flags": [
         {
           "type": "QstLayout",
@@ -137,6 +116,14 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1309,
+          "Param2": 8625
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -154,8 +141,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Gordon",
-      "message_id": 8623
+      "message_id": 8622
     }
   ]
 }
-

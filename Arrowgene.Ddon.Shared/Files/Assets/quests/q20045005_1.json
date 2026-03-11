@@ -1,0 +1,123 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Trapped in a Nightmare (II)",
+  "quest_id": 20045005,
+  "base_level": 30,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "VoldenMines",
+  "news_image": 93,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 820
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 130
+    },
+    {
+      "type": "exp",
+      "amount": 990
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Gooseneck Arm",
+          "item_id": 605,
+          "num": 1
+        },
+        {
+          "comment": "Three-Herb Salad",
+          "item_id": 9410,
+          "num": 2
+        },
+        {
+          "comment": "Blue Whiskey",
+          "item_id": 9417,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 96,
+        "group_id": 2
+      },
+      "starting_index": 5,
+      "enemies": [
+        {
+          "comment": "Brutal Rock Saurian",
+          "enemy_id": "0x010450",
+          "named_enemy_params_id": 54,
+          "level": 31,
+          "exp": 123,
+          "is_boss": false
+        },
+        {
+          "comment": "Brutal Rock Saurian",
+          "enemy_id": "0x010450",
+          "named_enemy_params_id": 54,
+          "level": 31,
+          "exp": 123,
+          "is_boss": false,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Brutal Rock Saurian",
+          "enemy_id": "0x010450",
+          "named_enemy_params_id": 54,
+          "level": 31,
+          "exp": 123,
+          "is_boss": false,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Brutal Rock Saurian",
+          "enemy_id": "0x010450",
+          "named_enemy_params_id": 54,
+          "level": 31,
+          "exp": 123,
+          "is_boss": false
+        },
+        {
+          "comment": "Brutal Rock Saurian",
+          "enemy_id": "0x010450",
+          "named_enemy_params_id": 54,
+          "level": 31,
+          "exp": 123,
+          "is_boss": false
+        },
+        {
+          "comment": "Brutal Rock Saurian",
+          "enemy_id": "0x010450",
+          "named_enemy_params_id": 54,
+          "level": 31,
+          "exp": 123,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Crest of Restoration",
           "item_id": 9297,
           "num": 1
         },
         {
+          "comment": "Demon's Talisman",
           "item_id": 9389,
           "num": 1
         },
         {
+          "comment": "Exquisite Fried Meat",
           "item_id": 9416,
           "num": 2
         }
@@ -47,30 +50,61 @@
         "id": 70,
         "group_id": 7
       },
+      "placement_type": "manual",
       "enemies": [
         {
+          "comment": "Brutal Ent",
           "enemy_id": "0x015031",
+          "named_enemy_params_id": 54,
           "level": 42,
-          "exp": 10500,
-          "is_boss": true
+          "exp": 3484,
+          "is_boss": true,
+          "index": 0
         },
         {
+          "comment": "Vigilant Forest Goblin",
           "enemy_id": "0x011100",
-          "level": 42,
-          "exp": 950,
-          "is_boss": false
+          "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 138,
+          "is_boss": false,
+          "index": 1
         },
         {
+          "comment": "Vigilant Forest Goblin",
           "enemy_id": "0x011100",
-          "level": 42,
-          "exp": 950,
-          "is_boss": false
+          "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 138,
+          "is_boss": false,
+          "index": 4
         },
         {
+          "comment": "Vigilant Forest Goblin",
           "enemy_id": "0x011100",
-          "level": 42,
-          "exp": 950,
-          "is_boss": false
+          "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 138,
+          "is_boss": false,
+          "index": 5
+        },
+        {
+          "comment": "Vigilant Forest Goblin",
+          "enemy_id": "0x011100",
+          "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 138,
+          "is_boss": false,
+          "index": 6
+        },
+        {
+          "comment": "Vigilant Forest Goblin",
+          "enemy_id": "0x011100",
+          "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 138,
+          "is_boss": false,
+          "index": 7
         }
       ]
     }

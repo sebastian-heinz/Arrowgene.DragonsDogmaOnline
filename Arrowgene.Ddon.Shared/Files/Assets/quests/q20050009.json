@@ -45,25 +45,27 @@
                 "id": 1,
                 "group_id": 51
             },
-            "starting_index": 1,
             "enemies": [
                 {
-                    "comment": "Redcap",
+                    "comment": "Vigilant Redcap",
                     "enemy_id": "0x011110",
+                    "named_enemy_params_id": 53,
                     "level": 14,
-                    "exp": 92
+                    "exp": 71
                 },
                 {
-                    "comment": "Redcap",
+                    "comment": "Vigilant Redcap",
                     "enemy_id": "0x011110",
+                    "named_enemy_params_id": 53,
                     "level": 14,
-                    "exp": 92
+                    "exp": 71
                 },
                 {
-                    "comment": "Redcap",
+                    "comment": "Vigilant Redcap",
                     "enemy_id": "0x011110",
+                    "named_enemy_params_id": 53,
                     "level": 14,
-                    "exp": 92
+                    "exp": 71
                 }
             ]
         },
@@ -72,52 +74,53 @@
                 "id": 1,
                 "group_id": 55
             },
-            "starting_index": 1,
+            "starting_index": 4,
             "enemies": [
                 {
-                    "comment": "Redcap",
+                    "comment": "Vigilant Redcap",
                     "enemy_id": "0x011110",
+                    "named_enemy_params_id": 53,
                     "level": 14,
-                    "exp": 92
+                    "exp": 71
                 },
                 {
-                    "comment": "Redcap",
+                    "comment": "Vigilant Redcap",
                     "enemy_id": "0x011110",
+                    "named_enemy_params_id": 53,
                     "level": 14,
-                    "exp": 92
+                    "exp": 71
                 },
                 {
-                    "comment": "Redcap",
+                    "comment": "Vigilant Redcap",
                     "enemy_id": "0x011110",
+                    "named_enemy_params_id": 53,
                     "level": 14,
-                    "exp": 92
+                    "exp": 71
                 }
             ]
         },
         {
             "stage_id": {
                 "id": 1,
-                "group_id": 46
+                "group_id": 61
             },
-            "starting_index": 1,
+            "starting_index": 2,
             "enemies": [
                 {
-                    "comment": "Redcap",
+                    "comment": "Vigilant Redcap",
                     "enemy_id": "0x011110",
+                    "named_enemy_params_id": 53,
                     "level": 14,
-                    "exp": 92
+                    "exp": 71,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
                 },
                 {
-                    "comment": "Redcap",
+                    "comment": "Vigilant Redcap",
                     "enemy_id": "0x011110",
+                    "named_enemy_params_id": 53,
                     "level": 14,
-                    "exp": 92
-                },
-                {
-                    "comment": "Redcap",
-                    "enemy_id": "0x011110",
-                    "level": 14,
-                    "exp": 92
+                    "exp": 71
                 }
             ]
         }
@@ -142,13 +145,21 @@
                         "layer_no": 1
                     },
                     "npc_id": "LightlyEquippedFemaleSoldier",
-                    "message_id": 11372
+                    "message_id": 11432
                 },
                 {
                     "type": "MyQstFlags",
                     "announce_type": "Accept",
-                    "set_flags": [ 1 ],
-                    "check_flags": [ 2, 3, 4 ]
+                    "result_commands": [
+                        {
+                            "comment": "Quest idle dialog",
+                            "type": "QstTalkChg",
+                            "Param1": 540,
+                            "Param2": 13309
+                        }
+                    ],
+                    "set_flags": [ 4 ],
+                    "check_flags": [ 1, 2, 3 ]
                 },
                 {
                     "type": "NewTalkToNpc",
@@ -159,7 +170,7 @@
                     },
                     "announce_type": "Update",
                     "npc_id": "LightlyEquippedFemaleSoldier",
-                    "message_id": 11842
+                    "message_id": 13306
                 }
             ]
         },
@@ -168,7 +179,7 @@
             "blocks": [
                 {
                     "type": "MyQstFlags",
-                    "check_flags": [ 1 ]
+                    "check_flags": [ 4 ]
                 },
                 {
                     "type": "DiscoverEnemy",
@@ -182,7 +193,7 @@
                 },
                 {
                     "type": "MyQstFlags",
-                    "set_flags": [ 2 ]
+                    "set_flags": [ 1 ]
                 }
             ]
         },
@@ -191,7 +202,7 @@
             "blocks": [
                 {
                     "type": "MyQstFlags",
-                    "check_flags": [ 1 ]
+                    "check_flags": [ 4 ]
                 },
                 {
                     "type": "DiscoverEnemy",
@@ -205,7 +216,7 @@
                 },
                 {
                     "type": "MyQstFlags",
-                    "set_flags": [ 3 ]
+                    "set_flags": [ 2 ]
                 }
             ]
         },
@@ -214,7 +225,7 @@
             "blocks": [
                 {
                     "type": "MyQstFlags",
-                    "check_flags": [ 1 ]
+                    "check_flags": [ 4 ]
                 },
                 {
                     "type": "DiscoverEnemy",
@@ -228,7 +239,7 @@
                 },
                 {
                     "type": "MyQstFlags",
-                    "set_flags": [ 4 ]
+                    "set_flags": [ 3 ]
                 }
             ]
         }

@@ -48,29 +48,69 @@
     {
       "stage_id": {
         "id": 102,
-        "group_id": 8
+        "group_id": 3
       },
+      "starting_index": 6,
       "enemies": [
         {
-          "enemy_id": "0x011000",
-          "level": 30,
-          "exp": 500,
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "start_think_table_no": 1,
+          "level": 34,
+          "exp": 148,
           "is_boss": false,
-          "hm_present_no": 45
+          "hm_present_no": 46
         },
         {
-          "enemy_id": "0x011000",
-          "level": 30,
-          "exp": 500,
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "start_think_table_no": 1,
+          "level": 34,
+          "exp": 148,
           "is_boss": false,
-          "hm_present_no": 45
+          "hm_present_no": 46
         },
         {
-          "enemy_id": "0x011000",
-          "level": 30,
-          "exp": 500,
+          "comment": "Vigilant Rogue Defender",
+          "enemy_id": "0x011004",
+          "named_enemy_params_id": 53,
+          "start_think_table_no": 1,
+          "level": 34,
+          "exp": 148,
           "is_boss": false,
-          "hm_present_no": 45
+          "hm_present_no": 49
+        },
+        {
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "start_think_table_no": 1,
+          "level": 34,
+          "exp": 148,
+          "is_boss": false,
+          "hm_present_no": 46
+        },
+        {
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "start_think_table_no": 1,
+          "level": 34,
+          "exp": 148,
+          "is_boss": false,
+          "hm_present_no": 46
+        },
+        {
+          "comment": "Vigilant Rogue Defender",
+          "enemy_id": "0x011004",
+          "named_enemy_params_id": 53,
+          "start_think_table_no": 1,
+          "level": 34,
+          "exp": 148,
+          "is_boss": false,
+          "hm_present_no": 49
         }
       ]
     }
@@ -92,7 +132,7 @@
         "layer_no": 1
       },
       "npc_id": "Gerd1",
-      "message_id": 11372
+      "message_id": 11422
     },
     {
       "type": "NewTalkToNpc",
@@ -110,13 +150,32 @@
         "layer_no": 1
       },
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 7,
+          "Param2": 11978
+        }
+      ],
       "npc_id": "WhiteKnight2",
-      "message_id": 11842
+      "message_id": 11973
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 102,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "WhiteKnight2",
+      "message_id": 11974
     },
     {
       "type": "NewTalkToNpc",
@@ -135,7 +194,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Gerd1",
-      "message_id": 11842
+      "message_id": 11975
     }
   ]
 }

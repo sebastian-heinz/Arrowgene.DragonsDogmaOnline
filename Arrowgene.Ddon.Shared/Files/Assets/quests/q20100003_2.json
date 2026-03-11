@@ -1,0 +1,125 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Wicked Pursuer (Calamity)",
+  "quest_id": 20100003,
+  "base_level": 55,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DeenanWoods",
+  "news_image": 562,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 3630
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 360
+    },
+    {
+      "type": "exp",
+      "amount": 5440
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Magick Gold Ingot",
+          "item_id": 7886,
+          "num": 1
+        },
+        {
+          "comment": "Ambrosial Beast-Steak",
+          "item_id": 7727,
+          "num": 1
+        },
+        {
+          "comment": "White Lion Pelt",
+          "item_id": 7739,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 114,
+        "group_id": 0
+      },
+      "starting_index": 6,
+      "enemies": [
+        {
+          "comment": "Fierce Winged Lion (Griffin)",
+          "enemy_id": "0x015300",
+          "named_enemy_params_id": 517,
+          "level": 55,
+          "exp": 5625,
+          "is_boss": true
+        },
+        {
+          "comment": "Fierce Silver Lion (White Chimera)",
+          "enemy_id": "0x015202",
+          "named_enemy_params_id": 518,
+          "level": 55,
+          "exp": 5787,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1082,
+          "comment": "Spawns StrangeMan NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 114,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "StrangeMan",
+      "message_id": 11346
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [ 
+        { 
+          "type": "QstTalkChg", 
+          "Param1": 507, 
+          "Param2": 11351,
+          "comment": "Idle dialogue"
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 114,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "StrangeMan",
+      "message_id": 11349
+    }
+  ]
+}

@@ -27,7 +27,7 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "Wizard Ring",
+          "comment": "Wizard's Ring",
           "item_id": 8948,
           "num": 1
         },
@@ -56,11 +56,19 @@
         "layer_no": 1
       },
       "npc_id": "Dalia",
-      "message_id": 11372
+      "message_id": 11044
     },
     {
       "type": "CollectItem",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 516,
+          "Param2": 11052
+        }
+      ],
       "stage_id": {
         "id": 67,
         "group_id": 2,
@@ -280,7 +288,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Dalia",
-      "message_id": 11842
+      "message_id": 11047
     }
   ]
 }

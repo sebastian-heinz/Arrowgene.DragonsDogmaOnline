@@ -1,0 +1,79 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Sleeping Giant (II)",
+  "quest_id": 20035001,
+  "base_level": 56,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "news_image": 72,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1840
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "exp",
+      "amount": 2430
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Giant Single Pelt",
+          "item_id": 9438,
+          "num": 1
+        },
+        {
+          "comment": "Giant Eyeball",
+          "item_id": 7740,
+          "num": 1
+        },
+        {
+          "comment": "Rugged Leather",
+          "item_id": 7924,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 69,
+        "group_id": 6
+      },
+      "starting_index": 1,
+      "enemies": [
+        {
+          "comment": "Keywarden Cyclops (Club)",
+          "enemy_id": "0x015001",
+          "named_enemy_params_id": 387,
+          "level": 56,
+          "exp": 3888,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

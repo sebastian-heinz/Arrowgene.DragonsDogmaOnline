@@ -1,79 +1,81 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Knights' Bitter Enemy",
-  "quest_id": 20005010,
-  "base_level": 20,
-  "minimum_item_rank": 0,
-  "discoverable": false,
-  "area_id": "HidellPlains",
-  "news_image": 5,
-  "variant_index": 1,
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 990
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 130
-    },
-    {
-      "type": "exp",
-      "amount": 1480
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Knights' Bitter Enemy (II)",
+    "quest_id": 20005010,
+    "base_level": 28,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "area_id": "HidellPlains",
+    "news_image": 5,
+    "variant_index": 1,
+    "rewards": [
         {
-          "item_id": 95,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 920
         },
         {
-          "item_id": 58,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 180
         },
         {
-          "item_id": 10047,
-          "num": 1
-        }
-      ]
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 1,
-        "group_id": 26
-      },
-      "placement_type": "manual",
-      "enemies": [
+            "type": "exp",
+            "amount": 1380
+        },
         {
-          "comment": "Bounty Cyclops",
-          "enemy_id": "0x015000",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 458,
-          "level": 20,
-          "exp": 1336,
-          "is_boss": true,
-          "is_manual_set": false,
-          "index": 0
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Over Guard",
+                    "item_id": 628,
+                    "num": 1
+                },
+                {
+                    "comment": "Three-Herb Salad",
+                    "item_id": 9410,
+                    "num": 1
+                },
+                {
+                    "comment": "Concoction of Light",
+                    "item_id": 9376,
+                    "num": 3
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "DiscoverEnemy",
-      "groups": [ 0 ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Accept",
-      "reset_group": false,
-      "groups": [ 0 ]
-    }
-  ]
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 26
+            },
+            "starting_index": 1,
+            "enemies": [
+                {
+                    "comment": "Brutal Colossus",
+                    "enemy_id": "0x015020",
+                    "named_enemy_params_id": 54,
+                    "start_think_tbl_no": 1,
+                    "level": 28,
+                    "exp": 2968,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "show_marker": false,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [ 0 ]
+        }
+    ]
 }

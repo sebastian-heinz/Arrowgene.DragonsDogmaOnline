@@ -1,0 +1,162 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Evil Lurking in the Tombs (Twelve Calamities II)",
+  "quest_id": 20000006,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 541,
+  "variant_index": 4,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 5220
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 4350
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 310
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Unburdening (Armour)",
+          "item_id": 9286,
+          "num": 1
+        },
+        {
+          "comment": "Flame Crystal",
+          "item_id": 7913,
+          "num": 1
+        },
+        {
+          "comment": "High Quality Magick Medal",
+          "item_id": 7870,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 238,
+        "group_id": 9
+      },
+      "starting_index": 5,
+      "enemies": [
+        {
+          "comment": "Great Demon Statue of Hellfire (Geo Golem)",
+          "enemy_id": "0x015104",
+          "named_enemy_params_id": 584,
+          "level": 60,
+          "exp": 4250,
+          "is_boss": true
+        },
+        {
+          "comment": "Sludge Puppet (Sludgeman)",
+          "enemy_id": "0x010510",
+          "named_enemy_params_id": 551,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "level": 60,
+          "exp": 275
+        },
+        {
+          "comment": "Sludge Puppet (Sludgeman)",
+          "enemy_id": "0x010510",
+          "named_enemy_params_id": 551,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "level": 60,
+          "exp": 275
+        },
+        {
+          "comment": "Sludge Puppet (Sludgeman)",
+          "enemy_id": "0x010510",
+          "named_enemy_params_id": 551,
+          "level": 60,
+          "exp": 275
+        },
+        {
+          "comment": "Sludge Puppet (Sludgeman)",
+          "enemy_id": "0x010510",
+          "named_enemy_params_id": 551,
+          "level": 60,
+          "exp": 275
+        },
+        {
+          "comment": "Sludge Puppet (Sludgeman)",
+          "enemy_id": "0x010510",
+          "named_enemy_params_id": 551,
+          "level": 60,
+          "exp": 275
+        },
+        {
+          "comment": "Sludge Puppet (Sludgeman)",
+          "enemy_id": "0x010510",
+          "named_enemy_params_id": 551,
+          "level": 60,
+          "exp": 275
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Christoph",
+      "message_id": 11012,
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 988
+        }
+      ]
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 513,
+          "Param2": 11016
+        }
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Christoph",
+      "message_id": 11015
+    }
+  ]
+}

@@ -1,77 +1,211 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Wandering Light",
-    "quest_id": 21000009,
-    "base_level": 60,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-  "area_id": "BloodbaneIsle",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Wandering Light",
+  "quest_id": 21000009,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BloodbaneIsle",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 6809
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1980
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 250
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1980
+          "comment": "Rock Finger",
+          "item_id": 11506,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 250
+          "comment": "Quality Gala Mushroom",
+          "item_id": 7994,
+          "num": 7
         },
         {
-            "type": "exp",
-            "amount": 6809
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 11506,
-                    "num": 3
-                },
-                {
-                    "item_id": 7994,
-                    "num": 7
-                },
-                {
-                    "item_id": 7555,
-                    "num": 3
-                }
-            ]
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 320,
+        "group_id": 4
+      },
+      "starting_index": 6,
+      "enemies": [
         {
-            "stage_id": {
-                "id": 320,
-                "group_id": 11
-            },			
-            "enemies": [
-                {
-                    "enemy_id": "0x015600",
-                    "level": 60,
-                    "exp": 37000,
-                    "is_boss": true
+          "comment": "Wight",
+          "enemy_id": "0x015600",
+          "level": 60,
+          "exp": 3783,
+          "is_boss": true
         },
         {
-                    "enemy_id": "0x015600",
-                    "level": 60,
-                    "exp": 37000,
-                    "is_boss": true					
-                }
-            ]
-        }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
+          "comment": "Wight",
+          "enemy_id": "0x015600",
+          "level": 60,
+          "exp": 3783,
+          "is_boss": true
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [0]
+          "comment": "Infected Hobgoblin Fighter (Severe)",
+          "enemy_id": "0x010161",
+          "infection_type": 2,
+          "level": 60,
+          "exp": 803
+        },
+        {
+          "comment": "Infected Hobgoblin Fighter (Severe)",
+          "enemy_id": "0x010161",
+          "infection_type": 2,
+          "level": 60,
+          "exp": 803
+        },
+        {
+          "comment": "Infected Hobgoblin Fighter (Severe)",
+          "enemy_id": "0x010161",
+          "infection_type": 2,
+          "level": 60,
+          "exp": 803
         }
-    ]
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 320,
+        "group_id": 11
+      },
+      "starting_index": 1,
+      "enemies": [
+        {
+          "comment": "Infected Direwolf (Severe)",
+          "enemy_id": "0x010209",
+          "infection_type": 2,
+          "level": 60,
+          "exp": 752
+        },
+        {
+          "comment": "Infected Direwolf (Severe)",
+          "enemy_id": "0x010209",
+          "infection_type": 2,
+          "level": 60,
+          "exp": 752
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "blocks": [
+        {
+          "type": "DiscoverEnemy",
+          "groups": [0],
+          "result_commands": [ { "type": "QstLayoutFlagOn", "Param1": 3155 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "announce_type": "Accept",
+          "groups": [0],
+          "result_commands": [ { "type": "MyQstFlagOn",  "Param1": 2 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "groups": [1]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn",  "Param1": 2 } ]
+        },
+        {
+          "comment": "Group 0 boss HP check",
+          "type": "Raw",
+          "check_commands": [
+            { "type": "EmHpLess", "Param1": 804, "Param2": 4, "Param3": 6, "Param4": 40 } ,
+            { "type": "EmHpLess", "Param1": 804, "Param2": 4, "Param3": 7, "Param4": 40 }
+          ]
+        },
+        {
+          "type": "SpawnGroup",
+          "announce_type": "Update",
+          "groups": [1],
+          "check_commands": [
+            { "type": "MyQstFlagOff", "Param1": 0 },
+            { "type": "MyQstFlagOn",  "Param1": 1 }
+          ]
+        },
+        {
+          "comment": "Group 1 is dead and group 0 is still alive, update announcement",
+          "type": "Raw",
+          "result_commands": [ { "type": "UpdateAnnounce", "Param1": 3 } ]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn",  "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 0 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 804, "Param2": 4, "Param3": 6 } ,
+              { "type": "DieEnemy", "Param1": 804, "Param2": 4, "Param3": 7 } ,
+              { "type": "DieEnemy", "Param1": 804, "Param2": 4, "Param3": 8 } ,
+              { "type": "DieEnemy", "Param1": 804, "Param2": 4, "Param3": 9 } ,
+              { "type": "DieEnemy", "Param1": 804, "Param2": 4, "Param3": 10 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [0]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn",  "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 1 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 804, "Param2": 11, "Param3": 1 } ,
+              { "type": "DieEnemy", "Param1": 804, "Param2": 11, "Param3": 2 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [1]
+        }
+      ]
+    }
+  ]
 }

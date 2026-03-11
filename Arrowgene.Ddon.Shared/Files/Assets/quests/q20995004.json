@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Dirty Sheet Metal",
                     "item_id": 8029,
                     "num": 1
                 },
                 {
+                    "comment": "Enhanced Pickaxe",
                     "item_id": 9401,
                     "num": 3
                 },
                 {
+                    "comment": "Healing Remedy",
                     "item_id": 7554,
                     "num": 3
                 }
@@ -47,14 +50,13 @@
                 "group_id": 5
             },
                 "placement_type": "manual",
-            "enemies": [
-                
+                "enemies": [
                 {
+                    "comment": "Dangerous Damned Golem",
                     "enemy_id": "0x015103",
-                    "start_think_tbl_no": 1,
-		            "named_enemy_params_id": 53,
+                    "named_enemy_params_id": 56,
                     "level": 53,
-                    "exp": 15632,
+                    "exp": 4867,
                     "is_boss": true,
                     "index": 4
                 }
@@ -73,11 +75,19 @@
                 "layer_no": 1
             },
             "npc_id": "4740",
-            "message_id": 11372
+            "message_id": 16070
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 4740, 
+                "Param2": 16071,
+                "comment": "Idle dialogue"
+                }
+            ],
             "groups": [0]
         },
         {
@@ -95,7 +105,7 @@
             },
             "announce_type": "Update",
             "npc_id": "4740",
-            "message_id": 11842
+            "message_id": 16072
         }
     ]
 }

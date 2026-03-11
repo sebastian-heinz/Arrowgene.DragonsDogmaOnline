@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Training Stakes",
                     "item_id": 8027,
                     "num": 1
                 },
                 {
+                    "comment": "Healing Remedy",
                     "item_id": 7554,
                     "num": 3
                 },
                 {
+                    "comment": "Strong Gala Extract",
                     "item_id": 9363,
                     "num": 3
                 }
@@ -49,7 +52,7 @@
                 "layer_no": 1
             },
             "npc_id": "Iosef",
-            "message_id": 11372
+            "message_id": 16080
         },
         {
             "type": "DeliverItems",
@@ -59,13 +62,22 @@
             },
             "npc_id": "Iosef",
             "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "comment": "Idle dialogue",
+                "type": "QstTalkChg", 
+                "Param1": 2302, 
+                "Param2": 16081
+                }
+            ],
             "items": [
                 {
+                    "comment": "Chipped Gold Lump",
                     "id": 8025,
                     "amount": 9
                 }
             ],
-            "message_id": 10737
+            "message_id": 16082
         }
     ]
 }

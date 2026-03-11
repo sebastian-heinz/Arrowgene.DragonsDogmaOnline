@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "Scaled Soldiers",
+  "comment": "Scaled Soldiers (III)",
   "quest_id": 20055000,
   "base_level": 24,
   "minimum_item_rank": 0,
@@ -28,15 +28,13 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Apophyllite",
           "item_id": 7916,
           "num": 3
         },
         {
+          "comment": "Demon's Amulet",
           "item_id": 9383,
-          "num": 2
-        },
-        {
-          "item_id": 9409,
           "num": 1
         }
       ]
@@ -48,60 +46,25 @@
         "id": 1,
         "group_id": 47
       },
+      "starting_index": 4,
       "enemies": [
         {
-          "comment": "Giant Saurian",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-		      "enemy_id": "0x010401",
+          "comment": "Vigilant Giant Saurian",
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
           "level": 24,
-          "exp": 654,
-          "is_boss": false
+          "exp": 138,
+          "repop_count": 3,
+          "repop_wait_second": 10
         },
         {
-          "comment": "Giant Saurian",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-		      "enemy_id": "0x010401",
+          "comment": "Vigilant Giant Saurian",
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
           "level": 24,
-          "exp": 654,
-          "is_boss": false
-        },
-        {
-          "comment": "Giant Saurian",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-		      "enemy_id": "0x010401",
-          "level": 24,
-          "exp": 654,
-          "is_boss": false
-        },
-        {
-          "comment": "Giant Saurian",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-		      "enemy_id": "0x010401",
-          "level": 24,
-          "exp": 654,
-          "is_boss": false
-        },
-        {
-          "comment": "Giant Saurian",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-		      "enemy_id": "0x010401",
-          "level": 24,
-          "exp": 654,
-          "is_boss": false
-        },
-        {
-          "comment": "Giant Saurian",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-		      "enemy_id": "0x010401",
-          "level": 24,
-          "exp": 654,
-          "is_boss": false
+          "exp": 138,
+          "repop_count": 3,
+          "repop_wait_second": 10
         }
       ]
     }

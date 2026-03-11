@@ -1,0 +1,171 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Lure of the Shadow",
+  "quest_id": 21000055,
+  "base_level": 65,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "EasternZandora",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 7092
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2144
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 275
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Ancient Beast Pelt",
+          "item_id": 11793,
+          "num": 3
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 432,
+        "group_id": 8
+      },
+      "starting_index": 5,
+      "enemies": [
+        {
+          "comment": "Living Armor",
+          "enemy_id": "0x010306",
+          "level": 65,
+          "exp": 3940
+        },
+        {
+          "comment": "Living Armor",
+          "enemy_id": "0x010306",
+          "level": 65,
+          "exp": 3940
+        },
+        {
+          "comment": "Skeleton Brute",
+          "enemy_id": "0x010307",
+          "level": 65,
+          "exp": 788
+        },
+        {
+          "comment": "Skeleton Brute",
+          "enemy_id": "0x010307",
+          "level": 65,
+          "exp": 788
+        },
+        {
+          "comment": "Frost Skeleton",
+          "enemy_id": "0x010315",
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 788
+        },
+        {
+          "comment": "Frost Skeleton",
+          "enemy_id": "0x010315",
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 788
+        },
+        {
+          "comment": "Frost Skeleton",
+          "enemy_id": "0x010315",
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 788
+        },
+        {
+          "comment": "Frost Skeleton",
+          "enemy_id": "0x010315",
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 788
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 1
+      },
+      "npc_id": "Lyonnet",
+      "message_id": 17328
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 1
+      },
+      "npc_id": "Lyonnet",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1804,
+          "Param2": 17329
+        }
+      ],
+      "items": [
+        {
+          "comment": "Magick Gold Ingot",
+          "id": 7886,
+          "amount": 2
+        }
+      ],
+      "message_id": 17330
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1804,
+          "Param2": 17331
+        }
+      ],
+      "groups": [0]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Lyonnet",
+      "message_id": 17332
+    }
+  ]
+}

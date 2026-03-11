@@ -45,41 +45,42 @@
         "id": 1,
         "group_id": 22
       },
+      "starting_index": 7,
       "enemies": [
         {
-          "comment": "Orc Soldier",
-          "enemy_id": "0x015800",
-          "named_enemy_params_id": 53,
-          "level": 11,
-          "exp": 160
-        },
-        {
-          "comment": "Orc Soldier",
-          "enemy_id": "0x015800",
-          "named_enemy_params_id": 53,
-          "level": 11,
-          "exp": 160
-        },
-        {
-          "comment": "Orc Banger",
+          "comment": "Vigilant Orc Vanguard",
           "enemy_id": "0x015802",
           "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 160
+          "exp": 80
         },
         {
-          "comment": "Orc Soldier",
-          "enemy_id": "0x015800",
-          "named_enemy_params_id": 53,
-          "level": 11,
-          "exp": 160
-        },
-        {
-          "comment": "Orc Banger",
+          "comment": "Vigilant Orc Vanguard",
           "enemy_id": "0x015802",
           "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 160
+          "exp": 80
+        },
+        {
+          "comment": "Vigilant Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 80
+        },
+        {
+          "comment": "Vigilant Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 80
+        },
+        {
+          "comment": "Vigilant Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 80
         }
       ]
     },
@@ -88,41 +89,42 @@
         "id": 1,
         "group_id": 36
       },
+      "starting_index": 6,
       "enemies": [
         {
-          "comment": "Orc Soldier",
-          "enemy_id": "0x015800",
-          "named_enemy_params_id": 53,
-          "level": 11,
-          "exp": 160
-        },
-        {
-          "comment": "Orc Soldier",
-          "enemy_id": "0x015800",
-          "named_enemy_params_id": 53,
-          "level": 11,
-          "exp": 160
-        },
-        {
-          "comment": "Orc Banger",
+          "comment": "Vigilant Orc Vanguard",
           "enemy_id": "0x015802",
           "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 160
+          "exp": 80
         },
         {
-          "comment": "Orc Banger",
+          "comment": "Vigilant Orc Vanguard",
           "enemy_id": "0x015802",
           "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 160
+          "exp": 80
         },
         {
-          "comment": "Orc Soldier",
+          "comment": "Vigilant Orc Soldier",
           "enemy_id": "0x015800",
           "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 160
+          "exp": 80
+        },
+        {
+          "comment": "Vigilant Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 80
+        },
+        {
+          "comment": "Vigilant Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 80
         }
       ]
     }
@@ -148,7 +150,15 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 531,
+          "Param2": 10823
+        }
+      ]
     },
     {
       "type": "KillGroup",
@@ -176,7 +186,7 @@
       },
       "announce_type": "Update",
       "npc_id": "ArisenCorpsRegimentalSoldier8",
-      "message_id": 10821
+      "message_id": 10820
     }
   ]
 }

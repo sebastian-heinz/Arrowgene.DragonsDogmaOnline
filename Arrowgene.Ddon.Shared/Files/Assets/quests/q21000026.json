@@ -1,0 +1,280 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Jewelry: Emerged Colossus",
+  "quest_id": 21000026,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "HidellPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 9079
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1980
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 250
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Hidell Medal",
+          "item_id": 10999,
+          "num": 1
+        },
+        {
+          "comment": "Aliment Extractant",
+          "item_id": 8033,
+          "num": 1
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 406,
+        "group_id": 11
+      },
+      "comments": "Up to five Unappraised Moon Trinket (Soldier) drops",
+      "enemies": [
+        {
+          "comment": "Jewelry-Bearing Goliath",
+          "enemy_id": "0x015102",
+          "named_enemy_params_id": 1121,
+          "level": 60,
+          "exp": 7905,
+          "drop_items": [
+            {
+              "item_id": 8031,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            },
+            {
+              "item_id": 8031,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8030,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 11759,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 1.0
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Jewelry-Bearing Goliath",
+          "enemy_id": "0x015102",
+          "named_enemy_params_id": 1121,
+          "level": 57,
+          "exp": 7626,
+          "drop_items": [
+            {
+              "item_id": 8031,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            },
+            {
+              "item_id": 8031,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8030,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 11759,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 1,
+              "drop_chance": 1.0
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Jewelry-Bearing Alchemy Eye",
+          "enemy_id": "0x015420",
+          "named_enemy_params_id": 1121,
+          "level": 60,
+          "exp": 421,
+          "drop_items": [
+            {
+              "item_id": 7871,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7863,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.7
+            },
+            {
+              "item_id": 7731,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.3
+            },
+            {
+              "item_id": 11759,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Jewelry-Bearing Alchemy Eye",
+          "enemy_id": "0x015420",
+          "named_enemy_params_id": 1121,
+          "level": 60,
+          "exp": 421,
+          "drop_items": [
+            {
+              "item_id": 7871,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7863,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.7
+            },
+            {
+              "item_id": 7731,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.3
+            },
+            {
+              "item_id": 11759,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Jewelry-Bearing Alchemy Eye",
+          "enemy_id": "0x015420",
+          "named_enemy_params_id": 1121,
+          "level": 60,
+          "exp": 421,
+          "drop_items": [
+            {
+              "item_id": 7871,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7863,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.7
+            },
+            {
+              "item_id": 7731,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.3
+            },
+            {
+              "item_id": 11759,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Alchemized Harpy",
+          "enemy_id": "0x010606",
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Alchemized Harpy",
+          "enemy_id": "0x010606",
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Alchemized Harpy",
+          "enemy_id": "0x010606",
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Alchemized Harpy",
+          "enemy_id": "0x010606",
+          "level": 60,
+          "exp": 756
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

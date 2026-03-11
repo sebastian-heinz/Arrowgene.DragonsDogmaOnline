@@ -1,0 +1,207 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Seeking Elfin Extract",
+  "quest_id": 20065004,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeGrove",
+  "news_image": 567,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 5940
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 3360
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1050
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Elfin Extract",
+          "item_id": 9451,
+          "num": 2
+        },
+        {
+          "comment": "Azure Dragonscale",
+          "item_id": 7931,
+          "num": 1
+        },
+        {
+          "comment": "Amber Dragonscale",
+          "item_id": 7930,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "comment": "Group 1 - Frost Wyrm and Skull Sergeants",
+      "stage_id": {
+        "id": 110,
+        "group_id": 4
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Skull Sergeant (Skull Lord)",
+          "enemy_id": "0x010313",
+          "named_enemy_params_id": 649,
+          "level": 60,
+          "exp": 1360,
+          "index": 8
+        },
+        {
+          "comment": "Frost Wyrm (Wyrm)",
+          "enemy_id": "0x015701",
+          "named_enemy_params_id": 642,
+          "level": 60,
+          "exp": 9860,
+          "is_boss": true,
+          "index": 9
+        },
+        {
+          "comment": "Skull Sergeant (Skull Lord)",
+          "enemy_id": "0x010313",
+          "named_enemy_params_id": 649,
+          "level": 60,
+          "exp": 1360,
+          "index": 11
+        },
+        {
+          "comment": "Skull Sergeant (Skull Lord)",
+          "enemy_id": "0x010313",
+          "named_enemy_params_id": 649,
+          "level": 60,
+          "exp": 1360,
+          "index": 12
+        }
+      ]
+    },
+    {
+      "comment": "Group 2 - Fire Drake and Mail Sergeants",
+      "stage_id": {
+        "id": 108,
+        "group_id": 6
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Fire Drake (Drake)",
+          "enemy_id": "0x015700",
+          "named_enemy_params_id": 643,
+          "level": 60,
+          "exp": 9860,
+          "is_boss": true,
+          "index": 5
+        },
+        {
+          "comment": "Mail Sergeant (Ghost Mail)",
+          "enemy_id": "0x010311",
+          "named_enemy_params_id": 650,
+          "level": 60,
+          "exp": 680,
+          "index": 7
+        },
+        {
+          "comment": "Mail Sergeant (Ghost Mail)",
+          "enemy_id": "0x010311",
+          "named_enemy_params_id": 650,
+          "level": 60,
+          "exp": 680,
+          "index": 8
+        },
+        {
+          "comment": "Mail Sergeant (Ghost Mail)",
+          "enemy_id": "0x010311",
+          "named_enemy_params_id": 650,
+          "level": 60,
+          "exp": 680,
+          "index": 9
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 22,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Ivan",
+      "message_id": 16432
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 4503,
+          "Param2": 16433
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 22,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Ivan",
+      "message_id": 16434
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 4503,
+          "Param2": 16435
+        }
+      ],
+      "groups": [ 1 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 1 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 22,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Ivan",
+      "message_id": 16436
+    }
+  ]
+}

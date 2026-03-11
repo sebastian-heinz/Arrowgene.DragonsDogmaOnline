@@ -1,0 +1,84 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Mergoda's Resource Issue (II)",
+    "quest_id": 20995007,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MergodaRuins",
+    "variant_index": 1,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1810
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 180
+        },
+        {
+            "type": "exp",
+            "amount": 1210
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Alchemic Wood",
+                    "item_id": 9159,
+                    "num": 3
+                },
+                {
+                    "comment": "Superior Healing Remedy",
+                    "item_id": 7555,
+                    "num": 5
+                },
+                {
+                    "comment": "Superior Strong Gala Extract",
+                    "item_id": 9364,
+                    "num": 5
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 237,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Iosef",
+            "message_id": 16080
+        },
+        {
+            "type": "DeliverItems",
+            "stage_id": {
+                "id": 237,
+                "group_id": 1
+            },
+            "npc_id": "Iosef",
+            "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "comment": "Idle dialogue",
+                "type": "QstTalkChg", 
+                "Param1": 2302, 
+                "Param2": 16081
+                }
+            ],
+            "items": [
+                {
+                    "comment": "Chipped Gold Lump",
+                    "id": 8025,
+                    "amount": 9
+                }
+            ],
+            "message_id": 16082
+        }
+    ]
+}

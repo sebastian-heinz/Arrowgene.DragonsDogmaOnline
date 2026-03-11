@@ -61,11 +61,19 @@
         "layer_no": 1
       },
       "npc_id": "Akim",
-      "message_id": 11372
+      "message_id": 10808
     },
     {
       "type": "CollectItem",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1206,
+          "Param2": 10815
+        }
+      ],
       "stage_id": {
         "id": 98,
         "group_id": 1,
@@ -123,7 +131,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Akim",
-      "message_id": 11842
+      "message_id": 10812
     }
   ]
 }

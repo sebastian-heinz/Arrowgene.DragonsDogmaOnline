@@ -3,7 +3,7 @@
   "type": "World",
   "comment": "Request For Medicine",
   "quest_id": 20000009,
-  "base_level": 8,
+  "base_level": 7,
   "minimum_item_rank": 0,
   "discoverable": true,
   "area_id": "HidellPlains",
@@ -12,7 +12,7 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 350
+      "amount": 300
     },
     {
       "type": "wallet",
@@ -21,17 +21,19 @@
     },
     {
       "type": "exp",
-      "amount": 290
+      "amount": 260
     },
     {
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 478,
+          "comment": "Battle Greaves",
+          "item_id": 430,
           "num": 1
         },
         {
-          "item_id": 59,
+          "comment": "Pickaxe",
+          "item_id": 57,
           "num": 2
         }
       ]
@@ -45,7 +47,7 @@
         "group_id": 0
       },
       "npc_id": "Henry",
-      "message_id": 10924
+      "message_id": 10922
     },
     {
       "type": "TalkToNpc",
@@ -55,7 +57,15 @@
       },
       "announce_type": "Accept",
       "npc_id": "Vicelot",
-      "message_id": 10930
+      "message_id": 10930,
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1305,
+          "Param2": 10928
+        }
+      ]
     },
     {
       "type": "CollectItem",
@@ -92,6 +102,14 @@
           "action": "Set",
           "value": 1133
         }
+      ],
+      "result_commands": [
+        {
+          "comment": "Quest idle dialog",
+          "type": "QstTalkChg",
+          "Param1": 1006,
+          "Param2": 10932
+        }
       ]
     },
     {
@@ -119,7 +137,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Henry",
-      "message_id": 10927
+      "message_id": 10925
     }
   ]
 }

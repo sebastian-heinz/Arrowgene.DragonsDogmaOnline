@@ -1,0 +1,79 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Shadows Within the Cave (II)",
+  "quest_id": 20045002,
+  "base_level": 24,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "VoldenMines",
+  "news_image": 537,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1100
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 790
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 120
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Griffin Beak",
+          "item_id": 7758,
+          "num": 1
+        },
+        {
+          "comment": "Mystic Bangles",
+          "item_id": 815,
+          "num": 1
+        },
+        {
+          "comment": "Angel's Amulet",
+          "item_id": 9382,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 103,
+        "group_id": 1
+      },
+      "starting_index": 7,
+      "enemies": [
+        {
+          "comment": "Young Griffin",
+          "enemy_id": "0x015300",
+          "named_enemy_params_id": 459,
+          "level": 24,
+          "exp": 3300,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

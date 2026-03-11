@@ -1,0 +1,128 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Fabio's Collectibles (II)",
+  "quest_id": 20000017,
+  "base_level": 13,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 240
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 80
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 40
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Amethyst",
+          "item_id": 7890,
+          "num": 3
+        },
+        {
+          "comment": "Sprite's Periapt",
+          "item_id": 45,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "message_id": 11373
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 12,
+          "Param2": 11856
+        }
+      ],
+      "items": [
+        {
+          "comment": "Bronze Ingot",
+          "id": 7876,
+          "amount": 2
+        }
+      ],
+      "message_id": 11848
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 12,
+          "Param2": 11856
+        }
+      ],
+      "items": [
+        {
+          "comment": "Copper Ingot",
+          "id": 7873,
+          "amount": 1
+        }
+      ],
+      "message_id": 11849
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 12,
+          "Param2": 11856
+        }
+      ],
+      "items": [
+        {
+          "comment": "Dull Iron Ingot",
+          "id": 7872,
+          "amount": 1
+        }
+      ],
+      "message_id": 11853
+    }
+  ]
+}

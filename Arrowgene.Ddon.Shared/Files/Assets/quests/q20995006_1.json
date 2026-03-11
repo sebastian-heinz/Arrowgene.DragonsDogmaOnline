@@ -1,0 +1,88 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Training Requirement (II)",
+    "quest_id": 20995006,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MergodaRuins",
+    "variant_index": 1,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1810
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 180
+        },
+        {
+            "type": "exp",
+            "amount": 1210
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Alkahest",
+                    "item_id": 7833,
+                    "num": 3
+                },
+                {
+                    "comment": "Superior Healing Remedy",
+                    "item_id": 7555,
+                    "num": 5
+                },
+                {
+                    "comment": "Superior Strong Gala Extract",
+                    "item_id": 9364,
+                    "num": 5
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1627, "comment": "Spawns 禁域守の神官 NPC"}
+            ],
+            "stage_id": {
+                "id": 76,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "4743",
+            "message_id": 16079
+        },
+        {
+            "type": "NewDeliverItems",
+            "stage_id": {
+                "id": 76,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "4743",
+            "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 4743, 
+                "Param2": 16077,
+                "comment": "Idle dialogue"
+                }
+            ],
+            "items": [
+                {
+                    "comment": "Dirty Sheet Metal",
+                    "id": 8029,
+                    "amount": 12
+                }
+            ],
+            "message_id": 16078
+        }
+    ]
+}

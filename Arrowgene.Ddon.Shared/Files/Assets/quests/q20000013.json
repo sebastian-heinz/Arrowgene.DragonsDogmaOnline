@@ -44,13 +44,14 @@
                 "id": 1,
                 "group_id": 72
             },
+            "starting_index": 1,
             "enemies": [
                 {
-                    "comment" : "Dread Ape",
+                    "comment" : "Vigilant Dread Ape",
                     "enemy_id": "0x015502",
                     "named_enemy_params_id": 53,
-                    "level": 15,
-                    "exp": 2760,
+                    "level": 12,
+                    "exp": 1014,
                     "is_boss": true
                 }
             ]
@@ -68,6 +69,14 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 14,
+                    "Param2": 11821
+                }
+            ],
             "groups": [0]
         },
         {

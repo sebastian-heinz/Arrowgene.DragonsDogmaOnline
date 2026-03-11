@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Hard Leather Cloth",
           "item_id": 7937,
           "num": 3
         },
         {
+          "comment": "Fortifier",
           "item_id": 9377,
           "num": 3
         },
         {
+          "comment": "Wild Steak",
           "item_id": 9412,
           "num": 1
         }
@@ -47,30 +50,40 @@
         "id": 1,
         "group_id": 214
       },
+      "starting_index": 4,
       "enemies": [
         {
+          "comment": "Brutal Dread Ape",
           "enemy_id": "0x015502",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 54,
+          "start_think_tbl_no": 1,
           "level": 30,
-          "exp": 5446,
+          "exp": 2048,
           "is_boss": true
         },
         {
+          "comment": "Vigilant Brute Ape",
           "enemy_id": "0x015504",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
           "level": 28,
-          "exp": 300,
-          "is_boss": false
+          "exp": 182
         },
         {
+          "comment": "Vigilant Brute Ape",
           "enemy_id": "0x015504",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
           "level": 28,
-          "exp": 300,
-          "is_boss": false
+          "exp": 182
+        },
+        {
+          "comment": "Vigilant Brute Ape",
+          "enemy_id": "0x015504",
+          "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
+          "level": 28,
+          "exp": 182
         }
       ]
     }

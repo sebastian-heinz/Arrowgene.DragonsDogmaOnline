@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Cursed Cloth",
           "item_id": 7948,
           "num": 1
         },
         {
+          "comment": "Exquisite Fried Meat",
           "item_id": 9416,
           "num": 2
         },
         {
+          "comment": "Angel's Talisman",
           "item_id": 9388,
           "num": 1
         }
@@ -45,32 +48,35 @@
     {
       "stage_id": {
         "id": 114,
-        "group_id": 1
+        "group_id": 0
       },
+      "starting_index": 6,
       "enemies": [
         {
+          "comment": "Brutal Cockatrice",
           "enemy_id": "0x015301",
-          "level": 42,
-          "exp": 10500,
-          "is_boss": false
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 4882,
+          "is_boss": true
         },
         {
+          "comment": "Vigilant Brute Ape",
           "enemy_id": "0x015504",
+          "named_enemy_params_id": 53,
           "level": 41,
-          "exp": 750,
-          "is_boss": false
+          "exp": 236,
+          "repop_count": 1,
+          "repop_wait_second": 10
         },
         {
+          "comment": "Vigilant Brute Ape",
           "enemy_id": "0x015504",
+          "named_enemy_params_id": 53,
           "level": 41,
-          "exp": 750,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015504",
-          "level": 41,
-          "exp": 750,
-          "is_boss": false
+          "exp": 236,
+          "repop_count": 1,
+          "repop_wait_second": 10
         }
       ]
     }
@@ -92,11 +98,19 @@
         "layer_no": 1
       },
       "npc_id": "StrangeMan",
-      "message_id": 11372
+      "message_id": 11345
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
+      "result_commands": [ 
+        { 
+          "type": "QstTalkChg", 
+          "Param1": 507, 
+          "Param2": 11351,
+          "comment": "Idle dialogue"
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -114,7 +128,7 @@
       },
       "announce_type": "Update",
       "npc_id": "StrangeMan",
-      "message_id": 11835
+      "message_id": 11348
     }
   ]
 }

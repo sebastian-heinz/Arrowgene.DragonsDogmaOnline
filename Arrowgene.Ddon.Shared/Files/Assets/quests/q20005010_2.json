@@ -1,0 +1,81 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Knights' Bitter Enemy (Bounty)",
+    "quest_id": 20005010,
+    "base_level": 20,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "area_id": "HidellPlains",
+    "news_image": 5,
+    "variant_index": 2,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 990
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 130
+        },
+        {
+            "type": "exp",
+            "amount": 1480
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Soldier's Ring",
+                    "item_id": 8947,
+                    "num": 1
+                },
+                {
+                    "comment": "Herb Salad",
+                    "item_id": 9407,
+                    "num": 1
+                },
+                {
+                    "comment": "Lestania Wine",
+                    "item_id": 9409,
+                    "num": 2
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 26
+            },
+            "starting_index": 1,
+            "enemies": [
+                {
+                    "comment": "Bounty Cyclops",
+                    "enemy_id": "0x015000",
+                    "named_enemy_params_id": 458,
+                    "start_think_tbl_no": 1,
+                    "level": 20,
+                    "exp": 2160,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "show_marker": false,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [ 0 ]
+        }
+    ]
+}

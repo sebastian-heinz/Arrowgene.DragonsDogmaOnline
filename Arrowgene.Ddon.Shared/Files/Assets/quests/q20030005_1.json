@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "A Petty Thief’s Woes",
+  "comment": "A Petty Thief’s Woes (II)",
   "quest_id": 20030005,
   "base_level": 56,
   "minimum_item_rank": 0,
@@ -17,7 +17,7 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 1540
+      "amount": 1350
     },
     {
       "type": "wallet",
@@ -28,17 +28,17 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "witch velv",
+          "comment": "Witch's Velvet",
           "item_id": 7949,
           "num": 1
         },
         {
-          "comment": "witch grim",
+          "comment": "Witch's Grimoire",
           "item_id": 7808,
           "num": 1
         },
         {
-          "comment": "black cryst",
+          "comment": "Smoky Quartz",
           "item_id": 7908,
           "num": 1
         }
@@ -51,68 +51,75 @@
         "id": 90,
         "group_id": 6
       },
+      "placement_type": "manual",
       "enemies": [
         {
+          "comment": "Vigilant Skeleton",
+          "enemy_id": "0x010300",
+          "named_enemy_params_id": 53,
+          "level": 55,
+          "exp": 166,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 0
+        },
+        {
+          "comment": "Vigilant Skeleton",
+          "enemy_id": "0x010300",
+          "named_enemy_params_id": 53,
+          "level": 55,
+          "exp": 166,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 3
+        },
+        {
+          "comment": "Vigilant Skeleton",
+          "enemy_id": "0x010300",
+          "named_enemy_params_id": 53,
+          "level": 55,
+          "exp": 166,
+          "index": 4
+        },
+        {
+          "comment": "Mudman",
+          "enemy_id": "0x010509",
+          "start_think_tbl_no": 8,
+          "level": 55,
+          "exp": 245,
+          "is_required": false,
+          "is_manual_set": true,
+          "index": 6
+        },
+        {
+          "comment": "Mudman",
+          "enemy_id": "0x010509",
+          "start_think_tbl_no": 8,
+          "level": 55,
+          "exp": 245,
+          "is_required": false,
+          "is_manual_set": true,
+          "index": 7
+        },
+        {
+          "comment": "Mudman",
+          "enemy_id": "0x010509",
+          "start_think_tbl_no": 8,
+          "level": 55,
+          "exp": 245,
+          "is_required": false,
+          "is_manual_set": true,
+          "index": 8
+        },
+        {
+          "comment": "Brutal Empress Ghost",
           "enemy_id": "0x015605",
-          "start_think_tbl_no": 2,
           "named_enemy_params_id": 56,
+          "start_think_tbl_no": 2,
           "level": 56,
-          "exp": 21700,
-          "is_boss": true
-        },
-        {
-          "enemy_id": "0x010300",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 55,
-          "exp": 6476,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010300",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 55,
-          "exp": 6476,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010300",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 55,
-          "exp": 6476,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010300",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 55,
-          "exp": 6476,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010300",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 55,
-          "exp": 6476,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010509",
-          "start_think_tbl_no": 1,
-             "level": 55,
-          "exp": 6476,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010509",
-          "start_think_tbl_no": 1,
-               "level": 55,
-          "exp": 6476,
-          "is_boss": false
+          "exp": 4147,
+          "is_boss": true,
+          "index": 14
         }
       ]
     }
@@ -134,11 +141,19 @@
         "layer_no": 1
       },
       "npc_id": "Bandit0",
-      "message_id": 11372
+      "message_id": 11989
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "type": "QstTalkChg",
+          "Param1": 522,
+          "Param2": 11988,
+          "comment": "Idle dialogue"
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -156,7 +171,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Bandit0",
-      "message_id": 11842
+      "message_id": 11986
     }
   ]
 }

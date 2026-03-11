@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Crest of Greater Power",
           "item_id": 9196,
           "num": 1
         },
         {
+          "comment": "Sprite's Talisman",
           "item_id": 9390,
           "num": 1
         },
         {
+          "comment": "Exquisite Fried Meat",
           "item_id": 9416,
           "num": 2
         }
@@ -47,18 +50,25 @@
         "id": 70,
         "group_id": 19
       },
+      "placement_type": "manual",
       "enemies": [
         {
+          "comment": "Key Bearer Mole Troll",
           "enemy_id": "0x015041",
+          "named_enemy_params_id": 391,
           "level": 42,
-          "exp": 10500,
-          "is_boss": true
+          "exp": 4020,
+          "is_boss": true,
+          "index": 5
         },
         {
+          "comment": "Brutal Mole Troll",
           "enemy_id": "0x015041",
+          "named_enemy_params_id": 54,
           "level": 42,
-          "exp": 10500,
-          "is_boss": true
+          "exp": 4020,
+          "is_boss": true,
+          "index": 9
         }
       ]
     }

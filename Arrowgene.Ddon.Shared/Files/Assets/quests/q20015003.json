@@ -47,16 +47,19 @@
       "type": "random",
       "loot_pool": [
         {
+          "comment": "Oldies Pants",
           "item_id": 8693,
           "num": 1,
           "chance": 0.4
         },
         {
-          "item_id": 8693,
+          "comment": "Peridot",
+          "item_id": 7895,
           "num": 1,
           "chance": 0.4
         },
         {
+          "comment": "Double Fang Earrings",
           "item_id": 8955,
           "num": 1,
           "chance": 0.4
@@ -68,9 +71,8 @@
     {
       "stage_id": {
         "id": 1,
-        "group_id": 105
+        "group_id": 99
       },
-      "placement_type": "manual",
       "enemies": [
         {
           "comment": "Young Chimera",
@@ -78,9 +80,8 @@
           "start_think_tbl_no": 1,
           "named_enemy_params_id": 459,
           "level": 19,
-          "exp": 1264,
-          "is_boss": true,
-          "index": 3
+          "exp": 2340,
+          "is_boss": true
         }
       ]
     }

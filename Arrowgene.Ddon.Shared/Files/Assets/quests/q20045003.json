@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Drilled Plate Sheet",
           "item_id": 7881,
           "num": 1
         },
         {
+          "comment": "Quality Gala Extract",
           "item_id": 9361,
           "num": 2
         },
         {
+          "comment": "Demon's Amulet",
           "item_id": 9383,
           "num": 1
         }
@@ -53,7 +56,7 @@
           "enemy_id": "0x015200",
           "named_enemy_params_id": 53,
           "level": 23,
-          "exp": 4200,
+          "exp": 2580,
           "is_boss": true
         }
       ]

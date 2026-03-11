@@ -1,13 +1,13 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Journey to Death",
+    "comment": "The Journey to Death (II)",
     "quest_id": 20085002,
     "base_level": 47,
     "minimum_item_rank": 0,
     "discoverable": true,
     "area_id": "EasternZandora",
-    "variant_index": 1,	
+    "variant_index": 1,
     "rewards": [
         {
             "type": "wallet",
@@ -27,16 +27,19 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Spiritual Will Fragment",
                     "item_id": 7889,
                     "num": 1
                 },
                 {
+                    "comment": "Enhanced Pickaxe",
                     "item_id": 9401,
                     "num": 3
                 },
                 {
+                    "comment": "Healing Remedy",
                     "item_id": 7554,
-                    "num": 3					
+                    "num": 3
                 }
             ]
         }
@@ -49,44 +52,33 @@
             },
             "enemies": [
                 {
+                    "comment": "Brutal Ghost Mail",
                     "enemy_id": "0x010311",
+                    "named_enemy_params_id": 54,
                     "start_think_tbl_no": 1,
-                    "named_enemy_params_id": 53,
                     "level": 47,
-                    "exp": 5636,
-                    "is_boss": false				
-        },
-        {
-                    "enemy_id": "0x010302",
-                    "start_think_tbl_no": 1,
-                    "named_enemy_params_id": 53,
-                    "level": 47,
-                    "exp": 5636,
-                    "is_boss": false				
-        },
-        {
-                    "enemy_id": "0x010302",
-                    "start_think_tbl_no": 1,
-                    "named_enemy_params_id": 53,
-                    "level": 47,
-                    "exp": 5636,
+                    "exp": 576,
                     "is_boss": false
-        },
-        {
-                  "enemy_id": "0x010311",
-                  "start_think_tbl_no": 1,
-                 "named_enemy_params_id": 53,
-                  "level": 47,
-                  "exp": 5636,
-                 "is_boss": false				
-        },
-        {					
-                    "enemy_id": "0x010302",
+                },
+                {
+                    "comment": "Brutal Ghost Mail",
+                    "enemy_id": "0x010311",
+                    "named_enemy_params_id": 54,
                     "start_think_tbl_no": 1,
-                    "named_enemy_params_id": 53,
                     "level": 47,
-                    "exp": 5636,
-                    "is_boss": false				
+                    "exp": 576,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "named_enemy_params_id": 53,
+                    "start_think_tbl_no": 1,
+                    "level": 47,
+                    "exp": 224,
+                    "is_boss": false,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
                 }
             ]
         }
@@ -100,11 +92,19 @@
                 "layer_no": 1
             },
             "npc_id": "Lara",
-            "message_id": 11372
+            "message_id": 16040
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 541,
+                    "Param2": 16041
+                }
+            ],
             "groups": [0]
         },
         {
@@ -118,11 +118,11 @@
             "stage_id": {
                 "id": 61,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
             "npc_id": "Lara",
-            "message_id": 11835
+            "message_id": 16042
         }
     ]
 }

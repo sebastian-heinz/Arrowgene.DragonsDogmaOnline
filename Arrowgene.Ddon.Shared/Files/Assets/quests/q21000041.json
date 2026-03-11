@@ -1,0 +1,226 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Gemstones: Away, Foul Things!",
+  "quest_id": 21000041,
+  "base_level": 63,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeGrove",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 3876
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2078
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1590
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Mysree Grove Medal",
+          "item_id": 11004,
+          "num": 1
+        },
+        {
+          "comment": "Aliment Extractant",
+          "item_id": 8033,
+          "num": 1
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 427,
+        "group_id": 16
+      },
+      "comment": "Enemies drop up to 6500 RC",
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Gemstone-Bearing Mist Drake",
+          "enemy_id": "0x015710",
+          "named_enemy_params_id": 1118,
+          "level": 63,
+          "exp": 10208,
+          "drop_items": [
+            {
+              "item_id": 7802,
+              "item_min": 1,
+              "item_max": 4,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7922,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 1.0
+            }
+          ],
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "comment": "Gemstone-Bearing Ghost Mail",
+          "enemy_id": "0x010311",
+          "named_enemy_params_id": 1118,
+          "level": 63,
+          "exp": 704,
+          "drop_items": [
+            {
+              "item_id": 7868,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7889,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ],
+          "index": 1
+        },
+        {
+          "comment": "Gemstone-Bearing Ghost Mail",
+          "enemy_id": "0x010311",
+          "named_enemy_params_id": 1118,
+          "level": 63,
+          "exp": 704,
+          "drop_items": [
+            {
+              "item_id": 7868,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7889,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 7794,
+              "item_min": 15,
+              "item_max": 15,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ],
+          "index": 2
+        },
+        {
+          "comment": "Gemstone-Bearing Ghost Mail",
+          "enemy_id": "0x010311",
+          "named_enemy_params_id": 1118,
+          "level": 63,
+          "exp": 704,
+          "drop_items": [
+            {
+              "item_id": 7868,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7889,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 7794,
+              "item_min": 10,
+              "item_max": 10,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ],
+          "index": 5
+        },
+        {
+          "comment": "Gemstone-Bearing Ghost Mail",
+          "enemy_id": "0x010311",
+          "named_enemy_params_id": 1118,
+          "level": 63,
+          "exp": 704,
+          "drop_items": [
+            {
+              "item_id": 7868,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7889,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 7794,
+              "item_min": 10,
+              "item_max": 10,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ],
+          "index": 6
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

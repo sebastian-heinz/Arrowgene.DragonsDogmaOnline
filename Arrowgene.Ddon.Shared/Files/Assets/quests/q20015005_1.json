@@ -1,0 +1,113 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Dispatch A Clamor of Harpies! (II)",
+    "quest_id": 20015005,
+    "base_level": 11,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "area_id": "BreyaCoast",
+    "news_image": 25,
+    "variant_index": 1,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 300
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 50
+        },
+        {
+            "type": "exp",
+            "amount": 390
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Leaf Signet Ring",
+                    "item_id": 8938,
+                    "num": 1
+                },
+                {
+                    "comment": "Lockpick",
+                    "item_id": 59,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 94
+            },
+            "enemies": [
+                {
+                    "comment": "Vigilant Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 53,
+                    "level": 11,
+                    "exp": 62,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 53,
+                    "level": 11,
+                    "exp": 62,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 53,
+                    "level": 11,
+                    "exp": 62,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 53,
+                    "level": 11,
+                    "exp": 62,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 53,
+                    "level": 11,
+                    "exp": 62,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 53,
+                    "level": 11,
+                    "exp": 62,
+                    "is_boss": false
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [ 0 ]
+        }
+    ]
+}

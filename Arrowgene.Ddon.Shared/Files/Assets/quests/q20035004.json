@@ -1,0 +1,139 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Wandering Knights",
+  "quest_id": 20035004,
+  "base_level": 38,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1250
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1250
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 160
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Sentry Tights",
+          "item_id": 8733,
+          "num": 1
+        },
+        {
+          "comment": "Special Bracers",
+          "item_id": 983,
+          "num": 1
+        },
+        {
+          "comment": "Old Forest Dwellers' Key",
+          "item_id": 9066,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 90,
+        "group_id": 4
+      },
+      "comment": "Group 1 - Skeleton Knights",
+      "starting_index": 4,
+      "enemies": [
+        {
+          "comment": "Vigilant Skeleton Knight",
+          "enemy_id": "0x010301",
+          "named_enemy_params_id": 53,
+          "level": 38,
+          "exp": 155
+        },
+        {
+          "comment": "Vigilant Skeleton Knight",
+          "enemy_id": "0x010301",
+          "named_enemy_params_id": 53,
+          "level": 38,
+          "exp": 155
+        },
+        {
+          "comment": "Vigilant Skeleton Knight",
+          "enemy_id": "0x010301",
+          "named_enemy_params_id": 53,
+          "level": 38,
+          "exp": 155
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 90,
+        "group_id": 3
+      },
+      "comment": "Group 2 - Skeleton Sorcerers",
+      "starting_index": 3,
+      "enemies": [
+        {
+          "comment": "Vigilant Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "named_enemy_params_id": 53,
+          "level": 38,
+          "exp": 169
+        },
+        {
+          "comment": "Vigilant Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "named_enemy_params_id": 53,
+          "level": 38,
+          "exp": 169
+        },
+        {
+          "comment": "Vigilant Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "named_enemy_params_id": 53,
+          "level": 38,
+          "exp": 169
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "blocks": [
+        {
+          "type": "DiscoverEnemy",
+          "groups": [ 0 ]
+        },
+        {
+          "type": "KillGroup",
+          "announce_type": "Accept",
+          "reset_group": false,
+          "groups": [ 0 ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "groups": [ 1 ]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "SpawnGroup",
+          "groups": [ 1 ]
+        }
+      ]
+    }
+  ]
+}

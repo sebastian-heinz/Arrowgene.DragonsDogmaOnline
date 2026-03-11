@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "After That Dragon!",
+  "comment": "After That Dragon! (II)",
   "quest_id": 20035009,
   "base_level": 40,
   "minimum_item_rank": 0,
@@ -28,14 +28,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Water Dragon Fang",
           "item_id": 7765,
           "num": 1
         },
         {
+          "comment": "Dragonleather",
           "item_id": 7941,
           "num": 1
         },
         {
+          "comment": "Demon's Talisman",
           "item_id": 9389,
           "num": 1
         }
@@ -50,10 +53,11 @@
       },
       "enemies": [
         {
+          "comment": "Dangerous Lindwurm",
           "enemy_id": "0x015707",
-		  "named_enemy_params_id": 53,
+          "named_enemy_params_id": 56,
           "level": 40,
-          "exp_scheme": "Automatic",
+          "exp": 6890,
           "is_boss": true
         }
       ]

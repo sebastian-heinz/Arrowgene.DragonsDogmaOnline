@@ -6,7 +6,7 @@
     "base_level": 70,
     "minimum_item_rank": 0,
     "discoverable": false,
-	"area_id": "ElanWaterGrove",	
+    "area_id": "FaranaPlains",
     "rewards": [
         {
             "type": "wallet",
@@ -26,16 +26,19 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Bloodied Giant Tusk",
                     "item_id": 15963,
                     "num": 1
                 },
-                {					
+                {
+                    "comment": "Superior Healing Remedy",
                     "item_id": 7555,
                     "num": 3
                 },
-                {				
+                {
+                    "comment": "Superior Strong Gala Extract",
                     "item_id": 9364,
-                    "num": 3					
+                    "num": 3
                 }
             ]
         }
@@ -44,61 +47,246 @@
         {
             "stage_id": {
                 "id": 366,
-                "group_id": 7
+                "group_id": 8
             },
+            "placement_type": "manual",
             "enemies": [
                 {
+                    "comment": "Gemstone-Bearing Gorecyclops",
                     "enemy_id": "0x015010",
+                    "named_enemy_params_id": 1576,
                     "level": 70,
-                    "exp": 85000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": true					
-    },
-    {
+                    "exp": 9500,
+                    "is_boss": true,
+                    "index": 0,
+                    "drop_items": [
+                        {
+                            "item_id": 15963,
+                            "item_min": 1,
+                            "item_max": 2,
+                            "quality": 0,
+                            "drop_chance": 0.9
+                        },
+                        {
+                            "item_id": 7794,
+                            "item_min": 20,
+                            "item_max": 20,
+                            "quality": 0,
+                            "drop_chance": 1
+                        }
+                    ]
+                },
+                {
+                    "comment": "Gemstone-Bearing Gorecyclops",
                     "enemy_id": "0x015010",
+                    "named_enemy_params_id": 1576,
                     "level": 70,
-                    "exp": 85000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": true	
-    },
-    {
+                    "exp": 9500,
+                    "is_boss": true,
+                    "index": 1,
+                    "drop_items": [
+                        {
+                            "item_id": 15963,
+                            "item_min": 1,
+                            "item_max": 2,
+                            "quality": 0,
+                            "drop_chance": 0.9
+                        },
+                        {
+                            "item_id": 7794,
+                            "item_min": 20,
+                            "item_max": 20,
+                            "quality": 0,
+                            "drop_chance": 1
+                        }
+                    ]
+                },
+                {
+                    "comment": "Gemstone-Bearing Bolt Grimwarg",
+                    "enemy_id": "0x010211",
+                    "named_enemy_params_id": 1576,
+                    "level": 70,
+                    "exp": 513,
+                    "index": 2,
+                    "drop_items": [
+                        {
+                            "item_id": 7778,
+                            "item_min": 1,
+                            "item_max": 4,
+                            "quality": 0,
+                            "drop_chance": 0.8
+                        },
+                        {
+                            "item_id": 7801,
+                            "item_min": 1,
+                            "item_max": 4,
+                            "quality": 0,
+                            "drop_chance": 0.9
+                        },
+                        {
+                            "item_id": 7923,
+                            "item_min": 1,
+                            "item_max": 2,
+                            "quality": 0,
+                            "drop_chance": 0.6
+                        },
+                        {
+                            "item_id": 7794,
+                            "item_min": 15,
+                            "item_max": 15,
+                            "quality": 0,
+                            "drop_chance": 1
+                        }
+                    ]
+                },
+                {
+                    "comment": "Gemstone-Bearing Death Knight",
                     "enemy_id": "0x010310",
+                    "named_enemy_params_id": 1576,
                     "level": 70,
-                    "exp": 85000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": true	
-    },
-    {
+                    "exp": 1900,
+                    "index": 3,
+                    "drop_items": [
+                        {
+                            "item_id": 7947,
+                            "item_min": 1,
+                            "item_max": 1,
+                            "quality": 0,
+                            "drop_chance": 0.9
+                        },
+                        {
+                            "item_id": 8021,
+                            "item_min": 1,
+                            "item_max": 1,
+                            "quality": 0,
+                            "drop_chance": 0.4
+                        },
+                        {
+                            "item_id": 7794,
+                            "item_min": 20,
+                            "item_max": 20,
+                            "quality": 0,
+                            "drop_chance": 1
+                        }
+                    ]
+                },
+                {
+                    "comment": "Gemstone-Bearing Bolt Grimwarg",
                     "enemy_id": "0x010211",
+                    "named_enemy_params_id": 1576,
                     "level": 70,
-                    "exp": 3000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": false
-    },
-    {
+                    "exp": 513,
+                    "index": 4,
+                    "drop_items": [
+                        {
+                            "item_id": 7778,
+                            "item_min": 1,
+                            "item_max": 4,
+                            "quality": 0,
+                            "drop_chance": 0.8
+                        },
+                        {
+                            "item_id": 7801,
+                            "item_min": 1,
+                            "item_max": 4,
+                            "quality": 0,
+                            "drop_chance": 0.9
+                        },
+                        {
+                            "item_id": 7923,
+                            "item_min": 1,
+                            "item_max": 2,
+                            "quality": 0,
+                            "drop_chance": 0.6
+                        },
+                        {
+                            "item_id": 7794,
+                            "item_min": 15,
+                            "item_max": 15,
+                            "quality": 0,
+                            "drop_chance": 1
+                        }
+                    ]
+                },
+                {
+                    "comment": "Gemstone-Bearing Bolt Grimwarg",
                     "enemy_id": "0x010211",
+                    "named_enemy_params_id": 1576,
                     "level": 70,
-                    "exp": 3000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": false
-    },
-    {
+                    "exp": 513,
+                    "index": 6,
+                    "drop_items": [
+                        {
+                            "item_id": 7778,
+                            "item_min": 1,
+                            "item_max": 4,
+                            "quality": 0,
+                            "drop_chance": 0.8
+                        },
+                        {
+                            "item_id": 7801,
+                            "item_min": 1,
+                            "item_max": 4,
+                            "quality": 0,
+                            "drop_chance": 0.9
+                        },
+                        {
+                            "item_id": 7923,
+                            "item_min": 1,
+                            "item_max": 2,
+                            "quality": 0,
+                            "drop_chance": 0.6
+                        },
+                        {
+                            "item_id": 7794,
+                            "item_min": 15,
+                            "item_max": 15,
+                            "quality": 0,
+                            "drop_chance": 1
+                        }
+                    ]
+                },
+                {
+                    "comment": "Gemstone-Bearing Bolt Grimwarg",
                     "enemy_id": "0x010211",
+                    "named_enemy_params_id": 1576,
                     "level": 70,
-                    "exp": 3000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010211",
-                    "level": 70,
-                    "exp": 3000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": false					
+                    "exp": 513,
+                    "index": 7,
+                    "drop_items": [
+                        {
+                            "item_id": 7778,
+                            "item_min": 1,
+                            "item_max": 4,
+                            "quality": 0,
+                            "drop_chance": 0.8
+                        },
+                        {
+                            "item_id": 7801,
+                            "item_min": 1,
+                            "item_max": 4,
+                            "quality": 0,
+                            "drop_chance": 0.9
+                        },
+                        {
+                            "item_id": 7923,
+                            "item_min": 1,
+                            "item_max": 2,
+                            "quality": 0,
+                            "drop_chance": 0.6
+                        },
+                        {
+                            "item_id": 7794,
+                            "item_min": 15,
+                            "item_max": 15,
+                            "quality": 0,
+                            "drop_chance": 1
+                        }
+                    ]
                 }
             ]
         }
-    ],		
+    ],
     "blocks": [
         {
             "type": "DiscoverEnemy",

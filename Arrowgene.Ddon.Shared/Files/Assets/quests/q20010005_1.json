@@ -1,0 +1,133 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Mystery of the Wasted Ruins (II)",
+  "quest_id": 20010005,
+  "base_level": 21,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BreyaCoast",
+  "news_image": 515,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 690
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 90
+    },
+    {
+      "type": "exp",
+      "amount": 690
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Mist Gem",
+          "item_id": 7912,
+          "num": 2
+        },
+        {
+          "comment": "Sprite's Amulet",
+          "item_id": 9384,
+          "num": 1
+        },
+        {
+          "comment": "Herb Salad",
+          "item_id": 9407,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 34,
+        "group_id": 0
+      },
+      "starting_index": 5,
+      "enemies": [
+        {
+          "comment": "Vigilant Mist Hunter",
+          "enemy_id": "0x011031",
+          "named_enemy_params_id": 53,
+          "level": 21,
+          "exp": 114,
+          "hm_present_no": 69
+        },
+        {
+          "comment": "Vigilant Mist Hunter",
+          "enemy_id": "0x011031",
+          "named_enemy_params_id": 53,
+          "level": 21,
+          "exp": 114,
+          "hm_present_no": 69
+        },
+        {
+          "comment": "Vigilant Mist Fighter",
+          "enemy_id": "0x011030",
+          "named_enemy_params_id": 53,
+          "level": 21,
+          "exp": 114,
+          "hm_present_no": 68,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Vigilant Mist Fighter",
+          "enemy_id": "0x011030",
+          "named_enemy_params_id": 53,
+          "level": 21,
+          "exp": 114,
+          "hm_present_no": 68,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 1
+      },
+      "npc_id": "Freud",
+      "message_id": 11380
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1210,
+          "Param2": 11889
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Freud",
+      "message_id": 11886
+    }
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Punish Grave-Robbing",
+  "quest_id": 21000017,
+  "base_level": 70,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "order_conditions": [ { "type": "AreaRank", "Param1": 3, "Param2": 13 } ],
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 13814
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2309
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 300
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Unappraised Star Trinket (General)",
+          "item_id": 13480,
+          "num": 3
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 430,
+        "group_id": 3
+      },
+      "starting_index": 4,
+      "enemies": [
+        {
+          "comment": "Infected Gorecyclops (Slight)",
+          "enemy_id": "0x015012",
+          "infection_type": 1,
+          "level": 70,
+          "exp": 6675,
+          "is_boss": true
+        },
+        {
+          "comment": "Troll",
+          "enemy_id": "0x015040",
+          "level": 65,
+          "exp": 6675,
+          "is_boss": true
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 430,
+        "group_id": 16
+      },
+      "enemies": [
+        {
+          "comment": "Infected Hobgoblin Fighter",
+          "enemy_id": "0x010161",
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Infected Hobgoblin Fighter",
+          "enemy_id": "0x010161",
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Infected Hobgoblin Fighter",
+          "enemy_id": "0x010161",
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Infected Hobgoblin Fighter",
+          "enemy_id": "0x010161",
+          "level": 70,
+          "exp": 1335
+        },
+        {
+          "comment": "Infected Hobgoblin Fighter",
+          "enemy_id": "0x010161",
+          "level": 70,
+          "exp": 1335
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "blocks": [
+        {
+          "type": "DiscoverEnemy",
+          "groups": [0],
+          "result_commands": [ { "type": "QstLayoutFlagOn", "Param1": 3039 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "announce_type": "Accept",
+          "groups": [0],
+          "result_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "groups": [1]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Group 0 boss HP check",
+          "type": "Raw",
+          "check_commands": [ { "type": "EmHpLess", "Param1": 870, "Param2": 3, "Param3": 4, "Param4": 40 } ]
+        },
+        {
+          "type": "SpawnGroup",
+          "announce_type": "Update",
+          "groups": [1],
+          "check_commands": [
+            { "type": "MyQstFlagOff", "Param1": 0 },
+            { "type": "MyQstFlagOn",  "Param1": 1 }
+          ]
+        },
+        {
+          "comment": "Group 1 is dead and group 0 is still alive, update announcement",
+          "type": "Raw",
+          "result_commands": [ { "type": "UpdateAnnounce", "Param1": 3 } ]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 0 dead",
+          "type": "Raw",
+          "check_commands": [
+            { "type": "DieEnemy", "Param1": 870, "Param2": 3, "Param3": 4 } ,
+            { "type": "DieEnemy", "Param1": 870, "Param2": 3, "Param3": 5 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [0]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 1 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 870, "Param2": 16, "Param3": 0 } ,
+              { "type": "DieEnemy", "Param1": 870, "Param2": 16, "Param3": 1 } ,
+              { "type": "DieEnemy", "Param1": 870, "Param2": 16, "Param3": 2 } ,
+              { "type": "DieEnemy", "Param1": 870, "Param2": 16, "Param3": 3 } ,
+              { "type": "DieEnemy", "Param1": 870, "Param2": 16, "Param3": 4 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [1]
+        }
+      ]
+    }
+  ]
+}

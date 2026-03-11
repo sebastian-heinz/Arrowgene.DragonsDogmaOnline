@@ -1,0 +1,138 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Headlong into Danger",
+  "quest_id": 21000069,
+  "base_level": 65,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "EasternZandora",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 7092
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2144
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 275
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Ancient Beast Pelt",
+          "item_id": 11793,
+          "num": 3
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 432,
+        "group_id": 5
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Geo Golem",
+          "enemy_id": "0x015104",
+          "level": 63,
+          "exp": 3876,
+          "is_boss": true,
+          "index": 2
+        },
+        {
+          "comment": "Grimwarg",
+          "enemy_id": "0x010205",
+          "level": 65,
+          "exp": 788,
+          "index": 8
+        },
+        {
+          "comment": "Grimwarg",
+          "enemy_id": "0x010205",
+          "level": 65,
+          "exp": 788,
+          "index": 9
+        },
+        {
+          "comment": "Flame Skeleton",
+          "enemy_id": "0x010314",
+          "level": 65,
+          "exp": 788,
+          "index": 11
+        },
+        {
+          "comment": "Flame Skeleton",
+          "enemy_id": "0x010314",
+          "level": 65,
+          "exp": 788,
+          "index": 13
+        },
+        {
+          "comment": "Flame Skeleton",
+          "enemy_id": "0x010314",
+          "level": 65,
+          "exp": 788,
+          "index": 14
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 57
+      },
+      "npc_id": "Oliver",
+      "message_id": 17340
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1809,
+          "Param2": 17341
+        }
+      ],
+      "groups": [0]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 57
+      },
+      "announce_type": "Update",
+      "npc_id": "Oliver",
+      "message_id": 17342
+    }
+  ]
+}

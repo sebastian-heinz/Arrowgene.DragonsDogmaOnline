@@ -1,0 +1,102 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Malice in the Dark (II)",
+  "quest_id": 20010004,
+  "base_level": 18,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BreyaCoast",
+  "news_image": 24,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 590
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 70
+    },
+    {
+      "type": "exp",
+      "amount": 590
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Sacred Hood",
+          "item_id": 730,
+          "num": 1
+        },
+        {
+          "comment": "Sorel Helm",
+          "item_id": 520,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 91
+      },
+      "starting_index": 4,
+      "enemies": [
+        {
+          "comment": "Vigilant Mist Fighter",
+          "enemy_id": "0x011030",
+          "named_enemy_params_id": 53,
+          "level": 18,
+          "exp": 101,
+          "hm_present_no": 68
+        },
+        {
+          "comment": "Vigilant Mist Fighter",
+          "enemy_id": "0x011030",
+          "named_enemy_params_id": 53,
+          "level": 18,
+          "exp": 101,
+          "hm_present_no": 68
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 47
+      },
+      "npc_id": "Rudolfo",
+      "message_id": 11379
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 4500,
+          "Param2": 11883
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 47
+      },
+      "announce_type": "Update",
+      "npc_id": "Rudolfo",
+      "message_id": 11877
+    }
+  ]
+}

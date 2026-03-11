@@ -1,13 +1,13 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Barren Black Wings",
+    "comment": "The Barren Black Wings (II)",
     "quest_id": 20085005,
     "base_level": 49,
     "minimum_item_rank": 0,
     "discoverable": true,
     "area_id": "EasternZandora",
-	"variant_index": 1,
+    "variant_index": 1,
     "rewards": [
         {
             "type": "wallet",
@@ -27,17 +27,19 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Blue Steel Ingot",
                     "item_id": 7885,
                     "num": 1
                 },
                 {
+                    "comment": "Healing Remedy",
                     "item_id": 7554,
                     "num": 3
                 },
                 {
+                    "comment": "Strong Gala Extract",
                     "item_id": 9363,
                     "num": 3
-              
                 }
             ]
         },
@@ -45,6 +47,7 @@
             "type": "random",
             "loot_pool": [
                 {
+                    "comment": "Gleipnir",
                     "item_id": 7959,
                     "num": 1,
                     "chance": 0.7
@@ -61,11 +64,12 @@
             "placement_type": "manual",
             "enemies": [
                 {
+                    "comment": "Brutal Black Griffin",
                     "enemy_id": "0x015303",
                     "start_think_tbl_no": 1,
                     "named_enemy_params_id": 54,
                     "level": 49,
-                    "exp": 6824,
+                    "exp": 5343,
                     "is_boss": true,
                     "index": 6
                 }
@@ -81,11 +85,19 @@
                 "layer_no": 1
             },
             "npc_id": "Sonya",
-            "message_id": 11372
+            "message_id": 16046
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 1808,
+                    "Param2": 16047
+                }
+            ],
             "groups": [0]
         },
         {
@@ -103,7 +115,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Sonya",
-            "message_id": 11835
+            "message_id": 16048
         }
     ]
 }

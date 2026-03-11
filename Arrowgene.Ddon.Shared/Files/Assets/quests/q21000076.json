@@ -1,0 +1,301 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Jewelry: Newcomer's Highlight",
+  "quest_id": 21000076,
+  "base_level": 68,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 14220
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2243
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Deenan Medal",
+          "item_id": 11006,
+          "num": 1
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 428,
+        "group_id": 12
+      },
+      "comment": "Up to five Unappraised Star Trinket (General) drops",
+      "enemies": [
+        {
+          "comment": "Jewelry-Bearing White Chimera",
+          "enemy_id": "0x015202",
+          "named_enemy_params_id": 1121,
+          "level": 68,
+          "exp": 5925,
+          "drop_items": [
+            {
+              "item_id": 7739,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7780,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7807,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7771,
+              "item_min": 1,
+              "item_max": 4,
+              "quality": 0,
+              "drop_chance": 1
+            },
+            {
+              "item_id": 9437,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.6
+            },
+            {
+              "item_id": 7921,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 13480,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Jewelry-Bearing White Chimera",
+          "enemy_id": "0x015202",
+          "named_enemy_params_id": 1121,
+          "level": 67,
+          "exp": 5925,
+          "drop_items": [
+            {
+              "item_id": 7739,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7780,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 7807,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7771,
+              "item_min": 1,
+              "item_max": 4,
+              "quality": 0,
+              "drop_chance": 1
+            },
+            {
+              "item_id": 9437,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.6
+            },
+            {
+              "item_id": 7921,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.8
+            },
+            {
+              "item_id": 13480,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.5
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Saurian Sage",
+          "enemy_id": "0x010430",
+          "level": 68,
+          "exp": 1185
+        },
+        {
+          "comment": "Saurian Sage",
+          "enemy_id": "0x010430",
+          "level": 68,
+          "exp": 1185
+        },
+        {
+          "comment": "Saurian Sage",
+          "enemy_id": "0x010430",
+          "level": 68,
+          "exp": 1185
+        },
+        {
+          "comment": "Saurian Sage",
+          "enemy_id": "0x010430",
+          "level": 68,
+          "exp": 1185
+        },
+        {
+          "comment": "Jewelry-Bearing Lux Corpse Punisher",
+          "enemy_id": "0x010515",
+          "named_enemy_params_id": 1121,
+          "level": 68,
+          "exp": 1185,
+          "drop_items": [
+            {
+              "item_id": 7741,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8024,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 13480,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Jewelry-Bearing Lux Corpse Punisher",
+          "enemy_id": "0x010515",
+          "named_enemy_params_id": 1121,
+          "level": 68,
+          "exp": 1185,
+          "drop_items": [
+            {
+              "item_id": 7741,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8024,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 13480,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Jewelry-Bearing Lux Corpse Punisher",
+          "enemy_id": "0x010515",
+          "named_enemy_params_id": 1121,
+          "level": 68,
+          "exp": 1185,
+          "drop_items": [
+            {
+              "item_id": 7741,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 8024,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.4
+            },
+            {
+              "item_id": 13480,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

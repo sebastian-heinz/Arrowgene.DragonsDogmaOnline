@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Pure White Mane",
           "item_id": 7780,
           "num": 1
         },
         {
+          "comment": "Crest of Greater Magick",
           "item_id": 9200,
           "num": 1
         },
         {
+          "comment": "Grilled Mushroom",
           "item_id": 9415,
           "num": 2
         }
@@ -47,52 +50,52 @@
         "id": 113,
         "group_id": 2
       },
-      "placement_type": "manual",
+      "starting_index": 4,
       "enemies": [
         {
+          "comment": "Vigilant Harpy",
+          "enemy_id": "0x010600",
+          "start_think_tbl_no": 2,
+          "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 117,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Harpy",
+          "enemy_id": "0x010600",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 117,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Harpy",
+          "enemy_id": "0x010600",
+          "start_think_tbl_no": 2,
+          "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 117,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Harpy",
+          "enemy_id": "0x010600",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 117,
+          "is_boss": false
+        },
+        {
+          "comment": "Brutal White Chimera",
           "enemy_id": "0x015202",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 54,
-          "level": 42,
-          "exp": 6706,
-          "is_boss": true,
-          "index": 0
-        },
-        {
-          "enemy_id": "0x010600",
-          "start_think_tbl_no": 2,
-		      "named_enemy_params_id": 53,
-          "level": 41,
-          "exp": 4200,
-          "is_boss": false,
-          "index": 1
-        },
-        {
-          "enemy_id": "0x010600",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
-          "level": 41,
-          "exp": 4200,
-          "is_boss": false,
-          "index": 3
-        },
-        {
-          "enemy_id": "0x010600",
-          "start_think_tbl_no": 2,
-		      "named_enemy_params_id": 53,
-          "level": 41,
-          "exp": 4200,
-          "is_boss": false,
-          "index": 7
-        },
-        {
-          "enemy_id": "0x010600",
-          "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
-          "level": 41,
-          "exp": 4200,
-          "is_boss": false,
-          "index": 8
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 4887,
+          "is_boss": true
         }
       ]
     }

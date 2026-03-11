@@ -1,0 +1,111 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "From the Water's Depths (II)",
+  "quest_id": 20015000,
+  "base_level": 17,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BreyaCoast",
+  "news_image": 22,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 560
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 460
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 70
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Iron Ingot",
+          "item_id": 7872,
+          "num": 1
+        },
+        {
+          "comment": "Eyedrops",
+          "item_id": 39,
+          "num": 3
+        },
+        {
+          "comment": "Bottled Haste",
+          "item_id": 9365,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 95
+      },
+      "enemies": [
+        {
+          "comment": "Vigilant Giant Saurian",
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
+          "level": 17,
+          "exp": 111,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Vigilant Giant Saurian",
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
+          "level": 17,
+          "exp": 111,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Vigilant Giant Saurian",
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
+          "level": 17,
+          "exp": 111,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Vigilant Giant Saurian",
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
+          "level": 17,
+          "exp": 111
+        },
+        {
+          "comment": "Vigilant Giant Saurian",
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
+          "level": 17,
+          "exp": 111
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

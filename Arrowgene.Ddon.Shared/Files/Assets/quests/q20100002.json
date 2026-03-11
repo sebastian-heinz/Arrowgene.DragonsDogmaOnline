@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Northern Oregano",
           "item_id": 9064,
           "num": 3
         },
         {
+          "comment": "Superior Quality Gala Extract",
           "item_id": 9362,
           "num": 3
         },
         {
+          "comment": "Throwing Knife",
           "item_id": 9398,
           "num": 3
         }
@@ -58,11 +61,19 @@
         "layer_no": 1
       },
       "npc_id": "Christoph",
-      "message_id": 11372
+      "message_id": 11337
     },
     {
       "type": "CollectItem",
       "announce_type": "Accept",
+      "result_commands": [ 
+        { 
+          "type": "QstTalkChg", 
+          "Param1": 513, 
+          "Param2": 11343,
+          "comment": "Idle dialogue"
+        }
+      ],
       "stage_id": {
         "id": 70,
         "group_id": 1,
@@ -544,7 +555,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Christoph",
-      "message_id": 11842
+      "message_id": 11340
     }
   ]
 }

@@ -21,6 +21,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CServerGetGameSettingRes.Serializer().Read(GameDump.Dump_10.AsBuffer());
 
             res.GameSetting.JobLevelMax = Server.GameSettings.GameServerSettings.JobLevelMax;
+            res.GameSetting.JobPointMax = Server.GameSettings.GameServerSettings.JobPointMax;
+
             res.GameSetting.ExpRequiredPerLevel[0].ExpList = res.GameSetting.ExpRequiredPerLevel[0].ExpList.Take((int)res.GameSetting.JobLevelMax).ToList();
 
             res.GameSetting.EnableVisualEquip = Server.GameSettings.GameServerSettings.EnableVisualEquip;

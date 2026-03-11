@@ -1,0 +1,116 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Eliminate the Orc Expedition! (III)",
+    "quest_id": 20085003,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "area_id": "EasternZandora",
+    "variant_index": 2,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1810
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 180
+        },
+        {
+            "type": "exp",
+            "amount": 1810
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Demon's Prized Liquor",
+                    "item_id": 9443,
+                    "num": 1
+                },
+                {
+                    "comment": "Pigeon Blood",
+                    "item_id": 7910,
+                    "num": 1
+                },
+                {
+                    "comment": "Orc Decoration",
+                    "item_id": 8020,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 468
+            },
+            "starting_index": 8,
+            "enemies": [
+                {
+                    "comment": "Dangerous Orc Battler",
+                    "enemy_id": "0x015810",
+                    "named_enemy_params_id": 56,
+                    "level": 55,
+                    "exp": 352,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
+                },
+                {
+                    "comment": "Dangerous Orc Battler",
+                    "enemy_id": "0x015810",
+                    "named_enemy_params_id": 56,
+                    "level": 55,
+                    "exp": 352,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
+                },
+                {
+                    "comment": "Dangerous Orc Battler",
+                    "enemy_id": "0x015810",
+                    "named_enemy_params_id": 56,
+                    "level": 55,
+                    "exp": 352
+                },
+                {
+                    "comment": "Dangerous Orc Battler",
+                    "enemy_id": "0x015810",
+                    "named_enemy_params_id": 56,
+                    "level": 55,
+                    "exp": 352
+                },
+                {
+                    "comment": "Dangerous Orc General",
+                    "enemy_id": "0x015830",
+                    "named_enemy_params_id": 56,
+                    "level": 55,
+                    "exp": 1505
+                },
+                {
+                    "comment": "Dangerous Orc General",
+                    "enemy_id": "0x015830",
+                    "named_enemy_params_id": 56,
+                    "level": 55,
+                    "exp": 1505
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [0]
+        }
+    ]
+}

@@ -1,0 +1,144 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Temptation of Thievery (II)",
+  "quest_id": 20070005,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 516,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1480
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 190
+    },
+    {
+      "type": "exp",
+      "amount": 1480
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Spirit Silver Ingot",
+          "item_id": 7884,
+          "num": 2
+        },
+        {
+          "comment": "Grilled Mushroom",
+          "item_id": 9415,
+          "num": 2
+        },
+        {
+          "comment": "Wild Steak",
+          "item_id": 9412,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 123,
+        "group_id": 0
+      },
+      "starting_index": 4,
+      "enemies": [
+        {
+          "comment": "Brutal Frost Corpse Punisher",
+          "enemy_id": "0x010511",
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 231
+        },
+        {
+          "comment": "Brutal Frost Corpse Punisher",
+          "enemy_id": "0x010511",
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 231
+        },
+        {
+          "comment": "Brutal Frost Corpse Punisher",
+          "enemy_id": "0x010511",
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 231
+        },
+        {
+          "comment": "Brutal Frost Corpse Punisher",
+          "enemy_id": "0x010511",
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 231
+        },
+        {
+          "comment": "Brutal Frost Corpse Punisher",
+          "enemy_id": "0x010511",
+          "named_enemy_params_id": 54,
+          "level": 43,
+          "exp": 231
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1067,
+          "comment": "Spawns Bandit0 NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 123,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Bandit0",
+      "message_id": 11493
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 522,
+          "Param2": 13297
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 123,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Bandit0",
+      "message_id": 13294
+    }
+  ]
+}

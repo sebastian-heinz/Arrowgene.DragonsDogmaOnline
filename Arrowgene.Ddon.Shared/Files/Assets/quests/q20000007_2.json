@@ -1,0 +1,172 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Crackdown on Store Vandals (III)",
+  "quest_id": 20000007,
+  "base_level": 15,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 9,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 590
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 490
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 50
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Rough Thread",
+          "item_id": 7952,
+          "num": 2
+        },
+        {
+          "comment": "Mushroom Sauté",
+          "item_id": 1351,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "comment": "GroupId: 0",
+      "stage_id": {
+        "id": 161,
+        "group_id": 0
+      },
+      "starting_index": 2,
+      "enemies": [
+        {
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 46,
+          "level": 15,
+          "exp": 77,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 46,
+          "level": 15,
+          "exp": 77,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        }
+      ]
+    },
+    {
+      "comment": "GroupId: 1",
+      "stage_id": {
+        "id": 161,
+        "group_id": 2
+      },
+      "starting_index": 2,
+      "enemies": [
+        {
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 46,
+          "level": 15,
+          "exp": 77,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Vigilant Rogue Seeker",
+          "enemy_id": "0x011001",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 46,
+          "level": 15,
+          "exp": 77,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Vigilant Rogue Mage",
+          "enemy_id": "0x011005",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 50,
+          "level": 15,
+          "exp": 77
+        },
+        {
+          "comment": "Vigilant Rogue Mage",
+          "enemy_id": "0x011005",
+          "named_enemy_params_id": 53,
+          "hm_present_no": 50,
+          "level": 15,
+          "exp": 77
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 23,
+        "group_id": 0
+      },
+      "npc_id": "Eterna",
+      "message_id": 10980
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1303,
+          "Param2": 10986
+        }
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "groups": [ 1 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 1 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 23,
+        "group_id": 0
+      },
+      "announce_type": "Update",
+      "npc_id": "Eterna",
+      "message_id": 10983
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Forgotten Evil Image",
+  "quest_id": 21000013,
+  "base_level": 57,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "HidellPlains",
+  "order_conditions": [ { "type": "AreaRank", "Param1": 1, "Param2": 13 } ],
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2965
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1880
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 235
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Sacred Blessed Cloth",
+          "item_id": 7943,
+          "num": 1
+        },
+        {
+          "comment": "Cedar Wood",
+          "item_id": 7967,
+          "num": 2
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups" : [
+    {
+      "stage_id": {
+        "id": 87,
+        "group_id": 1
+      },
+      "starting_index": 9,
+      "enemies": [
+        {
+          "comment": "Infected Gorecyclops (Severe)",
+          "enemy_id": "0x015012",
+          "level": 57,
+          "exp": 3292,
+          "is_boss": true,
+          "infection_type": 2
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 87,
+        "group_id": 7
+      },
+      "enemies": [
+        {
+          "comment": "Goblin Bomber",
+          "enemy_id": "0x011150",
+          "level": 57,
+          "exp": 656
+        },
+        {
+          "comment": "Goblin Bomber",
+          "enemy_id": "0x011150",
+          "level": 57,
+          "exp": 656
+        },
+        {
+          "comment": "Goblin Bomber",
+          "enemy_id": "0x011150",
+          "level": 57,
+          "exp": 656
+        },
+        {
+          "comment": "Goblin Bomber",
+          "enemy_id": "0x011150",
+          "level": 57,
+          "exp": 656
+        },
+        {
+          "comment": "Goblin Bomber",
+          "enemy_id": "0x011150",
+          "level": 57,
+          "exp": 656
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "blocks": [
+        {
+          "comment": "This dungeon is unlocked early, so a check is necessary",
+          "type": "Raw",
+          "check_commands": [ { "type": "CheckAreaRank", "Param1": 1, "Param1": 13 } ]
+        },
+        {
+          "type": "DiscoverEnemy",
+          "groups": [0],
+          "result_commands": [ { "type": "QstLayoutFlagOn", "Param1": 2995 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "announce_type": "Accept",
+          "groups": [0],
+          "result_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "groups": [1]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Group 0 boss HP check",
+          "type": "Raw",
+          "check_commands": [ { "type": "EmHpLess", "Param1": 502, "Param2": 1, "Param3": 9, "Param4": 40 } ]
+        },
+        {
+          "type": "SpawnGroup",
+          "announce_type": "Update",
+          "groups": [1],
+          "check_commands": [
+            { "type": "MyQstFlagOff", "Param1": 0 },
+            { "type": "MyQstFlagOn",  "Param1": 1 }
+          ]
+        },
+        {
+          "comment": "Group 1 is dead and group 0 is still alive, update announcement",
+          "type": "Raw",
+          "result_commands":  [ { "type": "UpdateAnnounce", "Param1": 3 } ]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 0 dead",
+          "type": "Raw",
+          "check_commands": [ { "type": "DieEnemy", "Param1": 502, "Param2": 1, "Param3": 9 } ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [0]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn",  "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 1 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 502, "Param2": 7, "Param3": 0 } ,
+              { "type": "DieEnemy", "Param1": 502, "Param2": 7, "Param3": 1 } ,
+              { "type": "DieEnemy", "Param1": 502, "Param2": 7, "Param3": 2 } ,
+              { "type": "DieEnemy", "Param1": 502, "Param2": 7, "Param3": 3 } ,
+              { "type": "DieEnemy", "Param1": 502, "Param2": 7, "Param3": 4 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [1]
+        }
+      ]
+    }
+  ]
+}

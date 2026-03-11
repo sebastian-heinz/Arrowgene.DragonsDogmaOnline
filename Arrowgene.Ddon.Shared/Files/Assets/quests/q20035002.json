@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Loneliness Gloves",
           "item_id": 9659,
           "num": 1
         },
         {
+          "comment": "Throwing Skull",
           "item_id": 9397,
           "num": 3
         },
         {
+          "comment": "Refreshing Remedy",
           "item_id": 9375,
           "num": 3
         }
@@ -47,30 +50,39 @@
         "id": 69,
         "group_id": 18
       },
+      "starting_index": 9,
       "enemies": [
         {
-          "enemy_id": "0x010309",
-          "level": 36,
-          "exp": 350,
-          "is_boss": false
+          "comment": "Vigilant Undead Swordsman",
+          "enemy_id": "0x010503",
+          "named_enemy_params_id": 53,
+          "level": 33,
+          "exp": 129,
+          "repop_count": 1,
+          "repop_wait_second": 10
         },
         {
-          "enemy_id": "0x010309",
-          "level": 36,
-          "exp": 350,
-          "is_boss": false
+          "comment": "Vigilant Undead Swordsman",
+          "enemy_id": "0x010503",
+          "named_enemy_params_id": 53,
+          "level": 33,
+          "exp": 129,
+          "repop_count": 1,
+          "repop_wait_second": 10
         },
         {
+          "comment": "Vigilant Skeleton Sorcerer",
           "enemy_id": "0x010309",
-          "level": 34,
-          "exp": 266,
-          "is_boss": false
+          "named_enemy_params_id": 53,
+          "level": 33,
+          "exp": 151
         },
         {
+          "comment": "Vigilant Skeleton Sorcerer",
           "enemy_id": "0x010309",
-          "level": 34,
-          "exp": 266,
-          "is_boss": false
+          "named_enemy_params_id": 53,
+          "level": 33,
+          "exp": 151
         }
       ]
     }

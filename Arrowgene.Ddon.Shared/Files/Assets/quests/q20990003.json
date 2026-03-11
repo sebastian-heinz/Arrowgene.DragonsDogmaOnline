@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Aliment Extractant",
                     "item_id": 8033,
                     "num": 2
                 },
                 {
+                    "comment": "Mergan Ring",
                     "item_id": 8023,
                     "num": 1
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 2
                 }
@@ -48,23 +51,65 @@
             },
             "enemies": [
                 {
-                    "enemy_id": "0x011020",
+                    "comment": "Dangerous Mergan Defender",
+                    "enemy_id": "0x011024",
+                    "named_enemy_params_id": 56,
                     "level": 50,
-                    "exp": 1500,
+                    "exp": 262,
+                    "is_boss": false,
+                    "hm_present_no": 63
+                },
+                {
+                    "comment": "Dangerous Mergan Warrior",
+                    "enemy_id": "0x011020",
+                    "named_enemy_params_id": 56,
+                    "level": 50,
+                    "exp": 262,
                     "is_boss": false,
                     "hm_present_no": 59
                 },
                 {
-                    "enemy_id": "0x011023",
+                    "comment": "Dangerous Mergan Warrior",
+                    "enemy_id": "0x011020",
+                    "named_enemy_params_id": 56,
                     "level": 50,
-                    "exp": 1500,
+                    "exp": 262,
                     "is_boss": false,
-                    "hm_present_no": 62
+                    "hm_present_no": 59
                 },
                 {
+                    "comment": "Dangerous Mergan Defender",
                     "enemy_id": "0x011024",
+                    "named_enemy_params_id": 56,
                     "level": 50,
-                    "exp": 1500,
+                    "exp": 262,
+                    "is_boss": false,
+                    "hm_present_no": 63
+                },
+                {
+                    "comment": "Dangerous Mergan Defender",
+                    "enemy_id": "0x011024",
+                    "named_enemy_params_id": 56,
+                    "level": 50,
+                    "exp": 262,
+                    "is_boss": false,
+                    "hm_present_no": 63
+                },
+                {
+                    "comment": "Dangerous Mergan Defender",
+                    "enemy_id": "0x011024",
+                    "named_enemy_params_id": 56,
+                    "level": 50,
+                    "exp": 262,
+                    "is_boss": false,
+                    "hm_present_no": 63
+                },
+                {
+                    "comment": "Dangerous Mergan Defender",
+                    "enemy_id": "0x011024",
+                    "named_enemy_params_id": 56,
+                    "level": 50,
+                    "exp": 262,
                     "is_boss": false,
                     "hm_present_no": 63
                 }
@@ -80,11 +125,19 @@
                 "layer_no": 1
             },
             "npc_id": "Ariadne",
-            "message_id": 11372
+            "message_id": 11487
         },
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 2303, 
+                "Param2": 13257,
+                "comment": "Idle dialogue"
+                }
+            ],
             "groups": [0]
         },
         {
@@ -114,7 +167,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Ariadne",
-            "message_id": 11842
+            "message_id": 13254
         }
     ]
 }

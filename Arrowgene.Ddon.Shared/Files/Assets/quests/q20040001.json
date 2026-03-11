@@ -48,31 +48,56 @@
     {
       "stage_id": {
         "id": 72,
-        "group_id": 18
+        "group_id": 19
       },
+      "starting_index": 7,
       "enemies": [
         {
-          "enemy_id": "0x010450",
+          "comment": "Vigilant Rock Saurian Spinel",
+          "enemy_id": "0x010451",
+          "named_enemy_params_id": 53,
           "level": 30,
-          "exp": 500,
+          "exp": 246,
           "is_boss": false
         },
         {
-          "enemy_id": "0x010450",
+          "comment": "Vigilant Rock Saurian Spinel",
+          "enemy_id": "0x010451",
+          "named_enemy_params_id": 53,
           "level": 30,
-          "exp": 500,
+          "exp": 246,
           "is_boss": false
         },
         {
-          "enemy_id": "0x010450",
+          "comment": "Vigilant Rock Saurian Spinel",
+          "enemy_id": "0x010451",
+          "named_enemy_params_id": 53,
           "level": 30,
-          "exp": 500,
+          "exp": 246,
           "is_boss": false
         },
         {
-          "enemy_id": "0x010450",
+          "comment": "Vigilant Rock Saurian Spinel",
+          "enemy_id": "0x010451",
+          "named_enemy_params_id": 53,
           "level": 30,
-          "exp": 500,
+          "exp": 246,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Rock Saurian Spinel",
+          "enemy_id": "0x010451",
+          "named_enemy_params_id": 53,
+          "level": 30,
+          "exp": 246,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Rock Saurian Spinel",
+          "enemy_id": "0x010451",
+          "named_enemy_params_id": 53,
+          "level": 30,
+          "exp": 246,
           "is_boss": false
         }
       ]
@@ -87,11 +112,19 @@
         "layer_no": 1
       },
       "npc_id": "Cromwell",
-      "message_id": 11372
+      "message_id": 11063
     },
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1619,
+          "Param2": 11069
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -109,7 +142,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Cromwell",
-      "message_id": 11842
+      "message_id": 11066
     }
   ]
 }

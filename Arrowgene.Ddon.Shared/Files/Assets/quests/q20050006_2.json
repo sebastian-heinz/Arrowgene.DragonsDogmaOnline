@@ -1,0 +1,94 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Witch of the Forest (III)",
+  "quest_id": 20050006,
+  "base_level": 17,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeForest",
+  "news_image": 114,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 70
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 90
+    },
+    {
+      "type": "exp",
+      "amount": 370
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Copper Sabatons",
+          "item_id": 8328,
+          "num": 1
+        },
+        {
+          "comment": "Demon's Periapt",
+          "item_id": 44,
+          "num": 2
+        },
+        {
+          "comment": "Angel's Periapt",
+          "item_id": 43,
+          "num": 2
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "comment": "Peridot",
+          "item_id": 8980,
+          "num": 1,
+          "chance": 1.0
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 16
+      },
+      "npc_id": "Emerada0",
+      "message_id": 13111
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 16,
+        "group_id": 1
+      },
+      "npc_id": "Emerada0",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 4501,
+          "Param2": 14837
+        }
+      ],
+      "items": [
+        {
+          "comment": "Amethyst",
+          "id": 7897,
+          "amount": 3
+        }
+      ],
+      "message_id": 13114
+    }
+  ]
+}

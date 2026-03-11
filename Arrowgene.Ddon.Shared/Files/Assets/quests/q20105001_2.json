@@ -1,0 +1,120 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Foolish Occupiers (III)",
+  "quest_id": 20105001,
+  "base_level": 56,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 209,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1840
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "exp",
+      "amount": 1840
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Writhing Live Bark",
+          "item_id": 9442,
+          "num": 1
+        },
+        {
+          "comment": "Ent Seed",
+          "item_id": 7992,
+          "num": 2
+        },
+        {
+          "comment": "Ent Branch",
+          "item_id": 7971,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 70,
+        "group_id": 7
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Legendary Ent",
+          "enemy_id": "0x015031",
+          "named_enemy_params_id": 57,
+          "level": 56,
+          "exp": 4212,
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "comment": "Brutal Harpy",
+          "enemy_id": "0x010600",
+          "named_enemy_params_id": 54,
+          "level": 56,
+          "exp": 151,
+          "index": 1
+        },
+        {
+          "comment": "Brutal Harpy",
+          "enemy_id": "0x010600",
+          "named_enemy_params_id": 54,
+          "level": 56,
+          "exp": 151,
+          "index": 4
+        },
+        {
+          "comment": "Brutal Harpy",
+          "enemy_id": "0x010600",
+          "named_enemy_params_id": 54,
+          "level": 56,
+          "exp": 151,
+          "index": 5
+        },
+        {
+          "comment": "Brutal Harpy",
+          "enemy_id": "0x010600",
+          "named_enemy_params_id": 54,
+          "level": 56,
+          "exp": 151,
+          "index": 6
+        },
+        {
+          "comment": "Brutal Harpy",
+          "enemy_id": "0x010600",
+          "named_enemy_params_id": 54,
+          "level": 56,
+          "exp": 151,
+          "index": 7
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

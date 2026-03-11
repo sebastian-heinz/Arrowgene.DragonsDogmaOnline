@@ -1,0 +1,78 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Shadows in the Demon’s Den (II)",
+  "quest_id": 20055003,
+  "base_level": 57,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 113,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1880
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 300
+    },
+    {
+      "type": "exp",
+      "amount": 2250
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Magick Lion's Large Mane",
+          "item_id": 9437,
+          "num": 1
+        },
+        {
+          "comment": "White Lion Pelt",
+          "item_id": 7739,
+          "num": 1
+        },
+        {
+          "comment": "Pure White Mane",
+          "item_id": 7780,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 160,
+        "group_id": 0
+      },
+      "enemies": [
+        {
+          "comment": "Legendary White Chimera",
+          "enemy_id": "0x015202",
+          "named_enemy_params_id": 57,
+          "level": 57,
+          "exp": 5937,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

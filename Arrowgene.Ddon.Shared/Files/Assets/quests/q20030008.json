@@ -27,17 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "Healing Elixir",
-          "item_id": 2594,
+          "comment": "Pourpoint",
+          "item_id": 982,
           "num": 1
         },
         {
-          "comment": "Quality Gala Extract",
-          "item_id": 3635,
+          "comment": "Belligerent Tied",
+          "item_id": 1000,
           "num": 1
         },
         {
-          "comment": "Small Thief Key",
+          "comment": "Wild Steak",
           "item_id": 9412,
           "num": 2
         }
@@ -47,6 +47,7 @@
       "type": "random",
       "loot_pool": [
           {
+              "comment": "Scholar's Ring",
               "item_id": 8992,
               "num": 1,
               "chance": 0.6
@@ -60,13 +61,15 @@
         "id": 136,
         "group_id": 2
       },
+      "starting_index": 1,
       "enemies": [
         {
+          "comment": "Vigilant Ogre",
           "enemy_id": "0x015500",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
+          "start_think_tbl_no": 1,
           "level": 32,
-          "exp": 5636,
+          "exp": 2420,
           "is_boss": true
         }
       ]
@@ -89,11 +92,19 @@
         "layer_no": 1
       },
       "npc_id": "Man510",
-      "message_id": 11372
+      "message_id": 11407
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "type": "QstTalkChg",
+          "Param1": 510,
+          "Param2": 12227,
+          "comment": "Idle dialogue"
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -111,7 +122,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Man510",
-      "message_id": 11842
+      "message_id": 12224
     }
   ]
 }

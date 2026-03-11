@@ -32,7 +32,7 @@
           "num": 3
         },
         {
-          "comment": "Blue wiskey",
+          "comment": "Blue Whiskey",
           "item_id": 9417,
           "num": 2
         },
@@ -50,56 +50,70 @@
         "id": 90,
         "group_id": 6
       },
+      "placement_type": "manual",
       "enemies": [
         {
+          "comment": "Vigilant Undead Swordsman",
+          "enemy_id": "0x010503",
+          "named_enemy_params_id": 53,
+          "level": 37,
+          "exp": 141,
+          "index": 0
+        },
+        {
+          "comment": "Vigilant Undead Swordsman",
+          "enemy_id": "0x010503",
+          "named_enemy_params_id": 53,
+          "level": 37,
+          "exp": 141,
+          "index": 3
+        },
+        {
+          "comment": "Vigilant Undead Swordsman",
+          "enemy_id": "0x010503",
+          "named_enemy_params_id": 53,
+          "level": 37,
+          "exp": 141,
+          "index": 4
+        },
+        {
+          "comment": "Vigilant Stout Undead",
+          "enemy_id": "0x010502",
+          "named_enemy_params_id": 53,
+          "level": 34,
+          "exp": 152,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 6
+        },
+        {
+          "comment": "Vigilant Stout Undead",
+          "enemy_id": "0x010502",
+          "named_enemy_params_id": 53,
+          "level": 34,
+          "exp": 152,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 7
+        },
+        {
+          "comment": "Vigilant Stout Undead",
+          "enemy_id": "0x010502",
+          "named_enemy_params_id": 53,
+          "level": 34,
+          "exp": 152,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 8
+        },
+        {
+          "comment": "Brutal Armored Cyclops",
           "enemy_id": "0x015002",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 54,
           "level": 38,
-          "exp": 6254,
-          "is_boss": true
-        },
-        {
-          "enemy_id": "0x010301",
-          "start_think_tbl_no": 1,
-          "level": 38,
-          "exp": 1564,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010301",
-          "start_think_tbl_no": 1,
-          "level": 38,
-          "exp": 1564,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010301",
-          "start_think_tbl_no": 1,
-          "level": 38,
-          "exp": 1564,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010502",
-          "start_think_tbl_no": 1,
-             "level": 38,
-          "exp": 1564,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010502",
-          "start_think_tbl_no": 2,
-               "level": 38,
-          "exp": 1564,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010502",
-          "start_think_tbl_no": 2,
-           "level": 38,
-          "exp": 1564,
-          "is_boss": false
+          "exp": 3339,
+          "is_boss": true,
+          "index": 14
         }
       ]
     }
@@ -121,11 +135,19 @@
         "layer_no": 1
       },
       "npc_id": "Bandit0",
-      "message_id": 11372
+      "message_id": 11989
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "type": "QstTalkChg",
+          "Param1": 522,
+          "Param2": 11988,
+          "comment": "Idle dialogue"
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -143,7 +165,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Bandit0",
-      "message_id": 11842
+      "message_id": 11986
     }
   ]
 }

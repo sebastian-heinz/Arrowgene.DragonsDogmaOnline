@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Sinister Black Cloth",
           "item_id": 7947,
           "num": 1
         },
         {
+          "comment": "Dragon's Spit",
           "item_id": 9399,
           "num": 1
         },
         {
+          "comment": "Five-Herb Salad",
           "item_id": 9414,
           "num": 2
         }
@@ -45,14 +48,63 @@
     {
       "stage_id": {
         "id": 163,
-        "group_id": 8
+        "group_id": 9
       },
+      "starting_index": 3,
       "enemies": [
         {
-          "enemy_id": "0x015600",
-          "level": 43,
-          "exp": 11000,
+          "comment": "Vigilant Witch",
+          "enemy_id": "0x015604",
+          "named_enemy_params_id": 53,
+          "start_think_tbl_no": 2,
+          "level": 41,
+          "exp": 2772,
           "is_boss": true
+        },
+        {
+          "comment": "Sludgeman",
+          "enemy_id": "0x010510",
+          "start_think_tbl_no": 8,
+          "level": 43,
+          "exp": 200,
+          "is_required": false,
+          "is_manual_set": true
+        },
+        {
+          "comment": "Sludgeman",
+          "enemy_id": "0x010510",
+          "start_think_tbl_no": 8,
+          "level": 43,
+          "exp": 200,
+          "is_required": false,
+          "is_manual_set": true
+        },
+        {
+          "comment": "Sludgeman",
+          "enemy_id": "0x010510",
+          "start_think_tbl_no": 8,
+          "level": 43,
+          "exp": 200,
+          "is_required": false,
+          "is_manual_set": true
+        },
+        {
+          "comment": "Sludgeman",
+          "enemy_id": "0x010510",
+          "start_think_tbl_no": 8,
+          "level": 43,
+          "exp": 200,
+          "is_required": false,
+          "is_manual_set": true
+        },
+        {
+          "comment": "Sludgeman",
+          "enemy_id": "0x010510",
+          "start_think_tbl_no": 8,
+          "level": 43,
+          "exp": 200,
+          "is_required": false,
+          "is_manual_set": true
         }
       ]
     }

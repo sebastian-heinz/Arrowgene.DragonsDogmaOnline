@@ -1,0 +1,158 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Seeking Fiend Wing Membrane",
+  "quest_id": 20025002,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BetlandPlains",
+  "news_image": 551,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 5940
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2570
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1050
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Fiend Wing Membrane",
+          "item_id": 9448,
+          "num": 5
+        },
+        {
+          "comment": "Scroll Of Bewitching",
+          "item_id": 9447,
+          "num": 1
+        },
+        {
+          "comment": "Safeguarding Satin",
+          "item_id": 9445,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "comment": "Group 1 - Damned Destroyer and Giga Breaker",
+      "stage_id": {
+        "id": 148,
+        "group_id": 19
+      },
+      "starting_index": 1,
+      "enemies": [
+        {
+          "comment": "Damned Destroyer (Damned Golem)",
+          "enemy_id": "0x015103",
+          "named_enemy_params_id": 636,
+          "level": 59,
+          "exp": 5241,
+          "is_boss": true
+        },
+        {
+          "comment": "Giga Breaker (Gigant Machina)",
+          "enemy_id": "0x015850",
+          "named_enemy_params_id": 637,
+          "level": 59,
+          "exp": 5376,
+          "is_boss": true
+        }
+      ]
+    },
+    {
+      "comment": "Group 2 - Clone Zuhl",
+      "stage_id": {
+        "id": 77,
+        "group_id": 1
+      },
+      "enemies": [
+        {
+          "comment": "Clone Zuhl",
+          "enemy_id": "0x020403",
+          "named_enemy_params_id": 635,
+          "level": 60,
+          "exp": 7360,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 66
+      },
+      "npc_id": "Dikka",
+      "message_id": 16427
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1904,
+          "Param2": 16428
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 66
+      },
+      "announce_type": "Update",
+      "npc_id": "Dikka",
+      "message_id": 16429
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1904,
+          "Param2": 16430
+        }
+      ],
+      "groups": [ 1 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 1 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 66
+      },
+      "announce_type": "Update",
+      "npc_id": "Dikka",
+      "message_id": 16431
+    }
+  ]
+}

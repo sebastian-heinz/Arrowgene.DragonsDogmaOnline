@@ -1,0 +1,124 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Shadow That Roams the Dead City (Calamity II)",
+    "quest_id": 20995011,
+    "base_level": 60,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MergodaRuins",
+    "variant_ìndex": 2,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 5040
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4320
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 570
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Crest of Restoration+",
+                    "item_id": 11743,
+                    "num": 1
+                },
+                {
+                    "comment": "Alchemite",
+                    "item_id": 7871,
+                    "num": 1
+                },
+                {
+                    "comment": "Flame Crystal",
+                    "item_id": 7913,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 84,
+                "group_id": 9
+            },
+            "enemies": [
+                {
+                    "comment": "Fire Armed Magickal Construct - Combat Type (Geo Golem)",
+                    "enemy_id": "0x015104",
+                    "named_enemy_params_id": 629,
+                    "level": 60,
+                    "exp": 5440,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Titan Soldier - Type III (Goliath)",
+                    "enemy_id": "0x015102",
+                    "named_enemy_params_id": 628,
+                    "level": 60,
+                    "exp": 7905,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Brutal Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "named_enemy_params_id": 54,
+                    "level": 60,
+                    "exp": 550,
+                    "repop_count": 3,
+                    "repop_wait_second": 10
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 63,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Theodor",
+            "message_id": 16083
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 10, 
+                "Param2": 16084,
+                "comment": "Idle dialogue"
+                }
+            ],
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 63,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Theodor",
+            "message_id": 16085
+        }
+    ]
+}

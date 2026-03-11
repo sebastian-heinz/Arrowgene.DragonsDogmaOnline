@@ -1,42 +1,45 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Abductors' True Nature (Troll)",
+    "comment": "The Abductors' True Nature (II)",
     "quest_id": 20055004,
-    "variant_index": 1,
-    "base_level": 31,
+    "base_level": 23,
     "minimum_item_rank": 0,
     "discoverable": false,
     "area_id": "MysreeForest",
     "news_image": 111,
+    "variant_index": 1,
     "rewards": [
         {
             "type": "wallet",
             "wallet_type": "Gold",
-            "amount": 1020
+            "amount": 630
         },
         {
             "type": "wallet",
             "wallet_type": "RiftPoints",
-            "amount": 160
+            "amount": 120
         },
         {
             "type": "exp",
-            "amount": 1430
+            "amount": 910
         },
         {
             "type": "select",
             "loot_pool": [
                 {
-                    "item_id": 605,
+                    "comment": "Bloodstained Red Cloth",
+                    "item_id": 7946,
                     "num": 1
                 },
                 {
-                    "item_id": 9411,
-                    "num": 2
+                    "comment": "Interventive",
+                    "item_id": 9374,
+                    "num": 3
                 },
                 {
-                    "item_id": 52,
+                    "comment": "Small Thief's Key",
+                    "item_id": 9429,
                     "num": 3
                 }
             ]
@@ -48,12 +51,53 @@
                 "id": 67,
                 "group_id": 4
             },
+            "starting_index": 6,
             "enemies": [
                 {
-                    "enemy_id": "0x015040",
-                    "level": 31,
-                    "exp": 5000,
-                    "is_boss": true
+                    "comment": "Brutal Sling Redcap",
+                    "enemy_id": "0x011112",
+                    "named_enemy_params_id": 54,
+                    "level": 23,
+                    "exp": 102,
+                    "repop_count": 1,
+                    "repop_wait_second": 5
+                },
+                {
+                    "comment": "Brutal Sling Redcap",
+                    "enemy_id": "0x011112",
+                    "named_enemy_params_id": 54,
+                    "level": 23,
+                    "exp": 102,
+                    "repop_count": 1,
+                    "repop_wait_second": 5
+                },
+                {
+                    "comment": "Brutal Redcap Fighter",
+                    "enemy_id": "0x011111",
+                    "named_enemy_params_id": 54,
+                    "level": 23,
+                    "exp": 102
+                },
+                {
+                    "comment": "Brutal Redcap Fighter",
+                    "enemy_id": "0x011111",
+                    "named_enemy_params_id": 54,
+                    "level": 23,
+                    "exp": 102
+                },
+                {
+                    "comment": "Brutal Redcap Fighter",
+                    "enemy_id": "0x011111",
+                    "named_enemy_params_id": 54,
+                    "level": 23,
+                    "exp": 102
+                },
+                {
+                    "comment": "Brutal Redcap Fighter",
+                    "enemy_id": "0x011111",
+                    "named_enemy_params_id": 54,
+                    "level": 23,
+                    "exp": 102
                 }
             ]
         }

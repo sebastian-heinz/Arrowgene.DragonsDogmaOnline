@@ -12,29 +12,32 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 1050
+      "amount": 1040
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 140
+      "amount": 160
     },
     {
       "type": "exp",
-      "amount": 1230
+      "amount": 1250
     },
     {
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Innocence Cape",
           "item_id": 9759,
           "num": 1
         },
         {
+          "comment": "Three-Herb Salad",
           "item_id": 9410,
           "num": 2
         },
         {
+          "comment": "Superior Quality Gala Extract",
           "item_id": 9362,
           "num": 2
         }
@@ -47,34 +50,43 @@
         "id": 99,
         "group_id": 2
       },
+      "starting_index": 4,
       "enemies": [
         {
+          "comment": "Brutal Mist Hunter",
           "enemy_id": "0x011031",
+          "named_enemy_params_id": 54,
+          "hm_present_no": 69,
           "level": 38,
-          "exp": 450,
-          "is_boss": false,
-          "hm_present_no": 69
+          "exp": 188,
+          "repop_count": 1,
+          "repop_wait_time": 10
         },
         {
+          "comment": "Brutal Mist Hunter",
           "enemy_id": "0x011031",
+          "named_enemy_params_id": 54,
+          "hm_present_no": 69,
           "level": 38,
-          "exp": 450,
-          "is_boss": false,
-          "hm_present_no": 69
+          "exp": 188,
+          "repop_count": 1,
+          "repop_wait_time": 10
         },
         {
+          "comment": "Brutal Mist Sorcerer",
           "enemy_id": "0x011033",
+          "named_enemy_params_id": 54,
+          "hm_present_no": 71,
           "level": 38,
-          "exp": 450,
-          "is_boss": false,
-          "hm_present_no": 71
+          "exp": 188
         },
         {
+          "comment": "Brutal Mist Sorcerer",
           "enemy_id": "0x011033",
+          "named_enemy_params_id": 54,
+          "hm_present_no": 71,
           "level": 38,
-          "exp": 450,
-          "is_boss": false,
-          "hm_present_no": 71
+          "exp": 188
         }
       ]
     }

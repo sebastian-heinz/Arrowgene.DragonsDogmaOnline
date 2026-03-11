@@ -1,0 +1,267 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Bridges of Our Livelihood (III)",
+    "quest_id": 20050009,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MysreeForest",
+    "news_image": 103,
+    "variant_index": 2,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1510
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1510
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 180
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Sand of Reminiscence",
+                    "item_id": 9441,
+                    "num": 1
+                },
+                {
+                    "comment": "Demonic Gem",
+                    "item_id": 7911,
+                    "num": 1
+                },
+                {
+                    "comment": "Cracked Black Horn",
+                    "item_id": 7753,
+                    "num": 2
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 51
+            },
+            "enemies": [
+                {
+                    "comment": "Vigilant Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "named_enemy_params_id": 53,
+                    "level": 55,
+                    "exp": 223,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
+                },
+                {
+                    "comment": "Vigilant Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "named_enemy_params_id": 53,
+                    "level": 55,
+                    "exp": 223,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
+                },
+                {
+                    "comment": "Vigilant Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "named_enemy_params_id": 53,
+                    "level": 55,
+                    "exp": 223,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 55
+            },
+            "starting_index": 4,
+            "enemies": [
+                {
+                    "comment": "Vigilant Shadow Goblin Fighter",
+                    "enemy_id": "0x011131",
+                    "named_enemy_params_id": 53,
+                    "level": 55,
+                    "exp": 223,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
+                },
+                {
+                    "comment": "Vigilant Shadow Goblin Fighter",
+                    "enemy_id": "0x011131",
+                    "named_enemy_params_id": 53,
+                    "level": 55,
+                    "exp": 223,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
+                },
+                {
+                    "comment": "Vigilant Shadow Goblin Fighter",
+                    "enemy_id": "0x011131",
+                    "named_enemy_params_id": 53,
+                    "level": 55,
+                    "exp": 223,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 61
+            },
+            "starting_index": 2,
+            "enemies": [
+                {
+                    "comment": "Dangerous Shadow Goblin Leader",
+                    "enemy_id": "0x011160",
+                    "named_enemy_params_id": 56,
+                    "level": 55,
+                    "exp": 270,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
+                },
+                {
+                    "comment": "Dangerous Shadow Goblin Leader",
+                    "enemy_id": "0x011160",
+                    "named_enemy_params_id": 56,
+                    "level": 55,
+                    "exp": 270,
+                    "repop_count": 1,
+                    "repop_wait_second": 10
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NewNpcTalkAndOrder",
+                    "flags": [
+                        {
+                            "type": "QstLayout",
+                            "action": "Set",
+                            "value": 1060,
+                            "comment": "Spawns NPC"
+                        }
+                    ],
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "npc_id": "LightlyEquippedFemaleSoldier",
+                    "message_id": 11432
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Accept",
+                    "result_commands": [
+                        {
+                            "comment": "Quest idle dialog",
+                            "type": "QstTalkChg",
+                            "Param1": 540,
+                            "Param2": 13309
+                        }
+                    ],
+                    "set_flags": [ 4 ],
+                    "check_flags": [ 1, 2, 3 ]
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "announce_type": "Update",
+                    "npc_id": "LightlyEquippedFemaleSoldier",
+                    "message_id": 13306
+                }
+            ]
+        },
+        {
+            "comment": "Process1 (Redcap Group 1)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [ 4 ]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [ 0 ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 0 ]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [ 1 ]
+                }
+            ]
+        },
+        {
+            "comment": "Process2 (Redcap Group 2)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [ 4 ]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [ 1 ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 1 ]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [ 2 ]
+                }
+            ]
+        },
+        {
+            "comment": "Process3 (Redcap Group 3)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [ 4 ]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [ 2 ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 2 ]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [ 3 ]
+                }
+            ]
+        }
+    ]
+}

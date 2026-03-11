@@ -45,45 +45,49 @@
         "id": 146,
         "group_id": 8
       },
+      "starting_index": 5,
       "enemies": [
         {
-          "comment": "Alchemized Goblin Fighter",
+          "comment": "Vigilant Alchemized Wolf",
+          "enemy_id": "0x010207",
+          "named_enemy_params_id": 53,
+          "level": 18,
+          "exp": 87
+        },
+        {
+          "comment": "Vigilant Alchemized Wolf",
+          "enemy_id": "0x010207",
+          "named_enemy_params_id": 53,
+          "level": 18,
+          "exp": 87
+        },
+        {
+          "comment": "Vigilant Alchemized Wolf",
+          "enemy_id": "0x010207",
+          "named_enemy_params_id": 53,
+          "level": 18,
+          "exp": 87
+        },
+        {
+          "comment": "Vigilant Alchemized Goblin Fighter",
           "enemy_id": "0x011121",
           "named_enemy_params_id": 53,
           "level": 18,
-          "exp": 384
+          "exp": 85
         },
         {
-          "comment": "Alchemized Goblin Fighter",
+          "comment": "Vigilant Alchemized Goblin Fighter",
           "enemy_id": "0x011121",
           "named_enemy_params_id": 53,
           "level": 18,
-          "exp": 384
+          "exp": 85
         },
         {
-          "comment": "Alchemized Goblin Fighter",
+          "comment": "Vigilant Alchemized Goblin Fighter",
           "enemy_id": "0x011121",
           "named_enemy_params_id": 53,
           "level": 18,
-          "exp": 384
-        },
-        {
-          "comment": "Alchemized Wolf",
-          "enemy_id": "0x010207",
-          "level": 18,
-          "exp": 384
-        },
-        {
-          "comment": "Alchemized Wolf",
-          "enemy_id": "0x010207",
-          "level": 18,
-          "exp": 384
-        },
-        {
-          "comment": "Alchemized Wolf",
-          "enemy_id": "0x010207",
-          "level": 18,
-          "exp": 384
+          "exp": 85
         }
       ]
     }
@@ -109,7 +113,15 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 519,
+          "Param2": 10764
+        }
+      ]
     },
     {
       "type": "KillGroup",

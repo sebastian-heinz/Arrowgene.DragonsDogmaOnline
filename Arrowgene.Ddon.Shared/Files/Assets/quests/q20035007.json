@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Bornite Ingot",
           "item_id": 7883,
           "num": 1
         },
         {
+          "comment": "Throwing Knife",
           "item_id": 9398,
           "num": 2
         },
         {
+          "comment": "Demon's Amulet",
           "item_id": 9383,
           "num": 2
         }
@@ -45,13 +48,16 @@
     {
       "stage_id": {
         "id": 89,
-        "group_id": 9
+        "group_id": 8
       },
+      "starting_index": 1,
       "enemies": [
         {
-          "enemy_id": "0x015000",
+          "comment": "Vigilant Cyclops (Club)",
+          "enemy_id": "0x015001",
+          "named_enemy_params_id": 54,
           "level": 35,
-          "exp": 6200,
+          "exp": 2880,
           "is_boss": true
         }
       ]

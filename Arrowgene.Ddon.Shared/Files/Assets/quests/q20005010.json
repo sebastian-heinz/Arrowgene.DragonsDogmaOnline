@@ -27,16 +27,19 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Knight's Honor",
                     "item_id": 95,
                     "num": 1
                 },
                 {
-                    "item_id": 58,
-                    "num": 3
-                },
-                {
+                    "comment": "Cathedral Fire",
                     "item_id": 10047,
                     "num": 1
+                },
+                {
+                    "comment": "Lumber Knife",
+                    "item_id": 58,
+                    "num": 3
                 }
             ]
         }
@@ -47,19 +50,16 @@
                 "id": 1,
                 "group_id": 26
             },
-            "placement_type": "manual",
+            "starting_index": 1,
             "enemies": [
                 {
                     "comment": "Vigilant Cyclops",
                     "enemy_id": "0x015000",
-                    "start_think_tbl_no": 1,
                     "named_enemy_params_id": 53,
+                    "start_think_tbl_no": 1,
                     "level": 12,
-                    "exp": 816,
-                    "is_boss": true,
-                    "is_manual_set": false,
-                    "index": 0
-
+                    "exp": 1776,
+                    "is_boss": true
                 }
             ]
         }

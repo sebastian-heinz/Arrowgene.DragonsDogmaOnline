@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "A Nest of Labor and Love",
+  "comment": "A Nest of Labor and Love (III)",
   "quest_id": 20030000,
   "base_level": 36,
   "minimum_item_rank": 0,
@@ -28,17 +28,17 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "Deft Gloves",
+          "comment": "Crest of Blind Warding",
           "item_id": 9326,
           "num": 1
         },
         {
-          "comment": "Refreshing Remedys ",
+          "comment": "Mellow Ale",
           "item_id": 9413,
           "num": 2
         },
         {
-          "comment": "Throwblast",
+          "comment": "Enhanced Lumber Knife",
           "item_id": 9402,
           "num": 3
         }
@@ -54,11 +54,12 @@
         "placement_type": "manual",
         "enemies": [
         {
+          "comment": "Brutal Armored Cyclops",
           "enemy_id": "0x015002",
+          "named_enemy_params_id": 54,
           "start_think_tbl_no": 1,
-		  "named_enemy_params_id": 54,
           "level": 36,
-          "exp": 6040,
+          "exp": 3416,
           "is_boss": true,
           "index": 5
         }
@@ -82,9 +83,8 @@
         "layer_no": 1
       },
       "npc_id": "WearyHarpy",
-      "message_id": 10800
+      "message_id": 11156
     },
-    
     {
       "type": "DeliverItems",
       "stage_id": {
@@ -94,15 +94,23 @@
       },
       "npc_id": "WearyHarpy",
       "announce_type": "Accept",
-      "items": [
+      "result_commands": [
         {
-          "id": 7968,
-          "amount": 5
+          "type": "QstTalkChg",
+          "Param1": 526,
+          "Param2": 11162,
+          "comment": "Idle dialogue"
         }
       ],
-      "message_id": 10737
+      "items": [
+        {
+          "comment": "White Wood",
+          "id": 7964,
+          "amount": 2
+        }
+      ],
+      "message_id": 11165
     },
-
     {
       "type": "NewDeliverItems",
       "stage_id": {
@@ -112,16 +120,23 @@
       },
       "npc_id": "WearyHarpy",
       "announce_type": "Update",
-      "items": [
+      "result_commands": [
         {
-          "id": 7829,
-          "amount": 3
+          "type": "QstTalkChg",
+          "Param1": 526,
+          "Param2": 11162,
+          "comment": "Idle dialogue"
         }
       ],
-      "message_id": 10737
+      "items": [
+        {
+          "comment": "Healing Drop",
+          "id": 7829,
+          "amount": 5
+        }
+      ],
+      "message_id": 11166
     },
-
-    
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Update",
@@ -142,7 +157,7 @@
       },
       "announce_type": "Update",
       "npc_id": "WearyHarpy",
-      "message_id": 11842
+      "message_id": 11161
     }
   ]
 }

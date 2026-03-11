@@ -1,0 +1,223 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Evil Resounding in the Cave",
+  "quest_id": 21000061,
+  "base_level": 65,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BloodbaneIsle",
+  "order_conditions": [ { "type": "AreaRank", "Param1": 13, "Param2": 11 } ],
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 28000
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 3630
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 360
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 408,
+        "group_id": 1
+      },
+      "starting_index": 4,
+      "enemies": [
+        {
+          "comment": "Bounty Frost Machina",
+          "enemy_id": "0x015851",
+          "named_enemy_params_id": 458,
+          "level": 65,
+          "exp": 55167,
+          "is_boss": true
+        },
+        {
+          "comment": "Bounty Infected Direwolf (Severe)",
+          "enemy_id": "0x010209",
+          "named_enemy_params_id": 458,
+          "infection_type": 2,
+          "level": 65,
+          "exp": 720
+        },
+        {
+          "comment": "Bounty Infected Direwolf (Severe)",
+          "enemy_id": "0x010209",
+          "named_enemy_params_id": 458,
+          "infection_type": 2,
+          "level": 65,
+          "exp": 720
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 408,
+        "group_id": 16
+      },
+      "enemies": [
+        {
+          "comment": "Bounty Flame Skeleton",
+          "enemy_id": "0x010314",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 792
+        },
+        {
+          "comment": "Bounty Flame Skeleton",
+          "enemy_id": "0x010314",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 792
+        },
+        {
+          "comment": "Bounty Flame Skeleton",
+          "enemy_id": "0x010314",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 792
+        },
+        {
+          "comment": "Bounty Flame Skeleton",
+          "enemy_id": "0x010314",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 792
+        },
+        {
+          "comment": "Bounty Flame Skeleton",
+          "enemy_id": "0x010314",
+          "named_enemy_params_id": 458,
+          "start_think_tbl_no": 2,
+          "level": 65,
+          "exp": 792
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "blocks": [
+        {
+          "type": "DiscoverEnemy",
+          "groups": [0]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "announce_type": "Accept",
+          "groups": [0],
+          "result_commands": [ { "type": "MyQstFlagOn",  "Param1": 2 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "groups": [1]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Group 0 boss HP check",
+          "type": "Raw",
+          "check_commands": [ { "type": "EmHpLess", "Param1": 807, "Param2": 1, "Param3": 4, "Param4": 40 } ]
+        },
+        {
+          "type": "SpawnGroup",
+          "announce_type": "Update",
+          "groups": [1],
+          "check_commands": [
+            { "type": "MyQstFlagOff", "Param1": 0 },
+            { "type": "MyQstFlagOn",  "Param1": 1 }
+          ]
+        },
+        {
+          "comment": "Group 1 is dead and group 0 is still alive, update announcement",
+          "type": "Raw",
+          "result_commands": [ { "type": "UpdateAnnounce", "Param1": 3 } ]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 0 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 807, "Param2": 1, "Param3": 4 } ,
+              { "type": "DieEnemy", "Param1": 807, "Param2": 1, "Param3": 5 } ,
+              { "type": "DieEnemy", "Param1": 807, "Param2": 1, "Param3": 6 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [0]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 1 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 807, "Param2": 16, "Param3": 0 } ,
+              { "type": "DieEnemy", "Param1": 807, "Param2": 16, "Param3": 1 } ,
+              { "type": "DieEnemy", "Param1": 807, "Param2": 16, "Param3": 2 } ,
+              { "type": "DieEnemy", "Param1": 807, "Param2": 16, "Param3": 3 } ,
+              { "type": "DieEnemy", "Param1": 807, "Param2": 16, "Param3": 4 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [1]
+        }
+      ]
+    }
+  ]
+}

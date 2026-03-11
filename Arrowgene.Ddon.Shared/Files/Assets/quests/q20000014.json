@@ -27,10 +27,12 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Leather Bottoms",
           "item_id": 446,
           "num": 1
         },
         {
+          "comment": "Healing Potion",
           "item_id": 34,
           "num": 2
         }
@@ -55,13 +57,28 @@
       },
       "npc_id": "Mayleaf0",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue - Mayleaf",
+          "type": "QstTalkChg",
+          "Param1": 14,
+          "Param2": 11829
+        },
+        {
+          "comment": "Idle dialogue - Pamela",
+          "type": "QstTalkChg",
+          "Param1": 1003,
+          "Param2": 11824
+        }
+      ],
       "items": [
         {
+          "comment": "Fluorite Earrings",
           "id": 8931,
           "amount": 1
         }
       ],
-      "message_id": 11826
+      "message_id": 11825
     }
   ]
 }

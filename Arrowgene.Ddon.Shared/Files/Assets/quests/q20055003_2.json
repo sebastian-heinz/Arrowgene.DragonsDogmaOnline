@@ -1,0 +1,78 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Shadows in the Demon’s Den (Bounty)",
+  "quest_id": 20055003,
+  "base_level": 25,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 113,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1480
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 130
+    },
+    {
+      "type": "exp",
+      "amount": 2070
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Combat Fabric",
+          "item_id": 7938,
+          "num": 2
+        },
+        {
+          "comment": "Fortifier",
+          "item_id": 9377,
+          "num": 3
+        },
+        {
+          "comment": "Throwing Rock",
+          "item_id": 9396,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 160,
+        "group_id": 0
+      },
+      "enemies": [
+        {
+          "comment": "Bounty Sphinx",
+          "enemy_id": "0x015302",
+          "named_enemy_params_id": 458,
+          "level": 25,
+          "exp": 2875,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

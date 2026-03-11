@@ -1,9 +1,8 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Abductors' True Nature (Redcaps)",
+    "comment": "The Abductors' True Nature",
     "quest_id": 20055004,
-    "variant_index": 0,
     "base_level": 19,
     "minimum_item_rank": 0,
     "discoverable": false,
@@ -28,14 +27,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Pleasant Helm",
                     "item_id": 8173,
                     "num": 1
                 },
                 {
+                    "comment": "Concoction of Light",
                     "item_id": 9376,
                     "num": 2
                 },
                 {
+                    "comment": "Absorbent Cloth",
                     "item_id": 9368,
                     "num": 3
                 }
@@ -48,30 +50,39 @@
                 "id": 67,
                 "group_id": 4
             },
+            "starting_index": 8,
             "enemies": [
                 {
-                    "enemy_id": "0x011110",
+                    "comment": "Vigilant Redcap Fighter",
+                    "enemy_id": "0x011111",
+                    "named_enemy_params_id": 53,
                     "level": 19,
-                    "exp": 200,
-                    "is_boss": false
+                    "exp": 87,
+                    "repop_count": 1,
+                    "repop_wait_second": 5
                 },
                 {
-                    "enemy_id": "0x011110",
+                    "comment": "Vigilant Redcap Fighter",
+                    "enemy_id": "0x011111",
+                    "named_enemy_params_id": 53,
                     "level": 19,
-                    "exp": 200,
-                    "is_boss": false
+                    "exp": 87
                 },
                 {
+                    "comment": "Vigilant Redcap",
                     "enemy_id": "0x011110",
+                    "named_enemy_params_id": 53,
                     "level": 19,
-                    "exp": 200,
-                    "is_boss": false
+                    "exp": 87,
+                    "repop_count": 1,
+                    "repop_wait_second": 5
                 },
                 {
+                    "comment": "Vigilant Redcap",
                     "enemy_id": "0x011110",
+                    "named_enemy_params_id": 53,
                     "level": 19,
-                    "exp": 200,
-                    "is_boss": false
+                    "exp": 87
                 }
             ]
         }

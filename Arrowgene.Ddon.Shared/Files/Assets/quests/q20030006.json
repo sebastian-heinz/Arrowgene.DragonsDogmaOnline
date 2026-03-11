@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "The Blocked Courier",
+  "comment": "The Incapable Courier",
   "quest_id": 20030006,
   "base_level": 28,
   "minimum_item_rank": 0,
@@ -32,7 +32,7 @@
           "num": 1
         },
         {
-          "comment": "Sprite Amulet ",
+          "comment": "Sprite's Amulet",
           "item_id": 9384,
           "num": 2
         },
@@ -61,7 +61,7 @@
         "layer_no": 1
       },
       "npc_id": "LightlyEquippedSoldier",
-      "message_id": 10800
+      "message_id": 11992
     },
     {
       "type": "NewDeliverItems",
@@ -72,13 +72,22 @@
       },
       "npc_id": "LightlyEquippedSoldier",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 539,
+          "Param2": 11996
+        }
+      ],
       "items": [
         {
+          "comment": "Combat Fabric",
           "id": 7938,
           "amount": 3
         }
       ],
-      "message_id": 10737
+      "message_id": 11995
     },
     {
       "type": "TalkToNpc",
@@ -89,18 +98,27 @@
       },
       "npc_id": "Kittredge",
       "announce_type": "Update",
-      "message_id": 11372
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 539,
+          "Param2": 11996
+        }
+      ],
+      "message_id": 11997
     },
     {
-      "type": "TalkToNpc",
+      "type": "NewTalkToNpc",
       "stage_id": {
         "id": 1,
-        "group_id": 1,
+        "group_id": 14,
         "layer_no": 1
       },
       "npc_id": "Josh",
       "announce_type": "Update",
-      "message_id": 11372
+      "message_id": 11998,
+      "quest_id": 70000001
     },
     {
       "type": "NewTalkToNpc",
@@ -111,7 +129,7 @@
       },
       "announce_type": "Update",
       "npc_id": "LightlyEquippedSoldier",
-      "message_id": 11842
+      "message_id": 11999
     }
   ]
 }

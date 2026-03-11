@@ -27,18 +27,13 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "Over Guard",
-          "item_id": 628,
+          "comment": "Crest of Torpor",
+          "item_id": 9241,
           "num": 1
         },
         {
-          "comment": "Quality Gala Extract",
-          "item_id": 9361,
-          "num": 3
-        },
-        {
-          "comment": "Demon Amulet",
-          "item_id": 9383,
+          "comment": "Enhanced Pickaxe",
+          "item_id": 9401,
           "num": 2
         }
       ]
@@ -52,9 +47,12 @@
       },
       "enemies": [
         {
+          "comment": "Vigilant Chimera",
           "enemy_id": "0x015200",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 30,
-          "exp": 6000,
+          "exp": 3000,
           "is_boss": true
         }
       ]
@@ -77,11 +75,19 @@
         "layer_no": 1
       },
       "npc_id": "Man511",
-      "message_id": 11372
+      "message_id": 11420
     },
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 511,
+          "Param2": 12247
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -99,7 +105,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Man511",
-      "message_id": 11842
+      "message_id": 12244
     }
   ]
 }

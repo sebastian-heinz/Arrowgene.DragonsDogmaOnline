@@ -1,0 +1,78 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "That Which Tramples the Ground (II)",
+  "quest_id": 20015001,
+  "base_level": 24,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BreyaCoast",
+  "news_image": 21,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1200
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 790
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 170
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Majesty Drapes",
+          "item_id": 865,
+          "num": 1
+        },
+        {
+          "comment": "Interventive",
+          "item_id": 9374,
+          "num": 3
+        },
+        {
+          "comment": "Lestania Wine",
+          "item_id": 9409,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 84
+      },
+      "enemies": [
+        {
+          "comment": "Brutal Armored Cyclops (Club)",
+          "enemy_id": "0x015003",
+          "named_enemy_params_id": 54,
+          "level": 24,
+          "exp": 2597,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

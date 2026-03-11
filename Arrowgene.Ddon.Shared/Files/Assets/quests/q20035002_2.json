@@ -1,0 +1,112 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Footsteps in the Halls (III)",
+  "quest_id": 20035002,
+  "base_level": 57,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "news_image": 75,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1880
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 250
+    },
+    {
+      "type": "exp",
+      "amount": 1880
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Dark Metal",
+          "item_id": 7887,
+          "num": 1
+        },
+        {
+          "comment": "Demon Arming Points",
+          "item_id": 8022,
+          "num": 1
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 69,
+        "group_id": 18
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Brutal Gigant Machina",
+          "enemy_id": "0x015850",
+          "named_enemy_params_id": 54,
+          "level": 57,
+          "exp": 5248,
+          "is_boss": true,
+          "index": 7
+        },
+        {
+          "comment": "Sludgeman",
+          "enemy_id": "0x010510",
+          "level": 56,
+          "exp": 258,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 9
+        },
+        {
+          "comment": "Sludgeman",
+          "enemy_id": "0x010510",
+          "level": 56,
+          "exp": 258,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "index": 10
+        },
+        {
+          "comment": "Sludgeman",
+          "enemy_id": "0x010510",
+          "level": 56,
+          "exp": 258,
+          "index": 11
+        },
+        {
+          "comment": "Sludgeman",
+          "enemy_id": "0x010510",
+          "level": 56,
+          "exp": 258,
+          "index": 12
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

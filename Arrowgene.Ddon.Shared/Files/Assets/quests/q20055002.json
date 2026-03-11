@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Monster Gallstone",
           "item_id": 7865,
           "num": 3
         },
         {
+          "comment": "Throwing Skull",
           "item_id": 9397,
           "num": 2
         },
         {
+          "comment": "Concoction of Light",
           "item_id": 9376,
           "num": 3
         }
@@ -44,6 +47,7 @@
       "type": "random",
       "loot_pool": [
         {
+          "comment": "Superior Healing Potion",
           "item_id": 35,
           "num": 9,
           "chance": 1.0
@@ -59,9 +63,11 @@
       },
       "enemies": [
         {
+          "comment": "Vigilant Troll",
           "enemy_id": "0x015040",
+          "named_enemy_params_id": 53,
           "level": 34,
-          "exp": 7500,
+          "exp": 2736,
           "is_boss": true
         }
       ]

@@ -1,0 +1,228 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Seeking Demon Commander's Belt",
+  "quest_id": 20075008,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 151,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 5940
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2570
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1050
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Demon Commander's Belt",
+          "item_id": 9449,
+          "num": 5
+        },
+        {
+          "comment": "Diorite Steel Ingot",
+          "item_id": 9444,
+          "num": 1
+        },
+        {
+          "comment": "Wind Twine",
+          "item_id": 7930,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "comment": "Group 1 - Great Horned War Demon and Orc Elite Force",
+      "stage_id": {
+        "id": 68,
+        "group_id": 14
+      },
+      "enemies": [
+        {
+          "comment": "Great Horned War Demon (General Orc)",
+          "enemy_id": "0x015830",
+          "named_enemy_params_id": 644,
+          "level": 58,
+          "exp": 1568
+        },
+        {
+          "comment": "Great Horned War Demon (General Orc)",
+          "enemy_id": "0x015830",
+          "named_enemy_params_id": 644,
+          "level": 58,
+          "exp": 1568
+        },
+        {
+          "comment": "Orc Elite Force (Orc Battler)",
+          "enemy_id": "0x015810",
+          "named_enemy_params_id": 645,
+          "level": 60,
+          "exp": 365,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Orc Elite Force (Orc Battler)",
+          "enemy_id": "0x015810",
+          "named_enemy_params_id": 645,
+          "level": 60,
+          "exp": 365,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        },
+        {
+          "comment": "Orc Elite Force (Orc Battler)",
+          "enemy_id": "0x015810",
+          "named_enemy_params_id": 645,
+          "level": 60,
+          "exp": 365,
+          "repop_count": 1,
+          "repop_wait_second": 5
+        }
+      ]
+    },
+    {
+      "comment": "Group 2 - Mogok, War Beast Savage Chimera and Orcish Kingsguard",
+      "stage_id": {
+        "id": 1,
+        "group_id": 313
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Mogok, the Supreme Warrior",
+          "enemy_id": "0x015840",
+          "named_enemy_params_id": 646,
+          "level": 60,
+          "exp": 8500,
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "comment": "Orcish Kingsguard (Orc Blitzer)",
+          "enemy_id": "0x015811",
+          "named_enemy_params_id": 648,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "level": 57,
+          "exp": 311,
+          "index": 2
+        },
+        {
+          "comment": "Orcish Kingsguard (Orc Blitzer)",
+          "enemy_id": "0x015811",
+          "named_enemy_params_id": 648,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "level": 57,
+          "exp": 311,
+          "index": 3
+        },
+        {
+          "comment": "Orcish Kingsguard (Orc Blitzer)",
+          "enemy_id": "0x015811",
+          "named_enemy_params_id": 648,
+          "repop_count": 1,
+          "level": 57,
+          "exp": 311,
+          "index": 4
+        },
+        {
+          "comment": "War Beast Savage Chimera (Chimera)",
+          "enemy_id": "0x015200",
+          "named_enemy_params_id": 647,
+          "level": 59,
+          "exp": 4740,
+          "is_boss": true,
+          "index": 5
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 53,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Rocher",
+      "message_id": 16442
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue - Rocher",
+          "type": "QstTalkChg",
+          "Param1": 1706,
+          "Param2": 16443
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 53,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Rocher",
+      "message_id": 16444
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "New idle dialogue - Rocher",
+          "type": "QstTalkChg",
+          "Param1": 1706,
+          "Param2": 16445
+        }
+      ],
+      "groups": [ 1 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 1 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 53,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Rocher",
+      "message_id": 16446
+    }
+  ]
+}

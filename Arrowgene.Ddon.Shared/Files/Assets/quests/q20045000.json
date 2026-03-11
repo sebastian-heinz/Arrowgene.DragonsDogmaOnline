@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Sergeant's Cloak",
           "item_id": 1017,
           "num": 1
         },
         {
+          "comment": "Enhanced Lumber Knife",
           "item_id": 9402,
           "num": 2
         },
         {
+          "comment": "Throwing Skull",
           "item_id": 9397,
           "num": 3
         }
@@ -49,9 +52,11 @@
       },
       "enemies": [
         {
+          "comment": "Brutal Colossus",
           "enemy_id": "0x015020",
+          "named_enemy_params_id": 54,
           "level": 28,
-          "exp": 4500,
+          "exp": 2968,
           "is_boss": true
         }
       ]

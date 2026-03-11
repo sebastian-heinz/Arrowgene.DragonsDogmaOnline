@@ -27,23 +27,18 @@
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 67,
-          "num": 1
-        },
-        {
-          "item_id": 9370,
-          "num": 3
-        },
-        {
+          "comment": "Thousand Troops",
           "item_id": 66,
           "num": 1
         },
         {
+          "comment": "Muscular Wall",
           "item_id": 71,
           "num": 1
         },
         {
-          "item_id": 93214,
+          "comment": "Oil Flask",
+          "item_id": 9394,
           "num": 3
         }
       ]
@@ -52,11 +47,13 @@
       "type": "random",
       "loot_pool": [
         {
+          "comment": "Healing Potion",
           "item_id": 34,
           "num": 2,
           "chance": 1.0
         },
         {
+          "comment": "Sprite's Periapt",
           "item_id": 45,
           "num": 2,
           "chance": 1.0
@@ -70,49 +67,51 @@
         "id": 1,
         "group_id": 60
       },
+      "starting_index": 5,
       "enemies": [
         {
+          "comment": "Vigilant Giant Saurian",
           "enemy_id": "0x010401",
           "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 214,
-          "is_boss": false
+          "exp": 98
         },
         {
+          "comment": "Vigilant Giant Saurian",
           "enemy_id": "0x010401",
           "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 214,
-          "is_boss": false
+          "exp": 98
         },
         {
+          "comment": "Vigilant Giant Saurian",
           "enemy_id": "0x010401",
           "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 214,
-          "is_boss": false
+          "exp": 98
         },
         {
+          "comment": "Vigilant Giant Saurian",
           "enemy_id": "0x010401",
           "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 214,
-          "is_boss": false
+          "exp": 98
         }
       ]
     },
     {
       "stage_id": {
         "id": 1,
-        "group_id": 72
+        "group_id": 70
       },
+      "starting_index": 13,
       "enemies": [
         {
-          "comment": "Ent",
+          "comment": "Brutal Ent",
           "enemy_id": "0x015031",
           "named_enemy_params_id": 54,
           "level": 16,
-          "exp": 1060,
+          "exp": 2132,
           "is_boss": true
         }
       ]
@@ -126,16 +125,24 @@
         "group_id": 0
       },
       "npc_id": "Gash",
-      "message_id": 11830
+      "message_id": 11036
     },
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1407,
+          "Param2": 11042
+        }
+      ],
       "groups": [ 0 ]
     },
     {
       "type": "KillGroup",
-      "announce_type": "Accept",
+      "announce_type": "Update",
       "reset_group": false,
       "groups": [ 0 ]
     },
@@ -157,7 +164,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Gash",
-      "message_id": 11835
+      "message_id": 11039
     }
   ]
 }

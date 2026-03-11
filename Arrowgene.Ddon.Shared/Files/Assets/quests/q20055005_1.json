@@ -1,0 +1,120 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Fluttering Calls of Death (II)",
+  "quest_id": 20055005,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 109,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2970
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "exp",
+      "amount": 4150
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Deeper Sleep",
+          "item_id": 9244,
+          "num": 1
+        },
+        {
+          "comment": "Superior Healing Elixir",
+          "item_id": 7553,
+          "num": 3
+        },
+        {
+          "comment": "Harvest Salad",
+          "item_id": 9418,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 79,
+        "group_id": 0
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Lullaby Queen (Sphinx)",
+          "enemy_id": "0x015302",
+          "named_enemy_params_id": 460,
+          "level": 45,
+          "exp": 4255,
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "comment": "Harpy",
+          "enemy_id": "0x010600",
+          "level": 40,
+          "exp": 115,
+          "repop_count": 2,
+          "repop_wait_second": 10,
+          "is_required": false,
+          "index": 18
+        },
+        {
+          "comment": "Harpy",
+          "enemy_id": "0x010600",
+          "level": 40,
+          "exp": 115,
+          "repop_count": 2,
+          "repop_wait_second": 10,
+          "is_required": false,
+          "index": 19
+        },
+        {
+          "comment": "Harpy",
+          "enemy_id": "0x010600",
+          "level": 40,
+          "exp": 115,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "is_required": false,
+          "index": 20
+        },
+        {
+          "comment": "Harpy",
+          "enemy_id": "0x010600",
+          "level": 40,
+          "exp": 115,
+          "repop_count": 1,
+          "repop_wait_second": 10,
+          "is_required": false,
+          "index": 21
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

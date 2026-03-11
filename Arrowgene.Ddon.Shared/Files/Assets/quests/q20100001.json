@@ -27,14 +27,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "King Bay Leaf",
           "item_id": 7983,
-          "num": 1
+          "num": 2
         },
         {
+          "comment": "Superior Healing Elixir",
           "item_id": 7553,
           "num": 3
         },
         {
+          "comment": "Witch's Brew",
           "item_id": 9421,
           "num": 1
         }
@@ -58,7 +61,7 @@
         "layer_no": 1
       },
       "npc_id": "August",
-      "message_id": 10800
+      "message_id": 11329
     },
     {
       "type": "NewDeliverItems",
@@ -69,24 +72,21 @@
       },
       "npc_id": "August",
       "announce_type": "Accept",
+      "result_commands": [ 
+        { 
+          "type": "QstTalkChg", 
+          "Param1": 515, 
+          "Param2": 11335,
+          "comment": "Idle dialogue"
+        }
+      ],
       "items": [
         {
           "id": 7999,
           "amount": 10
         }
       ],
-      "message_id": 10737
-    },
-    {
-      "type": "NewTalkToNpc",
-      "stage_id": {
-        "id": 97,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "August",
-      "message_id": 11842
+      "message_id": 11332
     }
   ]
 }

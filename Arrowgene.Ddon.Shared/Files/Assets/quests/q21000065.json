@@ -1,0 +1,220 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Jewelry: Recklessness",
+  "quest_id": 21000065,
+  "base_level": 68,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 14220
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2243
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Dowe Medal",
+          "item_id": 11003,
+          "num": 1
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 364,
+        "group_id": 6
+      },
+      "comment": "Up to five Unappraised Star Trinket (General) drops",
+      "enemies": [
+        {
+          "comment": "Jewelry-Bearing Armored Cyclops",
+          "enemy_id": "0x015003",
+          "named_enemy_params_id": 1121,
+          "level": 68,
+          "exp": 5925,
+          "drop_items": [
+            {
+              "item_id": 9438,
+              "item_min": 1,
+              "item_max": 5,
+              "quality": 0,
+              "drop_chance": 0.1
+            },
+            {
+              "item_id": 7924,
+              "item_min": 1,
+              "item_max": 3,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 7740,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 1
+            },
+            {
+              "item_id": 7771,
+              "item_min": 1,
+              "item_max": 4,
+              "quality": 0,
+              "drop_chance": 1
+            },
+            {
+              "item_id": 8028,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.6
+            },
+            {
+              "item_id": 7762,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.7
+            },
+            {
+              "item_id": 13480,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 1
+            }
+          ],
+          "is_boss": true
+        },
+        {
+          "comment": "Jewelry-Bearing Eliminator",
+          "enemy_id": "0x010508",
+          "named_enemy_params_id": 1121,
+          "level": 68,
+          "exp": 1185,
+          "drop_items": [
+            {
+              "item_id": 7726,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 13480,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Jewelry-Bearing Eliminator",
+          "enemy_id": "0x010508",
+          "named_enemy_params_id": 1121,
+          "level": 68,
+          "exp": 1185,
+          "drop_items": [
+            {
+              "item_id": 7726,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 13480,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Jewelry-Bearing Eliminator",
+          "enemy_id": "0x010508",
+          "named_enemy_params_id": 1121,
+          "level": 68,
+          "exp": 1185,
+          "drop_items": [
+            {
+              "item_id": 7726,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 13480,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        },
+        {
+          "comment": "Jewelry-Bearing Eliminator",
+          "enemy_id": "0x010508",
+          "named_enemy_params_id": 1121,
+          "level": 68,
+          "exp": 1185,
+          "drop_items": [
+            {
+              "item_id": 7726,
+              "item_min": 1,
+              "item_max": 2,
+              "quality": 0,
+              "drop_chance": 0.9
+            },
+            {
+              "item_id": 13480,
+              "item_min": 1,
+              "item_max": 1,
+              "quality": 0,
+              "drop_chance": 0.1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

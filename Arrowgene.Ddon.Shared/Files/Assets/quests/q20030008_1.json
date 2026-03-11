@@ -1,9 +1,9 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "No Unexpected Guests",
+  "comment": "No Unexpected Guests (II)",
   "quest_id": 20030008,
-  "base_level": 30,
+  "base_level": 34,
   "minimum_item_rank": 0,
   "discoverable": true,
   "area_id": "DoweValley",
@@ -12,35 +12,35 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 1980
+      "amount": 1520
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 1650
+      "amount": 1120
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 130
+      "amount": 170
     },
     {
       "type": "select",
       "loot_pool": [
         {
-          "comment": "Healing Elixir",
-          "item_id": 7552,
+          "comment": "Crest of Blind Warding",
+          "item_id": 9326,
+          "num": 1
+        },
+        {
+          "comment": "Demon's Amulet",
+          "item_id": 9383,
           "num": 2
         },
         {
-          "comment": "Quality Gala Extract",
-          "item_id": 9361,
+          "comment": "Mellow Ale",
+          "item_id": 9413,
           "num": 2
-        },
-        {
-          "comment": "Small Thief Key",
-          "item_id": 9429,
-          "num": 3
         }
       ]
   },
@@ -48,6 +48,7 @@
       "type": "random",
       "loot_pool": [
           {
+              "comment": "Scholar's Ring",
               "item_id": 8992,
               "num": 1,
               "chance": 0.6
@@ -61,13 +62,15 @@
         "id": 136,
         "group_id": 2
       },
+      "starting_index": 1,
       "enemies": [
         {
-          "enemy_id": "0x015040",
+          "comment": "Brutal Ogre",
+          "enemy_id": "0x015500",
+          "named_enemy_params_id": 54,
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 467,
-          "level": 30,
-          "exp": 5446,
+          "level": 34,
+          "exp": 2540,
           "is_boss": true
         }
       ]
@@ -90,11 +93,19 @@
         "layer_no": 1
       },
       "npc_id": "Man510",
-      "message_id": 11372
+      "message_id": 11407
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "type": "QstTalkChg",
+          "Param1": 510,
+          "Param2": 12227,
+          "comment": "Idle dialogue"
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -112,7 +123,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Man510",
-      "message_id": 11842
+      "message_id": 12224
     }
   ]
 }

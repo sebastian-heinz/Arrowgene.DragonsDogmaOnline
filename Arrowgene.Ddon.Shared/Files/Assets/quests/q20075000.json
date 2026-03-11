@@ -1,0 +1,77 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Roaring Lion King",
+  "quest_id": 20075000,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "NorthernBetlandPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2070
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1480
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 230
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "White Lion Pelt",
+          "item_id": 7739,
+          "num": 1
+        },
+        {
+          "comment": "Mithril Ingot",
+          "item_id": 7880,
+          "num": 3
+        },
+        {
+          "comment": "Healing Remedy",
+          "item_id": 7554,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 173,
+        "group_id": 0
+      },
+      "starting_index": 3,
+      "enemies": [
+        {
+          "comment": "Brutal White Chimera",
+          "enemy_id": "0x015202",
+          "named_enemy_params_id": 54,
+          "level": 45,
+          "exp": 5037,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

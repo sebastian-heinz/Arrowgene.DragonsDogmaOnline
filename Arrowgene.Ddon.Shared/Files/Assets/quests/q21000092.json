@@ -1,0 +1,184 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "An End to Greed",
+  "quest_id": 21000092,
+  "base_level": 70,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "ZandoraWastelands",
+  "order_conditions": [ { "type": "AreaRank", "Param1": 11, "Param2": 13 } ],
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 12014
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2309
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 300
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Slimy Hide",
+          "item_id": 11806,
+          "num": 3
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 423,
+        "group_id": 4
+      },
+      "starting_index": 1,
+      "enemies": [
+        {
+          "comment": "Infected Behemoth (Severe)",
+          "enemy_id": "0x015712",
+          "infection_type": 2,
+          "level": 68,
+          "exp": 5925,
+          "is_boss": true
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 423,
+        "group_id": 6
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Infected Orc Tosser",
+          "enemy_id": "0x015801",
+          "level": 68,
+          "exp": 1185,
+          "index": 0
+        },
+        {
+          "comment": "Infected Orc Tosser",
+          "enemy_id": "0x015801",
+          "level": 68,
+          "exp": 1185,
+          "index": 4
+        },
+        {
+          "comment": "Infected Orc Tosser",
+          "enemy_id": "0x015801",
+          "level": 68,
+          "exp": 1185,
+          "index": 6
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "blocks": [
+        {
+          "type": "DiscoverEnemy",
+          "groups": [0],
+          "result_commands": [ { "type": "QstLayoutFlagOn", "Param1": 3245 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "announce_type": "Accept",
+          "groups": [0],
+          "result_commands": [ { "type": "MyQstFlagOn",  "Param1": 2 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "groups": [1]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Group 0 boss HP check",
+          "type": "Raw",
+          "check_commands": [ { "type": "EmHpLess", "Param1": 830, "Param2": 4, "Param3": 1, "Param4": 40 } ]
+        },
+        {
+          "type": "SpawnGroup",
+          "announce_type": "Update",
+          "groups": [1],
+          "check_commands": [
+            { "type": "MyQstFlagOff", "Param1": 0 },
+            { "type": "MyQstFlagOn",  "Param1": 1 }
+          ]
+        },
+        {
+          "comment": "Group 1 is dead and group 0 is still alive, update announcement",
+          "type": "Raw",
+          "result_commands": [ { "type": "UpdateAnnounce", "Param1": 3 } ]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 0 dead",
+          "type": "Raw",
+          "check_commands": [ { "type": "DieEnemy", "Param1": 830, "Param2": 4, "Param3": 1 } ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [0]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 1 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 830, "Param2": 6, "Param3": 0 } ,
+              { "type": "DieEnemy", "Param1": 830, "Param2": 6, "Param3": 4 } ,
+              { "type": "DieEnemy", "Param1": 830, "Param2": 6, "Param3": 6 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [1]
+        }
+      ]
+    }
+  ]
+}

@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Star Sphene",
                     "item_id": 7914,
                     "num": 1
                 },
                 {
+                    "comment": "Enhanced Lockpick",
                     "item_id": 9403,
                     "num": 3
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 1
                 }
@@ -48,9 +51,11 @@
             },
             "enemies": [
                 {
+                    "comment": "Brutal Lindwurm",
                     "enemy_id": "0x015707",
+                    "named_enemy_params_id": 54,
                     "level": 51,
-                    "exp": 17000,
+                    "exp": 8056,
                     "is_boss": true
                 }
             ]
@@ -65,11 +70,19 @@
                 "layer_no": 1
             },
             "npc_id": "Metrophanes",
-            "message_id": 11372
+            "message_id": 16088
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 2304, 
+                "Param2": 16089,
+                "comment": "Idle dialogue"
+                }
+            ],
             "groups": [0]
         },
         {
@@ -87,7 +100,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Metrophanes",
-            "message_id": 11842
+            "message_id": 16090
         }
     ]
 }

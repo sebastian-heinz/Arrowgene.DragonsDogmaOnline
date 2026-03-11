@@ -45,23 +45,38 @@
         "id": 1,
         "group_id": 178
       },
+      "starting_index": 4,
       "enemies": [
         {
+          "comment": "Vigilant Sludgeman",
           "enemy_id": "0x010510",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 22,
+          "exp": 118,
           "is_boss": false
         },
         {
+          "comment": "Vigilant Sludgeman",
           "enemy_id": "0x010510",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 22,
+          "exp": 118,
           "is_boss": false
         },
         {
+          "comment": "Vigilant Sludgeman",
           "enemy_id": "0x010510",
-          "level": 25,
-          "exp": 250,
+          "named_enemy_params_id": 53,
+          "level": 22,
+          "exp": 118,
+          "is_boss": false
+        },
+        {
+          "comment": "Vigilant Sludgeman",
+          "enemy_id": "0x010510",
+          "named_enemy_params_id": 53,
+          "level": 22,
+          "exp": 118,
           "is_boss": false
         }
       ]
@@ -84,11 +99,19 @@
         "layer_no": 1
       },
       "npc_id": "Man510",
-      "message_id": 11372
+      "message_id": 11421
     },
     {
       "type": "CollectItem",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 510,
+          "Param2": 13327
+        }
+      ],
       "stage_id": {
         "id": 1,
         "group_id": 2,
@@ -187,7 +210,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Man510",
-      "message_id": 11842
+      "message_id": 13324
     }
   ]
 }

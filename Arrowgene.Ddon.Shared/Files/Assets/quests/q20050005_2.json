@@ -1,0 +1,117 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Echoing Footsteps in the Cave (III)",
+  "quest_id": 20050005,
+  "base_level": 58,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeForest",
+  "news_image": 111,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1910
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 330
+    },
+    {
+      "type": "exp",
+      "amount": 2900
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Dragon Horn",
+          "item_id": 7754,
+          "num": 1
+        },
+        {
+          "comment": "Smooth Dragonleather",
+          "item_id": 7927,
+          "num": 1
+        },
+        {
+          "comment": "Angules Horn",
+          "item_id": 7756,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 67,
+        "group_id": 2
+      },
+      "starting_index": 14,
+      "enemies": [
+        {
+          "comment": "Legendary Angules",
+          "enemy_id": "0x015708",
+          "named_enemy_params_id": 57,
+          "level": 58,
+          "exp": 9462,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1058,
+          "comment": "Spawns Knight NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "WhiteKnight1",
+      "message_id": 8656
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 505,
+          "Param2": 8662
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "WhiteKnight1",
+      "message_id": 8659
+    }
+  ]
+}

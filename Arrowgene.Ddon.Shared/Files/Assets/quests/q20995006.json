@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Alkahest",
                     "item_id": 7833,
                     "num": 2
                 },
                 {
+                    "comment": "Healing Remedy",
                     "item_id": 7554,
                     "num": 3
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 1
                 }
@@ -52,7 +55,7 @@
                 "layer_no": 1
             },
             "npc_id": "4743",
-            "message_id": 11372
+            "message_id": 16079
         },
         {
             "type": "NewDeliverItems",
@@ -63,13 +66,22 @@
             },
             "npc_id": "4743",
             "announce_type": "Accept",
+            "result_commands": [ 
+                { 
+                "type": "QstTalkChg", 
+                "Param1": 4743, 
+                "Param2": 16077,
+                "comment": "Idle dialogue"
+                }
+            ],
             "items": [
                 {
+                    "comment": "Bonemeal",
                     "id": 7850,
                     "amount": 9
                 }
             ],
-            "message_id": 10737
+            "message_id": 16078
         }
     ]
 }

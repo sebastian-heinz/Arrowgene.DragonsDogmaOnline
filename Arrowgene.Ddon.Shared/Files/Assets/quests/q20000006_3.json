@@ -1,0 +1,150 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Evil Lurking in the Tombs (Twelve Calamities)",
+  "quest_id": 20000006,
+  "base_level": 55,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 541,
+  "variant_index": 3,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 5080
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 4230
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "comment": "Crest of Dismantling II",
+          "item_id": 9230,
+          "num": 1,
+          "chance": 0.15
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "comment": "Crest of Exorcism",
+          "item_id": 9227,
+          "num": 1,
+          "chance": 0.15
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 238,
+        "group_id": 9
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Impure Giant Demon (Geo Golem)",
+          "enemy_id": "0x015104",
+          "named_enemy_params_id": 527,
+          "start_think_tbl_no": 1,
+          "level": 55,
+          "exp": 4000,
+          "is_boss": true,
+          "index": 5
+        },
+        {
+          "comment": "Dangerous Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "named_enemy_params_id": 56,
+          "repop_count": 2,
+          "repop_wait_second": 5,
+          "level": 55,
+          "exp": 235,
+          "index": 9
+        },
+        {
+          "comment": "Dangerous Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "named_enemy_params_id": 56,
+          "repop_count": 2,
+          "repop_wait_second": 5,
+          "level": 55,
+          "exp": 235,
+          "index": 10
+        },
+        {
+          "comment": "Dangerous Skeleton Sorcerer",
+          "enemy_id": "0x010309",
+          "named_enemy_params_id": 56,
+          "repop_count": 2,
+          "repop_wait_second": 5,
+          "level": 55,
+          "exp": 235,
+          "index": 11
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Christoph",
+      "message_id": 11012,
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 988
+        }
+      ]
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 513,
+          "Param2": 11016
+        }
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Christoph",
+      "message_id": 11015
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "An Unexpected Encounter",
+  "comment": "An Unexpected Encounter (III)",
   "quest_id": 20015003,
   "base_level": 60,
   "minimum_item_rank": 0,
@@ -28,17 +28,17 @@
       "type": "select",
       "loot_pool": [
         {
-          
+          "comment": "Azure Dragonscale",
           "item_id": 7931,
           "num": 1
         },
         {
-          
+          "comment": "Huge Dragon Bone Lump",
           "item_id": 7806,
           "num": 1
         },
         {
-         
+          "comment": "Dragon Hide",
           "item_id": 7928,
           "num": 5
         }
@@ -49,19 +49,17 @@
     {
       "stage_id": {
         "id": 1,
-        "group_id": 105
+        "group_id": 99
       },
-      "placement_type": "manual",
       "enemies": [
         {
-          
+          "comment": "Dangerous Wyrm",
           "enemy_id": "0x015701",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
+          "named_enemy_params_id": 56,
           "level": 60,
-          "exp": 34700,
-          "is_boss": true,
-          "index": 3
+          "exp": 9860,
+          "is_boss": true
         }
       ]
     }

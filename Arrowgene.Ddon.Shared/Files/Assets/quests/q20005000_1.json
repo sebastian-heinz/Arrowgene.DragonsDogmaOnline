@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "Sky Concealing Wings",
+  "comment": "Sky Concealing Wings (II)",
   "quest_id": 20005000,
   "base_level": 16,
   "minimum_item_rank": 0,
@@ -28,16 +28,19 @@
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 8329,
+          "comment": "Copper Sabatons",
+          "item_id": 8328,
           "num": 1
         },
         {
+          "comment": "Small Thief's Key",
           "item_id": 9429,
           "num": 2
         },
         {
-          "item_id": 9409,
-          "num": 2
+          "comment": "Poison Flask",
+          "item_id": 9395,
+          "num": 3
         }
       ]
     }
@@ -50,11 +53,12 @@
       },
       "enemies": [
         {
+          "comment": "Vigilant Sphinx",
           "enemy_id": "0x015302",
+          "named_enemy_params_id": 53,
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 2298,
           "level": 16,
-          "exp": 1060,
+          "exp": 2254,
           "is_boss": true
         }
       ]

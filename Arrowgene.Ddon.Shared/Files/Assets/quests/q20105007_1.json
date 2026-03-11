@@ -1,0 +1,108 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Sudden Urge to Kill (II)",
+  "quest_id": 20105007,
+  "base_level": 56,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 204,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1540
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "exp",
+      "amount": 1540
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Sand of Reminiscence",
+          "item_id": 9441,
+          "num": 1
+        },
+        {
+          "comment": "Demonic Gem",
+          "item_id": 7911,
+          "num": 1
+        },
+        {
+          "comment": "Transumted Fur",
+          "item_id": 7781,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 97,
+        "group_id": 7
+      },
+      "enemies": [
+        {
+          "comment": "Shadow Harpy",
+          "enemy_id": "0x010607",
+          "level": 56,
+          "exp": 243,
+          "repop_count": 1,
+          "repop_wait_second": 10
+        },
+        {
+          "comment": "Shadow Wolf",
+          "enemy_id": "0x010206",
+          "level": 56,
+          "exp": 279
+        },
+        {
+          "comment": "Shadow Wolf",
+          "enemy_id": "0x010206",
+          "level": 56,
+          "exp": 279
+        },
+        {
+          "comment": "Shadow Wolf",
+          "enemy_id": "0x010206",
+          "level": 56,
+          "exp": 279
+        },
+        {
+          "comment": "Shadow Wolf",
+          "enemy_id": "0x010206",
+          "level": 56,
+          "exp": 279
+        },
+        {
+          "comment": "Shadow Wolf",
+          "enemy_id": "0x010206",
+          "level": 56,
+          "exp": 279
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

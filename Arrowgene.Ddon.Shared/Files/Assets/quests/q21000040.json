@@ -1,0 +1,236 @@
+	{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Cursed Sanctuary",
+  "quest_id": 21000040,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeGrove",
+  "order_conditions": [ { "type": "AreaRank", "Param1": 6, "Param2": 13 } ],
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 6976
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2078
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 265
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Discolored Spore-Covered Feather",
+          "item_id": 13223,
+          "num": 1
+        },
+        {
+          "comment": "Blue Alluvial Gold",
+          "item_id": 7848,
+          "num": 3
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 427,
+        "group_id": 10
+      },
+      "starting_index": 7,
+      "enemies": [
+        {
+          "comment": "Infected Griffin (Severe)",
+          "enemy_id": "0x015306",
+          "infection_type": 2,
+          "level": 60,
+          "exp": 3783,
+          "is_boss": true
+        },
+        {
+          "comment": "Snow Harpy",
+          "enemy_id": "0x010601",
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Snow Harpy",
+          "enemy_id": "0x010601",
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Snow Harpy",
+          "enemy_id": "0x010601",
+          "level": 60,
+          "exp": 756
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 427,
+        "group_id": 17
+      },
+      "enemies": [
+        {
+          "comment": "Infected Snow Harpy (Severe)",
+          "enemy_id": "0x010612",
+          "infection_type": 2,
+          "start_think_tbl_no": 3,
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Infected Snow Harpy (Severe)",
+          "enemy_id": "0x010612",
+          "infection_type": 2,
+          "start_think_tbl_no": 3,
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Infected Snow Harpy (Severe)",
+          "enemy_id": "0x010612",
+          "infection_type": 2,
+          "start_think_tbl_no": 3,
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Infected Snow Harpy (Severe)",
+          "enemy_id": "0x010612",
+          "infection_type": 2,
+          "start_think_tbl_no": 3,
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Infected Snow Harpy (Severe)",
+          "enemy_id": "0x010612",
+          "infection_type": 2,
+          "start_think_tbl_no": 3,
+          "level": 60,
+          "exp": 756
+        },
+        {
+          "comment": "Infected Snow Harpy (Severe)",
+          "enemy_id": "0x010612",
+          "infection_type": 2,
+          "start_think_tbl_no": 3,
+          "level": 60,
+          "exp": 756
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "blocks": [
+        {
+          "type": "DiscoverEnemy",
+          "groups": [0],
+          "result_commands": [ { "type": "QstLayoutFlagOn", "Param1": 3090 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "announce_type": "Accept",
+          "groups": [0],
+          "result_commands": [ { "type": "MyQstFlagOn",  "Param1": 2 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "groups": [1]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Group 0 boss HP check",
+          "type": "Raw",
+          "check_commands": [ { "type": "EmHpLess", "Param1": 850, "Param2": 10, "Param3": 7, "Param4": 40 } ]
+        },
+        {
+          "type": "SpawnGroup",
+          "announce_type": "Update",
+          "groups": [1],
+          "check_commands": [
+            { "type": "MyQstFlagOff", "Param1": 0 },
+            { "type": "MyQstFlagOn",  "Param1": 1 }
+          ]
+        },
+        {
+          "comment": "Group 1 is dead and group 0 is still alive, update announcement",
+          "type": "Raw",
+          "result_commands": [ { "type": "UpdateAnnounce", "Param1": 3 } ]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 0 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 850, "Param2": 10, "Param3": 7 } ,
+              { "type": "DieEnemy", "Param1": 850, "Param2": 10, "Param3": 8 } ,
+              { "type": "DieEnemy", "Param1": 850, "Param2": 10, "Param3": 9 } ,
+              { "type": "DieEnemy", "Param1": 850, "Param2": 10, "Param3": 10 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [0]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 1 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 850, "Param2": 17, "Param3": 0 } ,
+              { "type": "DieEnemy", "Param1": 850, "Param2": 17, "Param3": 1 } ,
+              { "type": "DieEnemy", "Param1": 850, "Param2": 17, "Param3": 2 } ,
+              { "type": "DieEnemy", "Param1": 850, "Param2": 17, "Param3": 3 } ,
+              { "type": "DieEnemy", "Param1": 850, "Param2": 17, "Param3": 4 } ,
+              { "type": "DieEnemy", "Param1": 850, "Param2": 17, "Param3": 5 }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [1]
+        }
+      ]
+    }
+  ]
+}

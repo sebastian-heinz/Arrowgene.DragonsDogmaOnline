@@ -1,7 +1,7 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "A Petition to Rid of Demons in Ruins",
+  "comment": "A Petition to Rid of Demons in Ruins (III)",
   "quest_id": 20000004,
   "base_level": 55,
   "minimum_item_rank": 0,
@@ -28,17 +28,18 @@
       "type": "select",
       "loot_pool": [
         {
-          "comment": "Dull Iron Ingot",
+          "comment": "Sand of Reminiscence",
           "item_id": 9441,
-          "num": 2
+          "num": 1
         },
         {
-          "comment": "Recovery Decoction",
+          "comment": "Demonic Gem",
           "item_id": 7911,
           "num": 2
         },
         {
-          "item_id": 55,
+          "comment": "Cracked Black Horn",
+          "item_id": 7753,
           "num": 2
       }
       ]
@@ -50,76 +51,52 @@
         "id": 88,
         "group_id": 5
       },
+      "starting_index": 2,
       "enemies": [
         {
+          "comment": "Dangerous Shadow Goblin",
           "enemy_id": "0x011130",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 56,
           "level": 55,
-          "exp": 6476
+          "exp": 223,
+          "repop_count": 1,
+          "repop_wait_time": 10
         },
         {
+          "comment": "Dangerous Shadow Goblin",
           "enemy_id": "0x011130",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 56,
           "level": 55,
-          "exp": 6476
+          "exp": 223,
+          "repop_count": 1,
+          "repop_wait_time": 10
         },
         {
+          "comment": "Dangerous Shadow Goblin",
           "enemy_id": "0x011130",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 56,
           "level": 55,
-          "exp": 6476
+          "exp": 223,
+          "repop_count": 1,
+          "repop_wait_time": 10
         },
         {
+          "comment": "Dangerous Shadow Goblin",
           "enemy_id": "0x011130",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 56,
           "level": 55,
-          "exp": 6476
+          "exp": 223,
+          "repop_count": 1,
+          "repop_wait_time": 10
         },
         {
+          "comment": "Dangerous Shadow Goblin",
           "enemy_id": "0x011130",
-          "start_think_tbl_no": 1,
           "named_enemy_params_id": 56,
           "level": 55,
-          "exp": 6476
-        },
-        {
-          "enemy_id": "0x011130",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-          "level": 55,
-          "exp": 6476
-        },
-        {
-          "enemy_id": "0x011130",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-          "level": 55,
-          "exp": 6476
-        },
-        {
-          "enemy_id": "0x011130",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-          "level": 55,
-          "exp": 6476
-        },
-        {
-          "enemy_id": "0x011130",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-          "level": 55,
-          "exp": 6476
-        },
-        {
-          "enemy_id": "0x011130",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-          "level": 55,
-          "exp": 6476
+          "exp": 223,
+          "repop_count": 1,
+          "repop_wait_time": 10
         }
       ]
     }
@@ -136,6 +113,14 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 4,
+          "Param2": 10720
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -151,7 +136,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Joseph",
-      "message_id": 10718
+      "message_id": 10717
     }
   ]
 }

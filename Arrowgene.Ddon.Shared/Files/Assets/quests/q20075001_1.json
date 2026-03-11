@@ -1,0 +1,113 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Occupied Channels (II)",
+  "quest_id": 20075001,
+  "base_level": 55,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "NorthernBetlandPlains",
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1810
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1510
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Demon's Prized Liquor",
+          "item_id": 9443,
+          "num": 1
+        },
+        {
+          "comment": "Pigeon Blood",
+          "item_id": 7910,
+          "num": 1
+        },
+        {
+          "comment": "Orc Decoration",
+          "item_id": 8020,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 156,
+        "group_id": 4
+      },
+      "enemies": [
+        {
+          "comment": "Dangerous Orc General",
+          "enemy_id": "0x015830",
+          "named_enemy_params_id": 56,
+          "level": 55,
+          "exp": 1505
+        },
+        {
+          "comment": "Dangerous Orc General",
+          "enemy_id": "0x015830",
+          "named_enemy_params_id": 56,
+          "level": 55,
+          "exp": 1505
+        },
+        {
+          "comment": "Dangerous Orc Vanguard",
+          "enemy_id": "0x015802",
+          "named_enemy_params_id": 56,
+          "level": 55,
+          "exp": 352,
+          "repop_count": 1
+        },
+        {
+          "comment": "Dangerous Orc Vanguard",
+          "enemy_id": "0x015802",
+          "named_enemy_params_id": 56,
+          "level": 55,
+          "exp": 352,
+          "repop_count": 1
+        },
+        {
+          "comment": "Dangerous Orc Vanguard",
+          "enemy_id": "0x015802",
+          "named_enemy_params_id": 56,
+          "level": 55,
+          "exp": 352
+        },
+        {
+          "comment": "Dangerous Orc Vanguard",
+          "enemy_id": "0x015802",
+          "named_enemy_params_id": 56,
+          "level": 55,
+          "exp": 352
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

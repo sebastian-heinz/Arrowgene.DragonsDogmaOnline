@@ -1,10 +1,10 @@
-{
+    {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "A Strange Creature Dances In the Forest (Ape)",
+    "comment": "A Strange Bird Dances In the Forest (II)",
     "quest_id": 20055001,
     "variant_index": 1,
-    "base_level": 15,
+    "base_level": 18,
     "minimum_item_rank": 0,
     "discoverable": false,
     "area_id": "MysreeForest",
@@ -13,31 +13,34 @@
         {
             "type": "wallet",
             "wallet_type": "Gold",
-            "amount": 490
+            "amount": 590
         },
         {
             "type": "wallet",
             "wallet_type": "RiftPoints",
-            "amount": 70
+            "amount": 90
         },
         {
             "type": "exp",
-            "amount": 690
+            "amount": 830
         },
         {
             "type": "select",
             "loot_pool": [
                 {
-                    "item_id": 448,
+                    "comment": "Knight's Honor",
+                    "item_id": 95,
                     "num": 1
                 },
                 {
-                    "item_id": 61,
+                    "comment": "Fortifier",
+                    "item_id": 9377,
                     "num": 2
                 },
                 {
-                    "item_id": 9409,
-                    "num": 1
+                    "comment": "Fireproof Draught",
+                    "item_id": 9370,
+                    "num": 3
                 }
             ]
         }
@@ -50,11 +53,11 @@
             },
             "enemies": [
                 {
-                    "comment": "Young Dread Ape",
-                    "enemy_id": "0x015502",
-                    "named_enemy_params_id": 459,
-                    "level": 15,
-                    "exp": 2780,
+                    "comment": "Brutal Sphinx",
+                    "enemy_id": "0x015302",
+                    "named_enemy_params_id": 54,
+                    "level": 18,
+                    "exp": 2392,
                     "is_boss": true
                 }
             ]

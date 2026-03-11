@@ -1,0 +1,178 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Gush of Wickedness",
+  "quest_id": 21000033,
+  "base_level": 65,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "VoldenMines",
+  "order_conditions": [ { "type": "AreaRank", "Param1": 4, "Param2": 13 } ],
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 7034
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2144
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 275
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Gold Ingot",
+          "item_id": 7877,
+          "num": 2
+        },
+        {
+          "comment": "Moonglow",
+          "item_id": 7981,
+          "num": 5
+        },
+        {
+          "comment": "Panacea",
+          "item_id": 41,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups" : [
+    {
+      "stage_id": {
+        "id": 152,
+        "group_id": 3
+      },
+      "starting_index": 4,
+      "enemies": [
+        {
+          "comment": "Infected Gorecyclops (Severe)",
+          "enemy_id": "0x015012",
+          "level": 65,
+          "exp": 3908,
+          "is_boss": true,
+          "infection_type": 2
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 152,
+        "group_id": 8
+      },
+      "enemies": [
+        {
+          "comment": "Skull Lord",
+          "enemy_id": "0x010313",
+          "level": 65,
+          "exp": 781
+        },
+        {
+          "comment": "Skull Lord",
+          "enemy_id": "0x010313",
+          "level": 65,
+          "exp": 781
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "blocks": [
+        {
+          "comment": "This dungeon is unlocked early, so a check is necessary",
+          "type": "Raw",
+          "check_commands": [ { "type": "CheckAreaRank", "Param1": 4, "Param1": 13 } ]
+        },
+        {
+          "type": "DiscoverEnemy",
+          "groups": [0],
+          "result_commands": [ { "type": "QstLayoutFlagOn", "Param1": 3102 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "announce_type": "Accept",
+          "groups": [0],
+          "result_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "type": "KillGroup",
+          "reset_group": false,
+          "groups": [1]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Group 0 boss HP check",
+          "type": "Raw",
+          "check_commands": [ { "type": "EmHpLess", "Param1": 583, "Param2": 3, "Param3": 4, "Param4": 40 } ]
+        },
+        {
+          "type": "SpawnGroup",
+          "announce_type": "Update",
+          "groups": [1],
+          "check_commands": [
+            { "type": "MyQstFlagOff", "Param1": 0 },
+            { "type": "MyQstFlagOn",  "Param1": 1 }
+          ]
+        },
+        {
+          "comment": "Group 1 is dead and group 0 is still alive, update announcement",
+          "type": "Raw",
+          "result_commands":  [ { "type": "UpdateAnnounce", "Param1": 3 } ]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn", "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 0 dead",
+          "type": "Raw",
+          "check_commands": [ { "type": "DieEnemy", "Param1": 583, "Param2": 3, "Param3": 4 } ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [0]
+        }
+      ]
+    },
+    {
+      "blocks": [
+        {
+          "type": "Raw",
+          "check_commands": [ { "type": "MyQstFlagOn",  "Param1": 2 } ]
+        },
+        {
+          "comment": "Is group 1 dead",
+          "type": "Raw",
+          "check_commands": [
+              { "type": "DieEnemy", "Param1": 583, "Param2": 8, "Param3": 0 } ,
+              { "type": "DieEnemy", "Param1": 583, "Param2": 8, "Param3": 1 } 
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [1]
+        }
+      ]
+    }
+  ]
+}

@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Crest of Dwindled Strength",
                     "item_id": 9278,
                     "num": 1
                 },
                 {
+                    "comment": "Crest of Dwindled Magick",
                     "item_id": 9282,
                     "num": 1
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 1
                 }
@@ -43,6 +46,7 @@
             "type": "random",
             "loot_pool": [
                 {
+                    "comment": "Healing Potion",
                     "item_id": 34,
                     "num": 9,
                     "chance": 1.0
@@ -56,27 +60,54 @@
                 "id": 169,
                 "group_id": 1
             },
+            "placement_type": "manual",
             "enemies": [
                 {
-                    "enemy_id": "0x011010",
-                    "level": 46,
-                    "exp": 1200,
-                    "is_boss": false,
-                    "hm_present_no": 52
-                },
-                {
-                    "enemy_id": "0x011010",
-                    "level": 46,
-                    "exp": 1200,
-                    "is_boss": false,
-                    "hm_present_no": 52
-                },
-                {
+                    "comment": "Vigilant Banded Hunter",
                     "enemy_id": "0x011012",
+                    "named_enemy_params_id": 53,
+                    "hm_present_no": 54,
                     "level": 46,
-                    "exp": 1200,
-                    "is_boss": false,
-                    "hm_present_no": 54
+                    "exp": 231,
+                    "index": 5
+                },
+                {
+                    "comment": "Vigilant Banded Hunter",
+                    "enemy_id": "0x011012",
+                    "named_enemy_params_id": 53,
+                    "hm_present_no": 54,
+                    "level": 46,
+                    "exp": 231,
+                    "index": 6
+                },
+                {
+                    "comment": "Vigilant Banded Hunter",
+                    "enemy_id": "0x011012",
+                    "named_enemy_params_id": 53,
+                    "hm_present_no": 54,
+                    "level": 46,
+                    "exp": 231,
+                    "index": 7
+                },
+                {
+                    "comment": "Vigilant Banded Hunter",
+                    "enemy_id": "0x011012",
+                    "named_enemy_params_id": 53,
+                    "hm_present_no": 54,
+                    "level": 46,
+                    "exp": 231,
+                    "index": 8
+                },
+                {
+                    "comment": "Vigilant Banded Fighter",
+                    "enemy_id": "0x011010",
+                    "named_enemy_params_id": 53,
+                    "hm_present_no": 52,
+                    "level": 46,
+                    "exp": 231,
+                    "repop_count": 2,
+                    "repop_wait_second": 10,
+                    "index": 11
                 }
             ]
         }
@@ -93,11 +124,19 @@
                 "layer_no": 1
             },
             "npc_id": "WhiteKnight2",
-            "message_id": 11372
+            "message_id": 11451
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 506,
+                    "Param2": 13279
+                }
+            ],
             "groups": [0]
         },
         {
@@ -115,7 +154,7 @@
             },
             "announce_type": "Update",
             "npc_id": "WhiteKnight2",
-            "message_id": 11835
+            "message_id": 13276
         }
     ]
 }

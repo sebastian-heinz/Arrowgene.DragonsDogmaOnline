@@ -56,11 +56,19 @@
         "layer_no": 1
       },
       "npc_id": "Eugene",
-      "message_id": 11372
+      "message_id": 11079
     },
     {
       "type": "CollectItem",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 1607,
+          "Param2": 11085
+        }
+      ],
       "stage_id": {
         "id": 101,
         "group_id": 2,
@@ -280,7 +288,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Eugene",
-      "message_id": 11842
+      "message_id": 11082
     }
   ]
 }

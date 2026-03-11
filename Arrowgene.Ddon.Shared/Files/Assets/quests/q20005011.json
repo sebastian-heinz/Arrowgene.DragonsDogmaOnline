@@ -34,12 +34,12 @@
         {
           "comment": "Wine-Boiled Mushroom",
           "item_id": 9411,
-          "num": 3
+          "num": 1
         },
         {
           "comment": "Throwing Rock",
           "item_id": 9396,
-          "num": 2
+          "num": 3
         }
       ]
     }
@@ -50,13 +50,14 @@
         "id": 1,
         "group_id": 11
       },
+      "starting_index": 11,
       "enemies": [
         {
-          "comment": "Ogre",
+          "comment": "Brutal Ogre",
           "enemy_id": "0x015500",
           "named_enemy_params_id": 54,
           "level": 26,
-          "exp": 7600,
+          "exp": 2060,
           "is_boss": true
         }
       ]

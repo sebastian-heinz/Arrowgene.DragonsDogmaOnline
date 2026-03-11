@@ -26,14 +26,17 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Gleipnir",
           "item_id": 7959,
           "num": 1
         },
         {
+          "comment": "Strong Gala Extract",
           "item_id": 9363,
           "num": 3
         },
         {
+          "comment": "Panacea",
           "item_id": 41,
           "num": 1
         }
@@ -53,11 +56,19 @@
         "layer_no": 1
       },
       "npc_id": "Actaeon",
-      "message_id": 11372
+      "message_id": 13625
     },
     {
       "type": "CollectItem",
       "announce_type": "Accept",
+      "result_commands": [ 
+        { 
+          "type": "QstTalkChg", 
+          "Param1": 2300, 
+          "Param2": 13264,
+          "comment": "Idle dialogue"
+        }
+      ],
       "stage_id": {
         "id": 84,
         "group_id": 1,
@@ -539,7 +550,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Actaeon",
-      "message_id": 11842
+      "message_id": 13261
     }
   ]
 }

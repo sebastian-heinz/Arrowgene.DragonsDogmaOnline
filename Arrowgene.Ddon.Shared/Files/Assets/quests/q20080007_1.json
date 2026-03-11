@@ -1,43 +1,46 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Evil That Draws Near",
+    "comment": "The Evil That Draws Near (II)",
     "quest_id": 20080007,
-    "base_level": 51,
+    "base_level": 48,
     "minimum_item_rank": 0,
     "discoverable": true,
-    "area_id": "EasternZandora",	
-	"variant_index": 1,
+    "area_id": "EasternZandora",
+    "variant_index": 1,
     "rewards": [
         {
             "type": "wallet",
             "wallet_type": "Gold",
-            "amount": 3630
+            "amount": 1580
         },
         {
             "type": "wallet",
             "wallet_type": "RiftPoints",
-            "amount": 290
+            "amount": 230
         },
         {
             "type": "exp",
-            "amount": 5080
+            "amount": 2030
         },
         {
             "type": "select",
             "loot_pool": [
                 {
-                    "item_id": 9363,
-                    "num": 1
+                    "comment": "Drómi",
+                    "item_id": 7958,
+                    "num": 2
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 1
                 },
                 {
+                    "comment": "Healing Elixir",
                     "item_id": 7554,
                     "num": 3
-                
+
                 }
             ]
         }
@@ -48,25 +51,25 @@
                 "id": 1,
                 "group_id": 440
             },
-            "placement_type": "manual",
+            "starting_index": 3,
             "enemies": [
                 {
-                    "enemy_id": "0x015203",
+                    "comment": "Brutal Ghoul",
+                    "enemy_id": "0x015503",
+                    "named_enemy_params_id": 54,
                     "start_think_tbl_no": 1,
-		            "named_enemy_params_id": 469,
-                    "level": 51,
-                    "exp": 15278,
-                    "is_boss": true,	
-                    "index": 6					
+                    "level": 48,
+                    "exp": 3880,
+                    "is_boss": true
                 },
                 {
-                    "enemy_id": "0x015203",
+                    "comment": "Brutal Ghoul",
+                    "enemy_id": "0x015503",
+                    "named_enemy_params_id": 54,
                     "start_think_tbl_no": 1,
-		            "named_enemy_params_id": 469,
-                    "level": 51,
-                    "exp": 15278,
-                    "is_boss": true,	
-                    "index": 0					
+                    "level": 48,
+                    "exp": 3880,
+                    "is_boss": true
                 }
             ]
         }
@@ -83,11 +86,19 @@
                 "layer_no": 1
             },
             "npc_id": "Man511",
-            "message_id": 11372
+            "message_id": 11452
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 511,
+                    "Param2": 13273
+                }
+            ],
             "groups": [0]
         },
         {
@@ -101,11 +112,11 @@
             "stage_id": {
                 "id": 1,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
             "npc_id": "Man511",
-            "message_id": 11835
+            "message_id": 13270
         }
     ]
 }

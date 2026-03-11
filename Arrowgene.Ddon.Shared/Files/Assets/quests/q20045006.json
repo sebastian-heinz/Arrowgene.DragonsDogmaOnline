@@ -1,0 +1,196 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Seeking Riese Extract",
+  "quest_id": 20045006,
+  "base_level": 58,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "VoldenMines",
+  "news_image": 546,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 5740
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2480
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1020
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Riese Extract",
+          "item_id": 9450,
+          "num": 2
+        },
+        {
+          "comment": "Dragon Fang",
+          "item_id": 7763,
+          "num": 1
+        },
+        {
+          "comment": "Witch's Velvet",
+          "item_id": 7949,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "comment": "Group 1 - Demolition Fang and Death Calling Dark Knights",
+      "stage_id": {
+        "id": 85,
+        "group_id": 10
+      },
+      "starting_index": 15,
+      "enemies": [
+        {
+          "comment": "Death Calling Dark Knight (Death Knight)",
+          "enemy_id": "0x010310",
+          "named_enemy_params_id": 639,
+          "level": 58,
+          "exp": 1660
+        },
+        {
+          "comment": "Death Calling Dark Knight (Death Knight)",
+          "enemy_id": "0x010310",
+          "named_enemy_params_id": 639,
+          "level": 58,
+          "exp": 1660
+        },
+        {
+          "comment": "Demolition Fang (Behemoth)",
+          "enemy_id": "0x015709",
+          "named_enemy_params_id": 638,
+          "level": 58,
+          "exp": 9296,
+          "is_boss": true
+        }
+      ]
+    },
+    {
+      "comment": "Group 2 - Calamity Caller and Death Courting Demon Princesses",
+      "stage_id": {
+        "id": 1,
+        "group_id": 239
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "comment": "Calamity Caller (Nightmare)",
+          "enemy_id": "0x015305",
+          "named_enemy_params_id": 640,
+          "level": 58,
+          "exp": 8831,
+          "is_boss": true,
+          "index": 3
+        },
+        {
+          "comment": "Death Courting Demon Princess (Empress Ghost)",
+          "enemy_id": "0x015605",
+          "named_enemy_params_id": 641,
+          "level": 58,
+          "exp": 4249,
+          "index": 4
+        },
+        {
+          "comment": "Death Courting Demon Princess (Empress Ghost)",
+          "enemy_id": "0x015605",
+          "named_enemy_params_id": 641,
+          "level": 58,
+          "exp": 4249,
+          "index": 5
+        },
+        {
+          "comment": "Death Courting Demon Princess (Empress Ghost)",
+          "enemy_id": "0x015605",
+          "named_enemy_params_id": 641,
+          "level": 58,
+          "exp": 4249,
+          "index": 7
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 95,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Zutan",
+      "message_id": 16426
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 2003,
+          "Param2": 16421
+        }
+      ],
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 95,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Zutan",
+      "message_id": 16422
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 2003,
+          "Param2": 16423
+        }
+      ],
+      "groups": [ 1 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 1 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 95,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Zutan",
+      "message_id": 16424
+    }
+  ]
+}

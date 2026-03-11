@@ -27,16 +27,19 @@
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 845,
+          "comment": "Leader's Vest",
+          "item_id": 492,
           "num": 1
         },
         {
-          "item_id": 631,
-          "num": 1
+          "comment": "Quality Gala Extract",
+          "item_id": 9361,
+          "num": 5
         },
         {
-          "item_id": 9403,
-          "num": 2
+          "comment": "Black Dye",
+          "item_id": 8140,
+          "num": 1
         }
       ]
     }
@@ -49,9 +52,11 @@
       },
       "enemies": [
         {
+          "comment": "Brutal Dread Ape",
           "enemy_id": "0x015502",
+          "named_enemy_params_id": 54,
           "level": 15,
-          "exp": 996,
+          "exp": 1184,
           "is_boss": true
         }
       ]

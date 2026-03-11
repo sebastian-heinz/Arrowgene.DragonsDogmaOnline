@@ -6,7 +6,7 @@
     "base_level": 68,
     "minimum_item_rank": 0,
     "discoverable": false,
-	"area_id": "BloodbaneIsle",	
+    "area_id": "BloodbaneIsle", 
     "rewards": [
         {
             "type": "wallet",
@@ -26,14 +26,17 @@
             "type": "select",
             "loot_pool": [
                 {
+                    "comment": "Mirage Crystal",
                     "item_id": 11809,
                     "num": 2
                 },
                 {
+                    "comment": "Stone Bouquet",
                     "item_id": 11790,
                     "num": 1
                 },
                 {
+                    "comment": "Panacea",
                     "item_id": 41,
                     "num": 3
                 }
@@ -44,44 +47,77 @@
         {
             "stage_id": {
                 "id": 408,
-                "group_id": 7
-            },			
+                "group_id": 15
+            },
+            "comment": "Enemies drop a total of 1722 BO",
             "enemies": [
                 {
-                    "enemy_id": "0x010430",
+                    "comment": "Dragonforce-Bearing Infected Gorecyclops (Severe)",
+                    "enemy_id": "0x015012",
+                    "named_enemy_params_id": 1198,
+                    "infection_type": 2,
                     "level": 68,
-                    "exp": 3000,
-                    "is_boss": false
-        },
-        {
-                    "enemy_id": "0x010430",
+                    "exp": 7440,
+                    "blood_orbs": 907,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Dragonforce-Bearing Bolt Grimwarg",
+                    "enemy_id": "0x010211",
+                    "named_enemy_params_id": 1198,
                     "level": 68,
-                    "exp": 3000,
-                    "is_boss": false
-        },
-        {
-                    "enemy_id": "0x010430",
+                    "exp": 502,
+                    "blood_orbs": 163
+                },
+                {
+                    "comment": "Dragonforce-Bearing Bolt Grimwarg",
+                    "enemy_id": "0x010211",
+                    "named_enemy_params_id": 1198,
                     "level": 68,
-                    "exp": 3000,
-                    "is_boss": false
-        },
-        {
-                    "enemy_id": "0x010430",
+                    "exp": 502,
+                    "blood_orbs": 163
+                },
+                {
+                    "comment": "Dragonforce-Bearing Bolt Grimwarg",
+                    "enemy_id": "0x010211",
+                    "named_enemy_params_id": 1198,
                     "level": 68,
-                    "exp": 3000,
-                    "is_boss": false
-        },
-        {
-                    "enemy_id": "0x010430",
+                    "exp": 502,
+                    "blood_orbs": 163
+                },
+                {
+                    "comment": "Dragonforce-Bearing Bolt Grimwarg",
+                    "enemy_id": "0x010211",
+                    "named_enemy_params_id": 1198,
                     "level": 68,
-                    "exp": 3000,
-                    "is_boss": false
-        },
-        {
-                    "enemy_id": "0x010430",
+                    "exp": 502,
+                    "blood_orbs": 163
+                },
+                {
+                    "comment": "Dragonforce-Bearing Bolt Grimwarg",
+                    "enemy_id": "0x010211",
+                    "named_enemy_params_id": 1198,
                     "level": 68,
-                    "exp": 3000,
-                    "is_boss": false					
+                    "exp": 502,
+                    "blood_orbs": 163               
+                },
+                {
+                    "comment": "Large Newt",
+                    "enemy_id": "0x010461",
+                    "level": 68,
+                    "exp": 1185             
+                },
+                {
+                    "comment": "Large Newt",
+                    "enemy_id": "0x010461",
+                    "level": 68,
+                    "exp": 1185             
+                },
+                {
+                    "comment": "Large Newt",
+                    "enemy_id": "0x010461",
+                    "level": 68,
+                    "exp": 1185             
                 }
             ]
         }

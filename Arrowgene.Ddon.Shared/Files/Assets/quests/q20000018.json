@@ -27,10 +27,12 @@
       "type": "select",
       "loot_pool": [
         {
+          "comment": "Cleric's Cap",
           "item_id": 8143,
           "num": 1
         },
         {
+          "comment": "Bottled Haste",
           "item_id": 9365,
           "num": 2
         }
@@ -43,23 +45,26 @@
         "id": 1,
         "group_id": 21
       },
+      "starting_index": 2,
       "enemies": [
         {
+          "comment": "Vigilant Brute Ape",
           "enemy_id": "0x015504",
-          "level": 11,
-          "exp": 260,
+          "named_enemy_params_id": 53,
+          "level": 9,
+          "exp": 104,
+          "repop_count": 1,
+          "repop_wait_time": 10,
           "is_boss": false
         },
         {
+          "comment": "Vigilant Brute Ape",
           "enemy_id": "0x015504",
-          "level": 11,
-          "exp": 260,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015504",
-          "level": 11,
-          "exp": 260,
+          "named_enemy_params_id": 53,
+          "level": 9,
+          "exp": 104,
+          "repop_count": 1,
+          "repop_wait_time": 10,
           "is_boss": false
         }
       ]
@@ -78,7 +83,15 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [ 0 ],
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 12,
+          "Param2": 10823
+        }
+      ]
     },
     {
       "type": "KillGroup",

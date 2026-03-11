@@ -1,6 +1,7 @@
 #nullable enable
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -91,6 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {ItemId.ExperienceCrystal0, (PointType.ExperiencePoints, 10)},
             {ItemId.ExperienceCrystal1, (PointType.ExperiencePoints, 10000)},
             {ItemId.ExperienceCrystal2, (PointType.ExperiencePoints, 63000)},
+            {ItemId.JobPoint, (PointType.JobPoints, 10)}
         };
 
         private static readonly Dictionary<ItemId, uint> AbilityItems = new Dictionary<ItemId, uint>()
@@ -246,6 +248,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         break;
                     case PointType.PlayPoints:
                         queue.Enqueue(client, _Server.PPManager.AddPlayPoint(client, gainedPoints, connectionIn: connectionIn));
+                        break;
+                    case PointType.JobPoints:
+                        queue.AddRange(_Server.ExpManager.AddJp(client, client.Character, gainedPoints.Item1, RewardSource.Enemy, connectionIn: connectionIn));
                         break;
                 }
                 return (queue, true);

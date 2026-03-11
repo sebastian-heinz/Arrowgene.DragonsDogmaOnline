@@ -1,0 +1,187 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Bound Spirit (Twelve Calamities)",
+    "quest_id": 20080001,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "EasternZandora",
+    "variant_index": 2,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 4350
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 3020
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 360
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Smoky Quartz",
+                    "item_id": 7908,
+                    "num": 1
+                },
+                {
+                    "comment": "Cursed Skull",
+                    "item_id": 7772,
+                    "num": 1
+                },
+                {
+                    "comment": "Demon Arming Points",
+                    "item_id": 8022,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "comment": "Crest of Stubborn Perseverance",
+                    "item_id": 9296,
+                    "num": 1,
+                    "chance": 0.15
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "comment": "Crest of Fortitude",
+                    "item_id": 9298,
+                    "num": 1,
+                    "chance": 0.15
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 93,
+                "group_id": 3
+            },
+            "placement_type": "manual",
+            "enemies": [
+                {
+                    "comment": "Ghost Princess of Purgatory (Empress Ghost)",
+                    "enemy_id": "0x015605",
+                    "named_enemy_params_id": 511,
+                    "level": 55,
+                    "exp": 4095,
+                    "is_boss": true,
+                    "index": 0
+                },
+                {
+                    "comment": "Ghost Princess of Purgatory (Empress Ghost)",
+                    "enemy_id": "0x015605",
+                    "named_enemy_params_id": 511,
+                    "level": 55,
+                    "exp": 4095,
+                    "is_boss": true,
+                    "index": 1
+                },
+                {
+                    "comment": "Ghost Princess' Squire (Skull Lord)",
+                    "enemy_id": "0x010313",
+                    "named_enemy_params_id": 519,
+                    "level": 55,
+                    "exp": 1280,
+                    "index": 2
+                },
+                {
+                    "comment": "Ghost Princess' Squire (Skull Lord)",
+                    "enemy_id": "0x010313",
+                    "named_enemy_params_id": 519,
+                    "level": 55,
+                    "exp": 1280,
+                    "index": 8
+                },
+                {
+                    "comment": "Ghost Princess' Squire (Skull Lord)",
+                    "enemy_id": "0x010313",
+                    "named_enemy_params_id": 519,
+                    "level": 55,
+                    "exp": 1280,
+                    "index": 9
+                },
+                {
+                    "comment": "Ghost Princess' Squire (Ghost Mail)",
+                    "enemy_id": "0x010311",
+                    "named_enemy_params_id": 520,
+                    "level": 55,
+                    "exp": 640,
+                    "index": 10
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1070, "comment": "Spawns LingeringSkeleton NPC"}
+            ],
+            "stage_id": {
+                "id": 93,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "LingeringSkeleton",
+            "message_id": 11288
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 523,
+                    "Param2": 11292
+                }
+            ],
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "CollectItem",
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 93,
+                "group_id": 2,
+                "layer_no": 1
+            },
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1765, "comment": "Spawns Glowing Item"}
+            ]
+        },
+        {
+            "type": "NewTalkToNpc",
+            "stage_id": {
+                "id": 93,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "LingeringSkeleton",
+            "message_id": 11291
+        }
+    ]
+}

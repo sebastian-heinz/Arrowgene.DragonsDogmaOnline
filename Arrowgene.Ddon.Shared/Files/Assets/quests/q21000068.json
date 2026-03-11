@@ -1,0 +1,86 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "An Embellished Rumor",
+  "quest_id": 21000068,
+  "base_level": 65,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "EasternZandora",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 3940
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 5360
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 687
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Ancient Beast Pelt",
+          "item_id": 11793,
+          "num": 3
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        },
+        {
+          "comment": "Superior Strong Gala Extract",
+          "item_id": 9364,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 1
+      },
+      "npc_id": "Isabel",
+      "message_id": 17336
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 139
+      },
+      "npc_id": "Dian",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue - Isabel",
+          "type": "QstTalkChg",
+          "Param1": 1802,
+          "Param2": 17337
+        },
+        {
+          "comment": "Idle dialogue - Dian",
+          "type": "QstTalkChg",
+          "Param1": 4507,
+          "Param2": 17338
+        }
+      ],
+      "items": [
+        {
+          "comment": "Cave Silkworm",
+          "id": 11791,
+          "amount": 6
+        }
+      ],
+      "message_id": 17339
+    }
+  ]
+}

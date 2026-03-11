@@ -1,0 +1,86 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Lonesome Hunter",
+  "quest_id": 21000021,
+  "base_level": 63,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeGrove",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 3876
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 5195
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 662
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Black Iron Ingot",
+          "item_id": 7878,
+          "num": 2
+        },
+        {
+          "comment": "Cedar Wood",
+          "item_id": 7967,
+          "num": 2
+        },
+        {
+          "comment": "Superior Healing Remedy",
+          "item_id": 7555,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 137
+      },
+      "npc_id": "Christine",
+      "message_id": 17095
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 22
+      },
+      "npc_id": "Ivan",
+      "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue - Christine",
+          "type": "QstTalkChg",
+          "Param1": 4506,
+          "Param2": 17096
+        },
+        {
+          "comment": "Idle dialogue - Ivan",
+          "type": "QstTalkChg",
+          "Param1": 4503,
+          "Param2": 17097
+        }
+      ],
+      "items": [
+        {
+          "comment": "Tomb Gravel",
+          "id": 11772,
+          "amount": 6
+        }
+      ],
+      "message_id": 17098
+    }
+  ]
+}

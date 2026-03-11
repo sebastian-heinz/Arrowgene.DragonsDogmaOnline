@@ -1,0 +1,171 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Boat's Buddy (III)",
+    "quest_id": 20010001,
+    "base_level": 26,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "BreyaCoast",
+    "news_image": 22,
+    "variant_index": 2,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 710
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 130
+        },
+        {
+            "type": "exp",
+            "amount": 850
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment": "Showdown Helm",
+                    "item_id": 843,
+                    "num": 1
+                },
+                {
+                    "comment": "Enamel Hood",
+                    "item_id": 629,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 83
+            },
+            "starting_index": 4,
+            "enemies": [
+                {
+                    "comment": "Vigilant Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 53,
+                    "level": 26,
+                    "exp": 82,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 53,
+                    "level": 26,
+                    "exp": 82,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 53,
+                    "level": 26,
+                    "exp": 82,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Harpy",
+                    "enemy_id": "0x010600",
+                    "named_enemy_params_id": 53,
+                    "level": 26,
+                    "exp": 82,
+                    "is_boss": false
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 83
+            },
+            "starting_index": 8,
+            "enemies": [
+                {
+                    "comment": "Vigilant Sulfur Saurian",
+                    "enemy_id": "0x010410",
+                    "named_enemy_params_id": 53,
+                    "level": 26,
+                    "exp": 132,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Sulfur Saurian",
+                    "enemy_id": "0x010410",
+                    "named_enemy_params_id": 53,
+                    "level": 26,
+                    "exp": 132,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Sulfur Saurian",
+                    "enemy_id": "0x010410",
+                    "named_enemy_params_id": 53,
+                    "level": 26,
+                    "exp": 132,
+                    "is_boss": false
+                },
+                {
+                    "comment": "Vigilant Giant Sulfur Saurian",
+                    "enemy_id": "0x010411",
+                    "named_enemy_params_id": 53,
+                    "level": 26,
+                    "exp": 165,
+                    "is_boss": false
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 1,
+                "group_id": 0
+            },
+            "npc_id": "Walter",
+            "message_id": 10800
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Idle dialogue",
+                    "type": "QstTalkChg",
+                    "Param1": 1200,
+                    "Param2": 10806
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [ 1 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Walter",
+            "message_id": 10803
+        }
+    ]
+}

@@ -48,10 +48,11 @@
       "starting_index": 5,
       "enemies": [
         {
-          "comment": "Mist Fighter",
+          "comment": "Vigilant Mist Fighter",
           "enemy_id": "0x011030",
+          "named_enemy_params_id": 53,
           "level": 15,
-          "exp": 94,
+          "exp": 88,
           "hm_present_no": 68
         }
       ]
@@ -64,11 +65,19 @@
         "id": 47
       },
       "npc_id": "Rudolfo",
-      "message_id": 10800
+      "message_id": 11379
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
+      "result_commands": [
+        {
+          "comment": "Idle dialogue",
+          "type": "QstTalkChg",
+          "Param1": 4500,
+          "Param2": 11883
+        }
+      ],
       "groups": [ 0 ]
     },
     {
@@ -78,7 +87,7 @@
       },
       "announce_type": "Update",
       "npc_id": "Rudolfo",
-      "message_id": 10805
+      "message_id": 11877
     }
   ]
 }
