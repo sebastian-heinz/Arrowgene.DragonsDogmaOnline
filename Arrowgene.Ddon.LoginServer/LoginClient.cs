@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.LoginServer
 
         public void UpdateIdentity()
         {
-            string newIdentity = $"[LoginClient#{Id}@{Socket.Identity}]";
+            string newIdentity = $"[LoginClient#{Id}@{ClientHandle.Identity}]";
             if (Account != null)
             {
                 newIdentity += $"[Acc:{Account.NormalName}]";

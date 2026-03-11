@@ -160,7 +160,8 @@ namespace Arrowgene.Ddon.Server.Network
 
         protected override void HandleError(ClientHandle clientHandle, Exception exception, string message)
         {
-            throw new NotImplementedException();
+            Logger.Error(clientHandle, message);
+            Logger.Exception(clientHandle, exception);
         }
 
         public void Dispose()
