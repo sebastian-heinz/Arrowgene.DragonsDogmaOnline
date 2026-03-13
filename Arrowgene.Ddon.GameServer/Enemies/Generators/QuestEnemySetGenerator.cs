@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Enemies.Generators
             {
                 var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
                 var questStateManager = QuestManager.GetQuestStateManager(client, quest);
-                if (quest.OverrideEnemySpawn && quest.HasEnemiesInCurrentStageGroup(stageLayoutId))
+                if (quest.OverrideEnemySpawn && quest.QuestAreaId == client.Character.AreaId)
                 {
                     quests.Add(quest);
                 }
