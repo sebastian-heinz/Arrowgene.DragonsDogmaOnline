@@ -65,8 +65,16 @@ public class DdonBot
 
     public void Execute(BotAction action)
     {
+        // todo make this thread safe
         _actions.Enqueue(action);
-        action.Execute(this);
+    }
+
+    private void RunActions()
+    {
+        // start this in a thread, only after challange completed
+        // dequeue action
+        // execute action
+        //action.Execute(this);
     }
 
     public void Execute(string action)
@@ -95,7 +103,11 @@ public class DdonBot
             StructurePacket sp = new StructurePacket<C2SCertClientChallengeReq>(req);
             byte[] data = _packetFactory.WriteDataWithLengthPrefix(sp.Data);
             SendRaw(data);
+
+            // TODO should it be set only after server has responded?
             _packetFactory.SetCamelliaKey(key);
+
+            // this flag defensibility should be set later before allowing actions.
             _challangeCompleted = true;
         }
 
