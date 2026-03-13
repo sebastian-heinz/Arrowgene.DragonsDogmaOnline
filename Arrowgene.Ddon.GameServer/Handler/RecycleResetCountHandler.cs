@@ -2,7 +2,6 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using static System.Data.Entity.Infrastructure.Design.Executor;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {

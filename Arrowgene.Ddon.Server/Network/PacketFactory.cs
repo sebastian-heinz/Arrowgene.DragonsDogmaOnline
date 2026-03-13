@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Buffer = System.Buffer;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -69,6 +70,16 @@ namespace Arrowgene.Ddon.Server.Network
                 Logger.Error($"data == null, tried to write invalid data");
                 return null;
             }
+            
+            int mod = data.Length % 16;
+            if (mod > 0)
+            {
+                int paddingLength = 16 - mod;
+                byte[] paddedData = new byte[data.Length + paddingLength];
+        
+                Buffer.BlockCopy(data, 0, paddedData, 0, data.Length);
+                data = paddedData; 
+            }
 
             int totalLength = data.Length + PacketLengthFieldSize;
             if (totalLength < 0 || totalLength > ushort.MaxValue)
@@ -83,6 +94,26 @@ namespace Arrowgene.Ddon.Server.Network
             buffer.WriteUInt16((ushort) encryptedPacketData.Length /* without length prefix */, Endianness.Big);
             buffer.WriteBytes(encryptedPacketData);
             return buffer.GetAllBytes();
+        }
+        
+        public byte[] ReadDataWithLengthPrefix(byte[] packet)
+        {
+            if (packet == null || packet.Length < 2) 
+            {
+                Logger.Error("Packet is null or too short to contain a length prefix.");
+                return null;
+            }
+
+            IBuffer buffer = new StreamBuffer(packet);
+            buffer.SetPositionStart();
+            ushort encryptedLength = buffer.ReadUInt16(Endianness.Big);
+            if (packet.Length < encryptedLength + 2)
+            {
+                Logger.Error($"Incomplete packet: expected {encryptedLength} bytes, but only have {packet.Length - 2}");
+                return null;
+            }
+            byte[] encryptedData = buffer.ReadBytes(encryptedLength);
+            return Decrypt(encryptedData);
         }
 
         public byte[] Write(IPacket packet)

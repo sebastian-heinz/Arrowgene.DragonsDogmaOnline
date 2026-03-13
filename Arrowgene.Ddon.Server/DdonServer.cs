@@ -81,11 +81,13 @@ namespace Arrowgene.Ddon.Server
         {
             Database.DeleteConnectionsByServerId(Id);
             Logger.Info($"[{_setting.TcpServerSettings.Identity}] Listening: {_server.IpAddress}:{_server.Port}");
+            _consumer.Start();
             _server.Start();
         }
 
         public void Stop()
         {
+            _consumer.Stop();
             _server.Stop();
             _consumer.Dispose();
         }

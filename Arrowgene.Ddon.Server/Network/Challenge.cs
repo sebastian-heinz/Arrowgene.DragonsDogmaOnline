@@ -1,13 +1,18 @@
 using System;
+using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Buffer = System.Buffer;
 
 namespace Arrowgene.Ddon.Server.Network
 {
     public class Challenge
     {
+        private const string Password = "0123456789abcdef";
+
         private static readonly byte[] BlowFishKey = new byte[]
         {
             0x6D, 0x6F, 0x66, 0x75, 0x6D, 0x6F, 0x66, 0x75, 0x20, 0x63, 0x61, 0x70, 0x63, 0x6F, 0x6D, 0x28,
@@ -86,12 +91,60 @@ namespace Arrowgene.Ddon.Server.Network
                 response.CamelliaKey = _rsa.Decrypt(rsaEncryptedCamelliaKey, RSAEncryptionPadding.Pkcs1);
                 response.BlowFishPassword = BlowFish.Decrypt_ECB(response.EncryptedBlowFishPassword);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 response.Error = true;
             }
 
             return response;
+        }
+        
+        public void ClientCompleteChallenge(byte[] recv)
+        {
+            RSAParameters rsaKeyInfo = new RSAParameters();
+
+            StreamBuffer buffer = new StreamBuffer(recv);
+            buffer.SetPositionStart();
+            rsaKeyInfo.Modulus = buffer.ReadBytes(256);
+            byte[] paddedExponent = buffer.ReadBytes(16);
+            int firstNonZero = Array.FindIndex(paddedExponent, b => b != 0);
+            if (firstNonZero != -1)
+            {
+                rsaKeyInfo.Exponent = new byte[paddedExponent.Length - firstNonZero];
+                Buffer.BlockCopy(paddedExponent, firstNonZero, rsaKeyInfo.Exponent, 0, rsaKeyInfo.Exponent.Length);
+            }
+            else
+            {
+                rsaKeyInfo.Exponent = new byte[] { 0 };
+            }
+
+            byte[] receivedHash = buffer.ReadBytes(20);
+            byte[] unknownBytes = buffer.ReadBytes(12);
+
+            StreamBuffer verifyBuffer = new StreamBuffer();
+            verifyBuffer.WriteBytes(rsaKeyInfo.Modulus);
+            verifyBuffer.WriteBytes(paddedExponent);
+
+            byte[] calculatedHash = Sha1.ComputeHash(verifyBuffer.GetAllBytes());
+            if (!Enumerable.SequenceEqual(receivedHash, calculatedHash))
+            {
+                throw new Exception("Hash verification failed. The key data is corrupted or tampered with.");
+            }
+
+            _rsa.ImportParameters(rsaKeyInfo);
+        }
+
+        public C2SCertClientChallengeReq ClientCreateChallengeRequest(byte[] camelliaKey, string password = Password)
+        {
+            C2SCertClientChallengeReq req = new C2SCertClientChallengeReq();
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+            byte[] encPassword = BlowFish.Encrypt_ECB(passwordBytes);
+            req.CommonKeySrcSize = (byte)camelliaKey.Length;
+            req.CommonKeyEnc = _rsa.Encrypt(camelliaKey, RSAEncryptionPadding.Pkcs1);
+            req.PasswordSrcSize = (byte)passwordBytes.Length;
+            req.PasswordEncSize = (byte)encPassword.Length;
+            req.PasswordEnc = encPassword;
+            return req;
         }
     }
 }

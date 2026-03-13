@@ -8,7 +8,6 @@ using Arrowgene.Ddon.Shared.Model.BattleContent;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Linq;
 using System.Text;
 

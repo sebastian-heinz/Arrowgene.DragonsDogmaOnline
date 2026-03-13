@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.Client", "Ar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Scripts", "Arrowgene.Ddon.Scripts\Arrowgene.Ddon.Scripts.csproj", "{6B1A1279-B893-41BE-9D80-D4039A5251DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Bot", "Arrowgene.Ddon.Bot\Arrowgene.Ddon.Bot.csproj", "{64CF141D-23E6-4E12-B8FD-33B14433B0FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{6B1A1279-B893-41BE-9D80-D4039A5251DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B1A1279-B893-41BE-9D80-D4039A5251DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B1A1279-B893-41BE-9D80-D4039A5251DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64CF141D-23E6-4E12-B8FD-33B14433B0FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64CF141D-23E6-4E12-B8FD-33B14433B0FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64CF141D-23E6-4E12-B8FD-33B14433B0FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64CF141D-23E6-4E12-B8FD-33B14433B0FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
