@@ -140,7 +140,7 @@ Configuration properties defined in `ServerSetting.cs`. These control server ide
 
 | `ConsumerQueueCapacityPerLane`
 | Max queued items per consumer lane
-| Defaults to `1024`. Increase if the server handles high throughput and packets are being dropped due to queue saturation.
+| Defaults to `100000`. Increase if the server handles high throughput and packets are being dropped due to queue saturation.
 
 | `TcpServerSettings`
 | Low-level TCP socket configuration https://github.com/sebastian-heinz/Arrowgene.Networking?tab=readme-ov-file#configuration[(Link to Configuration)]
