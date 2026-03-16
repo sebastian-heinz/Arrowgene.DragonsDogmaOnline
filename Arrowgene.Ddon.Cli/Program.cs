@@ -111,7 +111,6 @@ namespace Arrowgene.Ddon.Cli
             AddCommand(new ClientCommand());
             AddCommand(new PacketCommand());
             AddCommand(new DbMigrationCommand());
-            AddCommand(new BotCommand());
         }
 
         private void RunArguments(string[] arguments)
