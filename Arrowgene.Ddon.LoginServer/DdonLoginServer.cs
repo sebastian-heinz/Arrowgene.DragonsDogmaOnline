@@ -76,7 +76,7 @@ namespace Arrowgene.Ddon.LoginServer
         public override LoginClient NewClient(ClientHandle clientHandle)
         {
             return new LoginClient(clientHandle,
-                new PacketFactory(Setting.ServerSetting, PacketIdResolver.LoginPacketIdResolver)
+                new PacketFactory(PacketIdResolver.LoginPacketIdResolver)
             );
         }
 

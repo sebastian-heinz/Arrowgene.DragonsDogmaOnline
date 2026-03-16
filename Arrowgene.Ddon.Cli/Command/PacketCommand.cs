@@ -66,8 +66,8 @@ namespace Arrowgene.Ddon.Cli.Command
                 throw new PacketCommandException("Could not determine server type.");
             }
 
-            PacketFactory serverFactory = new PacketFactory(new ServerSetting(), packetIdResolver);
-            PacketFactory clientFactory = new PacketFactory(new ServerSetting(), packetIdResolver);
+            PacketFactory serverFactory = new PacketFactory(packetIdResolver);
+            PacketFactory clientFactory = new PacketFactory(packetIdResolver);
             serverFactory.SetCamelliaKey(camelliaKeyBytes);
             clientFactory.SetCamelliaKey(camelliaKeyBytes);
 

@@ -48,7 +48,6 @@ namespace Arrowgene.Ddon.Server
             LogIncomingPacketPayload = false;
             ConsumerQueueCapacityPerLane = 1024;
             TcpServerSettings = new TcpServerSettings();
-            TcpServerSettings.OrderingLaneCount = 1;
         }
 
         public ServerSetting(ServerSetting setting)

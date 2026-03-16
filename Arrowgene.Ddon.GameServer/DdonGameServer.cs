@@ -210,7 +210,7 @@ namespace Arrowgene.Ddon.GameServer
         {
             GameClient newClient = new GameClient(
                 clientHandle,
-                new PacketFactory(ServerSetting.ServerSetting, PacketIdResolver.GamePacketIdResolver),
+                new PacketFactory(PacketIdResolver.GamePacketIdResolver),
                 this
             );
             ClientLookup.Add(newClient);

@@ -158,10 +158,10 @@ namespace Arrowgene.Ddon.Server.Network
             }
         }
 
-        protected override void HandleError(ClientHandle clientHandle, Exception exception, string message)
+        protected override void HandleError(ClientSnapshot clientSnapshot, Exception exception, string message)
         {
-            Logger.Error(clientHandle, message);
-            Logger.Exception(clientHandle, exception);
+            Logger.Error(clientSnapshot, message);
+            Logger.Exception(clientSnapshot, exception);
         }
 
         public void Dispose()
