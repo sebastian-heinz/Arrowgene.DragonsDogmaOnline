@@ -46,8 +46,12 @@ namespace Arrowgene.Ddon.Server
             LogIncomingPackets = true;
             LogIncomingPacketStructure = false;
             LogIncomingPacketPayload = false;
-            ConsumerQueueCapacityPerLane = 1024;
+            ConsumerQueueCapacityPerLane = 100000;
             TcpServerSettings = new TcpServerSettings();
+            
+            // DDON Specific defaults
+            TcpServerSettings.OrderingLaneCount = 1;
+            TcpServerSettings.MaxQueuedSendBytes = 8388608;
         }
 
         public ServerSetting(ServerSetting setting)
