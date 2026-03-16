@@ -37,7 +37,7 @@ The project is intended for educational purpose only.
 . Launch with `StartServer.cmd` from the publish output directory
 . See the https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/blob/develop/docs/faq.md[FAQ] for common questions
 
-NOTE: When updating from a previous build, ensure `db.sqlite` is in `publish/win-x64-#.#.#.#/Server/Files/Database` and run `MigrateDatabase.cmd` if needed.
+NOTE: When updating from a previous build, ensure `db.sqlite` is in `publish/win-x64-\#.#.\#.#/Server/Files/Database` and run `MigrateDatabase.cmd` if needed.
 
 == Architecture
 
@@ -143,7 +143,7 @@ Configuration properties defined in `ServerSetting.cs`. These control server ide
 | Defaults to `1024`. Increase if the server handles high throughput and packets are being dropped due to queue saturation.
 
 | `TcpServerSettings`
-| Low-level TCP socket configuration
+| Low-level TCP socket configuration https://github.com/sebastian-heinz/Arrowgene.Networking?tab=readme-ov-file#configuration[(Link to Configuration)]
 | Wraps `Arrowgene.Networking.SAEAServer.TcpServerSettings`. Tune buffer sizes, backlog, and socket options for production deployments.
 |===
 
