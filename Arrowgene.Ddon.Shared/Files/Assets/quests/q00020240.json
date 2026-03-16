@@ -4,11 +4,11 @@
     "comment": "Reason and Bonds",
     "quest_id": 20240,
     "next_quest": 20250,
-    "base_level": 75,
+    "base_level": 77,
     "minimum_item_rank": 0,
     "discoverable": true,
     "order_conditions": [
-        {"type": "MinimumLevel", "Param1": 75},
+        {"type": "MinimumLevel", "Param1": 77},
         {"type": "MainQuestCompleted", "Param1": 20230}
     ],
     "rewards": [
@@ -69,11 +69,11 @@
                 {
                     "comment": "Dragon Crystal of Evil Sapping",
                     "enemy_id": "0x030104",
-                    "level": 80,
+                    "level": 77,
                     "exp": 0,
                     "index": 2,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1568,
+                    "named_enemy_params_id": 1687,
                     "start_think_tbl_no": 2,
                     "is_manual_set": true,
                     "is_required": false,
@@ -83,11 +83,11 @@
                 {
                     "comment": "Dragon Crystal of Evil Sealing",
                     "enemy_id": "0x030104",
-                    "level": 80,
+                    "level": 77,
                     "exp": 0,
                     "index": 3,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1567,
+                    "named_enemy_params_id": 1687,
                     "start_think_tbl_no": 2,
                     "is_manual_set": true,
                     "is_required": false,
@@ -97,11 +97,11 @@
                 {
                     "comment": "Dragon Crystal of Power Sapping",
                     "enemy_id": "0x030104",
-                    "level": 80,
+                    "level": 77,
                     "exp": 0,
                     "index": 4,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1568,
+                    "named_enemy_params_id": 1686,
                     "start_think_tbl_no": 2,
                     "is_manual_set": true,
                     "is_required": false,
@@ -111,11 +111,11 @@
                 {
                     "comment": "Dragon Crystal of Power Sealing",
                     "enemy_id": "0x030104",
-                    "level": 80,
+                    "level": 77,
                     "exp": 0,
                     "index": 5,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1567,
+                    "named_enemy_params_id": 1686,
                     "start_think_tbl_no": 2,
                     "is_manual_set": true,
                     "is_required": false,
@@ -139,7 +139,7 @@
                     "exp": 0,
                     "index": 2,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1565,
+                    "named_enemy_params_id": 1701,
                     "repop_count": 50,
                     "repop_wait_second": 45
                 },
@@ -150,7 +150,7 @@
                     "exp": 0,
                     "index": 5,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1565,
+                    "named_enemy_params_id": 1701,
                     "repop_count": 50,
                     "repop_wait_second": 45
                 }
@@ -171,7 +171,7 @@
                     "exp": 0,
                     "index": 1,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1565,
+                    "named_enemy_params_id": 1701,
                     "repop_count": 50,
                     "repop_wait_second": 45
                 },
@@ -182,7 +182,7 @@
                     "exp": 0,
                     "index": 3,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1565,
+                    "named_enemy_params_id": 1701,
                     "repop_count": 50,
                     "repop_wait_second": 45
                 }
