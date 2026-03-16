@@ -147,6 +147,24 @@ Configuration properties defined in `ServerSetting.cs`. These control server ide
 | Wraps `Arrowgene.Networking.SAEAServer.TcpServerSettings`. Tune buffer sizes, backlog, and socket options for production deployments.
 |===
 
+.Suggested settings for DDON:
+[cols="2,1,3", options="header"]
+|===
+| Setting | Value | Note
+
+| `TcpServerSettings.OrderingLaneCount`
+| `1`
+| Must remain at 1 as the DDON server is single-threaded and not threadsafe
+
+| `TcpServerSettings.MaxQueuedSendBytes`
+| `8388608`
+| Maximum bytes (~8 MB) that can be buffered for sending before back-pressure is applied
+
+| `ConsumerQueueCapacityPerLane`
+| `100000`
+| Maximum number of events that can be queued per lane before networking stalls
+|===
+
 == Progress
 See the https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/wiki/What-Works%3F[wiki].
 
