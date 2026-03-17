@@ -4,30 +4,27 @@ namespace Arrowgene.Ddon.Metrics
 {
     internal sealed class DdonServerMetricsState
     {
-        private readonly ConsumerMetricsState _consumerMetricsState;
+        internal readonly ConsumerMetricsState ConsumerMetricsState;
         private int _captureEnabled;
 
         public DdonServerMetricsState(ConsumerMetricsState consumerMetricsState)
         {
-            _consumerMetricsState = consumerMetricsState;
+            ConsumerMetricsState = consumerMetricsState;
         }
 
-        public void EnableCapture()
+        internal void EnableCapture()
         {
-            Interlocked.Exchange(ref _captureEnabled, 1);
-            _consumerMetricsState.EnableCapture();
+            Volatile.Write(ref _captureEnabled, 1);
         }
 
-        public void DisableCapture()
+        internal void DisableCapture()
         {
-            Interlocked.Exchange(ref _captureEnabled, 0);
-            _consumerMetricsState.DisableCapture();
+            Volatile.Write(ref _captureEnabled, 0);
         }
 
-        public DdonServerMetricsSnapshot CreateSnapshot()
+        internal bool IsCaptureEnabled()
         {
-            ConsumerMetricsSnapshot consumerSnapshot = _consumerMetricsState.CreateSnapshot();
-            return new DdonServerMetricsSnapshot(consumerSnapshot);
+            return Volatile.Read(ref _captureEnabled) == 1;
         }
     }
 }

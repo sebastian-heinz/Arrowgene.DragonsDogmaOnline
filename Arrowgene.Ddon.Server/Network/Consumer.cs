@@ -115,14 +115,15 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 Logger.Exception(client, ex);
                 Logger.LogPacketError(client, packet);
-                _metricsState.IncrementHandlerErrors();
+                _metricsState.IncrementHandlerErrors(
+                    packetHandler.Id.ToString(),
+                    packetHandler.Id.Name);
             }
             finally
             {
                 _metricsState.RecordHandlerExecution(
                     packetHandler.Id.ToString(),
                     packetHandler.Id.Name,
-                    client.Identity,
                     startTimestamp);
             }
         }

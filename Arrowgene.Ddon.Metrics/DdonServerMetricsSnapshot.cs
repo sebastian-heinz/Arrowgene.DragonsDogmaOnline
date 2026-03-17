@@ -1,17 +1,34 @@
-using System.Collections.Generic;
+using System;
 
 namespace Arrowgene.Ddon.Metrics
 {
     public readonly struct DdonServerMetricsSnapshot
     {
-        public DdonServerMetricsSnapshot(ConsumerMetricsSnapshot consumerMetrics)
+        public DdonServerMetricsSnapshot(
+            DateTime timestampUtc,
+            DateTime serverStartedAtUtc,
+            long sequenceNumber,
+            double handlersExecutedPerSecond,
+            double handlerErrorsPerSecond,
+            ConsumerMetricsSnapshot consumerMetrics)
         {
+            TimestampUtc = timestampUtc;
+            ServerStartedAtUtc = serverStartedAtUtc;
+            SequenceNumber = sequenceNumber;
+            HandlersExecutedPerSecond = handlersExecutedPerSecond;
+            HandlerErrorsPerSecond = handlerErrorsPerSecond;
             ConsumerMetrics = consumerMetrics;
         }
 
+        public DateTime TimestampUtc { get; }
+        public DateTime ServerStartedAtUtc { get; }
+        public long SequenceNumber { get; }
+        public double HandlersExecutedPerSecond { get; }
+        public double HandlerErrorsPerSecond { get; }
         public ConsumerMetricsSnapshot ConsumerMetrics { get; }
 
-        // Convenience accessor (delegates to consumer)
-        public IReadOnlyList<DdonHandlerDurationSnapshot> HandlerDurations => ConsumerMetrics.HandlerDurations;
+        public TimeSpan Uptime => ServerStartedAtUtc == DateTime.MinValue
+            ? TimeSpan.Zero
+            : TimestampUtc - ServerStartedAtUtc;
     }
 }

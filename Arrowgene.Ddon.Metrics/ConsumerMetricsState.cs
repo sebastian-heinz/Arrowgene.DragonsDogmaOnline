@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
@@ -8,83 +7,228 @@ namespace Arrowgene.Ddon.Metrics
 {
     internal sealed class ConsumerMetricsState
     {
-        // Handler duration histogram buckets (in microseconds)
-        // Bucket boundaries: 100us, 500us, 1ms, 5ms, 10ms, 50ms, 100ms, 500ms, 1s, >1s
-        private static readonly long[] DurationBucketBoundariesUs =
-        {
-            100, 500, 1_000, 5_000, 10_000, 50_000, 100_000, 500_000, 1_000_000
-        };
+        private const int HandlerDurationBucketCount = 10;
 
-        private const int DurationBucketCount = 10; // 9 boundaries + 1 overflow
-
-        private readonly long[] _handlerDurationBuckets = new long[DurationBucketCount];
+        private readonly long[] _handlerDurationBuckets = new long[HandlerDurationBucketCount];
         private long _handlersExecuted;
         private long _handlerErrors;
-        private int _captureEnabled; // 0 = disabled, 1 = enabled
+        private int _captureEnabled;
 
-        // Per-handler detail tracking (lock-free queue, drained on snapshot)
-        private readonly ConcurrentQueue<DdonHandlerDurationSnapshot> _handlerDurations = new();
+        private readonly ConcurrentDictionary<string, HandlerEntry> _handlerEntries = new();
 
-        public void EnableCapture() => Interlocked.Exchange(ref _captureEnabled, 1);
-        public void DisableCapture() => Interlocked.Exchange(ref _captureEnabled, 0);
-        private bool IsCaptureEnabled() => Volatile.Read(ref _captureEnabled) == 1;
+        internal int HandlerDurationBucketsCount => HandlerDurationBucketCount;
 
-        public void RecordHandlerExecution(
+        internal void EnableCapture()
+        {
+            Volatile.Write(ref _captureEnabled, 1);
+        }
+
+        internal void DisableCapture()
+        {
+            Volatile.Write(ref _captureEnabled, 0);
+        }
+
+        internal bool IsCaptureEnabled()
+        {
+            return Volatile.Read(ref _captureEnabled) == 1;
+        }
+
+        internal long GetHandlersExecuted()
+        {
+            return Volatile.Read(ref _handlersExecuted);
+        }
+
+        internal long GetHandlerErrors()
+        {
+            return Volatile.Read(ref _handlerErrors);
+        }
+
+        internal void CopyHandlerDurationBuckets(long[] destination)
+        {
+            if (destination is null)
+            {
+                throw new ArgumentNullException(nameof(destination));
+            }
+
+            if (destination.Length < _handlerDurationBuckets.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(destination),
+                    "Destination must be at least as large as the handler-duration counter array.");
+            }
+
+            for (int index = 0; index < _handlerDurationBuckets.Length; index++)
+            {
+                destination[index] = Volatile.Read(ref _handlerDurationBuckets[index]);
+            }
+        }
+
+        internal ConcurrentDictionary<string, HandlerEntry> GetHandlerEntries()
+        {
+            return _handlerEntries;
+        }
+
+        internal void RecordHandlerExecution(
             string handlerId,
             string handlerName,
-            string clientIdentity,
             long startTimestamp)
         {
-            if (!IsCaptureEnabled()) return;
+            if (!IsCaptureEnabled())
+            {
+                return;
+            }
 
             TimeSpan elapsed = Stopwatch.GetElapsedTime(startTimestamp);
             long elapsedUs = (long)(elapsed.TotalMicroseconds);
 
             Interlocked.Increment(ref _handlersExecuted);
+            Interlocked.Increment(ref _handlerDurationBuckets[GetHandlerDurationBucketIndex(elapsedUs)]);
 
-            // Bucket the duration
-            int bucket = DurationBucketCount - 1; // default to overflow
-            for (int i = 0; i < DurationBucketBoundariesUs.Length; i++)
+            HandlerEntry entry = _handlerEntries.GetOrAdd(
+                handlerId, _ => new HandlerEntry(handlerName));
+            entry.RecordExecution(elapsed.Ticks);
+        }
+
+        internal void IncrementHandlerErrors(string handlerId, string handlerName)
+        {
+            if (!IsCaptureEnabled())
             {
-                if (elapsedUs < DurationBucketBoundariesUs[i])
+                return;
+            }
+
+            Interlocked.Increment(ref _handlerErrors);
+
+            HandlerEntry entry = _handlerEntries.GetOrAdd(
+                handlerId, _ => new HandlerEntry(handlerName));
+            entry.IncrementErrors();
+        }
+
+        private static int GetHandlerDurationBucketIndex(long microseconds)
+        {
+            if (microseconds <= 100)
+            {
+                return 0;
+            }
+
+            if (microseconds <= 500)
+            {
+                return 1;
+            }
+
+            if (microseconds <= 1_000)
+            {
+                return 2;
+            }
+
+            if (microseconds <= 5_000)
+            {
+                return 3;
+            }
+
+            if (microseconds <= 10_000)
+            {
+                return 4;
+            }
+
+            if (microseconds <= 50_000)
+            {
+                return 5;
+            }
+
+            if (microseconds <= 100_000)
+            {
+                return 6;
+            }
+
+            if (microseconds <= 500_000)
+            {
+                return 7;
+            }
+
+            if (microseconds <= 1_000_000)
+            {
+                return 8;
+            }
+
+            return 9;
+        }
+
+        internal sealed class HandlerEntry
+        {
+            private readonly string _handlerName;
+            private long _executionCount;
+            private long _errorCount;
+            private long _totalDurationTicks;
+            private long _minDurationTicks;
+            private long _maxDurationTicks;
+
+            public HandlerEntry(string handlerName)
+            {
+                _handlerName = handlerName ?? string.Empty;
+                _minDurationTicks = long.MaxValue;
+                _maxDurationTicks = long.MinValue;
+            }
+
+            internal string HandlerName => _handlerName;
+
+            internal long GetExecutionCount()
+            {
+                return Volatile.Read(ref _executionCount);
+            }
+
+            internal long GetErrorCount()
+            {
+                return Volatile.Read(ref _errorCount);
+            }
+
+            internal long GetTotalDurationTicks()
+            {
+                return Volatile.Read(ref _totalDurationTicks);
+            }
+
+            internal long GetMinDurationTicks()
+            {
+                return Volatile.Read(ref _minDurationTicks);
+            }
+
+            internal long GetMaxDurationTicks()
+            {
+                return Volatile.Read(ref _maxDurationTicks);
+            }
+
+            public void RecordExecution(long durationTicks)
+            {
+                Interlocked.Increment(ref _executionCount);
+                Interlocked.Add(ref _totalDurationTicks, durationTicks);
+                UpdateMin(durationTicks);
+                UpdateMax(durationTicks);
+            }
+
+            public void IncrementErrors()
+            {
+                Interlocked.Increment(ref _errorCount);
+            }
+
+            private void UpdateMin(long ticks)
+            {
+                long current = Volatile.Read(ref _minDurationTicks);
+                while (ticks < current)
                 {
-                    bucket = i;
-                    break;
+                    long prev = Interlocked.CompareExchange(ref _minDurationTicks, ticks, current);
+                    if (prev == current) break;
+                    current = prev;
                 }
             }
-            Interlocked.Increment(ref _handlerDurationBuckets[bucket]);
 
-            // Enqueue detailed per-handler snapshot
-            _handlerDurations.Enqueue(new DdonHandlerDurationSnapshot(
-                handlerId, handlerName, clientIdentity, elapsed));
-        }
-
-        public void IncrementHandlerErrors()
-        {
-            if (!IsCaptureEnabled()) return;
-            Interlocked.Increment(ref _handlerErrors);
-        }
-
-        public ConsumerMetricsSnapshot CreateSnapshot()
-        {
-            long[] durationBuckets = new long[DurationBucketCount];
-            for (int i = 0; i < DurationBucketCount; i++)
+            private void UpdateMax(long ticks)
             {
-                durationBuckets[i] = Volatile.Read(ref _handlerDurationBuckets[i]);
+                long current = Volatile.Read(ref _maxDurationTicks);
+                while (ticks > current)
+                {
+                    long prev = Interlocked.CompareExchange(ref _maxDurationTicks, ticks, current);
+                    if (prev == current) break;
+                    current = prev;
+                }
             }
-
-            List<DdonHandlerDurationSnapshot> handlerDurations = new();
-            while (_handlerDurations.TryDequeue(out DdonHandlerDurationSnapshot hd))
-            {
-                handlerDurations.Add(hd);
-            }
-
-            return new ConsumerMetricsSnapshot(
-                handlersExecuted: Volatile.Read(ref _handlersExecuted),
-                handlerErrors: Volatile.Read(ref _handlerErrors),
-                handlerDurationBuckets: durationBuckets,
-                handlerDurations: handlerDurations
-            );
         }
     }
 }

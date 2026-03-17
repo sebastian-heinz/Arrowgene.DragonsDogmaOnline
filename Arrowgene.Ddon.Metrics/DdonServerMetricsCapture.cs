@@ -92,7 +92,7 @@ namespace Arrowgene.Ddon.Metrics
                         _serverType,
                         _serverIdentity,
                         _captureTcpServerMetricsSnapshot(),
-                        _captureDdonServerMetricsSnapshot?.Invoke()
+                        _captureDdonServerMetricsSnapshot()
                     ));
                 }
                 catch (Exception ex)

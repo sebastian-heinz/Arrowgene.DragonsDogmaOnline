@@ -42,6 +42,7 @@ namespace Arrowgene.Ddon.Server
         private readonly TcpServer _server;
         private readonly ServerSetting _setting;
         private readonly DdonServerMetricsState _ddonMetricsState;
+        private readonly DdonServerMetricsCollector _ddonMetricsCollector;
 
         public readonly ServerType Type;
 
@@ -74,6 +75,7 @@ namespace Arrowgene.Ddon.Server
             );
 
             _ddonMetricsState = new DdonServerMetricsState(_consumer.MetricsState);
+            _ddonMetricsCollector = new DdonServerMetricsCollector(_ddonMetricsState);
         }
 
         public int Id => _setting.Id;
@@ -87,14 +89,17 @@ namespace Arrowgene.Ddon.Server
         {
             Database.DeleteConnectionsByServerId(Id);
             Logger.Info($"[{_setting.TcpServerSettings.Identity}] Listening: {_server.IpAddress}:{_server.Port}");
-            _ddonMetricsState.EnableCapture();
+            EnableMetricsCapture();
+            string metricsThreadName = $"{_setting.TcpServerSettings.Identity}.DdonMetrics";
+            _ddonMetricsCollector.Start(metricsThreadName);
             _consumer.Start();
             _server.Start();
         }
 
         public void Stop()
         {
-            _ddonMetricsState.DisableCapture();
+            DisableMetricsCapture();
+            _ddonMetricsCollector.Stop();
             _consumer.Stop();
             _server.Stop();
             _consumer.Dispose();
@@ -127,7 +132,40 @@ namespace Arrowgene.Ddon.Server
 
         public DdonServerMetricsSnapshot GetDdonServerMetricsSnapshot()
         {
-            return _ddonMetricsState.CreateSnapshot();
+            if (IsMetricsCaptureEnabled())
+            {
+                try
+                {
+                    _ddonMetricsCollector.CaptureSnapshot();
+                }
+                catch (ObjectDisposedException)
+                {
+                }
+            }
+
+            return _ddonMetricsCollector.GetSnapshot();
+        }
+
+        public DdonServerMetricsSnapshot GetDdonServerPublishedMetricsSnapshot()
+        {
+            return _ddonMetricsCollector.GetSnapshot();
+        }
+
+        private void EnableMetricsCapture()
+        {
+            _ddonMetricsState.EnableCapture();
+            _consumer.MetricsState.EnableCapture();
+        }
+
+        private void DisableMetricsCapture()
+        {
+            _ddonMetricsState.DisableCapture();
+            _consumer.MetricsState.DisableCapture();
+        }
+
+        private bool IsMetricsCaptureEnabled()
+        {
+            return _ddonMetricsState.IsCaptureEnabled();
         }
     }
 }

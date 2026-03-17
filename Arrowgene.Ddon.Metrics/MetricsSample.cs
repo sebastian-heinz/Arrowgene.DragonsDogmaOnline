@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Metrics
             string serverType,
             string serverIdentity,
             TcpServerMetricsSnapshot tcpServerMetricsSnapshot,
-            DdonServerMetricsSnapshot? ddonServerMetricsSnapshot = null
+            DdonServerMetricsSnapshot ddonServerMetricsSnapshot
         )
         {
             CapturedAtUtc = capturedAtUtc;
@@ -30,6 +30,6 @@ namespace Arrowgene.Ddon.Metrics
         public string ServerType { get; }
         public string ServerIdentity { get; }
         public TcpServerMetricsSnapshot TcpServerMetricsSnapshot { get; }
-        public DdonServerMetricsSnapshot? DdonServerMetricsSnapshot { get; }
+        public DdonServerMetricsSnapshot DdonServerMetricsSnapshot { get; }
     }
 }
