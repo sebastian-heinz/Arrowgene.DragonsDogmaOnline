@@ -2,7 +2,7 @@
  * This file is part of Arrowgene.Ddon.LoginServer
  *
  * Arrowgene.Ddon.LoginServer is a server implementation for the game "Dragons Dogma Online".
- * Copyright (C) 2019-2022 DDON Team
+ * Copyright (C) 2019-2026 DDON Team
  *
  * Github: https://github.com/sebastian-heinz/Ddo-server
  *
@@ -27,8 +27,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Networking.Tcp;
-using Arrowgene.Networking.Tcp.Server.AsyncEvent;
+using Arrowgene.Networking.SAEAServer;
 
 namespace Arrowgene.Ddon.Server
 {
@@ -38,7 +37,7 @@ namespace Arrowgene.Ddon.Server
         private readonly ServerLogger Logger;
 
         private readonly Consumer<TClient> _consumer;
-        private readonly AsyncEventServer _server;
+        private readonly TcpServer _server;
         private readonly ServerSetting _setting;
 
         public readonly ServerType Type;
@@ -47,7 +46,7 @@ namespace Arrowgene.Ddon.Server
         {
             LogProvider.ConfigureNamespace(GetType().Namespace, setting);
             Logger = LogProvider.Logger<ServerLogger>(GetType());
-            
+
             Type = type;
 
             _setting = setting;
@@ -55,19 +54,20 @@ namespace Arrowgene.Ddon.Server
             Database = database;
 
             _consumer = new Consumer<TClient>(
-                _setting,
-                _setting.ServerSocketSettings,
+                _setting.TcpServerSettings.OrderingLaneCount,
+                _setting.ConsumerQueueCapacityPerLane,
+                _setting.TcpServerSettings.Identity,
                 this,
                 Logger
             );
             _consumer.ClientConnected += ClientConnected;
             _consumer.ClientDisconnected += ClientDisconnected;
 
-            _server = new AsyncEventServer(
+            _server = new TcpServer(
                 _setting.ListenIpAddress,
                 _setting.ServerPort,
                 _consumer,
-                _setting.ServerSocketSettings
+                _setting.TcpServerSettings
             );
         }
 
@@ -80,12 +80,14 @@ namespace Arrowgene.Ddon.Server
         public virtual void Start()
         {
             Database.DeleteConnectionsByServerId(Id);
-            Logger.Info($"[{_setting.ServerSocketSettings.Identity}] Listening: {_server.IpAddress}:{_server.Port}");
+            Logger.Info($"[{_setting.TcpServerSettings.Identity}] Listening: {_server.IpAddress}:{_server.Port}");
+            _consumer.Start();
             _server.Start();
         }
 
         public void Stop()
         {
+            _consumer.Stop();
             _server.Stop();
             _consumer.Dispose();
         }
@@ -102,7 +104,7 @@ namespace Arrowgene.Ddon.Server
 
         protected abstract void ClientConnected(TClient client);
         protected abstract void ClientDisconnected(TClient client);
-        public abstract TClient NewClient(ITcpSocket socket);
+        public abstract TClient NewClient(ClientHandle clientHandle);
 
         [Obsolete("deprecated, use `ClientLookup.GetAll()` instead")]
         public List<TClient> Clients => ClientLookup.GetAll();

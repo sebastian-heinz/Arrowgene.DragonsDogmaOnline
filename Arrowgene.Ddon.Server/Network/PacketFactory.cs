@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Buffer = System.Buffer;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -35,18 +36,16 @@ namespace Arrowgene.Ddon.Server.Network
         private uint _packetCount;
         private int _position;
         private IBuffer _buffer;
-        private readonly ServerSetting _setting;
         private byte[] _camelliaKey;
-        private IPacketIdResolver _packetIdResolver;
-        private Memory<byte> _t8Encrypt;
-        private Memory<byte> _t8Decrypt;
+        private readonly IPacketIdResolver _packetIdResolver;
+        private readonly Memory<byte> _t8Encrypt;
+        private readonly Memory<byte> _t8Decrypt;
         private Memory<byte> _camelliaSubKey;
         private bool _firstPacket;
 
 
-        public PacketFactory(ServerSetting setting, IPacketIdResolver packetIdResolver)
+        public PacketFactory(IPacketIdResolver packetIdResolver)
         {
-            _setting = setting;
             _packetCount = 1;
             _packetIdResolver = packetIdResolver;
             _t8Encrypt = new Memory<byte>(new byte[8]);
@@ -70,6 +69,16 @@ namespace Arrowgene.Ddon.Server.Network
                 return null;
             }
 
+            int mod = data.Length % 16;
+            if (mod > 0)
+            {
+                int paddingLength = 16 - mod;
+                byte[] paddedData = new byte[data.Length + paddingLength];
+
+                Buffer.BlockCopy(data, 0, paddedData, 0, data.Length);
+                data = paddedData;
+            }
+
             int totalLength = data.Length + PacketLengthFieldSize;
             if (totalLength < 0 || totalLength > ushort.MaxValue)
             {
@@ -80,9 +89,30 @@ namespace Arrowgene.Ddon.Server.Network
             byte[] encryptedPacketData = Encrypt(data);
 
             IBuffer buffer = Util.Buffer.Provide();
-            buffer.WriteUInt16((ushort) encryptedPacketData.Length /* without length prefix */, Endianness.Big);
+            buffer.WriteUInt16((ushort)encryptedPacketData.Length /* without length prefix */, Endianness.Big);
             buffer.WriteBytes(encryptedPacketData);
             return buffer.GetAllBytes();
+        }
+
+        public byte[] ReadDataWithLengthPrefix(byte[] packet)
+        {
+            if (packet == null || packet.Length < 2)
+            {
+                Logger.Error("Packet is null or too short to contain a length prefix.");
+                return null;
+            }
+
+            IBuffer buffer = new StreamBuffer(packet);
+            buffer.SetPositionStart();
+            ushort encryptedLength = buffer.ReadUInt16(Endianness.Big);
+            if (packet.Length < encryptedLength + 2)
+            {
+                Logger.Error($"Incomplete packet: expected {encryptedLength} bytes, but only have {packet.Length - 2}");
+                return null;
+            }
+
+            byte[] encryptedData = buffer.ReadBytes(encryptedLength);
+            return Decrypt(encryptedData);
         }
 
         public byte[] Write(IPacket packet)
@@ -137,7 +167,7 @@ namespace Arrowgene.Ddon.Server.Network
             packetDataBuffer.WriteByte(packet.Id.GroupId);
             packetDataBuffer.WriteUInt16(packet.Id.HandlerId, Endianness.Big);
             packetDataBuffer.WriteByte(packet.Id.HandlerSubId);
-            packetDataBuffer.WriteByte((byte) packet.Source);
+            packetDataBuffer.WriteByte((byte)packet.Source);
             packetDataBuffer.WriteUInt32(packet.Count, Endianness.Big);
 
             packetDataBuffer.WriteBytes(data);
@@ -150,7 +180,7 @@ namespace Arrowgene.Ddon.Server.Network
             byte[] encryptedPacketData = Encrypt(packetData);
 
             IBuffer buffer = Util.Buffer.Provide();
-            buffer.WriteUInt16((ushort) encryptedPacketData.Length /* without length prefix */, Endianness.Big);
+            buffer.WriteUInt16((ushort)encryptedPacketData.Length /* without length prefix */, Endianness.Big);
             buffer.WriteBytes(encryptedPacketData);
             return buffer.GetAllBytes();
         }
@@ -234,7 +264,7 @@ namespace Arrowgene.Ddon.Server.Network
 
                         if (Enum.IsDefined(typeof(PacketSource), packetSourceByte))
                         {
-                            packetSource = (PacketSource) packetSourceByte;
+                            packetSource = (PacketSource)packetSourceByte;
                         }
 
                         if (packetSource != PacketSource.Server

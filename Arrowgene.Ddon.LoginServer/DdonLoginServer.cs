@@ -2,7 +2,7 @@
  * This file is part of Arrowgene.Ddon.LoginServer
  *
  * Arrowgene.Ddon.LoginServer is a server implementation for the game "Dragons Dogma Online".
- * Copyright (C) 2019-2022 DDON Team
+ * Copyright (C) 2019-2026 DDON Team
  *
  * Github: https://github.com/sebastian-heinz/Ddo-server
  *
@@ -30,7 +30,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Networking.Tcp;
+using Arrowgene.Networking.SAEAServer;
 
 namespace Arrowgene.Ddon.LoginServer
 {
@@ -38,7 +38,8 @@ namespace Arrowgene.Ddon.LoginServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonLoginServer));
 
-        public DdonLoginServer(LoginServerSetting setting, GameSettings gameSetting, IDatabase database, AssetRepository assetRepository)
+        public DdonLoginServer(LoginServerSetting setting, GameSettings gameSetting, IDatabase database,
+            AssetRepository assetRepository)
             : base(ServerType.Login, setting.ServerSetting, database, assetRepository)
         {
             Setting = new LoginServerSetting(setting);
@@ -72,10 +73,11 @@ namespace Arrowgene.Ddon.LoginServer
             }
         }
 
-        public override LoginClient NewClient(ITcpSocket socket)
+        public override LoginClient NewClient(ClientHandle clientHandle)
         {
-            return new LoginClient(socket,
-                new PacketFactory(Setting.ServerSetting, PacketIdResolver.LoginPacketIdResolver));
+            return new LoginClient(clientHandle,
+                new PacketFactory(PacketIdResolver.LoginPacketIdResolver)
+            );
         }
 
 

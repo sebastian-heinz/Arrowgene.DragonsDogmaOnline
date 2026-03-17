@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <RootNamespace>Arrowgene.Ddon.Test</RootNamespace>
         <Title>Dragons Dogma Online - Test</Title>
         <Company>DDON Team</Company>
         <Product>Ddon.Test</Product>
         <Version>$(Version)</Version>
-        <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
+        <Copyright>Copyright © 2019-2026 DDON Team</Copyright>
         <IsPackable>false</IsPackable>
         <LangVersion>13</LangVersion>
     </PropertyGroup>

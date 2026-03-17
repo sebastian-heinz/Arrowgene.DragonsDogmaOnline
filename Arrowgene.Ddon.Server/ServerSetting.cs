@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Runtime.Serialization;
-using Arrowgene.Networking.Tcp.Server.AsyncEvent;
+using Arrowgene.Networking.SAEAServer;
 
 namespace Arrowgene.Ddon.Server
 {
@@ -29,7 +29,8 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 25)] public bool LogIncomingPacketPayload { get; set; }
         [DataMember(Order = 26)] public bool LogIncomingPacketStructure { get; set; }
         [DataMember(Order = 27)] public bool LogOutgoingPacketStructure { get; set; }
-        [DataMember(Order = 100)] public AsyncEventSettings ServerSocketSettings { get; set; }
+        [DataMember(Order = 100)] public TcpServerSettings TcpServerSettings { get; set; }
+        [DataMember(Order = 120)] public int ConsumerQueueCapacityPerLane { get; set; }
 
         public ServerSetting()
         {
@@ -45,8 +46,12 @@ namespace Arrowgene.Ddon.Server
             LogIncomingPackets = true;
             LogIncomingPacketStructure = false;
             LogIncomingPacketPayload = false;
-            ServerSocketSettings = new AsyncEventSettings();
-            ServerSocketSettings.MaxUnitOfOrder = 1;
+            ConsumerQueueCapacityPerLane = 100000;
+            TcpServerSettings = new TcpServerSettings();
+            
+            // DDON Specific defaults
+            TcpServerSettings.OrderingLaneCount = 1;
+            TcpServerSettings.MaxQueuedSendBytes = 8388608;
         }
 
         public ServerSetting(ServerSetting setting)
@@ -63,14 +68,15 @@ namespace Arrowgene.Ddon.Server
             LogIncomingPackets = setting.LogIncomingPackets;
             LogIncomingPacketStructure = setting.LogIncomingPacketStructure;
             LogIncomingPacketPayload = setting.LogIncomingPacketPayload;
-            ServerSocketSettings = new AsyncEventSettings(setting.ServerSocketSettings);
+            ConsumerQueueCapacityPerLane = setting.ConsumerQueueCapacityPerLane;
+            TcpServerSettings = new TcpServerSettings(setting.TcpServerSettings);
         }
 
         // Note: method is called after the object is completely deserialized - constructors are skipped.
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {
-            ServerSocketSettings ??= new AsyncEventSettings();
+            TcpServerSettings ??= new TcpServerSettings();
         }
     }
 }

@@ -2,10 +2,10 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Networking.Tcp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Arrowgene.Networking.SAEAServer;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Server.Network
 
         private readonly ServerLogger Logger;
 
-        protected readonly ITcpSocket Socket;
+        protected readonly ClientHandle ClientHandle;
         private readonly PacketFactory _packetFactory;
         private Challenge _challenge;
 
@@ -26,13 +26,13 @@ namespace Arrowgene.Ddon.Server.Network
          */
         private bool _challengeCompleted;
 
-        public Client(ITcpSocket socket, PacketFactory packetFactory)
+        public Client(ClientHandle clientHandle, PacketFactory packetFactory)
         {
             Logger = LogProvider.Logger<ServerLogger>(GetType());
-            Socket = socket;
+            ClientHandle = clientHandle;
             _packetFactory = packetFactory;
             _challenge = null;
-            Identity = socket.Identity;
+            Identity = clientHandle.Identity;
             _challengeCompleted = false;
             Id = IncrementingId++;
         }
@@ -44,13 +44,29 @@ namespace Arrowgene.Ddon.Server.Network
 
         public PacketId LastPacketSentToServer { get; set; }
         public PacketId LastPacketSentToClient { get; set; }
-        public bool IsAlive { get { return Socket.IsAlive; } }
+
+        public bool IsAlive
+        {
+            get
+            {
+                try
+                {
+                    // ensure ClientHandle is still valid
+                    return ClientHandle.IsAlive;
+                }
+                catch (ObjectDisposedException)
+                {
+                    return false;
+                }
+            }
+        }
 
         ~Client()
         {
             // Something is funny in the event handling for disconnections, so I'm burying this logging here to make sure this absolutely gets called at some point.
             // This may be divorced in the log from the actual event, but you can reconstruct this based on the IP address and the rough timing.
-            Logger.Debug(this, $"Final Packets: {this?.LastPacketSentToServer.Name ?? "NULL"} / {this?.LastPacketSentToClient.Name ?? "NULL"}");
+            Logger.Debug(this,
+                $"Final Packets: {this?.LastPacketSentToServer.Name ?? "NULL"} / {this?.LastPacketSentToClient.Name ?? "NULL"}");
         }
 
         public void SetChallengeCompleted(bool challengeCompleted)
@@ -61,7 +77,7 @@ namespace Arrowgene.Ddon.Server.Network
 
         public void Close()
         {
-            Socket.Close();
+            ClientHandle.Disconnect();
         }
 
         public List<IPacket> Receive(byte[] data)
@@ -77,8 +93,7 @@ namespace Arrowgene.Ddon.Server.Network
                 // We shouldn't tolerate these connections and just kick them.
                 Logger.Exception(this, ex);
                 packets = [];
-
-                this.Close();
+                Close();
             }
             catch (Exception ex)
             {
@@ -86,7 +101,7 @@ namespace Arrowgene.Ddon.Server.Network
                 packets = [];
             }
 
-            if (Socket.IsAlive && packets.Count > 0)
+            if (packets.Count > 0)
             {
                 LastPacketSentToServer = packets.Last().Id;
             }
@@ -123,10 +138,10 @@ namespace Arrowgene.Ddon.Server.Network
 
         public void Send(Packet packet)
         {
-            if (!_challengeCompleted 
+            if (!_challengeCompleted
                 && packet.Id != PacketId.S2C_CERT_CLIENT_CHALLENGE_RES
                 && packet.Id != PacketId.L2C_CLIENT_CHALLENGE_RES
-                )
+               )
             {
                 // at this point in time we only allow to send S2C_CERT_CLIENT_CHALLENGE_RES
                 // only after receiving the first client packet, we can assume the client is able
@@ -147,10 +162,8 @@ namespace Arrowgene.Ddon.Server.Network
                 return;
             }
 
-            if (Socket.IsAlive && packet is not null)
-            {
-                LastPacketSentToClient = packet.Id;
-            }
+
+            LastPacketSentToClient = packet.Id;
 
             SendRaw(data);
             Logger.LogPacket(this, packet);
@@ -161,7 +174,7 @@ namespace Arrowgene.Ddon.Server.Network
         /// </summary>
         public void SendRaw(byte[] data)
         {
-            Socket.Send(data);
+            ClientHandle.Send(data);
         }
 
         public void InitializeChallenge()

@@ -24,12 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Logger.Error(client, "Failed CertChallenge");
                 throw new ResponseErrorException(Shared.Model.ErrorCode.ERROR_CODE_SYSTEM_INTERNAL);
             }
-
-            if (Server.ServerSetting.ServerSetting.ServerSocketSettings.DebugMode)
-            {
-                Logger.Info(client, $"CamelliaKey: {Util.ToHexString(challenge.CamelliaKey)}");
-            }
-
+            
             return new S2CCertClientChallengeRes()
             {
                 PasswordSrcSize = challenge.DecryptedBlowFishKeyLength,

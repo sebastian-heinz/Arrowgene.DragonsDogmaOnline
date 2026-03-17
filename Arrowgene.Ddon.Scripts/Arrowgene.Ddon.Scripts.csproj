@@ -3,7 +3,7 @@
         <OutputType>Library</OutputType>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsing>enable</ImplicitUsing>
         <RootNamespace>Arrowgene.Ddon.Scripts</RootNamespace>
         <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
@@ -14,7 +14,7 @@
         <ProjectReference Include="..\Arrowgene.Ddon.Database\Arrowgene.Ddon.Database.csproj" />
     </ItemGroup>
 <!--    <Target Name="CreateOutputDirectory" AfterTargets="PrepareForBuild">-->
-<!--        <MakeDir Directories="$(OutputPath)\net9.0\Files\Assets\scripts" Condition="!Exists('$(ProjectDir)\net9.0\Files\Assets\scripts')" />-->
+<!--        <MakeDir Directories="$(OutputPath)\net10.0\Files\Assets\scripts" Condition="!Exists('$(ProjectDir)\net10.0\Files\Assets\scripts')" />-->
 <!--    </Target>-->
     <ItemGroup>
         <ContentWithTargetPath Include="scripts\**">

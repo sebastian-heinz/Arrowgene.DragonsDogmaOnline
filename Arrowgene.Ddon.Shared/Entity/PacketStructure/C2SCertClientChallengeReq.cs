@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 buffer.ReadBytes(3); // Padding?
                 obj.PasswordSrcSize = ReadByte(buffer);
                 obj.PasswordEncSize = ReadByte(buffer);
-                obj.PasswordEnc = buffer.ReadBytesTerminated(0);
+                obj.PasswordEnc = ReadByteArray(buffer, obj.PasswordEncSize);
                 return obj;
             }
         }

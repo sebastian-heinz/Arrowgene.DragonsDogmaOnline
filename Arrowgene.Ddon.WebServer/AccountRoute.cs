@@ -20,14 +20,14 @@ namespace Arrowgene.Ddon.WebServer
 
         private readonly IDatabase _database;
 
-        private class AccountRequest
+        public class AccountRequest
         {
             public string Action { get; set; }
             public string Account { get; set; }
             public string Password { get; set; }
         }
 
-        private class AccountResponse
+        public class AccountResponse
         {
             public string Error { get; set; }
             public string Message { get; set; }

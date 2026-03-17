@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build-env
 WORKDIR /App
 COPY . ./
 
@@ -6,7 +6,7 @@ COPY . ./
 ARG RUNTIME
 RUN dotnet publish Arrowgene.Ddon.Cli /p:Version=1.0.0.0 -p:PublishReadyToRun=true /p:DebugType=None /p:DebugSymbols=false -r ${RUNTIME:-linux-x64} --self-contained false -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 #RUN apt-get update && apt-get install -y apt-transport-https && rm -rf /var/lib/apt/lists/*
 
 # Database

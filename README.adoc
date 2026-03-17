@@ -17,146 +17,205 @@ toc::[]
 == Disclaimer
 The project is intended for educational purpose only.
 
-== Developer Setup
+== Quick Start
 
-. Clone the repository
-.. `git clone https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline.git`
-. Install .NET 9.0 SDK or later https://dotnet.microsoft.com/download
-. Use your IDE of choice
-.. *Visual Studio*
-... Open the `DragonsDogmaOnline.sln`-file
-... Note: Minimum version of "Visual Studio 2022" or later.
-.. *VS Code*
-... Download IDE: https://code.visualstudio.com/download  
-... C# Plugin: https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp  
-... Open the Project Folder: `\Arrowgene.DragonsDogmaOnline`
-.. *IntelliJ Rider*
-... https://www.jetbrains.com/rider/
-... Note: Minimum version of "IntelliJ Rider 2021.3" or later.
-... Open the `DragonsDogmaOnline.sln`-file
-. Debug the Project
-.. Run the `Ddon.Cli`-Project with arguments `server start`
+=== Developer Setup
 
-== User Setup
-. Clone the repository
-.. `git clone https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline.git`
-. Install .NET 9.0 SDK or later https://dotnet.microsoft.com/download
-. Run `publish.cmd` or `publish.sh` to build the server files.
-. If updating from a previous build of the server...
-.. Make sure that your database file `db.sqlite` is in the proper location, usually `Arrowgene.DragonsDogmaOnline\publish\win-x64-#.#.#.#\Server\Files\Database`.
-.. You may have to migrate your database schema by running `MigrateDatabase.cmd`, which can be found in `Arrowgene.DragonsDogmaOnline\publish\win-x64-#.#.#.#`.
-. Launch the server with `StartServer.cmd`, which can be found in `Arrowgene.DragonsDogmaOnline\publish\win-x64-#.#.#.#`.
-. For frequently asked questions, see https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/blob/develop/docs/faq.md
+. Clone: `git clone https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline.git`
+. Install https://dotnet.microsoft.com/download[.NET 10.0 SDK] or later
+. Open the project in your IDE of choice:
+.. *Visual Studio* -- Open `DragonsDogmaOnline.sln` (minimum Visual Studio 2022)
+.. *VS Code* -- Install the https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp[C# plugin], then open the project folder
+.. *IntelliJ Rider* -- Open `DragonsDogmaOnline.sln` (minimum Rider 2021.3)
+. Run the `Ddon.Cli` project with arguments `server start`
 
-== Deployment
+=== User Setup
 
-The application (server) requires the (ASP).NET runtime 9 to function. Alternatively the SDK also works and is required when building from source.
+. Clone: `git clone https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline.git`
+. Install https://dotnet.microsoft.com/download[.NET 10.0 SDK] or later
+. Run `publish.cmd` (Windows) or `publish.sh` (Linux/macOS) to build
+. Launch with `StartServer.cmd` from the publish output directory
+. See the https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/blob/develop/docs/faq.md[FAQ] for common questions
 
-On a high level, a total of four components are required to successfully connect a client:
+NOTE: When updating from a previous build, ensure `db.sqlite` is in `publish/win-x64-\#.#.\#.#/Server/Files/Database` and run `MigrateDatabase.cmd` if needed.
 
-. Web server
-. Login server
-. Game server
-. Database
+== Architecture
 
-All of these components are provided & automatically started up in the default developer setup outlined above.
+The server consists of four components, all started automatically with the default configuration:
 
-=== Persistence 
+[cols="1,1"]
+|===
+| Web Server     | HTTP/download on port `52099`
+| Login Server   | TCP on port `52100`
+| Game Server    | TCP on port `52000`
+| Database       | SQLite (file or in-memory) or PostgreSQL
+|===
 
-There is support for SQLite via System.Data.SQLite (behaves slightly differently from Microsoft.Data.Sqlite!) as a file-based setup or an in-memory setup with built-in backups upon starting and closing (i.e. all progress is lost if the application crashes!).
-This is mostly suitable for development as SQLite does not scale well for multiple parallel write/transaction operations.
+=== Persistence
 
-For a more scalable setup there is also support for Postgres via Npgsql.
+* **SQLite** via System.Data.SQLite -- file-based or in-memory with auto-backup on start/close. Best for development.
+* **PostgreSQL** via Npgsql -- recommended for production and parallel write operations.
 
-For both databases there are sample configurations, schemas and containerization setups.
+Sample configurations, schemas, and containerization setups are provided for both.
 
-=== Container setup
+=== Container Setup
 
-It is also possible to run a containerized setup.
-A xref:./Dockerfile[Dockerfile] is provided which encapsulates everything required to build & publish the server from source. Three separate docker-compose files are provided depending on the desired database. None of these actually reference any image and instead rely on ad-hoc source code builds as the image is currently not publicly available.
+A xref:./Dockerfile[Dockerfile] builds & publishes the server from source. Docker Compose files:
 
-. xref:./docker-compose.yml[SQLite-enabled docker-compose]
-.. `docker-compose up`
-. xref:./docker-compose.psql.yml[PostgreSQL-enabled docker-compose]
-.. `docker-compose -f docker-compose.psql.yml up`
+* `docker-compose up` -- SQLite (xref:./docker-compose.yml[config])
+* `docker-compose -f docker-compose.psql.yml up` -- PostgreSQL (xref:./docker-compose.psql.yml[config])
 
-==== Useful run commands
+.Useful commands
+[source,bash]
+----
+docker-compose up --build                    # force rebuild
+docker-compose down -v                       # clean up with volumes
+RUNTIME=linux-arm64 docker-compose build     # build for arm64
+----
 
-* Force rebuild `docker-compose up --build`
-* Clean up & delete persistent volumes (data) as well `docker-compose down -v`
-* Only build the image `docker-compose build`
-* Build for other runtimes, e.g. arm64 `RUNTIME=linux-arm64 docker-compose build`
-* All-in-one clean & rebuild `docker-compose down -v && docker-compose up --build`
-* All-in-one clean & rebuild & arm64 `RUNTIME=linux-arm64 docker-compose down -v && docker-compose up --build`
+== Client
 
-== Server
-With default configuration the server will listen on following ports:
+Launch the client with:
 
 [source]
 ----
-52099 - http/download
-52000 - tcp/gameserver
-52100 - tcp/loginserver
+"DDO.exe" "addr=localhost port=52100 token=00000000000000000000 DL=http://127.0.0.1:52099/win/ LVer=03.04.003.20181115.0 RVer=3040008"
 ----
 
-ensure that no other local services listen on these ports.
+== Server Settings Reference
 
-== Client
-Launch the client with the following args:
+Configuration properties defined in `ServerSetting.cs`. These control server identity, networking, and diagnostic logging.
 
-`"DDO.exe" "addr=localhost port=52100 token=00000000000000000000 DL=http://127.0.0.1:52099/win/ LVer=03.04.003.20181115.0 RVer=3040008"`
+[cols="2,3,5", options="header"]
+|===
+| Purpose | Description | Use Case / Example
+
+| `Id`
+| Unique server identifier (int)
+| Distinguishes server instances. Defaults to `-1` (invalid). Set to a positive integer when registering the server, e.g. `1` for a primary game server.
+
+| `Name`
+| Human-readable server name
+| Displayed in server lists or logs. For example `"Lestania-01"` to label a game world instance.
+
+| `ListenIpAddress`
+| IP address the server binds to
+| Defaults to `IPAddress.Any` (all interfaces). Set to a specific IP like `192.168.1.100` to restrict which network interface accepts connections.
+
+| `ServerPort`
+| TCP port the server listens on
+| Defaults to `52100`. Change to avoid port conflicts or run multiple instances, e.g. `52101` for a second login server.
+
+| `LogLevel`
+| Verbosity of log output (int)
+| `0` = default. Increase for more verbose output during development and debugging.
+
+| `LogUnknownPackets`
+| Log packets with no registered handler
+| Defaults to `true`. Useful for reverse engineering new packet types. Disable in production to reduce log noise.
+
+| `LogOutgoingPackets`
+| Log headers of sent packets
+| Defaults to `true`. Helps trace server responses. Disable for performance in high-traffic environments.
+
+| `LogOutgoingPacketPayload`
+| Log full payload of sent packets
+| Defaults to `false`. Enable to inspect exact bytes sent to clients, e.g. when debugging malformed response data.
+
+| `LogOutgoingPacketStructure`
+| Log structured breakdown of sent packets
+| Defaults to `false`. Enable to see field-by-field decoded output of outgoing packets during protocol development.
+
+| `LogIncomingPackets`
+| Log headers of received packets
+| Defaults to `true`. Helps trace client requests. Disable in production to reduce log volume.
+
+| `LogIncomingPacketPayload`
+| Log full payload of received packets
+| Defaults to `false`. Enable to inspect raw bytes from clients, e.g. when reverse engineering a new client action.
+
+| `LogIncomingPacketStructure`
+| Log structured breakdown of received packets
+| Defaults to `false`. Enable to see decoded fields of incoming packets, useful for verifying parser correctness.
+
+| `ConsumerQueueCapacityPerLane`
+| Max queued items per consumer lane
+| Defaults to `100000`. Increase if the server handles high throughput and packets are being dropped due to queue saturation.
+
+| `TcpServerSettings`
+| Low-level TCP socket configuration https://github.com/sebastian-heinz/Arrowgene.Networking?tab=readme-ov-file#configuration[(Link to Configuration)]
+| Wraps `Arrowgene.Networking.SAEAServer.TcpServerSettings`. Tune buffer sizes, backlog, and socket options for production deployments.
+|===
+
+.Suggested settings for DDON:
+[cols="2,1,3", options="header"]
+|===
+| Setting | Value | Note
+
+| `TcpServerSettings.OrderingLaneCount`
+| `1`
+| Must remain at 1 as the DDON server is single-threaded and not threadsafe
+
+| `TcpServerSettings.MaxQueuedSendBytes`
+| `8388608`
+| Maximum bytes (~8 MB) that can be buffered for sending before back-pressure is applied
+
+| `ConsumerQueueCapacityPerLane`
+| `100000`
+| Maximum number of events that can be queued per lane before networking stalls
+|===
 
 == Progress
 See the https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/wiki/What-Works%3F[wiki].
 
 == Guidelines
-=== Git 
-==== Workflow
-The work on this project should happen via `feature-branches`
-   
-Feature branches (or sometimes called topic branches) are used to develop new features for the upcoming or a distant future release. 
-When starting development of a feature, the target release in which this feature will be incorporated may well be unknown at that point. 
-The essence of a feature branch is that it exists as long as the feature is in development, 
-but will eventually be merged back into develop (to definitely add the new feature to the upcoming release) or discarded (in case of a disappointing experiment).
 
-1. Create a new `feature/feature-name` or `fix/bug-fix-name` branch from master
-2. Push all your changes to that branch
-3. Create a Pull Request to merge that branch into `master`
+=== Git Workflow
+Work via feature branches:
 
-=== Best Practise
-- Do not use Console.WriteLine etc., use the specially designed logger.
-- Own the Code: extract solutions, discard libraries.
-- Annotate functions with documentation comments (https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/documentation-comments).
+. Create `feature/feature-name` or `fix/bug-fix-name` from master
+. Push changes to that branch
+. Create a Pull Request into `master`
 
-=== C# Coding Standards and Naming Conventions
+=== Best Practices
+* Use the project logger -- not `Console.WriteLine`
+* Own the code: extract solutions, discard libraries
+* Annotate with https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/documentation-comments[documentation comments]
 
-[options="header"]
-|=========================================================
-| Object Name      | Notation   | Char Mask  | Underscores
-| Class name       | PascalCase | [A-z][0-9] | No
-| Constructor name | PascalCase | [A-z][0-9] | No
-| Method name      | PascalCase | [A-z][0-9] | No
+=== Naming Conventions
+
+[cols="1,1,1,1", options="header"]
+|===
+| Object          | Notation   | Char Mask  | Underscores
+| Class            | PascalCase | [A-z][0-9] | No
+| Constructor      | PascalCase | [A-z][0-9] | No
+| Method           | PascalCase | [A-z][0-9] | No
 | Method arguments | camelCase  | [A-z][0-9] | No
 | Local variables  | camelCase  | [A-z][0-9] | No
-| Constants name   | PascalCase | [A-z][0-9] | No
-| Field name       | _camelCase | [A-z][0-9] | Yes
-| Properties name  | PascalCase | [A-z][0-9] | No
-| Delegate name    | PascalCase | [A-z]      | No
-| Enum type name   | PascalCase | [A-z]      | No
-|=========================================================
+| Constants        | PascalCase | [A-z][0-9] | No
+| Fields           | _camelCase | [A-z][0-9] | Yes
+| Properties       | PascalCase | [A-z][0-9] | No
+| Delegates        | PascalCase | [A-z]      | No
+| Enum types       | PascalCase | [A-z]      | No
+|===
 
 == Attribution
-=== Contributors / Making It Happening
-Let me preface with that this work could not exist without the excellent work of various individuals
-- Ando - Reverse Engineering & Tooling (Session Splitter, Camellia Key Cracker)
-- David - Reverse Engineering (unpacking PC Executable, defeating Anti Debug and CRC checks)
-- The White Dragon Temple
-- Nothilvien [@sebastian-heinz](https://github.com/sebastian-heinz) - Reverse Engineering & Server Code
-  
-(if you have been forgotten please reach out)
 
-=== 3rd Parties and Libraries
-- System.Data.SQLite (https://system.data.sqlite.org/)
-- KaitaiStruct.Runtime.Csharp (https://kaitai.io/)
-- Arrowgene.Networking (https://github.com/sebastian-heinz/Arrowgene.Networking)
-- .NET Standard (https://github.com/dotnet/standard)
+=== Contributors
+* **Nothilvien** https://github.com/sebastian-heinz[@sebastian-heinz] -- Reverse Engineering & Server Code
+* **Ando** -- Reverse Engineering & Tooling (Session Splitter, Camellia Key Cracker)
+* **David** -- Reverse Engineering (unpacking PC Executable, defeating Anti Debug and CRC checks)
+* **The White Dragon Temple**
+
+=== Libraries
+* https://github.com/sebastian-heinz/Arrowgene.Networking[Arrowgene.Networking] -- TCP networking
+* https://github.com/sebastian-heinz/Arrowgene.Networking[Arrowgene.Buffers] -- Binary buffer handling
+* https://github.com/sebastian-heinz/Arrowgene.Networking[Arrowgene.Logging] -- Logging framework
+* https://github.com/sebastian-heinz/Arrowgene.Networking[Arrowgene.WebServer] -- Embedded web server
+* https://system.data.sqlite.org/[System.Data.SQLite] -- SQLite database provider
+* https://learn.microsoft.com/en-us/ef/core/providers/sqlite/[Microsoft.Data.Sqlite] -- SQLite (Microsoft)
+* https://www.npgsql.org/[Npgsql] -- PostgreSQL database provider
+* https://mysqlconnector.net/[MySqlConnector] -- MySQL database provider
+* https://github.com/dotnet/roslyn[Microsoft.CodeAnalysis.CSharp.Scripting] -- C# scripting support
+* https://icsharpcode.github.io/SharpZipLib/[SharpZipLib] -- Compression library
+* https://github.com/aaubry/YamlDotNet[YamlDotNet] -- YAML parsing

@@ -287,7 +287,7 @@ namespace Arrowgene.Ddon.Cli
             StringBuilder sb = new StringBuilder();
             sb.Append(Environment.NewLine);
             sb.Append(Environment.NewLine);
-            sb.Append("Arrowgene.Ddon.Cli Copyright (C) 2019-2022 DDON Team");
+            sb.Append("Arrowgene.Ddon.Cli Copyright (C) 2019-2026 DDON Team");
             sb.Append(Environment.NewLine);
             sb.Append("This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.");
             sb.Append(Environment.NewLine);

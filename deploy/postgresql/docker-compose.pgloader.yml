@@ -30,7 +30,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ../../Arrowgene.Ddon.Cli/bin/Debug/net9.0/Files/Database/db.sqlite:/db.sqlite:ro
+      - ../../Arrowgene.Ddon.Cli/bin/Debug/net10.0/Files/Database/db.sqlite:/db.sqlite:ro
       - ./pgloader.load:/pgloader.load:ro
     entrypoint: pgloader
 #    command: sqlite:///db.sqlite postgresql://root:root@psql:5432/postgres

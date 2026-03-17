@@ -4,7 +4,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
-using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
