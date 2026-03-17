@@ -85,7 +85,7 @@ namespace Arrowgene.Ddon.Shared.Scripting
         /// <param name="path">Path to the main script being executed</param>
         private void EmitScriptsAsDllForDebug(ScriptModule module, Script script, string path)
         {
-            // Put the debug assemblies in <asset_path>/net9.0/Files
+            // Put the debug assemblies in <asset_path>/net10.0/Files
             var (assembliesPath, outputPath) = EmitScriptAsDllPath(module, path);
             if (!Directory.Exists(assembliesPath))
             {

@@ -43,7 +43,7 @@ if ! which dotnet > /dev/null 2>&1 || ! dotnet --list-sdks | grep -q '9.0.203'; 
     
     apt-get install -y apt-transport-https
     apt-get update
-    apt-get install -y dotnet-sdk-9.0.203
+    apt-get install -y dotnet-sdk-10.0.103
 fi
 
 systemctl stop ddon-server
