@@ -27,10 +27,11 @@
     <ItemGroup>
         <PackageReference Include="Arrowgene.Buffers" Version="1.0.2" />
         <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
-        <PackageReference Include="Arrowgene.Networking" Version="2.1.1" />
+        <PackageReference Include="Arrowgene.Networking" Version="2.1.3" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.Database\Arrowgene.Ddon.Database.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.Metrics\Arrowgene.Ddon.Metrics.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
     </ItemGroup>
 

@@ -21,6 +21,7 @@
         <ProjectReference Include="..\Arrowgene.Ddon.Client\Arrowgene.Ddon.Client.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.LoginServer\Arrowgene.Ddon.LoginServer.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.Metrics\Arrowgene.Ddon.Metrics.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.Rpc.Web\Arrowgene.Ddon.Rpc.Web.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.WebServer\Arrowgene.Ddon.WebServer.csproj" />

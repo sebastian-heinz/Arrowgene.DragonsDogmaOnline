@@ -23,11 +23,13 @@
 using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Metrics;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.SAEAServer;
+using Arrowgene.Networking.SAEAServer.Metric;
 
 namespace Arrowgene.Ddon.Server
 {
@@ -39,6 +41,7 @@ namespace Arrowgene.Ddon.Server
         private readonly Consumer<TClient> _consumer;
         private readonly TcpServer _server;
         private readonly ServerSetting _setting;
+        private readonly DdonServerMetricsState _ddonMetricsState;
 
         public readonly ServerType Type;
 
@@ -69,10 +72,13 @@ namespace Arrowgene.Ddon.Server
                 _consumer,
                 _setting.TcpServerSettings
             );
+
+            _ddonMetricsState = new DdonServerMetricsState(_consumer.MetricsState);
         }
 
         public int Id => _setting.Id;
         public string Name => _setting.Name;
+        public string ServerIdentity => _setting.TcpServerSettings.Identity;
 
         public AssetRepository AssetRepository { get; }
         public IDatabase Database { get; }
@@ -81,12 +87,14 @@ namespace Arrowgene.Ddon.Server
         {
             Database.DeleteConnectionsByServerId(Id);
             Logger.Info($"[{_setting.TcpServerSettings.Identity}] Listening: {_server.IpAddress}:{_server.Port}");
+            _ddonMetricsState.EnableCapture();
             _consumer.Start();
             _server.Start();
         }
 
         public void Stop()
         {
+            _ddonMetricsState.DisableCapture();
             _consumer.Stop();
             _server.Stop();
             _consumer.Dispose();
@@ -105,10 +113,21 @@ namespace Arrowgene.Ddon.Server
         protected abstract void ClientConnected(TClient client);
         protected abstract void ClientDisconnected(TClient client);
         public abstract TClient NewClient(ClientHandle clientHandle);
-
-        [Obsolete("deprecated, use `ClientLookup.GetAll()` instead")]
-        public List<TClient> Clients => ClientLookup.GetAll();
-
         public abstract ClientLookup<TClient> ClientLookup { get; }
+
+        public TcpServerMetricsSnapshot GetTcpServerMetricsSnapshot()
+        {
+            return _server.GetMetricsSnapshot();
+        }
+
+        public TcpServerMetricsSnapshot GetTcpServerPublishedMetricsSnapshot()
+        {
+            return _server.GetPublishedMetricsSnapshot();
+        }
+
+        public DdonServerMetricsSnapshot GetDdonServerMetricsSnapshot()
+        {
+            return _ddonMetricsState.CreateSnapshot();
+        }
     }
 }

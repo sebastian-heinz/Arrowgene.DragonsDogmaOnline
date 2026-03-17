@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Arrowgene.Ddon.Metrics;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.SAEAServer;
@@ -12,6 +14,7 @@ namespace Arrowgene.Ddon.Server.Network
         private readonly ServerLogger Logger;
         private readonly Dictionary<PacketId, IPacketHandler<TClient>> _packetHandlerLookup;
         private readonly Dictionary<long, TClient> _clients;
+        private readonly ConsumerMetricsState _metricsState;
         private readonly object _lock;
         private readonly IClientFactory<TClient> _clientFactory;
 
@@ -34,6 +37,7 @@ namespace Arrowgene.Ddon.Server.Network
             _lock = new object();
             _clients = new Dictionary<long, TClient>();
             _packetHandlerLookup = new Dictionary<PacketId, IPacketHandler<TClient>>();
+            _metricsState = new ConsumerMetricsState();
         }
 
         public void Clear()
@@ -57,6 +61,8 @@ namespace Arrowgene.Ddon.Server.Network
         {
             _fallbackPacketHandler = packetHandler;
         }
+
+        internal ConsumerMetricsState MetricsState => _metricsState;
 
         protected override void HandleReceived(ClientHandle clientHandle, byte[] data)
         {
@@ -89,12 +95,18 @@ namespace Arrowgene.Ddon.Server.Network
                 Logger.LogUnhandledPacket(client, packet);
                 if (_fallbackPacketHandler != null)
                 {
-                    _fallbackPacketHandler.Handle(client, packet);
+                    ExecutePacketHandler(client, packet, _fallbackPacketHandler);
                 }
 
                 return;
             }
 
+            ExecutePacketHandler(client, packet, packetHandler);
+        }
+
+        private void ExecutePacketHandler(TClient client, IPacket packet, IPacketHandler<TClient> packetHandler)
+        {
+            long startTimestamp = Stopwatch.GetTimestamp();
             try
             {
                 packetHandler.Handle(client, packet);
@@ -103,6 +115,15 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 Logger.Exception(client, ex);
                 Logger.LogPacketError(client, packet);
+                _metricsState.IncrementHandlerErrors();
+            }
+            finally
+            {
+                _metricsState.RecordHandlerExecution(
+                    packetHandler.Id.ToString(),
+                    packetHandler.Id.Name,
+                    client.Identity,
+                    startTimestamp);
             }
         }
 
