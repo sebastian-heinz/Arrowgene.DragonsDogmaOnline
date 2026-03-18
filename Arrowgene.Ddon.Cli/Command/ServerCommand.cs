@@ -8,6 +8,7 @@ using Arrowgene.Ddon.WebServer;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Threading;
 using Arrowgene.Ddon.Metrics;
@@ -251,8 +252,7 @@ public class ServerCommand : ICommand
                 );
                 break;
             default:
-                sink = new NullMetricsSink<DdonServerMetricsSnapshot>();
-                break;
+                throw new InvalidEnumArgumentException(nameof(settings.MetricsSink), (int)settings.MetricsSink, typeof(MetricsSinkType));
         }
 
         return new MetricsCollector<DdonServerMetricsSnapshot>(
