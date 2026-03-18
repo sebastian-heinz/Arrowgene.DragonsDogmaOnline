@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Metrics
 {
-    public readonly struct ConsumerMetricsSnapshot
+    public readonly struct DdonConsumerMetricsSnapshot
     {
         // Bucket labels for display/export
         public static readonly string[] DurationBucketLabels =
@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Metrics
             "<50ms", "<100ms", "<500ms", "<1s", ">=1s"
         };
 
-        public ConsumerMetricsSnapshot(
+        public DdonConsumerMetricsSnapshot(
             long handlersExecuted,
             long handlerErrors,
             long[] handlerDurationBuckets,

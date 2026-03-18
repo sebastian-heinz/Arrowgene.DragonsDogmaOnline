@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Metrics
             long sequenceNumber,
             double handlersExecutedPerSecond,
             double handlerErrorsPerSecond,
-            ConsumerMetricsSnapshot consumerMetrics,
+            DdonConsumerMetricsSnapshot ddonConsumerMetrics,
             TcpServerMetricsSnapshot tcpServerMetrics
         )
         {
@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Metrics
             SequenceNumber = sequenceNumber;
             HandlersExecutedPerSecond = handlersExecutedPerSecond;
             HandlerErrorsPerSecond = handlerErrorsPerSecond;
-            ConsumerMetrics = consumerMetrics;
+            DdonConsumerMetrics = ddonConsumerMetrics;
             TcpServerMetrics = tcpServerMetrics;
         }
 
@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.Metrics
         public long SequenceNumber { get; }
         public double HandlersExecutedPerSecond { get; }
         public double HandlerErrorsPerSecond { get; }
-        public ConsumerMetricsSnapshot ConsumerMetrics { get; }
+        public DdonConsumerMetricsSnapshot DdonConsumerMetrics { get; }
         public TcpServerMetricsSnapshot TcpServerMetrics { get; }
 
         public TimeSpan Uptime => ServerStartedAtUtc == DateTime.MinValue

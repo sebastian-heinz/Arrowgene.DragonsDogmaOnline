@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Arrowgene.Ddon.Metrics
 {
-    internal sealed class ConsumerMetricsState
+    internal sealed class DdonConsumerMetricsState
     {
         private const int HandlerDurationBucketCount = 10;
 

@@ -10,12 +10,12 @@ using Arrowgene.Networking.SAEAServer.Consumer.BlockingQueueConsumption;
 
 namespace Arrowgene.Ddon.Server.Network
 {
-    public class Consumer<TClient> : ThreadedBlockingQueue, IDisposable, IMetricsCapture<ConsumerMetricsSnapshot> where TClient : Client
+    public class Consumer<TClient> : ThreadedBlockingQueue, IDisposable, IMetricsCapture<DdonConsumerMetricsSnapshot> where TClient : Client
     {
         private readonly ServerLogger Logger;
         private readonly Dictionary<PacketId, IPacketHandler<TClient>> _packetHandlerLookup;
         private readonly Dictionary<long, TClient> _clients;
-        private readonly ConsumerMetricsState _metricsState;
+        private readonly DdonConsumerMetricsState _ddonConsumerMetricsState;
         private readonly object _lock;
         private readonly IClientFactory<TClient> _clientFactory;
 
@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.Server.Network
             _lock = new object();
             _clients = new Dictionary<long, TClient>();
             _packetHandlerLookup = new Dictionary<PacketId, IPacketHandler<TClient>>();
-            _metricsState = new ConsumerMetricsState();
+            _ddonConsumerMetricsState = new DdonConsumerMetricsState();
         }
 
         public void Clear()
@@ -114,13 +114,13 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 Logger.Exception(client, ex);
                 Logger.LogPacketError(client, packet);
-                _metricsState.IncrementHandlerErrors(
+                _ddonConsumerMetricsState.IncrementHandlerErrors(
                     packetHandler.Id.ToString(),
                     packetHandler.Id.Name);
             }
             finally
             {
-                _metricsState.RecordHandlerExecution(
+                _ddonConsumerMetricsState.RecordHandlerExecution(
                     packetHandler.Id.ToString(),
                     packetHandler.Id.Name,
                     startTimestamp);
@@ -185,20 +185,20 @@ namespace Arrowgene.Ddon.Server.Network
             Logger.Exception(clientSnapshot, exception);
         }
 
-        public ConsumerMetricsSnapshot CreateSnapshot(double elapsedSeconds)
+        public DdonConsumerMetricsSnapshot CreateSnapshot(double elapsedSeconds)
         {
-            long currentExecuted = _metricsState.GetHandlersExecuted();
-            long currentErrors = _metricsState.GetHandlerErrors();
+            long currentExecuted = _ddonConsumerMetricsState.GetHandlersExecuted();
+            long currentErrors = _ddonConsumerMetricsState.GetHandlerErrors();
 
-            long[] durationBuckets = new long[_metricsState.HandlerDurationBucketsCount];
-            _metricsState.CopyHandlerDurationBuckets(durationBuckets);
+            long[] durationBuckets = new long[_ddonConsumerMetricsState.HandlerDurationBucketsCount];
+            _ddonConsumerMetricsState.CopyHandlerDurationBuckets(durationBuckets);
 
-            var handlerEntries = _metricsState.GetHandlerEntries();
-            var handlerMetrics = new Dictionary<string, ConsumerMetricsSnapshot.HandlerMetrics>(handlerEntries.Count);
+            var handlerEntries = _ddonConsumerMetricsState.GetHandlerEntries();
+            var handlerMetrics = new Dictionary<string, DdonConsumerMetricsSnapshot.HandlerMetrics>(handlerEntries.Count);
             foreach (var kvp in handlerEntries)
             {
                 var entry = kvp.Value;
-                handlerMetrics[kvp.Key] = new ConsumerMetricsSnapshot.HandlerMetrics(
+                handlerMetrics[kvp.Key] = new DdonConsumerMetricsSnapshot.HandlerMetrics(
                     entry.HandlerName,
                     entry.GetExecutionCount(),
                     entry.GetErrorCount(),
@@ -207,18 +207,18 @@ namespace Arrowgene.Ddon.Server.Network
                     entry.GetMaxDurationTicks());
             }
 
-            return new ConsumerMetricsSnapshot(
+            return new DdonConsumerMetricsSnapshot(
                 currentExecuted, currentErrors, durationBuckets, handlerMetrics);
         }
 
         void IMetricsCapture.EnableCapture()
         {
-            _metricsState.EnableCapture();
+            _ddonConsumerMetricsState.EnableCapture();
         }
 
         void IMetricsCapture.DisableCapture()
         {
-            _metricsState.DisableCapture();
+            _ddonConsumerMetricsState.DisableCapture();
         }
 
         public void Dispose()

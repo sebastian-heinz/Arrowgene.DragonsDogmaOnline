@@ -115,13 +115,16 @@ namespace Arrowgene.Ddon.Server
             TcpServerMetricsSnapshot tcpSnapshot =
                 ((IMetricsCapture<TcpServerMetricsSnapshot>)_server).CreateSnapshot(elapsedSeconds);
 
-            Metrics.ConsumerMetricsSnapshot consumerSnapshot =
-                ((IMetricsCapture<Metrics.ConsumerMetricsSnapshot>)_consumer).CreateSnapshot(elapsedSeconds);
+            DdonConsumerMetricsSnapshot consumerSnapshot =
+                ((IMetricsCapture<DdonConsumerMetricsSnapshot>)_consumer).CreateSnapshot(elapsedSeconds);
 
             long seq = _ddonMetricsState.IncrementSequenceNumber();
             var (executedPerSec, errorsPerSec) =
                 _ddonMetricsState.CalculateRates(
-                    consumerSnapshot.HandlersExecuted, consumerSnapshot.HandlerErrors, elapsedSeconds);
+                    consumerSnapshot.HandlersExecuted,
+                    consumerSnapshot.HandlerErrors,
+                    elapsedSeconds
+                );
 
             return new DdonServerMetricsSnapshot(
                 DateTime.UtcNow,
@@ -137,12 +140,14 @@ namespace Arrowgene.Ddon.Server
         {
             _ddonMetricsState.EnableCapture();
             ((IMetricsCapture)_consumer).EnableCapture();
+            ((IMetricsCapture)_server).EnableCapture();
         }
 
         public void DisableCapture()
         {
             _ddonMetricsState.DisableCapture();
             ((IMetricsCapture)_consumer).DisableCapture();
+            ((IMetricsCapture)_server).DisableCapture();
         }
     }
 }
