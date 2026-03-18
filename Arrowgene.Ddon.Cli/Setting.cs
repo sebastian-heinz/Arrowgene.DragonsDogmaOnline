@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer;
+using Arrowgene.Ddon.Metrics;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.WebServer;
@@ -18,7 +19,9 @@ namespace Arrowgene.Ddon.Cli
         [DataMember(Order = 0)] public string LogPath { get; set; }
         [DataMember(Order = 10)] public WebServerSetting WebServerSetting { get; set; }
         [DataMember(Order = 20)] public GameServerSetting GameServerSetting { get; set; }
+        [DataMember(Order = 21)] public MetricSettings GameMetricSettings { get; set; }
         [DataMember(Order = 30)] public LoginServerSetting LoginServerSetting { get; set; }
+        [DataMember(Order = 31)] public MetricSettings LoginMetricSettings { get; set; }
         [DataMember(Order = 40)] public DatabaseSetting DatabaseSetting { get; set; }
         [DataMember(Order = 50)] public string AssetPath { get; set; }
 
@@ -28,7 +31,9 @@ namespace Arrowgene.Ddon.Cli
             LogPath = "Logs";
             WebServerSetting = new WebServerSetting();
             GameServerSetting = new GameServerSetting();
+            GameMetricSettings = new MetricSettings();
             LoginServerSetting = new LoginServerSetting();
+            LoginMetricSettings = new MetricSettings();
             DatabaseSetting = new DatabaseSetting();
             AssetPath = Path.Combine(Util.ExecutingDirectory(), "Files/Assets");
         }
@@ -39,7 +44,9 @@ namespace Arrowgene.Ddon.Cli
             LogPath = setting.LogPath;
             WebServerSetting = new WebServerSetting(setting.WebServerSetting);
             GameServerSetting = new GameServerSetting(setting.GameServerSetting);
+            GameMetricSettings = new MetricSettings(setting.GameMetricSettings);
             LoginServerSetting = new LoginServerSetting(setting.LoginServerSetting);
+            LoginMetricSettings = new MetricSettings(setting.LoginMetricSettings);
             DatabaseSetting = new DatabaseSetting(setting.DatabaseSetting);
             AssetPath = setting.AssetPath;
         }
@@ -51,7 +58,9 @@ namespace Arrowgene.Ddon.Cli
             LogPath ??= "Logs";
             WebServerSetting ??= new WebServerSetting();
             GameServerSetting ??= new GameServerSetting();
+            GameMetricSettings ??= new MetricSettings();
             LoginServerSetting ??= new LoginServerSetting();
+            LoginMetricSettings ??= new MetricSettings();
             DatabaseSetting ??= new DatabaseSetting();
             AssetPath ??= Path.Combine(Util.ExecutingDirectory(), "Files/Assets");
         }
