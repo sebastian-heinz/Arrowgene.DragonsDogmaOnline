@@ -4,12 +4,13 @@ using System.Diagnostics;
 using Arrowgene.Ddon.Metrics;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Arrowgene.Networking.Metrics;
 using Arrowgene.Networking.SAEAServer;
 using Arrowgene.Networking.SAEAServer.Consumer.BlockingQueueConsumption;
 
 namespace Arrowgene.Ddon.Server.Network
 {
-    public class Consumer<TClient> : ThreadedBlockingQueueConsumer, IDisposable where TClient : Client
+    public class Consumer<TClient> : ThreadedBlockingQueue, IDisposable, IMetricsCapture<ConsumerMetricsSnapshot> where TClient : Client
     {
         private readonly ServerLogger Logger;
         private readonly Dictionary<PacketId, IPacketHandler<TClient>> _packetHandlerLookup;
@@ -61,8 +62,6 @@ namespace Arrowgene.Ddon.Server.Network
         {
             _fallbackPacketHandler = packetHandler;
         }
-
-        internal ConsumerMetricsState MetricsState => _metricsState;
 
         protected override void HandleReceived(ClientHandle clientHandle, byte[] data)
         {
@@ -186,6 +185,42 @@ namespace Arrowgene.Ddon.Server.Network
             Logger.Exception(clientSnapshot, exception);
         }
 
+        public ConsumerMetricsSnapshot CreateSnapshot(double elapsedSeconds)
+        {
+            long currentExecuted = _metricsState.GetHandlersExecuted();
+            long currentErrors = _metricsState.GetHandlerErrors();
+
+            long[] durationBuckets = new long[_metricsState.HandlerDurationBucketsCount];
+            _metricsState.CopyHandlerDurationBuckets(durationBuckets);
+
+            var handlerEntries = _metricsState.GetHandlerEntries();
+            var handlerMetrics = new Dictionary<string, ConsumerMetricsSnapshot.HandlerMetrics>(handlerEntries.Count);
+            foreach (var kvp in handlerEntries)
+            {
+                var entry = kvp.Value;
+                handlerMetrics[kvp.Key] = new ConsumerMetricsSnapshot.HandlerMetrics(
+                    entry.HandlerName,
+                    entry.GetExecutionCount(),
+                    entry.GetErrorCount(),
+                    entry.GetTotalDurationTicks(),
+                    entry.GetMinDurationTicks(),
+                    entry.GetMaxDurationTicks());
+            }
+
+            return new ConsumerMetricsSnapshot(
+                currentExecuted, currentErrors, durationBuckets, handlerMetrics);
+        }
+
+        void IMetricsCapture.EnableCapture()
+        {
+            _metricsState.EnableCapture();
+        }
+
+        void IMetricsCapture.DisableCapture()
+        {
+            _metricsState.DisableCapture();
+        }
+
         public void Dispose()
         {
             foreach (var handler in _packetHandlerLookup.Values)
@@ -195,5 +230,6 @@ namespace Arrowgene.Ddon.Server.Network
 
             _fallbackPacketHandler?.Dispose();
         }
+
     }
 }

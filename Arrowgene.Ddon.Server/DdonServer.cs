@@ -21,19 +21,19 @@
  */
 
 using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Metrics;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Arrowgene.Networking.Metrics;
 using Arrowgene.Networking.SAEAServer;
 using Arrowgene.Networking.SAEAServer.Metric;
 
 namespace Arrowgene.Ddon.Server
 {
-    public abstract class DdonServer<TClient> : IClientFactory<TClient>
+    public abstract class DdonServer<TClient> : IClientFactory<TClient>, IMetricsCapture<DdonServerMetricsSnapshot>
         where TClient : Client
     {
         private readonly ServerLogger Logger;
@@ -42,7 +42,6 @@ namespace Arrowgene.Ddon.Server
         private readonly TcpServer _server;
         private readonly ServerSetting _setting;
         private readonly DdonServerMetricsState _ddonMetricsState;
-        private readonly DdonServerMetricsCollector _ddonMetricsCollector;
 
         public readonly ServerType Type;
 
@@ -74,14 +73,10 @@ namespace Arrowgene.Ddon.Server
                 _setting.TcpServerSettings
             );
 
-            _ddonMetricsState = new DdonServerMetricsState(_consumer.MetricsState);
-            _ddonMetricsCollector = new DdonServerMetricsCollector(_ddonMetricsState);
+            _ddonMetricsState = new DdonServerMetricsState();
         }
 
         public int Id => _setting.Id;
-        public string Name => _setting.Name;
-        public string ServerIdentity => _setting.TcpServerSettings.Identity;
-
         public AssetRepository AssetRepository { get; }
         public IDatabase Database { get; }
 
@@ -89,17 +84,12 @@ namespace Arrowgene.Ddon.Server
         {
             Database.DeleteConnectionsByServerId(Id);
             Logger.Info($"[{_setting.TcpServerSettings.Identity}] Listening: {_server.IpAddress}:{_server.Port}");
-            EnableMetricsCapture();
-            string metricsThreadName = $"{_setting.TcpServerSettings.Identity}.DdonMetrics";
-            _ddonMetricsCollector.Start(metricsThreadName);
             _consumer.Start();
             _server.Start();
         }
 
         public void Stop()
         {
-            DisableMetricsCapture();
-            _ddonMetricsCollector.Stop();
             _consumer.Stop();
             _server.Stop();
             _consumer.Dispose();
@@ -120,52 +110,39 @@ namespace Arrowgene.Ddon.Server
         public abstract TClient NewClient(ClientHandle clientHandle);
         public abstract ClientLookup<TClient> ClientLookup { get; }
 
-        public TcpServerMetricsSnapshot GetTcpServerMetricsSnapshot()
+        public DdonServerMetricsSnapshot CreateSnapshot(double elapsedSeconds)
         {
-            return _server.GetMetricsSnapshot();
+            TcpServerMetricsSnapshot tcpSnapshot =
+                ((IMetricsCapture<TcpServerMetricsSnapshot>)_server).CreateSnapshot(elapsedSeconds);
+
+            Metrics.ConsumerMetricsSnapshot consumerSnapshot =
+                ((IMetricsCapture<Metrics.ConsumerMetricsSnapshot>)_consumer).CreateSnapshot(elapsedSeconds);
+
+            long seq = _ddonMetricsState.IncrementSequenceNumber();
+            var (executedPerSec, errorsPerSec) =
+                _ddonMetricsState.CalculateRates(
+                    consumerSnapshot.HandlersExecuted, consumerSnapshot.HandlerErrors, elapsedSeconds);
+
+            return new DdonServerMetricsSnapshot(
+                DateTime.UtcNow,
+                tcpSnapshot.ServerStartedAtUtc,
+                seq,
+                executedPerSec,
+                errorsPerSec,
+                consumerSnapshot,
+                tcpSnapshot);
         }
 
-        public TcpServerMetricsSnapshot GetTcpServerPublishedMetricsSnapshot()
-        {
-            return _server.GetPublishedMetricsSnapshot();
-        }
-
-        public DdonServerMetricsSnapshot GetDdonServerMetricsSnapshot()
-        {
-            if (IsMetricsCaptureEnabled())
-            {
-                try
-                {
-                    _ddonMetricsCollector.CaptureSnapshot();
-                }
-                catch (ObjectDisposedException)
-                {
-                }
-            }
-
-            return _ddonMetricsCollector.GetSnapshot();
-        }
-
-        public DdonServerMetricsSnapshot GetDdonServerPublishedMetricsSnapshot()
-        {
-            return _ddonMetricsCollector.GetSnapshot();
-        }
-
-        private void EnableMetricsCapture()
+        public void EnableCapture()
         {
             _ddonMetricsState.EnableCapture();
-            _consumer.MetricsState.EnableCapture();
+            ((IMetricsCapture)_consumer).EnableCapture();
         }
 
-        private void DisableMetricsCapture()
+        public void DisableCapture()
         {
             _ddonMetricsState.DisableCapture();
-            _consumer.MetricsState.DisableCapture();
-        }
-
-        private bool IsMetricsCaptureEnabled()
-        {
-            return _ddonMetricsState.IsCaptureEnabled();
+            ((IMetricsCapture)_consumer).DisableCapture();
         }
     }
 }

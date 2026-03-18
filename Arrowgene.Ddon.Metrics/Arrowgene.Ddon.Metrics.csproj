@@ -22,6 +22,6 @@
     </ItemGroup>
     <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
-        <PackageReference Include="Arrowgene.Networking" Version="2.1.3" />
+        <PackageReference Include="Arrowgene.Networking" Version="2.1.5" />
     </ItemGroup>
 </Project>

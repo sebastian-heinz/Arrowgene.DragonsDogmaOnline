@@ -1,4 +1,5 @@
 using System;
+using Arrowgene.Networking.SAEAServer.Metric;
 
 namespace Arrowgene.Ddon.Metrics
 {
@@ -10,7 +11,9 @@ namespace Arrowgene.Ddon.Metrics
             long sequenceNumber,
             double handlersExecutedPerSecond,
             double handlerErrorsPerSecond,
-            ConsumerMetricsSnapshot consumerMetrics)
+            ConsumerMetricsSnapshot consumerMetrics,
+            TcpServerMetricsSnapshot tcpServerMetrics
+        )
         {
             TimestampUtc = timestampUtc;
             ServerStartedAtUtc = serverStartedAtUtc;
@@ -18,6 +21,7 @@ namespace Arrowgene.Ddon.Metrics
             HandlersExecutedPerSecond = handlersExecutedPerSecond;
             HandlerErrorsPerSecond = handlerErrorsPerSecond;
             ConsumerMetrics = consumerMetrics;
+            TcpServerMetrics = tcpServerMetrics;
         }
 
         public DateTime TimestampUtc { get; }
@@ -26,6 +30,7 @@ namespace Arrowgene.Ddon.Metrics
         public double HandlersExecutedPerSecond { get; }
         public double HandlerErrorsPerSecond { get; }
         public ConsumerMetricsSnapshot ConsumerMetrics { get; }
+        public TcpServerMetricsSnapshot TcpServerMetrics { get; }
 
         public TimeSpan Uptime => ServerStartedAtUtc == DateTime.MinValue
             ? TimeSpan.Zero

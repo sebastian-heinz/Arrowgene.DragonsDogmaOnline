@@ -1,7 +1,6 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.LoginServer;
-using Arrowgene.Ddon.Metrics;
 using Arrowgene.Ddon.Rpc.Web;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
@@ -26,9 +25,6 @@ namespace Arrowgene.Ddon.Cli.Command
         private RpcWebServer _rpcWebServer;
         private IDatabase _database;
         private AssetRepository _assetRepository;
-        private DdonServerMetricsCapture _loginDdonServerMetricsCapture;
-        private DdonServerMetricsCapture _gameDdonServerMetricsCapture;
-
         public string Key => "server";
 
         public string Description =>
@@ -146,7 +142,6 @@ namespace Arrowgene.Ddon.Cli.Command
                 _webServer.Start();
                 _gameServer.Start();
                 _loginServer.Start();
-                StartMetricsCaptures();
 
                 if (isService)
                 {
@@ -179,7 +174,6 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (parameter.Arguments.Contains("stop"))
             {
-                StopMetricsCaptures();
                 _webServer.Stop();
                 _gameServer.Stop();
                 _loginServer.Stop();
@@ -192,8 +186,6 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public void Shutdown()
         {
-            StopMetricsCaptures();
-
             if (_loginServer != null)
             {
                 _loginServer.Stop();
@@ -215,37 +207,5 @@ namespace Arrowgene.Ddon.Cli.Command
             }
         }
 
-        private void StartMetricsCaptures()
-        {
-            _gameDdonServerMetricsCapture ??= CreateMetricsCapture(_gameServer);
-            _loginDdonServerMetricsCapture ??= CreateMetricsCapture(_loginServer);
-
-            _gameDdonServerMetricsCapture.Start();
-            _loginDdonServerMetricsCapture.Start();
-        }
-
-        private void StopMetricsCaptures()
-        {
-            _loginDdonServerMetricsCapture?.Dispose();
-            _loginDdonServerMetricsCapture = null;
-
-            _gameDdonServerMetricsCapture?.Dispose();
-            _gameDdonServerMetricsCapture = null;
-        }
-
-        private static DdonServerMetricsCapture CreateMetricsCapture<TClient>(DdonServer<TClient> server)
-            where TClient : Arrowgene.Ddon.Server.Network.Client
-        {
-            return new DdonServerMetricsCapture(
-                server.Id,
-                server.Name,
-                server.Type.ToString(),
-                server.ServerIdentity,
-                server.GetTcpServerMetricsSnapshot,
-                TimeSpan.FromSeconds(1),
-                ex => Logger.Error($"Metrics loop failed for [{server.ServerIdentity}]: {ex}"),
-                server.GetDdonServerMetricsSnapshot
-            );
-        }
     }
 }

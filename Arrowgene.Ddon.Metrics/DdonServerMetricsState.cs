@@ -4,13 +4,10 @@ namespace Arrowgene.Ddon.Metrics
 {
     internal sealed class DdonServerMetricsState
     {
-        internal readonly ConsumerMetricsState ConsumerMetricsState;
         private int _captureEnabled;
-
-        public DdonServerMetricsState(ConsumerMetricsState consumerMetricsState)
-        {
-            ConsumerMetricsState = consumerMetricsState;
-        }
+        private long _sequenceNumber;
+        private long _previousHandlersExecuted;
+        private long _previousHandlerErrors;
 
         internal void EnableCapture()
         {
@@ -25,6 +22,26 @@ namespace Arrowgene.Ddon.Metrics
         internal bool IsCaptureEnabled()
         {
             return Volatile.Read(ref _captureEnabled) == 1;
+        }
+
+        internal long IncrementSequenceNumber()
+        {
+            return Interlocked.Increment(ref _sequenceNumber);
+        }
+
+        internal (double executedPerSec, double errorsPerSec) CalculateRates(
+            long currentExecuted, long currentErrors, double elapsedSeconds)
+        {
+            long deltaExecuted = currentExecuted - Volatile.Read(ref _previousHandlersExecuted);
+            long deltaErrors = currentErrors - Volatile.Read(ref _previousHandlerErrors);
+
+            Volatile.Write(ref _previousHandlersExecuted, currentExecuted);
+            Volatile.Write(ref _previousHandlerErrors, currentErrors);
+
+            double executedPerSec = elapsedSeconds > 0 ? deltaExecuted / elapsedSeconds : 0;
+            double errorsPerSec = elapsedSeconds > 0 ? deltaErrors / elapsedSeconds : 0;
+
+            return (executedPerSec, errorsPerSec);
         }
     }
 }
