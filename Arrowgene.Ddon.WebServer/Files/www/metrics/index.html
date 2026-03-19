@@ -77,7 +77,7 @@ const metricFiles = Object.fromEntries(
 return {colorMap,metricFileNames,servers,metricFiles};
 }});
 
-define({id: "2e0d811c", inputs: ["servers","colorMap","Event"], outputs: ["serverToggleInput"], body: (servers,colorMap,Event) => {
+define({id: "a86c43e6", inputs: ["servers","colorMap","Event"], outputs: ["serverToggleInput","chartToggleState","chartToggleInput"], body: (servers,colorMap,Event) => {
 function serverToggleInput() {
   const active = new Set([servers[0]]);
   const container = document.createElement("div");
@@ -105,10 +105,44 @@ function serverToggleInput() {
   render();
   return container;
 }
-return {serverToggleInput};
+
+const chartToggleState = new Map();
+
+function chartToggleInput(label, initial = false) {
+  const container = document.createElement("div");
+  const button = document.createElement("button");
+  let isOpen = chartToggleState.get(label) ?? initial;
+  container.className = "chart-toggle-wrap";
+  container.value = isOpen;
+  button.type = "button";
+  button.className = "chart-toggle-btn chart-title-toggle" + (isOpen ? " active" : "");
+
+  function render() {
+    button.className = "chart-toggle-btn chart-title-toggle" + (isOpen ? " active" : "");
+    button.setAttribute("aria-pressed", String(isOpen));
+    button.innerHTML = `
+      <span class="chart-toggle-indicator">[${isOpen ? "OPEN" : "CLOSED"}]</span>
+      <span class="chart-toggle-label">${label}</span>
+    `;
+    container.value = isOpen;
+    chartToggleState.set(label, isOpen);
+  }
+
+  button.onclick = () => {
+    isOpen = !isOpen;
+    render();
+    container.dispatchEvent(new Event("input", {bubbles: true}));
+  };
+
+  container.appendChild(button);
+  render();
+  return container;
+}
+
+return {serverToggleInput,chartToggleState,chartToggleInput};
 }});
 
-define({id: "d8d3d829", outputs: ["createPerformanceState","perfState","timedPlot","timedTable","performancePanel"], body: () => {
+define({id: "84031341", outputs: ["createPerformanceState","perfState","timedPlot","timedTable","performancePanel"], body: () => {
 function createPerformanceState() {
   const listeners = new Set();
   const state = {
@@ -174,7 +208,7 @@ function performancePanel() {
     container.innerHTML = `
       <div class="panel-header perf-header" style="border-bottom-color: var(--crush-border);">
         <span class="panel-indicator" style="background: var(--crush-cyan); box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);"></span>
-        <span class="panel-name" style="color: var(--crush-text);">Performance</span>
+        <span class="panel-name" style="color: var(--crush-text);">Page Loading Performance</span>
       </div>
       <div class="perf-grid">
         <div class="perf-stat">
@@ -311,7 +345,7 @@ Count: ${d.count.toLocaleString()}`;
 return {allTimeseries,allHandlers,allHistogram,colorDomain,colorRange,bucketOrder,stageColorMap,allLifecycle,allQueueDelay,allParse,allReceivedHandlerDuration,chartTextColor,sharedPlotFontSize,timeSeriesPlotStyle,histogramPlotStyle,histogramXAxis,histogramMarginBottom,lifecycleChartHeight,stageHistogramChartHeight,receivedHandlerChartHeight,serverLegendColumns,stageLegendColumns,formatTooltipTimestamp,formatTooltipValue,formatHistogramTooltip};
 }});
 
-define({id: "a802e385", inputs: ["metrics","colorMap","formatTooltipValue","timedPlot","Plot","width","timeSeriesPlotStyle","colorDomain","colorRange","serverLegendColumns","allTimeseries","formatTooltipTimestamp","selected"], outputs: ["serverSummary","fmtBytes","mixHex","tsChart","overlayTsChart","profiledTsChart","summaries"], body: (metrics,colorMap,formatTooltipValue,timedPlot,Plot,width,timeSeriesPlotStyle,colorDomain,colorRange,serverLegendColumns,allTimeseries,formatTooltipTimestamp,selected) => {
+define({id: "a3e7d947", inputs: ["metrics","colorMap","formatTooltipValue","timedPlot","Plot","width","timeSeriesPlotStyle","colorDomain","colorRange","serverLegendColumns","allTimeseries","formatTooltipTimestamp","selected"], outputs: ["serverSummary","fmtBytes","mixHex","tsChart","overlayTsChart","profiledTsChart","summaries"], body: (metrics,colorMap,formatTooltipValue,timedPlot,Plot,width,timeSeriesPlotStyle,colorDomain,colorRange,serverLegendColumns,allTimeseries,formatTooltipTimestamp,selected) => {
 function serverSummary(s) {
   const ts = metrics[s]?.timeseries ?? [];
   const latest = ts.length > 0 ? ts[ts.length - 1] : null;
@@ -484,7 +518,7 @@ function profiledTsChart(opts) {
   });
   return timedPlot(opts.label, () => Plot.plot({
     width: opts.width ?? width,
-    height: opts.height ?? (facetByServer ? Math.max(280, selected.length * 200) : 280),
+    height: opts.height ?? (facetByServer ? Math.max(280, selected.length * 235) : 280),
     style: timeSeriesPlotStyle,
     color: {
       domain: opts.series.map(series => series.label),
@@ -499,7 +533,7 @@ function profiledTsChart(opts) {
     },
     x: {type: "utc", label: null},
     y: {label: opts.yLabel, grid: true, nice: true},
-    fy: facetByServer ? {label: null} : undefined,
+    fy: facetByServer ? {label: null, padding: 0.2} : undefined,
     marks: [
       Plot.ruleY([0], {stroke: "#1e2a3a"}),
       Plot.lineY(seriesData, {
@@ -584,11 +618,74 @@ ${summaries.map(s => html`
 ))
 }});
 
-define({id: "6bcfb61b", inputs: ["timedPlot","Plot","width","lifecycleChartHeight","histogramMarginBottom","histogramPlotStyle","stageLegendColumns","histogramXAxis","selected","allLifecycle","display"], body: async (timedPlot,Plot,width,lifecycleChartHeight,histogramMarginBottom,histogramPlotStyle,stageLegendColumns,histogramXAxis,selected,allLifecycle,display) => {
+define({id: "bd25f51c", inputs: ["html","tsChart","chartToggleInput","profiledTsChart","display"], body: async (html,tsChart,chartToggleInput,profiledTsChart,display) => {
+display(await(
+(() => {
+  const connectionsSection = html`<div></div>`;
+  connectionsSection.append(html`<div class="section-bar"><span>CONNECTIONS</span></div>`);
+
+  const activeCard = html`<div class="card chart-card">
+    <div class="chart-title">ACTIVE</div>
+  </div>`;
+  activeCard.append(tsChart({y: "activeConnections", yLabel: "connections"}));
+  connectionsSection.append(activeCard);
+
+  const errorsCard = html`<div class="card chart-card chart-card-spaced">
+    <div class="chart-title">ERRORS / SEC</div>
+  </div>`;
+  errorsCard.append(tsChart({y: "handlerErrorsPerSecond", yLabel: "err/s"}));
+  connectionsSection.append(errorsCard);
+
+  const label = "CONNECTION OUTCOMES";
+  const card = html`<div class="card chart-card chart-card-spaced"></div>`;
+  const toggle = chartToggleInput(label, false);
+  const body = document.createElement("div");
+  let renderToken = 0;
+
+  async function renderBody() {
+    const token = ++renderToken;
+    if (!toggle.value) {
+      body.replaceChildren(html`<div class="chart-collapsed-note">Collapsed by default. Open to render this chart.</div>`);
+      return;
+    }
+
+    body.replaceChildren(html`<div class="chart-loading">
+      <span class="chart-spinner" aria-hidden="true"></span>
+      <span class="chart-loading-label">Loading chart...</span>
+    </div>`);
+
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    if (token !== renderToken || !toggle.value) return;
+
+    const chart = profiledTsChart({
+      label,
+      tipTitle: "Connection outcomes",
+      yLabel: "connections",
+      facetByServer: true,
+      series: [
+        {label: "Accepted", value: d => d.acceptedConnections, color: "#00e676"},
+        {label: "Disconnected", value: d => d.disconnectedConnections, color: "#40c4ff"},
+        {label: "Rejected", value: d => d.rejectedConnections, color: "#ffab40"},
+        {label: "Timed Out", value: d => d.timedOutConnections, color: "#ff5252"}
+      ]
+    });
+    if (token === renderToken && toggle.value) body.replaceChildren(chart);
+  }
+
+  toggle.addEventListener("input", renderBody);
+  card.append(toggle, body);
+  renderBody();
+  connectionsSection.append(card);
+  return connectionsSection;
+})()
+))
+}});
+
+define({id: "39dc1153", inputs: ["timedPlot","Plot","width","selected","lifecycleChartHeight","histogramMarginBottom","histogramPlotStyle","stageLegendColumns","histogramXAxis","allLifecycle","display"], body: async (timedPlot,Plot,width,selected,lifecycleChartHeight,histogramMarginBottom,histogramPlotStyle,stageLegendColumns,histogramXAxis,allLifecycle,display) => {
 display(await(
 timedPlot("PIPELINE OVERVIEW", () => Plot.plot({
   width,
-  height: lifecycleChartHeight,
+  height: selected.length > 1 ? Math.max(lifecycleChartHeight, selected.length * 250) : lifecycleChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
   color: {
@@ -599,7 +696,7 @@ timedPlot("PIPELINE OVERVIEW", () => Plot.plot({
   },
   x: {...histogramXAxis, padding: 0.15},
   y: {label: "count", grid: true},
-  fx: selected.length > 1 ? {label: null} : undefined,
+  fy: selected.length > 1 ? {label: null, padding: 0.2} : undefined,
   marks: [
     Plot.barY(
       allLifecycle,
@@ -607,7 +704,7 @@ timedPlot("PIPELINE OVERVIEW", () => Plot.plot({
         x: "bucket",
         y: "count",
         fill: "stage",
-        fx: selected.length > 1 ? "server" : undefined,
+        fy: selected.length > 1 ? "server" : undefined,
         tip: true,
         sort: {x: null}
       }
@@ -647,50 +744,24 @@ timedTable("HANDLER PERFORMANCE TABLE", () => Inputs.table(allHandlers, {
 ))
 }});
 
-define({id: "10bdaf98", inputs: ["tsChart","display"], body: async (tsChart,display) => {
-display(await(
-tsChart({y: "handlerErrorsPerSecond", yLabel: "err/s"})
-))
-}});
-
-define({id: "5b287516", inputs: ["tsChart","display"], body: async (tsChart,display) => {
-display(await(
-tsChart({y: "activeConnections", yLabel: "connections"})
-))
-}});
-
-define({id: "f6056fe7", inputs: ["profiledTsChart","display"], body: async (profiledTsChart,display) => {
-display(await(
-profiledTsChart({
-  label: "CONNECTION OUTCOMES",
-  tipTitle: "Connection outcomes",
-  yLabel: "connections",
-  facetByServer: true,
-  series: [
-    {label: "Accepted", value: d => d.acceptedConnections, color: "#00e676"},
-    {label: "Disconnected", value: d => d.disconnectedConnections, color: "#40c4ff"},
-    {label: "Rejected", value: d => d.rejectedConnections, color: "#ffab40"},
-    {label: "Timed Out", value: d => d.timedOutConnections, color: "#ff5252"}
-  ]
-})
-))
-}});
-
 define({id: "cab80419", inputs: ["tsChart","display"], body: async (tsChart,display) => {
 display(await(
 tsChart({y: "handlersExecutedPerSecond", yLabel: "hnd/s"})
 ))
 }});
 
-define({id: "1eb3519f", inputs: ["tsChart","display"], body: async (tsChart,display) => {
+define({id: "cc672c40", inputs: ["profiledTsChart","display"], body: async (profiledTsChart,display) => {
 display(await(
-tsChart({y: d => d.sendBytesPerSecond / 1024, yLabel: "KB/s"})
-))
-}});
-
-define({id: "f5a33075", inputs: ["tsChart","display"], body: async (tsChart,display) => {
-display(await(
-tsChart({y: d => d.receiveBytesPerSecond / 1024, yLabel: "KB/s", legend: false})
+profiledTsChart({
+  label: "NETWORK RATE",
+  tipTitle: "Network rate",
+  yLabel: "KB/s",
+  facetByServer: true,
+  series: [
+    {label: "TX", value: d => d.sendBytesPerSecond / 1024, color: "#ffab40"},
+    {label: "RX", value: d => d.receiveBytesPerSecond / 1024, color: "#40c4ff"}
+  ]
+})
 ))
 }});
 
@@ -712,11 +783,11 @@ performancePanel()
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
 <div class="observablehq observablehq--block"><!--:78aa584a:--></div>
-<div class="observablehq observablehq--block"><!--:2e0d811c:--></div>
-<div class="observablehq observablehq--block"><!--:d8d3d829:--></div>
+<div class="observablehq observablehq--block"><!--:a86c43e6:--></div>
+<div class="observablehq observablehq--block"><!--:84031341:--></div>
 <div class="observablehq observablehq--block"><!--:33998119:--></div>
 <div class="observablehq observablehq--block"><!--:407be1c0:--></div>
-<div class="observablehq observablehq--block"><!--:a802e385:--></div>
+<div class="observablehq observablehq--block"><!--:a3e7d947:--></div>
 <div class="dash-title">
   <span class="title-sub">SERVER METRICS</span>
 </div>
@@ -730,6 +801,7 @@ performancePanel()
   </div>
 </div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:5991788b:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:bd25f51c:--></div>
 <div class="section-bar"><span>PACKET LIFECYCLE</span></div>
 <div class="card chart-card">
 <div class="chart-title">PIPELINE OVERVIEW — TCP RECEIVE → QUEUE → PARSE → HANDLE</div>
@@ -749,25 +821,12 @@ performancePanel()
     <div class="pipeline-desc">business logic</div>
   </div>
 </div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:6bcfb61b:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:39dc1153:--></div>
 </div>
 <div class="section-bar"><span>HANDLER ANALYSIS</span></div>
 <div class="card chart-card">
 <div class="chart-title">HANDLER PERFORMANCE</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:f8a53cc1:--></div>
-</div>
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">ERRORS / SEC</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:10bdaf98:--></div>
-</div>
-<div class="section-bar"><span>CONNECTIONS</span></div>
-<div class="card chart-card">
-<div class="chart-title">ACTIVE</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:5b287516:--></div>
-</div>
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">CONNECTION OUTCOMES</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:f6056fe7:--></div>
 </div>
 <div class="section-bar"><span>THROUGHPUT</span></div>
 <div class="card chart-card">
@@ -776,19 +835,15 @@ performancePanel()
 </div>
 <div class="section-bar"><span>NETWORK</span></div>
 <div class="card chart-card">
-<div class="chart-title">TX RATE</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:1eb3519f:--></div>
-</div>
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">RX RATE</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:f5a33075:--></div>
+<div class="chart-title">NETWORK RATE</div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:cc672c40:--></div>
 </div>
 <div class="section-bar"><span>SYSTEM</span></div>
 <div class="card chart-card">
 <div class="chart-title">UPTIME</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:f81dd678:--></div>
 </div>
-<div class="section-bar"><span>PERFORMANCE</span></div>
+<div class="section-bar"><span>PAGE LOADING PERFORMANCE</span></div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:d597d20b:--></div>
 <style>
 /* ===== CRUSH THEME ===== */
@@ -813,6 +868,10 @@ performancePanel()
   --theme-foreground-faint: #1a2030 !important;
   --theme-foreground-faintest: #131820 !important;
   font-family: "JetBrains Mono", "Fira Code", "SF Mono", "Cascadia Code", ui-monospace, monospace !important;
+}
+
+#observablehq-footer {
+  display: none !important;
 }
 
 h1, h2, h3 {
@@ -1099,6 +1158,90 @@ form label:has(+ .toggle-group) {
   text-transform: uppercase;
   line-height: 1.35;
 }
+.chart-toggle-btn {
+  appearance: none;
+  border: 1px solid var(--crush-border);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--crush-text);
+  border-radius: 4px;
+  padding: 0.55rem 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 120ms ease, background 120ms ease, transform 120ms ease;
+}
+.chart-title-toggle {
+  border: none;
+  background: none;
+  color: var(--crush-muted);
+  padding: 0 0 0.65rem;
+  gap: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.chart-toggle-btn:hover {
+  border-color: #2b3950;
+  background: rgba(255, 255, 255, 0.04);
+}
+.chart-title-toggle:hover {
+  border-color: transparent;
+  background: none;
+  color: var(--crush-text);
+}
+.chart-toggle-btn.active {
+  border-color: rgba(0, 229, 255, 0.35);
+  background: rgba(0, 229, 255, 0.08);
+}
+.chart-title-toggle.active {
+  border-color: transparent;
+  background: none;
+}
+.chart-toggle-indicator {
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--crush-cyan);
+}
+.chart-toggle-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.35;
+}
+.chart-collapsed-note {
+  color: var(--crush-muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  padding: 0.35rem 0 0.1rem;
+}
+.chart-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--crush-muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  padding: 0.35rem 0 0.1rem;
+}
+.chart-loading-label {
+  text-transform: uppercase;
+}
+.chart-spinner {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 999px;
+  border: 2px solid rgba(0, 229, 255, 0.18);
+  border-top-color: var(--crush-cyan);
+  animation: chart-spin 0.8s linear infinite;
+}
+@keyframes chart-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* Plot overrides */
 [class*="plot-"] text,
@@ -1197,7 +1340,7 @@ table tr:hover td {
 </style>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2026-03-19T16:49:04">Mar 19, 2026</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2026-03-19T17:18:16">Mar 19, 2026</a>.</div>
 </footer>
 </div>
 </body>
