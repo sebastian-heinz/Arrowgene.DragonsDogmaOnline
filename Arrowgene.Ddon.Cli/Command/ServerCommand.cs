@@ -249,7 +249,7 @@ public class ServerCommand : ICommand
         {
             case MetricsSinkType.FileMetricsSink:
                 sink = new FileMetricsSink(
-                    TimeSpan.FromMinutes(settings.FileMetricsSinkRetention),
+                    TimeSpan.FromMinutes(settings.FileMetricsSinkRetentionMin),
                     settings.FileMetricsExportPath,
                     serverName,
                     settings.FileMetricsExportIntervalMs
