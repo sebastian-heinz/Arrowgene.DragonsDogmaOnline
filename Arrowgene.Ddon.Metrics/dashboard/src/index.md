@@ -10,13 +10,33 @@ const colorMap = {"game": "#00e5ff", "login": "#ff6e40"};
 ```
 
 ```js
-const serverTab = servers.length > 1
-  ? view(Inputs.checkbox(servers, {value: [servers[0]], label: ""}))
-  : servers[0];
-```
+function serverToggleInput() {
+  const active = new Set([servers[0]]);
+  const container = document.createElement("div");
+  container.className = "toggle-group";
+  container.value = [...active];
 
-```js
-const selected = Array.isArray(serverTab) ? serverTab : [serverTab];
+  function render() {
+    container.innerHTML = "";
+    servers.forEach(s => {
+      const btn = document.createElement("button");
+      const isActive = active.has(s);
+      btn.className = "toggle-btn" + (isActive ? " active" : "");
+      btn.style.setProperty("--btn-color", colorMap[s] ?? "#888");
+      btn.innerHTML = `<span class="toggle-dot" style="background:${isActive ? colorMap[s] : "transparent"};"></span>${s}`;
+      btn.onclick = () => {
+        if (active.has(s)) { if (active.size > 1) active.delete(s); }
+        else active.add(s);
+        container.value = [...active];
+        render();
+        container.dispatchEvent(new Event("input", {bubbles: true}));
+      };
+      container.appendChild(btn);
+    });
+  }
+  render();
+  return container;
+}
 ```
 
 ```js
@@ -110,6 +130,20 @@ const summaries = selected.map(serverSummary);
 
 <div class="dash-title">
   <span class="title-sub">SERVER METRICS</span>
+</div>
+
+<div class="server-panel selector-panel" style="border-color: var(--crush-border);">
+  <div class="panel-header" style="border-bottom-color: var(--crush-border);">
+    <span class="panel-indicator" style="background: var(--crush-muted); box-shadow: 0 0 8px rgba(107,125,148,0.4);"></span>
+    <span class="panel-name" style="color: var(--crush-text);">Servers</span>
+  </div>
+  <div class="selector-content">
+
+```js
+const selected = view(serverToggleInput());
+```
+
+  </div>
 </div>
 
 ```js
@@ -531,12 +565,64 @@ h2 {
   margin-left: 0.75rem;
 }
 
-/* Server selector */
-form label {
-  font-size: 0.7rem !important;
+/* Let Observable form wrapper be transparent */
+form:has(.toggle-group) {
+  display: contents !important;
+}
+form label:has(+ .toggle-group) {
+  display: none !important;
+}
+
+/* Selector panel */
+.selector-panel {
+  margin-bottom: 1rem;
+}
+.selector-content {
+  padding: 0.6rem 0.75rem;
+}
+
+/* Toggle buttons */
+.toggle-group {
+  display: flex;
+  gap: 0.5rem;
+}
+.toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--crush-border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--crush-muted);
+  font-family: "JetBrains Mono", "Fira Code", "SF Mono", ui-monospace, monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--crush-muted) !important;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.toggle-btn:hover {
+  border-color: var(--btn-color);
+  color: var(--crush-text);
+}
+.toggle-btn.active {
+  border-color: var(--btn-color);
+  background: color-mix(in srgb, var(--btn-color) 12%, transparent);
+  color: var(--btn-color);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--btn-color) 30%, transparent);
+}
+.toggle-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--btn-color);
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+.toggle-btn.active .toggle-dot {
+  box-shadow: 0 0 6px var(--btn-color);
 }
 
 /* Overview panels - horizontal */
