@@ -68,6 +68,9 @@ public sealed class FileMetricsSink : IMetricsSink<DdonServerMetricsSnapshot>
             WriteTimeseries(samples);
             WriteHandlers(samples);
             WriteDurationHistogram(samples);
+            WriteParseHistogram(samples);
+            WriteQueueDelayHistogram(samples);
+            WriteReceivedDataHandlerDurationHistogram(samples);
         }
         catch (Exception ex)
         {
@@ -151,6 +154,66 @@ public sealed class FileMetricsSink : IMetricsSink<DdonServerMetricsSnapshot>
         }
 
         WriteJson(rows, Path.Combine(_serverDirectory, "duration_histogram.json"));
+    }
+
+    private void WriteParseHistogram(List<DdonServerMetricsSnapshot> samples)
+    {
+        DdonServerMetricsSnapshot latest = samples[^1];
+        ReadOnlySpan<long> buckets = latest.DdonConsumerMetrics.ParseDurationBuckets.Span;
+        string[] labels = DdonConsumerMetricsSnapshot.DurationBucketLabels;
+
+        var rows = new List<Dictionary<string, object>>(labels.Length);
+        for (int i = 0; i < labels.Length && i < buckets.Length; i++)
+        {
+            rows.Add(new Dictionary<string, object>
+            {
+                ["bucket"] = labels[i],
+                ["count"] = buckets[i]
+            });
+        }
+
+        WriteJson(rows, Path.Combine(_serverDirectory, "parse_histogram.json"));
+    }
+
+    private void WriteQueueDelayHistogram(List<DdonServerMetricsSnapshot> samples)
+    {
+        DdonServerMetricsSnapshot latest = samples[^1];
+        var consumerMetrics = latest.TcpServerMetrics.ConsumerMetrics;
+        if (consumerMetrics == null)
+        {
+            return;
+        }
+
+        ReadOnlySpan<long> buckets = consumerMetrics.Value.ReceivedDataQueueDelayBuckets.Span;
+        WriteConsumerHistogram(buckets, Path.Combine(_serverDirectory, "queue_delay_histogram.json"));
+    }
+
+    private void WriteReceivedDataHandlerDurationHistogram(List<DdonServerMetricsSnapshot> samples)
+    {
+        DdonServerMetricsSnapshot latest = samples[^1];
+        var consumerMetrics = latest.TcpServerMetrics.ConsumerMetrics;
+        if (consumerMetrics == null)
+        {
+            return;
+        }
+
+        ReadOnlySpan<long> buckets = consumerMetrics.Value.ReceivedDataHandlerDurationBuckets.Span;
+        WriteConsumerHistogram(buckets, Path.Combine(_serverDirectory, "received_handler_duration_histogram.json"));
+    }
+
+    private void WriteConsumerHistogram(ReadOnlySpan<long> buckets, string path)
+    {
+        var rows = new List<Dictionary<string, object>>(DdonConsumerMetricsSnapshot.DurationBucketLabels.Length);
+        for (int i = 0; i < DdonConsumerMetricsSnapshot.DurationBucketLabels.Length && i < buckets.Length; i++)
+        {
+            rows.Add(new Dictionary<string, object>
+            {
+                ["bucket"] = DdonConsumerMetricsSnapshot.DurationBucketLabels[i],
+                ["count"] = buckets[i]
+            });
+        }
+
+        WriteJson(rows, path);
     }
 
     private static void WriteJson(object data, string path)

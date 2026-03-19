@@ -21,12 +21,15 @@ const selected = Array.isArray(serverTab) ? serverTab : [serverTab];
 
 ```js
 const entries = await Promise.all(selected.map(async (s) => {
-  const [timeseries, handlers, duration_histogram] = await Promise.all([
+  const [timeseries, handlers, duration_histogram, parse_histogram, queue_delay_histogram, received_handler_duration_histogram] = await Promise.all([
     fetch(`${metricsRoot}${s}/timeseries.json`).then(r => r.json()).catch(() => []),
     fetch(`${metricsRoot}${s}/handlers.json`).then(r => r.json()).catch(() => []),
     fetch(`${metricsRoot}${s}/duration_histogram.json`).then(r => r.json()).catch(() => []),
+    fetch(`${metricsRoot}${s}/parse_histogram.json`).then(r => r.json()).catch(() => []),
+    fetch(`${metricsRoot}${s}/queue_delay_histogram.json`).then(r => r.json()).catch(() => []),
+    fetch(`${metricsRoot}${s}/received_handler_duration_histogram.json`).then(r => r.json()).catch(() => []),
   ]);
-  return [s, {timeseries, handlers, duration_histogram}];
+  return [s, {timeseries, handlers, duration_histogram, parse_histogram, queue_delay_histogram, received_handler_duration_histogram}];
 }));
 const metrics = Object.fromEntries(entries);
 ```
@@ -37,6 +40,20 @@ const allHandlers = selected.flatMap(s => metrics[s].handlers.map(d => ({...d, s
 const allHistogram = selected.flatMap(s => metrics[s].duration_histogram.map(d => ({...d, server: s})));
 const colorDomain = selected;
 const colorRange = selected.map(s => colorMap[s] ?? "#888");
+
+// Bucket label ordering (all histograms use the same scheme)
+const bucketOrder = ["<100us", "100us-1ms", "1-10ms", "10-50ms", "50-250ms", "250ms-1s", "1-5s", "5-30s", "30s-2m", ">=2m"];
+
+// Packet lifecycle: tag each histogram with its stage and server
+const stageColorMap = {"Queue Wait": "#ffab40", "Parse + Dispatch": "#ab47bc", "Handler Execution": "#26c6da"};
+const allLifecycle = selected.flatMap(s => [
+  ...metrics[s].queue_delay_histogram.map(d => ({...d, stage: "Queue Wait", server: s})),
+  ...metrics[s].parse_histogram.map(d => ({...d, stage: "Parse + Dispatch", server: s})),
+  ...metrics[s].duration_histogram.map(d => ({...d, stage: "Handler Execution", server: s})),
+]);
+const allQueueDelay = selected.flatMap(s => metrics[s].queue_delay_histogram.map(d => ({...d, server: s})));
+const allParse = selected.flatMap(s => metrics[s].parse_histogram.map(d => ({...d, server: s})));
+const allReceivedHandlerDuration = selected.flatMap(s => metrics[s].received_handler_duration_histogram.map(d => ({...d, server: s})));
 ```
 
 ```js
@@ -92,7 +109,7 @@ const summaries = selected.map(serverSummary);
 ```
 
 <div class="dash-title">
-  <span class="title-text">DDON</span><span class="title-sub">SERVER METRICS</span>
+  <span class="title-sub">SERVER METRICS</span>
 </div>
 
 ```js
@@ -274,6 +291,139 @@ tsChart({y: d => d.bytesReceived / 1048576, yLabel: "MB", legend: false})
 ```
 
 </div>
+</div>
+
+<div class="section-bar"><span>PACKET LIFECYCLE</span></div>
+
+<div class="card chart-card">
+<div class="chart-title">PIPELINE OVERVIEW &mdash; TCP RECEIVE &rarr; QUEUE &rarr; PARSE &rarr; HANDLE</div>
+<div class="pipeline-diagram">
+  <div class="pipeline-stage" style="border-color: #ffab4050;">
+    <div class="pipeline-label" style="color: #ffab40;">QUEUE WAIT</div>
+    <div class="pipeline-desc">enqueue &rarr; dequeue</div>
+  </div>
+  <div class="pipeline-arrow">&rarr;</div>
+  <div class="pipeline-stage" style="border-color: #ab47bc50;">
+    <div class="pipeline-label" style="color: #ab47bc;">PARSE + DISPATCH</div>
+    <div class="pipeline-desc">decrypt, parse, lookup</div>
+  </div>
+  <div class="pipeline-arrow">&rarr;</div>
+  <div class="pipeline-stage" style="border-color: #26c6da50;">
+    <div class="pipeline-label" style="color: #26c6da;">HANDLER EXECUTION</div>
+    <div class="pipeline-desc">business logic</div>
+  </div>
+</div>
+
+```js
+Plot.plot({
+  width,
+  height: 320,
+  style: {fontSize: "11px", color: "#8a9db5"},
+  color: {
+    domain: ["Queue Wait", "Parse + Dispatch", "Handler Execution"],
+    range: ["#ffab40", "#ab47bc", "#26c6da"],
+    legend: true
+  },
+  x: {label: null, tickRotate: -45, padding: 0.15, domain: bucketOrder},
+  y: {label: "count", grid: true},
+  fx: selected.length > 1 ? {label: null} : undefined,
+  marks: [
+    Plot.barY(
+      allLifecycle,
+      {
+        x: "bucket",
+        y: "count",
+        fill: "stage",
+        fx: selected.length > 1 ? "server" : undefined,
+        tip: true,
+        sort: {x: null}
+      }
+    ),
+    Plot.ruleY([0], {stroke: "#1e2a3a"}),
+  ]
+})
+```
+
+</div>
+
+<div class="grid grid-cols-3">
+<div class="card chart-card">
+<div class="chart-title" style="color: #ffab40;">QUEUE WAIT</div>
+
+```js
+Plot.plot({
+  width,
+  height: 220,
+  style: {fontSize: "11px", color: "#8a9db5"},
+  color: {domain: colorDomain, range: colorRange, legend: selected.length > 1},
+  x: {label: null, tickRotate: -45, padding: 0.2, domain: bucketOrder},
+  y: {label: "count", grid: true},
+  marks: [
+    Plot.barY(allQueueDelay, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.ruleY([0], {stroke: "#1e2a3a"}),
+  ]
+})
+```
+
+</div>
+<div class="card chart-card">
+<div class="chart-title" style="color: #ab47bc;">PARSE + DISPATCH</div>
+
+```js
+Plot.plot({
+  width,
+  height: 220,
+  style: {fontSize: "11px", color: "#8a9db5"},
+  color: {domain: colorDomain, range: colorRange, legend: false},
+  x: {label: null, tickRotate: -45, padding: 0.2, domain: bucketOrder},
+  y: {label: "count", grid: true},
+  marks: [
+    Plot.barY(allParse, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.ruleY([0], {stroke: "#1e2a3a"}),
+  ]
+})
+```
+
+</div>
+<div class="card chart-card">
+<div class="chart-title" style="color: #26c6da;">HANDLER EXECUTION</div>
+
+```js
+Plot.plot({
+  width,
+  height: 220,
+  style: {fontSize: "11px", color: "#8a9db5"},
+  color: {domain: colorDomain, range: colorRange, legend: false},
+  x: {label: null, tickRotate: -45, padding: 0.2, domain: bucketOrder},
+  y: {label: "count", grid: true},
+  marks: [
+    Plot.barY(allHistogram, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.ruleY([0], {stroke: "#1e2a3a"}),
+  ]
+})
+```
+
+</div>
+</div>
+
+<div class="card chart-card">
+<div class="chart-title">RECEIVED DATA HANDLER DURATION (NETWORKING LAYER)</div>
+
+```js
+Plot.plot({
+  width,
+  height: 220,
+  style: {fontSize: "11px", color: "#8a9db5"},
+  color: {domain: colorDomain, range: colorRange, legend: true},
+  x: {label: null, tickRotate: -45, padding: 0.2, domain: bucketOrder},
+  y: {label: "count", grid: true},
+  marks: [
+    Plot.barY(allReceivedHandlerDuration, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.ruleY([0], {stroke: "#1e2a3a"}),
+  ]
+})
+```
+
 </div>
 
 <div class="section-bar"><span>HANDLER ANALYSIS</span></div>
@@ -540,6 +690,40 @@ table tr:hover td {
 ::-webkit-scrollbar-thumb {
   background: var(--crush-border);
   border-radius: 2px;
+}
+
+/* Pipeline diagram */
+.pipeline-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.75rem 0 1rem;
+}
+.pipeline-stage {
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.2);
+  min-width: 140px;
+}
+.pipeline-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.pipeline-desc {
+  font-size: 0.5rem;
+  color: var(--crush-muted);
+  margin-top: 0.15rem;
+  letter-spacing: 0.03em;
+}
+.pipeline-arrow {
+  color: var(--crush-muted);
+  font-size: 1rem;
+  opacity: 0.4;
 }
 
 /* Grid gap tightening */

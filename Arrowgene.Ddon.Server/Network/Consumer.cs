@@ -65,6 +65,8 @@ namespace Arrowgene.Ddon.Server.Network
 
         protected override void HandleReceived(ClientHandle clientHandle, byte[] data)
         {
+            long receivedTimestamp = Stopwatch.GetTimestamp();
+
             if (!clientHandle.IsAlive)
             {
                 return;
@@ -83,28 +85,29 @@ namespace Arrowgene.Ddon.Server.Network
             List<IPacket> packets = client.Receive(data);
             foreach (IPacket packet in packets)
             {
-                HandlePacket(client, packet);
+                HandlePacket(client, packet, receivedTimestamp);
             }
         }
 
-        private void HandlePacket(TClient client, IPacket packet)
+        private void HandlePacket(TClient client, IPacket packet, long receivedTimestamp)
         {
             if (!_packetHandlerLookup.TryGetValue(packet.Id, out IPacketHandler<TClient> packetHandler))
             {
                 Logger.LogUnhandledPacket(client, packet);
                 if (_fallbackPacketHandler != null)
                 {
-                    ExecutePacketHandler(client, packet, _fallbackPacketHandler);
+                    ExecutePacketHandler(client, packet, _fallbackPacketHandler, receivedTimestamp);
                 }
 
                 return;
             }
 
-            ExecutePacketHandler(client, packet, packetHandler);
+            ExecutePacketHandler(client, packet, packetHandler, receivedTimestamp);
         }
 
-        private void ExecutePacketHandler(TClient client, IPacket packet, IPacketHandler<TClient> packetHandler)
+        private void ExecutePacketHandler(TClient client, IPacket packet, IPacketHandler<TClient> packetHandler, long receivedTimestamp)
         {
+            _ddonConsumerMetricsState.RecordParseDuration(receivedTimestamp);
             long startTimestamp = Stopwatch.GetTimestamp();
             try
             {
@@ -193,6 +196,9 @@ namespace Arrowgene.Ddon.Server.Network
             long[] durationBuckets = new long[_ddonConsumerMetricsState.HandlerDurationBucketsCount];
             _ddonConsumerMetricsState.CopyHandlerDurationBuckets(durationBuckets);
 
+            long[] parseBuckets = new long[_ddonConsumerMetricsState.HandlerDurationBucketsCount];
+            _ddonConsumerMetricsState.CopyParseDurationBuckets(parseBuckets);
+
             var handlerEntries = _ddonConsumerMetricsState.GetHandlerEntries();
             var handlerMetrics = new Dictionary<string, DdonConsumerMetricsSnapshot.HandlerMetrics>(handlerEntries.Count);
             foreach (var kvp in handlerEntries)
@@ -208,7 +214,7 @@ namespace Arrowgene.Ddon.Server.Network
             }
 
             return new DdonConsumerMetricsSnapshot(
-                currentExecuted, currentErrors, durationBuckets, handlerMetrics);
+                currentExecuted, currentErrors, durationBuckets, parseBuckets, handlerMetrics);
         }
 
         void IMetricsCapture.EnableCapture()

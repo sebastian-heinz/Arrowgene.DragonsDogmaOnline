@@ -5,28 +5,31 @@ namespace Arrowgene.Ddon.Metrics
 {
     public readonly struct DdonConsumerMetricsSnapshot
     {
-        // Bucket labels for display/export
+        // Bucket labels for display/export (matches networking library scheme)
         public static readonly string[] DurationBucketLabels =
         {
-            "<100us", "<500us", "<1ms", "<5ms", "<10ms",
-            "<50ms", "<100ms", "<500ms", "<1s", ">=1s"
+            "<100us", "100us-1ms", "1-10ms", "10-50ms", "50-250ms",
+            "250ms-1s", "1-5s", "5-30s", "30s-2m", ">=2m"
         };
 
         public DdonConsumerMetricsSnapshot(
             long handlersExecuted,
             long handlerErrors,
             long[] handlerDurationBuckets,
+            long[] parseDurationBuckets,
             IReadOnlyDictionary<string, HandlerMetrics> handlerMetrics)
         {
             HandlersExecuted = handlersExecuted;
             HandlerErrors = handlerErrors;
             HandlerDurationBuckets = handlerDurationBuckets;
+            ParseDurationBuckets = parseDurationBuckets;
             Handlers = handlerMetrics ?? new Dictionary<string, HandlerMetrics>();
         }
 
         public long HandlersExecuted { get; }
         public long HandlerErrors { get; }
         public ReadOnlyMemory<long> HandlerDurationBuckets { get; }
+        public ReadOnlyMemory<long> ParseDurationBuckets { get; }
         public IReadOnlyDictionary<string, HandlerMetrics> Handlers { get; }
 
         public readonly struct HandlerMetrics

@@ -10,6 +10,7 @@ namespace Arrowgene.Ddon.Metrics
         private const int HandlerDurationBucketCount = 10;
 
         private readonly long[] _handlerDurationBuckets = new long[HandlerDurationBucketCount];
+        private readonly long[] _parseDurationBuckets = new long[HandlerDurationBucketCount];
         private long _handlersExecuted;
         private long _handlerErrors;
         private int _captureEnabled;
@@ -45,20 +46,30 @@ namespace Arrowgene.Ddon.Metrics
 
         internal void CopyHandlerDurationBuckets(long[] destination)
         {
+            CopyBuckets(_handlerDurationBuckets, destination);
+        }
+
+        internal void CopyParseDurationBuckets(long[] destination)
+        {
+            CopyBuckets(_parseDurationBuckets, destination);
+        }
+
+        private static void CopyBuckets(long[] source, long[] destination)
+        {
             if (destination is null)
             {
                 throw new ArgumentNullException(nameof(destination));
             }
 
-            if (destination.Length < _handlerDurationBuckets.Length)
+            if (destination.Length < source.Length)
             {
                 throw new ArgumentOutOfRangeException(nameof(destination),
-                    "Destination must be at least as large as the handler-duration counter array.");
+                    "Destination must be at least as large as the source counter array.");
             }
 
-            for (int index = 0; index < _handlerDurationBuckets.Length; index++)
+            for (int index = 0; index < source.Length; index++)
             {
-                destination[index] = Volatile.Read(ref _handlerDurationBuckets[index]);
+                destination[index] = Volatile.Read(ref source[index]);
             }
         }
 
@@ -88,6 +99,18 @@ namespace Arrowgene.Ddon.Metrics
             entry.RecordExecution(elapsed.Ticks);
         }
 
+        internal void RecordParseDuration(long receivedTimestamp)
+        {
+            if (!IsCaptureEnabled())
+            {
+                return;
+            }
+
+            TimeSpan elapsed = Stopwatch.GetElapsedTime(receivedTimestamp);
+            long elapsedUs = (long)(elapsed.TotalMicroseconds);
+            Interlocked.Increment(ref _parseDurationBuckets[GetHandlerDurationBucketIndex(elapsedUs)]);
+        }
+
         internal void IncrementHandlerErrors(string handlerId, string handlerName)
         {
             if (!IsCaptureEnabled())
@@ -104,52 +127,52 @@ namespace Arrowgene.Ddon.Metrics
 
         private static int GetHandlerDurationBucketIndex(long microseconds)
         {
-            if (microseconds <= 100)
+            if (microseconds < 100)
             {
-                return 0;
+                return 0; // <100us
             }
 
-            if (microseconds <= 500)
+            if (microseconds < 1_000)
             {
-                return 1;
+                return 1; // 100us-1ms
             }
 
-            if (microseconds <= 1_000)
+            if (microseconds < 10_000)
             {
-                return 2;
+                return 2; // 1-10ms
             }
 
-            if (microseconds <= 5_000)
+            if (microseconds < 50_000)
             {
-                return 3;
+                return 3; // 10-50ms
             }
 
-            if (microseconds <= 10_000)
+            if (microseconds < 250_000)
             {
-                return 4;
+                return 4; // 50-250ms
             }
 
-            if (microseconds <= 50_000)
+            if (microseconds < 1_000_000)
             {
-                return 5;
+                return 5; // 250ms-1s
             }
 
-            if (microseconds <= 100_000)
+            if (microseconds < 5_000_000)
             {
-                return 6;
+                return 6; // 1-5s
             }
 
-            if (microseconds <= 500_000)
+            if (microseconds < 30_000_000)
             {
-                return 7;
+                return 7; // 5-30s
             }
 
-            if (microseconds <= 1_000_000)
+            if (microseconds < 120_000_000)
             {
-                return 8;
+                return 8; // 30s-2m
             }
 
-            return 9;
+            return 9; // >=2m
         }
 
         internal sealed class HandlerEntry
