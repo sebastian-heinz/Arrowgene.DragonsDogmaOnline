@@ -50,13 +50,137 @@ function serverToggleInput() {
 ```
 
 ```js
+function createPerformanceState() {
+  const listeners = new Set();
+  const state = {
+    fetches: new Map(),
+    renders: new Map(),
+    subscribe(listener) {
+      listeners.add(listener);
+      listener(state.snapshot());
+      return () => listeners.delete(listener);
+    },
+    snapshot() {
+      const fetches = [...state.fetches.values()].sort((a, b) => b.ms - a.ms);
+      const renders = [...state.renders.values()].sort((a, b) => b.ms - a.ms);
+      return {
+        fetches,
+        renders,
+        totalFetchMs: fetches.reduce((sum, entry) => sum + entry.ms, 0),
+        totalRenderMs: renders.reduce((sum, entry) => sum + entry.ms, 0),
+      };
+    },
+    recordFetch(path, ms, source, rows) {
+      state.fetches.set(path, {path, ms, source, rows});
+      notify();
+    },
+    recordRender(label, ms) {
+      state.renders.set(label, {label, ms});
+      notify();
+    }
+  };
+
+  function notify() {
+    const snapshot = state.snapshot();
+    listeners.forEach((listener) => listener(snapshot));
+  }
+
+  return state;
+}
+
+const perfState = createPerformanceState();
+
+function timedPlot(label, createPlot) {
+  const start = performance.now();
+  const plot = createPlot();
+  perfState.recordRender(label, performance.now() - start);
+  return plot;
+}
+
+function timedTable(label, createTable) {
+  const start = performance.now();
+  const table = createTable();
+  perfState.recordRender(label, performance.now() - start);
+  return table;
+}
+
+function performancePanel() {
+  const container = document.createElement("div");
+  container.className = "server-panel perf-panel";
+
+  perfState.subscribe(({fetches, renders, totalFetchMs, totalRenderMs}) => {
+    const topFetches = fetches.slice(0, 6);
+    const topRenders = renders.slice(0, 6);
+
+    container.innerHTML = `
+      <div class="panel-header perf-header" style="border-bottom-color: var(--crush-border);">
+        <span class="panel-indicator" style="background: var(--crush-cyan); box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);"></span>
+        <span class="panel-name" style="color: var(--crush-text);">Performance</span>
+      </div>
+      <div class="perf-grid">
+        <div class="perf-stat">
+          <div class="perf-stat-value">${totalFetchMs.toFixed(1)} ms</div>
+          <div class="perf-stat-label">TOTAL FETCH</div>
+        </div>
+        <div class="perf-stat">
+          <div class="perf-stat-value">${totalRenderMs.toFixed(1)} ms</div>
+          <div class="perf-stat-label">TOTAL RENDER</div>
+        </div>
+        <div class="perf-stat">
+          <div class="perf-stat-value">${fetches.length}</div>
+          <div class="perf-stat-label">FETCH OPS</div>
+        </div>
+        <div class="perf-stat">
+          <div class="perf-stat-value">${renders.length}</div>
+          <div class="perf-stat-label">RENDER OPS</div>
+        </div>
+      </div>
+      <div class="perf-details">
+        <div class="perf-list">
+          <div class="perf-list-title">Slowest Fetches</div>
+          ${topFetches.length ? topFetches.map((entry) => `
+            <div class="perf-row">
+              <span class="perf-row-name">${entry.path.split("/").slice(-2).join("/")}</span>
+              <span class="perf-row-meta">${entry.source}</span>
+              <span class="perf-row-value">${entry.ms.toFixed(1)} ms</span>
+            </div>
+          `).join("") : `<div class="perf-empty">No fetch data yet</div>`}
+        </div>
+        <div class="perf-list">
+          <div class="perf-list-title">Slowest Renders</div>
+          ${topRenders.length ? topRenders.map((entry) => `
+            <div class="perf-row">
+              <span class="perf-row-name">${entry.label}</span>
+              <span class="perf-row-value">${entry.ms.toFixed(1)} ms</span>
+            </div>
+          `).join("") : `<div class="perf-empty">No render data yet</div>`}
+        </div>
+      </div>
+    `;
+  });
+
+  return container;
+}
+```
+
+```js
 async function readMetric(path) {
+  const start = performance.now();
   const response = await fetch(path);
-  if (response.ok) return response.json();
+  if (response.ok) {
+    const data = await response.json();
+    perfState.recordFetch(path, performance.now() - start, "direct", Array.isArray(data) ? data.length : null);
+    return data;
+  }
 
   const previewResponse = await fetch(`/_file/${path}`);
-  if (previewResponse.ok) return previewResponse.json();
+  if (previewResponse.ok) {
+    const data = await previewResponse.json();
+    perfState.recordFetch(path, performance.now() - start, "preview", Array.isArray(data) ? data.length : null);
+    return data;
+  }
 
+  perfState.recordFetch(path, performance.now() - start, "missing", 0);
   return [];
 }
 
@@ -157,11 +281,35 @@ function fmtBytes(b) {
   return b + " B";
 }
 
+function mixHex(base, mix, weight = 0.5) {
+  const parseHex = (hex) => {
+    const normalized = hex.replace("#", "");
+    const value = normalized.length === 3
+      ? normalized.split("").map((c) => c + c).join("")
+      : normalized;
+    return {
+      r: parseInt(value.slice(0, 2), 16),
+      g: parseInt(value.slice(2, 4), 16),
+      b: parseInt(value.slice(4, 6), 16)
+    };
+  };
+  const toHex = ({r, g, b}) =>
+    `#${[r, g, b].map((value) => Math.round(value).toString(16).padStart(2, "0")).join("")}`;
+  const from = parseHex(base);
+  const to = parseHex(mix);
+  return toHex({
+    r: from.r + (to.r - from.r) * weight,
+    g: from.g + (to.g - from.g) * weight,
+    b: from.b + (to.b - from.b) * weight
+  });
+}
+
 function tsChart(opts) {
   const yValue = typeof opts.y === "function" ? opts.y : d => d[opts.y];
   const tipTitle = opts.tipTitle ?? opts.yLabel ?? "metric";
   const valueFormat = opts.valueFormat ?? formatTooltipValue;
-  return Plot.plot({
+  const label = opts.label ?? opts.tipTitle ?? opts.yLabel ?? "time-series";
+  return timedPlot(label, () => Plot.plot({
     width: opts.width ?? width,
     height: opts.height ?? 240,
     style: timeSeriesPlotStyle,
@@ -190,7 +338,132 @@ Value: ${valueFormat(yValue(d))}`
         })
       ),
     ]
+  }));
+}
+
+function overlayTsChart(opts) {
+  const seriesData = allTimeseries.flatMap((d, sampleIndex) => opts.series.map((series, seriesIndex) => ({
+    ...d,
+    metric: series.label,
+    seriesKey: `${d.server} ${series.label}`,
+    value: series.value(d),
+    sampleIndex,
+    seriesIndex
+  })));
+  const dashDomain = opts.series.map(series => series.label);
+  const dashRange = opts.series.map(series => series.dash ?? []);
+  const seriesColorDomain = selected.flatMap(server => opts.series.map(series => `${server} ${series.label}`));
+  const seriesColorRange = selected.flatMap(server => {
+    const baseColor = colorMap[server] ?? "#888";
+    return opts.series.map((series, seriesIndex) =>
+      seriesIndex === 0 ? baseColor : mixHex(baseColor, "#ffffff", 0.4)
+    );
   });
+  const markerData = seriesData.filter(d => d.seriesIndex > 0 && d.sampleIndex % 24 === 0);
+  return timedPlot(opts.label, () => Plot.plot({
+    width: opts.width ?? width,
+    height: opts.height ?? 260,
+    style: timeSeriesPlotStyle,
+    color: {
+      domain: seriesColorDomain,
+      range: seriesColorRange,
+      legend: true,
+      columns: serverLegendColumns
+    },
+    strokeDash: {
+      domain: dashDomain,
+      range: dashRange,
+      legend: true
+    },
+    x: {type: "utc", label: null},
+    y: {label: opts.yLabel, grid: true, nice: true},
+    marks: [
+      Plot.ruleY([0], {stroke: "#1e2a3a"}),
+      Plot.lineY(seriesData, {
+        x: d => new Date(d.timestamp),
+        y: "value",
+        stroke: "seriesKey",
+        strokeDash: "metric",
+        strokeWidth: 1.8
+      }),
+      Plot.dot(markerData, {
+        x: d => new Date(d.timestamp),
+        y: "value",
+        fill: "seriesKey",
+        r: 2.2
+      }),
+      Plot.tip(
+        seriesData,
+        Plot.pointerX({
+          x: d => new Date(d.timestamp),
+          y: "value",
+          stroke: "seriesKey",
+          title: d => `${opts.tipTitle}
+Server: ${d.server}
+Series: ${d.metric}
+Time: ${formatTooltipTimestamp(d.timestamp)}
+Value: ${formatTooltipValue(d.value)}`
+        })
+      )
+    ]
+  }));
+}
+
+function profiledTsChart(opts) {
+  const seriesData = allTimeseries.flatMap(d => opts.series.map(series => ({
+    ...d,
+    metric: series.label,
+    value: series.value(d)
+  })));
+  const facetByServer = opts.facetByServer && selected.length > 1;
+  const serverDashRange = selected.map((_, index) => {
+    const patterns = [[], [7, 4], [2, 4], [10, 4, 2, 4], [1, 3]];
+    return patterns[index % patterns.length];
+  });
+  return timedPlot(opts.label, () => Plot.plot({
+    width: opts.width ?? width,
+    height: opts.height ?? (facetByServer ? Math.max(280, selected.length * 200) : 280),
+    style: timeSeriesPlotStyle,
+    color: {
+      domain: opts.series.map(series => series.label),
+      range: opts.series.map(series => series.color),
+      legend: true,
+      columns: "180px"
+    },
+    strokeDash: facetByServer ? undefined : {
+      domain: selected,
+      range: serverDashRange,
+      legend: selected.length > 1
+    },
+    x: {type: "utc", label: null},
+    y: {label: opts.yLabel, grid: true, nice: true},
+    fy: facetByServer ? {label: null} : undefined,
+    marks: [
+      Plot.ruleY([0], {stroke: "#1e2a3a"}),
+      Plot.lineY(seriesData, {
+        x: d => new Date(d.timestamp),
+        y: "value",
+        stroke: "metric",
+        strokeDash: facetByServer ? undefined : "server",
+        fy: facetByServer ? "server" : undefined,
+        strokeWidth: 1.8
+      }),
+      Plot.tip(
+        seriesData,
+        Plot.pointerX({
+          x: d => new Date(d.timestamp),
+          y: "value",
+          stroke: "metric",
+          fy: facetByServer ? "server" : undefined,
+          title: d => `${opts.tipTitle}
+Server: ${d.server}
+Series: ${d.metric}
+Time: ${formatTooltipTimestamp(d.timestamp)}
+Value: ${formatTooltipValue(d.value)}`
+        })
+      )
+    ]
+  }));
 }
 
 const summaries = selected.map(serverSummary);
@@ -259,130 +532,6 @@ ${summaries.map(s => html`
 `)}</div>`
 ```
 
-<div class="section-bar"><span>THROUGHPUT</span></div>
-
-<div class="card chart-card">
-<div class="chart-title">HANDLERS / SEC</div>
-
-```js
-tsChart({y: "handlersExecutedPerSecond", yLabel: "hnd/s"})
-```
-
-</div>
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">ERRORS / SEC</div>
-
-```js
-tsChart({y: "handlerErrorsPerSecond", yLabel: "err/s"})
-```
-
-</div>
-
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">TOTAL HANDLERS</div>
-
-```js
-tsChart({y: "totalHandlersExecuted", yLabel: "cumulative", legend: false})
-```
-
-</div>
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">TOTAL ERRORS</div>
-
-```js
-tsChart({y: "totalHandlerErrors", yLabel: "cumulative", legend: false})
-```
-
-</div>
-
-<div class="section-bar"><span>CONNECTIONS</span></div>
-
-<div class="card chart-card">
-<div class="chart-title">ACTIVE</div>
-
-```js
-tsChart({y: "activeConnections", yLabel: "connections"})
-```
-
-</div>
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">PEAK</div>
-
-```js
-tsChart({y: "peakActiveConnections", yLabel: "peak", legend: false})
-```
-
-</div>
-
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">ACCEPTED</div>
-
-```js
-tsChart({y: "acceptedConnections", yLabel: null, height: 220, legend: false})
-```
-
-</div>
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">DISCONNECTED</div>
-
-```js
-tsChart({y: "disconnectedConnections", yLabel: null, height: 220, legend: false})
-```
-
-</div>
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">REJECTED</div>
-
-```js
-tsChart({y: "rejectedConnections", yLabel: null, height: 220, legend: false})
-```
-
-</div>
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">TIMED OUT</div>
-
-```js
-tsChart({y: "timedOutConnections", yLabel: null, height: 220, legend: false})
-```
-
-</div>
-
-<div class="section-bar"><span>NETWORK</span></div>
-
-<div class="card chart-card">
-<div class="chart-title">TX RATE</div>
-
-```js
-tsChart({y: d => d.sendBytesPerSecond / 1024, yLabel: "KB/s"})
-```
-
-</div>
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">RX RATE</div>
-
-```js
-tsChart({y: d => d.receiveBytesPerSecond / 1024, yLabel: "KB/s", legend: false})
-```
-
-</div>
-
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">TOTAL SENT</div>
-
-```js
-tsChart({y: d => d.bytesSent / 1048576, yLabel: "MB", legend: false})
-```
-
-</div>
-<div class="card chart-card chart-card-spaced">
-<div class="chart-title">TOTAL RECEIVED</div>
-
-```js
-tsChart({y: d => d.bytesReceived / 1048576, yLabel: "MB", legend: false})
-```
-
-</div>
-
 <div class="section-bar"><span>PACKET LIFECYCLE</span></div>
 
 <div class="card chart-card">
@@ -405,7 +554,7 @@ tsChart({y: d => d.bytesReceived / 1048576, yLabel: "MB", legend: false})
 </div>
 
 ```js
-Plot.plot({
+timedPlot("PIPELINE OVERVIEW", () => Plot.plot({
   width,
   height: lifecycleChartHeight,
   marginBottom: histogramMarginBottom,
@@ -433,119 +582,7 @@ Plot.plot({
     ),
     Plot.ruleY([0], {stroke: "#1e2a3a"}),
   ]
-})
-```
-
-</div>
-
-<div class="grid grid-cols-1">
-<div class="card chart-card">
-<div class="chart-title" style="color: #ffab40;">QUEUE WAIT</div>
-
-```js
-Plot.plot({
-  width,
-  height: stageHistogramChartHeight,
-  marginBottom: histogramMarginBottom,
-  style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: selected.length > 1, columns: serverLegendColumns},
-  x: histogramXAxis,
-  y: {label: "count", grid: true},
-  marks: [
-    Plot.barY(allQueueDelay, {
-      x: "bucket",
-      y: "count",
-      fill: "server",
-      tip: true,
-      title: d => formatHistogramTooltip("Queue Wait", d),
-      sort: {x: null}
-    }),
-    Plot.ruleY([0], {stroke: "#1e2a3a"}),
-  ]
-})
-```
-
-</div>
-<div class="card chart-card">
-<div class="chart-title" style="color: #ab47bc;">PARSE + DISPATCH</div>
-
-```js
-Plot.plot({
-  width,
-  height: stageHistogramChartHeight,
-  marginBottom: histogramMarginBottom,
-  style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: false, columns: serverLegendColumns},
-  x: histogramXAxis,
-  y: {label: "count", grid: true},
-  marks: [
-    Plot.barY(allParse, {
-      x: "bucket",
-      y: "count",
-      fill: "server",
-      tip: true,
-      title: d => formatHistogramTooltip("Parse + Dispatch", d),
-      sort: {x: null}
-    }),
-    Plot.ruleY([0], {stroke: "#1e2a3a"}),
-  ]
-})
-```
-
-</div>
-<div class="card chart-card">
-<div class="chart-title" style="color: #26c6da;">HANDLER EXECUTION</div>
-
-```js
-Plot.plot({
-  width,
-  height: stageHistogramChartHeight,
-  marginBottom: histogramMarginBottom,
-  style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: false, columns: serverLegendColumns},
-  x: histogramXAxis,
-  y: {label: "count", grid: true},
-  marks: [
-    Plot.barY(allHistogram, {
-      x: "bucket",
-      y: "count",
-      fill: "server",
-      tip: true,
-      title: d => formatHistogramTooltip("Handler Execution", d),
-      sort: {x: null}
-    }),
-    Plot.ruleY([0], {stroke: "#1e2a3a"}),
-  ]
-})
-```
-
-</div>
-</div>
-
-<div class="card chart-card">
-<div class="chart-title">RECEIVED DATA HANDLER DURATION (NETWORKING LAYER)</div>
-
-```js
-Plot.plot({
-  width,
-  height: receivedHandlerChartHeight,
-  marginBottom: histogramMarginBottom,
-  style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: true, columns: serverLegendColumns},
-  x: histogramXAxis,
-  y: {label: "count", grid: true},
-  marks: [
-    Plot.barY(allReceivedHandlerDuration, {
-      x: "bucket",
-      y: "count",
-      fill: "server",
-      tip: true,
-      title: d => formatHistogramTooltip("Received Data Handler Duration", d),
-      sort: {x: null}
-    }),
-    Plot.ruleY([0], {stroke: "#1e2a3a"}),
-  ]
-})
+}))
 ```
 
 </div>
@@ -556,7 +593,7 @@ Plot.plot({
 <div class="chart-title">HANDLER PERFORMANCE</div>
 
 ```js
-Inputs.table(allHandlers, {
+timedTable("HANDLER PERFORMANCE TABLE", () => Inputs.table(allHandlers, {
   columns: ["server", "handlerName", "executionCount", "errorCount", "avgDurationMs", "minDurationMs", "maxDurationMs"],
   header: {
     server: "Server",
@@ -579,7 +616,76 @@ Inputs.table(allHandlers, {
   width: {
     handlerName: 280
   }
+}))
+```
+
+</div>
+
+<div class="card chart-card chart-card-spaced">
+<div class="chart-title">ERRORS / SEC</div>
+
+```js
+tsChart({y: "handlerErrorsPerSecond", yLabel: "err/s"})
+```
+
+</div>
+
+<div class="section-bar"><span>CONNECTIONS</span></div>
+
+<div class="card chart-card">
+<div class="chart-title">ACTIVE</div>
+
+```js
+tsChart({y: "activeConnections", yLabel: "connections"})
+```
+
+</div>
+<div class="card chart-card chart-card-spaced">
+<div class="chart-title">CONNECTION OUTCOMES</div>
+
+```js
+profiledTsChart({
+  label: "CONNECTION OUTCOMES",
+  tipTitle: "Connection outcomes",
+  yLabel: "connections",
+  facetByServer: true,
+  series: [
+    {label: "Accepted", value: d => d.acceptedConnections, color: "#00e676"},
+    {label: "Disconnected", value: d => d.disconnectedConnections, color: "#40c4ff"},
+    {label: "Rejected", value: d => d.rejectedConnections, color: "#ffab40"},
+    {label: "Timed Out", value: d => d.timedOutConnections, color: "#ff5252"}
+  ]
 })
+```
+
+</div>
+
+<div class="section-bar"><span>THROUGHPUT</span></div>
+
+<div class="card chart-card">
+<div class="chart-title">HANDLERS / SEC</div>
+
+```js
+tsChart({y: "handlersExecutedPerSecond", yLabel: "hnd/s"})
+```
+
+</div>
+
+<div class="section-bar"><span>NETWORK</span></div>
+
+<div class="card chart-card">
+<div class="chart-title">TX RATE</div>
+
+```js
+tsChart({y: d => d.sendBytesPerSecond / 1024, yLabel: "KB/s"})
+```
+
+</div>
+<div class="card chart-card chart-card-spaced">
+<div class="chart-title">RX RATE</div>
+
+```js
+tsChart({y: d => d.receiveBytesPerSecond / 1024, yLabel: "KB/s", legend: false})
 ```
 
 </div>
@@ -594,6 +700,12 @@ tsChart({y: d => d.uptimeSeconds / 3600, yLabel: "hours", height: 160})
 ```
 
 </div>
+
+<div class="section-bar"><span>PERFORMANCE</span></div>
+
+```js
+performancePanel()
+```
 
 <style>
 /* ===== CRUSH THEME ===== */
@@ -669,6 +781,76 @@ form label:has(+ .toggle-group) {
 }
 .selector-content {
   padding: 0.6rem 0.75rem;
+}
+.perf-panel {
+  margin-bottom: 1rem;
+}
+.perf-header {
+  border-bottom: 1px solid;
+}
+.perf-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+.perf-stat {
+  padding: 0.7rem 0.75rem;
+  border-right: 1px solid var(--crush-border);
+}
+.perf-stat:last-child {
+  border-right: none;
+}
+.perf-stat-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--crush-text);
+  font-variant-numeric: tabular-nums;
+}
+.perf-stat-label {
+  margin-top: 0.2rem;
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  color: var(--crush-muted);
+}
+.perf-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 0.8rem 0.75rem 0.9rem;
+  border-top: 1px solid var(--crush-border);
+}
+.perf-list-title {
+  margin-bottom: 0.45rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a9bdd4;
+}
+.perf-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.6rem;
+  padding: 0.18rem 0;
+  align-items: baseline;
+}
+.perf-row-name {
+  color: var(--crush-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.perf-row-meta {
+  color: #72c7e7;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+}
+.perf-row-value {
+  color: var(--crush-text);
+  font-variant-numeric: tabular-nums;
+}
+.perf-empty {
+  color: #4a5e75;
+  font-size: 0.68rem;
 }
 
 /* Toggle buttons */
