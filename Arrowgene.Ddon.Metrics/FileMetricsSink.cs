@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Metrics;
+using Arrowgene.Networking.SAEAServer.Metric;
 
 namespace Arrowgene.Ddon.Metrics;
 
@@ -22,17 +23,13 @@ public sealed class FileMetricsSink : IMetricsSink<DdonServerMetricsSnapshot>
     };
 
     private readonly MemoryMetricsSink _memorySink;
-    private readonly string _rootDirectory;
     private readonly string _serverDirectory;
-    private readonly string _serverName;
     private readonly Timer _exportTimer;
     private int _flushing;
 
     public FileMetricsSink(TimeSpan retention, string outputDirectory, string serverName, int exportIntervalMs)
     {
         _memorySink = new MemoryMetricsSink(retention);
-        _rootDirectory = outputDirectory;
-        _serverName = serverName;
         _serverDirectory = Path.Combine(outputDirectory, serverName);
         _exportTimer = new Timer(_ => Flush(), null, exportIntervalMs, exportIntervalMs);
     }
@@ -141,38 +138,18 @@ public sealed class FileMetricsSink : IMetricsSink<DdonServerMetricsSnapshot>
     {
         DdonServerMetricsSnapshot latest = samples[^1];
         ReadOnlySpan<long> buckets = latest.DdonConsumerMetrics.HandlerDurationBuckets.Span;
-        string[] labels = DdonConsumerMetricsSnapshot.DurationBucketLabels;
-
-        var rows = new List<Dictionary<string, object>>(labels.Length);
-        for (int i = 0; i < labels.Length && i < buckets.Length; i++)
-        {
-            rows.Add(new Dictionary<string, object>
-            {
-                ["bucket"] = labels[i],
-                ["count"] = buckets[i]
-            });
-        }
-
-        WriteJson(rows, Path.Combine(_serverDirectory, "duration_histogram.json"));
+        WriteDurationHistogram(
+            buckets,
+            Path.Combine(_serverDirectory, "duration_histogram.json"));
     }
 
     private void WriteParseHistogram(List<DdonServerMetricsSnapshot> samples)
     {
         DdonServerMetricsSnapshot latest = samples[^1];
         ReadOnlySpan<long> buckets = latest.DdonConsumerMetrics.ParseDurationBuckets.Span;
-        string[] labels = DdonConsumerMetricsSnapshot.DurationBucketLabels;
-
-        var rows = new List<Dictionary<string, object>>(labels.Length);
-        for (int i = 0; i < labels.Length && i < buckets.Length; i++)
-        {
-            rows.Add(new Dictionary<string, object>
-            {
-                ["bucket"] = labels[i],
-                ["count"] = buckets[i]
-            });
-        }
-
-        WriteJson(rows, Path.Combine(_serverDirectory, "parse_histogram.json"));
+        WriteDurationHistogram(
+            buckets,
+            Path.Combine(_serverDirectory, "parse_histogram.json"));
     }
 
     private void WriteQueueDelayHistogram(List<DdonServerMetricsSnapshot> samples)
@@ -203,17 +180,22 @@ public sealed class FileMetricsSink : IMetricsSink<DdonServerMetricsSnapshot>
 
     private void WriteConsumerHistogram(ReadOnlySpan<long> buckets, string path)
     {
-        var rows = new List<Dictionary<string, object>>(DdonConsumerMetricsSnapshot.DurationBucketLabels.Length);
-        for (int i = 0; i < DdonConsumerMetricsSnapshot.DurationBucketLabels.Length && i < buckets.Length; i++)
+        var rows = new List<Dictionary<string, object>>(MetricBucketDefinitions.DurationBucketNames.Count);
+        for (int i = 0; i < MetricBucketDefinitions.DurationBucketNames.Count && i < buckets.Length; i++)
         {
             rows.Add(new Dictionary<string, object>
             {
-                ["bucket"] = DdonConsumerMetricsSnapshot.DurationBucketLabels[i],
+                ["bucket"] = MetricBucketDefinitions.DurationBucketNames[i],
                 ["count"] = buckets[i]
             });
         }
 
         WriteJson(rows, path);
+    }
+
+    private void WriteDurationHistogram(ReadOnlySpan<long> buckets, string path)
+    {
+        WriteConsumerHistogram(buckets, path);
     }
 
     private static void WriteJson(object data, string path)

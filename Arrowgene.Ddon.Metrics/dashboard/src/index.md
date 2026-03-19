@@ -62,7 +62,7 @@ const colorDomain = selected;
 const colorRange = selected.map(s => colorMap[s] ?? "#888");
 
 // Bucket label ordering (all histograms use the same scheme)
-const bucketOrder = ["<100us", "100us-1ms", "1-10ms", "10-50ms", "50-250ms", "250ms-1s", "1-5s", "5-30s", "30s-2m", ">=2m"];
+const bucketOrder = ["0..100us", "100us..500us", "500us..1ms", "1ms..5ms", "5ms..10ms", "10ms..50ms", "50ms..100ms", "100ms..250ms", "250ms..500ms", "500ms..1s", "1s..2s", "2s..5s", "5s..10s", "10s..30s", "30s..1m", "1m..2m", "2m..5m", "5m..10m", "10m..30m", "30m..1h+"];
 
 // Packet lifecycle: tag each histogram with its stage and server
 const stageColorMap = {"Queue Wait": "#ffab40", "Parse + Dispatch": "#ab47bc", "Handler Execution": "#26c6da"};

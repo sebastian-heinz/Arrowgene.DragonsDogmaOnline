@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Arrowgene.Networking.SAEAServer.Metric;
 
 namespace Arrowgene.Ddon.Metrics
 {
     public readonly struct DdonConsumerMetricsSnapshot
     {
-        // Bucket labels for display/export (matches networking library scheme)
         public static readonly string[] DurationBucketLabels =
-        {
-            "<100us", "100us-1ms", "1-10ms", "10-50ms", "50-250ms",
-            "250ms-1s", "1-5s", "5-30s", "30s-2m", ">=2m"
-        };
+            MetricBucketDefinitions.DurationBucketNames.ToArray();
 
         public DdonConsumerMetricsSnapshot(
             long handlersExecuted,

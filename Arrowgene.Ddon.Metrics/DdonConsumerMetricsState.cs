@@ -2,12 +2,14 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
+using Arrowgene.Networking.SAEAServer.Metric;
 
 namespace Arrowgene.Ddon.Metrics
 {
     internal sealed class DdonConsumerMetricsState
     {
-        private const int HandlerDurationBucketCount = 10;
+        private static readonly int HandlerDurationBucketCount = MetricBucketDefinitions.DurationBucketNames.Count;
+        private static readonly long[] DurationBucketUpperBoundTicks = CreateDurationBucketUpperBoundTicks();
 
         private readonly long[] _handlerDurationBuckets = new long[HandlerDurationBucketCount];
         private readonly long[] _parseDurationBuckets = new long[HandlerDurationBucketCount];
@@ -89,10 +91,9 @@ namespace Arrowgene.Ddon.Metrics
             }
 
             TimeSpan elapsed = Stopwatch.GetElapsedTime(startTimestamp);
-            long elapsedUs = (long)(elapsed.TotalMicroseconds);
 
             Interlocked.Increment(ref _handlersExecuted);
-            Interlocked.Increment(ref _handlerDurationBuckets[GetHandlerDurationBucketIndex(elapsedUs)]);
+            Interlocked.Increment(ref _handlerDurationBuckets[GetHandlerDurationBucketIndex(elapsed)]);
 
             HandlerEntry entry = _handlerEntries.GetOrAdd(
                 handlerId, _ => new HandlerEntry(handlerName));
@@ -107,8 +108,7 @@ namespace Arrowgene.Ddon.Metrics
             }
 
             TimeSpan elapsed = Stopwatch.GetElapsedTime(receivedTimestamp);
-            long elapsedUs = (long)(elapsed.TotalMicroseconds);
-            Interlocked.Increment(ref _parseDurationBuckets[GetHandlerDurationBucketIndex(elapsedUs)]);
+            Interlocked.Increment(ref _parseDurationBuckets[GetHandlerDurationBucketIndex(elapsed)]);
         }
 
         internal void IncrementHandlerErrors(string handlerId, string handlerName)
@@ -125,54 +125,35 @@ namespace Arrowgene.Ddon.Metrics
             entry.IncrementErrors();
         }
 
-        private static int GetHandlerDurationBucketIndex(long microseconds)
+        private static int GetHandlerDurationBucketIndex(TimeSpan elapsed)
         {
-            if (microseconds < 100)
+            long elapsedTicks = elapsed.Ticks;
+            if (elapsedTicks < 0)
             {
-                return 0; // <100us
+                elapsedTicks = 0;
             }
 
-            if (microseconds < 1_000)
+            for (int index = 0; index < DurationBucketUpperBoundTicks.Length; index++)
             {
-                return 1; // 100us-1ms
+                if (elapsedTicks <= DurationBucketUpperBoundTicks[index])
+                {
+                    return index;
+                }
             }
 
-            if (microseconds < 10_000)
+            return DurationBucketUpperBoundTicks.Length - 1;
+        }
+
+        private static long[] CreateDurationBucketUpperBoundTicks()
+        {
+            long[] bounds = new long[MetricBucketDefinitions.DurationBucketUpperBounds.Count];
+
+            for (int index = 0; index < bounds.Length; index++)
             {
-                return 2; // 1-10ms
+                bounds[index] = MetricBucketDefinitions.DurationBucketUpperBounds[index].Ticks;
             }
 
-            if (microseconds < 50_000)
-            {
-                return 3; // 10-50ms
-            }
-
-            if (microseconds < 250_000)
-            {
-                return 4; // 50-250ms
-            }
-
-            if (microseconds < 1_000_000)
-            {
-                return 5; // 250ms-1s
-            }
-
-            if (microseconds < 5_000_000)
-            {
-                return 6; // 1-5s
-            }
-
-            if (microseconds < 30_000_000)
-            {
-                return 7; // 5-30s
-            }
-
-            if (microseconds < 120_000_000)
-            {
-                return 8; // 30s-2m
-            }
-
-            return 9; // >=2m
+            return bounds;
         }
 
         internal sealed class HandlerEntry
