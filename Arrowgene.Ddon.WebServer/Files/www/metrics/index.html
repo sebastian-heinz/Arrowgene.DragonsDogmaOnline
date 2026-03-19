@@ -15,7 +15,7 @@
 <link rel="modulepreload" href="./_observablehq/client.e18424d4.js">
 <link rel="modulepreload" href="./_observablehq/runtime.607a8173.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.277aeab8.js">
-<link rel="modulepreload" href="./metrics-config.js">
+<link rel="modulepreload" href="./_import/metrics-config.89761fe2.js">
 <link rel="modulepreload" href="./_npm/htl@0.3.1/72f4716c.js">
 <link rel="modulepreload" href="./_observablehq/stdlib/inputs.31cd1366.js">
 <link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.17/7c43807f.js">
@@ -61,7 +61,7 @@
 import {define} from "./_observablehq/client.e18424d4.js";
 
 define({id: "78aa584a", outputs: ["colorMap","metricFileNames","servers","metricFiles"], body: async () => {
-const {colorMap, metricFileNames, servers} = await import("./metrics-config.js");
+const {colorMap, metricFileNames, servers} = await import("./_import/metrics-config.89761fe2.js");
 
 const metricFiles = Object.fromEntries(
   servers.map(server => [
@@ -135,7 +135,7 @@ const metrics = Object.fromEntries(entries);
 return {readMetric,entries,metrics};
 }});
 
-define({id: "3f6cb781", inputs: ["selected","metrics","colorMap"], outputs: ["allTimeseries","allHandlers","allHistogram","colorDomain","colorRange","bucketOrder","stageColorMap","allLifecycle","allQueueDelay","allParse","allReceivedHandlerDuration","chartTextColor","sharedPlotFontSize","timeSeriesPlotStyle","histogramPlotStyle","histogramXAxis","histogramMarginBottom","lifecycleChartHeight","stageHistogramChartHeight","receivedHandlerChartHeight","formatTooltipTimestamp","formatTooltipValue","formatHistogramTooltip"], body: (selected,metrics,colorMap) => {
+define({id: "407be1c0", inputs: ["selected","metrics","colorMap"], outputs: ["allTimeseries","allHandlers","allHistogram","colorDomain","colorRange","bucketOrder","stageColorMap","allLifecycle","allQueueDelay","allParse","allReceivedHandlerDuration","chartTextColor","sharedPlotFontSize","timeSeriesPlotStyle","histogramPlotStyle","histogramXAxis","histogramMarginBottom","lifecycleChartHeight","stageHistogramChartHeight","receivedHandlerChartHeight","serverLegendColumns","stageLegendColumns","formatTooltipTimestamp","formatTooltipValue","formatHistogramTooltip"], body: (selected,metrics,colorMap) => {
 const allTimeseries = selected.flatMap(s => metrics[s].timeseries.map(d => ({...d, server: s})));
 const allHandlers = selected.flatMap(s => metrics[s].handlers.map(d => ({...d, server: s})));
 const allHistogram = selected.flatMap(s => metrics[s].duration_histogram.map(d => ({...d, server: s})));
@@ -164,6 +164,8 @@ const histogramMarginBottom = 92;
 const lifecycleChartHeight = 420;
 const stageHistogramChartHeight = 380;
 const receivedHandlerChartHeight = 320;
+const serverLegendColumns = "160px";
+const stageLegendColumns = "190px";
 
 function formatTooltipTimestamp(timestamp) {
   return new Date(timestamp).toLocaleString();
@@ -181,10 +183,10 @@ Server: ${d.server}
 Bucket: ${d.bucket}
 Count: ${d.count.toLocaleString()}`;
 }
-return {allTimeseries,allHandlers,allHistogram,colorDomain,colorRange,bucketOrder,stageColorMap,allLifecycle,allQueueDelay,allParse,allReceivedHandlerDuration,chartTextColor,sharedPlotFontSize,timeSeriesPlotStyle,histogramPlotStyle,histogramXAxis,histogramMarginBottom,lifecycleChartHeight,stageHistogramChartHeight,receivedHandlerChartHeight,formatTooltipTimestamp,formatTooltipValue,formatHistogramTooltip};
+return {allTimeseries,allHandlers,allHistogram,colorDomain,colorRange,bucketOrder,stageColorMap,allLifecycle,allQueueDelay,allParse,allReceivedHandlerDuration,chartTextColor,sharedPlotFontSize,timeSeriesPlotStyle,histogramPlotStyle,histogramXAxis,histogramMarginBottom,lifecycleChartHeight,stageHistogramChartHeight,receivedHandlerChartHeight,serverLegendColumns,stageLegendColumns,formatTooltipTimestamp,formatTooltipValue,formatHistogramTooltip};
 }});
 
-define({id: "9b53914f", inputs: ["metrics","colorMap","formatTooltipValue","Plot","width","timeSeriesPlotStyle","colorDomain","colorRange","allTimeseries","formatTooltipTimestamp","selected"], outputs: ["serverSummary","fmtBytes","tsChart","summaries"], body: (metrics,colorMap,formatTooltipValue,Plot,width,timeSeriesPlotStyle,colorDomain,colorRange,allTimeseries,formatTooltipTimestamp,selected) => {
+define({id: "ccb2bab0", inputs: ["metrics","colorMap","formatTooltipValue","Plot","width","timeSeriesPlotStyle","colorDomain","colorRange","serverLegendColumns","allTimeseries","formatTooltipTimestamp","selected"], outputs: ["serverSummary","fmtBytes","tsChart","summaries"], body: (metrics,colorMap,formatTooltipValue,Plot,width,timeSeriesPlotStyle,colorDomain,colorRange,serverLegendColumns,allTimeseries,formatTooltipTimestamp,selected) => {
 function serverSummary(s) {
   const ts = metrics[s]?.timeseries ?? [];
   const latest = ts.length > 0 ? ts[ts.length - 1] : null;
@@ -224,7 +226,12 @@ function tsChart(opts) {
     width: opts.width ?? width,
     height: opts.height ?? 240,
     style: timeSeriesPlotStyle,
-    color: {domain: colorDomain, range: colorRange, legend: opts.legend !== false},
+    color: {
+      domain: colorDomain,
+      range: colorRange,
+      legend: opts.legend !== false,
+      columns: serverLegendColumns
+    },
     x: {type: "utc", label: null},
     y: {label: opts.yLabel, grid: true, nice: true},
     marks: [
@@ -256,7 +263,7 @@ const selected = view(serverToggleInput());
 return {selected};
 }});
 
-define({id: "f23ff5e8", inputs: ["html","selected","summaries","display"], body: async (html,selected,summaries,display) => {
+define({id: "5991788b", inputs: ["html","selected","summaries","display"], body: async (html,selected,summaries,display) => {
 display(await(
 html`<div class="overview-grid" style="grid-template-columns: repeat(${selected.length}, 1fr);">
 ${summaries.map(s => html`
@@ -268,34 +275,34 @@ ${summaries.map(s => html`
   </div>
   <div class="panel-grid">
     <div class="metric">
-      <div class="metric-val" style="color:${s.color};">${s.connections}</div>
+      <div class="metric-val">${s.connections}</div>
       <div class="metric-label">CONN</div>
-      <div class="metric-sub">peak ${s.peakConnections}</div>
+      <div class="metric-sub" style="color:${s.color};">peak ${s.peakConnections}</div>
     </div>
     <div class="metric">
-      <div class="metric-val" style="color:${s.color};">${s.handlersPerSec}</div>
+      <div class="metric-val">${s.handlersPerSec}</div>
       <div class="metric-label">HND/S</div>
-      <div class="metric-sub">${s.totalHandlers}</div>
+      <div class="metric-sub" style="color:${s.color};">${s.totalHandlers}</div>
     </div>
     <div class="metric">
       <div class="metric-val ${Number(s.errorsPerSec) > 0.5 ? "val-alert" : ""}">${s.errorsPerSec}</div>
       <div class="metric-label">ERR/S</div>
-      <div class="metric-sub">${s.totalErrors}</div>
+      <div class="metric-sub" style="color:${s.color};">${s.totalErrors}</div>
     </div>
     <div class="metric">
       <div class="metric-val metric-val-sm">${s.sendKBps}</div>
       <div class="metric-label">TX KB/S</div>
-      <div class="metric-sub">${s.totalSent}</div>
+      <div class="metric-sub" style="color:${s.color};">${s.totalSent}</div>
     </div>
     <div class="metric">
       <div class="metric-val metric-val-sm">${s.recvKBps}</div>
       <div class="metric-label">RX KB/S</div>
-      <div class="metric-sub">${s.totalRecv}</div>
+      <div class="metric-sub" style="color:${s.color};">${s.totalRecv}</div>
     </div>
     <div class="metric">
       <div class="metric-val metric-val-sm">${s.accepted}</div>
       <div class="metric-label">ACCEPT</div>
-      <div class="metric-sub">rej ${s.rejected} / to ${s.timedOut}</div>
+      <div class="metric-sub" style="color:${s.color};">rej ${s.rejected} / to ${s.timedOut}</div>
     </div>
   </div>
 </div>
@@ -339,27 +346,27 @@ tsChart({y: "peakActiveConnections", yLabel: "peak", legend: false})
 ))
 }});
 
-define({id: "9817a33c", inputs: ["tsChart","display"], body: async (tsChart,display) => {
+define({id: "d7a19b6f", inputs: ["tsChart","display"], body: async (tsChart,display) => {
 display(await(
-tsChart({y: "acceptedConnections", yLabel: null, height: 160, legend: false})
+tsChart({y: "acceptedConnections", yLabel: null, height: 220, legend: false})
 ))
 }});
 
-define({id: "3b20a445", inputs: ["tsChart","display"], body: async (tsChart,display) => {
+define({id: "935b59a7", inputs: ["tsChart","display"], body: async (tsChart,display) => {
 display(await(
-tsChart({y: "disconnectedConnections", yLabel: null, height: 160, legend: false})
+tsChart({y: "disconnectedConnections", yLabel: null, height: 220, legend: false})
 ))
 }});
 
-define({id: "e0fa9916", inputs: ["tsChart","display"], body: async (tsChart,display) => {
+define({id: "de1835d4", inputs: ["tsChart","display"], body: async (tsChart,display) => {
 display(await(
-tsChart({y: "rejectedConnections", yLabel: null, height: 160, legend: false})
+tsChart({y: "rejectedConnections", yLabel: null, height: 220, legend: false})
 ))
 }});
 
-define({id: "63c7da5c", inputs: ["tsChart","display"], body: async (tsChart,display) => {
+define({id: "9dfea15a", inputs: ["tsChart","display"], body: async (tsChart,display) => {
 display(await(
-tsChart({y: "timedOutConnections", yLabel: null, height: 160, legend: false})
+tsChart({y: "timedOutConnections", yLabel: null, height: 220, legend: false})
 ))
 }});
 
@@ -387,7 +394,7 @@ tsChart({y: d => d.bytesReceived / 1048576, yLabel: "MB", legend: false})
 ))
 }});
 
-define({id: "2937e853", inputs: ["Plot","width","lifecycleChartHeight","histogramMarginBottom","histogramPlotStyle","histogramXAxis","selected","allLifecycle","display"], body: async (Plot,width,lifecycleChartHeight,histogramMarginBottom,histogramPlotStyle,histogramXAxis,selected,allLifecycle,display) => {
+define({id: "88c5818c", inputs: ["Plot","width","lifecycleChartHeight","histogramMarginBottom","histogramPlotStyle","stageLegendColumns","histogramXAxis","selected","allLifecycle","display"], body: async (Plot,width,lifecycleChartHeight,histogramMarginBottom,histogramPlotStyle,stageLegendColumns,histogramXAxis,selected,allLifecycle,display) => {
 display(await(
 Plot.plot({
   width,
@@ -397,7 +404,8 @@ Plot.plot({
   color: {
     domain: ["Queue Wait", "Parse + Dispatch", "Handler Execution"],
     range: ["#ffab40", "#ab47bc", "#26c6da"],
-    legend: true
+    legend: true,
+    columns: stageLegendColumns
   },
   x: {...histogramXAxis, padding: 0.15},
   y: {label: "count", grid: true},
@@ -420,14 +428,14 @@ Plot.plot({
 ))
 }});
 
-define({id: "e78f02e2", inputs: ["Plot","width","stageHistogramChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","selected","histogramXAxis","allQueueDelay","formatHistogramTooltip","display"], body: async (Plot,width,stageHistogramChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,selected,histogramXAxis,allQueueDelay,formatHistogramTooltip,display) => {
+define({id: "729e716f", inputs: ["Plot","width","stageHistogramChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","selected","serverLegendColumns","histogramXAxis","allQueueDelay","formatHistogramTooltip","display"], body: async (Plot,width,stageHistogramChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,selected,serverLegendColumns,histogramXAxis,allQueueDelay,formatHistogramTooltip,display) => {
 display(await(
 Plot.plot({
   width,
   height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: selected.length > 1},
+  color: {domain: colorDomain, range: colorRange, legend: selected.length > 1, columns: serverLegendColumns},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
@@ -445,14 +453,14 @@ Plot.plot({
 ))
 }});
 
-define({id: "67e85de3", inputs: ["Plot","width","stageHistogramChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","histogramXAxis","allParse","formatHistogramTooltip","display"], body: async (Plot,width,stageHistogramChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,histogramXAxis,allParse,formatHistogramTooltip,display) => {
+define({id: "da6a3ab8", inputs: ["Plot","width","stageHistogramChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","serverLegendColumns","histogramXAxis","allParse","formatHistogramTooltip","display"], body: async (Plot,width,stageHistogramChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,serverLegendColumns,histogramXAxis,allParse,formatHistogramTooltip,display) => {
 display(await(
 Plot.plot({
   width,
   height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: false},
+  color: {domain: colorDomain, range: colorRange, legend: false, columns: serverLegendColumns},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
@@ -470,14 +478,14 @@ Plot.plot({
 ))
 }});
 
-define({id: "2a75ef97", inputs: ["Plot","width","stageHistogramChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","histogramXAxis","allHistogram","formatHistogramTooltip","display"], body: async (Plot,width,stageHistogramChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,histogramXAxis,allHistogram,formatHistogramTooltip,display) => {
+define({id: "d4051b96", inputs: ["Plot","width","stageHistogramChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","serverLegendColumns","histogramXAxis","allHistogram","formatHistogramTooltip","display"], body: async (Plot,width,stageHistogramChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,serverLegendColumns,histogramXAxis,allHistogram,formatHistogramTooltip,display) => {
 display(await(
 Plot.plot({
   width,
   height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: false},
+  color: {domain: colorDomain, range: colorRange, legend: false, columns: serverLegendColumns},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
@@ -495,14 +503,14 @@ Plot.plot({
 ))
 }});
 
-define({id: "7a608f7a", inputs: ["Plot","width","receivedHandlerChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","histogramXAxis","allReceivedHandlerDuration","formatHistogramTooltip","display"], body: async (Plot,width,receivedHandlerChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,histogramXAxis,allReceivedHandlerDuration,formatHistogramTooltip,display) => {
+define({id: "04c8e6ed", inputs: ["Plot","width","receivedHandlerChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","serverLegendColumns","histogramXAxis","allReceivedHandlerDuration","formatHistogramTooltip","display"], body: async (Plot,width,receivedHandlerChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,serverLegendColumns,histogramXAxis,allReceivedHandlerDuration,formatHistogramTooltip,display) => {
 display(await(
 Plot.plot({
   width,
   height: receivedHandlerChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: true},
+  color: {domain: colorDomain, range: colorRange, legend: true, columns: serverLegendColumns},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
@@ -563,8 +571,8 @@ tsChart({y: d => d.uptimeSeconds / 3600, yLabel: "hours", height: 160})
 <div class="observablehq observablehq--block"><!--:78aa584a:--></div>
 <div class="observablehq observablehq--block"><!--:2e0d811c:--></div>
 <div class="observablehq observablehq--block"><!--:028bdc48:--></div>
-<div class="observablehq observablehq--block"><!--:3f6cb781:--></div>
-<div class="observablehq observablehq--block"><!--:9b53914f:--></div>
+<div class="observablehq observablehq--block"><!--:407be1c0:--></div>
+<div class="observablehq observablehq--block"><!--:ccb2bab0:--></div>
 <div class="dash-title">
   <span class="title-sub">SERVER METRICS</span>
 </div>
@@ -577,77 +585,65 @@ tsChart({y: d => d.uptimeSeconds / 3600, yLabel: "hours", height: 160})
 <div class="observablehq observablehq--block"><!--:aa059c8d:--></div>
   </div>
 </div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:f23ff5e8:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:5991788b:--></div>
 <div class="section-bar"><span>THROUGHPUT</span></div>
-<div class="grid grid-cols-2">
 <div class="card chart-card">
 <div class="chart-title">HANDLERS / SEC</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:cab80419:--></div>
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">ERRORS / SEC</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:10bdaf98:--></div>
 </div>
-</div>
-<div class="grid grid-cols-2">
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">TOTAL HANDLERS</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:711a0882:--></div>
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">TOTAL ERRORS</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:6b981791:--></div>
 </div>
-</div>
 <div class="section-bar"><span>CONNECTIONS</span></div>
-<div class="grid grid-cols-2">
 <div class="card chart-card">
 <div class="chart-title">ACTIVE</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:5b287516:--></div>
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">PEAK</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:c083a399:--></div>
 </div>
-</div>
-<div class="grid grid-cols-4">
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">ACCEPTED</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:9817a33c:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:d7a19b6f:--></div>
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">DISCONNECTED</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:3b20a445:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:935b59a7:--></div>
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">REJECTED</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:e0fa9916:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:de1835d4:--></div>
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">TIMED OUT</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:63c7da5c:--></div>
-</div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:9dfea15a:--></div>
 </div>
 <div class="section-bar"><span>NETWORK</span></div>
-<div class="grid grid-cols-2">
 <div class="card chart-card">
 <div class="chart-title">TX RATE</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:1eb3519f:--></div>
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">RX RATE</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:f5a33075:--></div>
 </div>
-</div>
-<div class="grid grid-cols-2">
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">TOTAL SENT</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:c96a7b52:--></div>
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">TOTAL RECEIVED</div>
 <div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:c38eab01:--></div>
-</div>
 </div>
 <div class="section-bar"><span>PACKET LIFECYCLE</span></div>
 <div class="card chart-card">
@@ -668,25 +664,25 @@ tsChart({y: d => d.uptimeSeconds / 3600, yLabel: "hours", height: 160})
     <div class="pipeline-desc">business logic</div>
   </div>
 </div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:2937e853:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:88c5818c:--></div>
 </div>
 <div class="grid grid-cols-1">
 <div class="card chart-card">
 <div class="chart-title" style="color: #ffab40;">QUEUE WAIT</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:e78f02e2:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:729e716f:--></div>
 </div>
 <div class="card chart-card">
 <div class="chart-title" style="color: #ab47bc;">PARSE + DISPATCH</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:67e85de3:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:da6a3ab8:--></div>
 </div>
 <div class="card chart-card">
 <div class="chart-title" style="color: #26c6da;">HANDLER EXECUTION</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:2a75ef97:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:d4051b96:--></div>
 </div>
 </div>
 <div class="card chart-card">
 <div class="chart-title">RECEIVED DATA HANDLER DURATION (NETWORKING LAYER)</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:7a608f7a:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:04c8e6ed:--></div>
 </div>
 <div class="section-bar"><span>HANDLER ANALYSIS</span></div>
 <div class="card chart-card">
@@ -778,6 +774,7 @@ form label:has(+ .toggle-group) {
 .toggle-group {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 .toggle-btn {
   display: inline-flex;
@@ -847,14 +844,14 @@ form label:has(+ .toggle-group) {
   flex-shrink: 0;
 }
 .panel-name {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 .panel-uptime {
   margin-left: auto;
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   color: var(--crush-muted);
   letter-spacing: 0.05em;
 }
@@ -874,27 +871,30 @@ form label:has(+ .toggle-group) {
   border-right: none;
 }
 .metric-val {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
   color: var(--crush-text);
+  font-variant-numeric: tabular-nums;
 }
 .metric-val-sm {
-  font-size: 1.05rem;
+  font-size: 1.2rem;
 }
 .metric-label {
-  font-size: 0.55rem;
+  font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.12em;
-  color: var(--crush-muted);
-  margin-top: 0.2rem;
+  color: #a9bdd4;
+  margin-top: 0.28rem;
 }
 .metric-sub {
-  font-size: 0.55rem;
-  color: #4a5e75;
-  margin-top: 0.15rem;
-  letter-spacing: 0.02em;
+  font-size: 0.66rem;
+  color: #72c7e7;
+  margin-top: 0.22rem;
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
 }
 .val-alert {
   color: var(--crush-red) !important;
@@ -921,6 +921,9 @@ form label:has(+ .toggle-group) {
   border-radius: 4px !important;
   padding: 0.75rem !important;
 }
+.chart-card-spaced {
+  margin-top: 0.75rem;
+}
 .chart-title {
   font-size: 0.72rem;
   font-weight: 700;
@@ -945,6 +948,12 @@ figure [aria-label="tip"] text,
 figure [aria-label="tip"] tspan {
   font-size: 14px !important;
   font-weight: 600 !important;
+}
+figure > div[style*="display: flex"] {
+  gap: 0.5rem !important;
+}
+figure > div[style*="display: flex"] > div {
+  margin-right: 0.5rem !important;
 }
 
 /* Table */
@@ -1022,7 +1031,7 @@ table tr:hover td {
 </style>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2026-03-19T15:22:19">Mar 19, 2026</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2026-03-19T15:55:10">Mar 19, 2026</a>.</div>
 </footer>
 </div>
 </body>

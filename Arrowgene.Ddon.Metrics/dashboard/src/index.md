@@ -104,6 +104,8 @@ const histogramMarginBottom = 92;
 const lifecycleChartHeight = 420;
 const stageHistogramChartHeight = 380;
 const receivedHandlerChartHeight = 320;
+const serverLegendColumns = "160px";
+const stageLegendColumns = "190px";
 
 function formatTooltipTimestamp(timestamp) {
   return new Date(timestamp).toLocaleString();
@@ -163,7 +165,12 @@ function tsChart(opts) {
     width: opts.width ?? width,
     height: opts.height ?? 240,
     style: timeSeriesPlotStyle,
-    color: {domain: colorDomain, range: colorRange, legend: opts.legend !== false},
+    color: {
+      domain: colorDomain,
+      range: colorRange,
+      legend: opts.legend !== false,
+      columns: serverLegendColumns
+    },
     x: {type: "utc", label: null},
     y: {label: opts.yLabel, grid: true, nice: true},
     marks: [
@@ -218,34 +225,34 @@ ${summaries.map(s => html`
   </div>
   <div class="panel-grid">
     <div class="metric">
-      <div class="metric-val" style="color:${s.color};">${s.connections}</div>
+      <div class="metric-val">${s.connections}</div>
       <div class="metric-label">CONN</div>
-      <div class="metric-sub">peak ${s.peakConnections}</div>
+      <div class="metric-sub" style="color:${s.color};">peak ${s.peakConnections}</div>
     </div>
     <div class="metric">
-      <div class="metric-val" style="color:${s.color};">${s.handlersPerSec}</div>
+      <div class="metric-val">${s.handlersPerSec}</div>
       <div class="metric-label">HND/S</div>
-      <div class="metric-sub">${s.totalHandlers}</div>
+      <div class="metric-sub" style="color:${s.color};">${s.totalHandlers}</div>
     </div>
     <div class="metric">
       <div class="metric-val ${Number(s.errorsPerSec) > 0.5 ? "val-alert" : ""}">${s.errorsPerSec}</div>
       <div class="metric-label">ERR/S</div>
-      <div class="metric-sub">${s.totalErrors}</div>
+      <div class="metric-sub" style="color:${s.color};">${s.totalErrors}</div>
     </div>
     <div class="metric">
       <div class="metric-val metric-val-sm">${s.sendKBps}</div>
       <div class="metric-label">TX KB/S</div>
-      <div class="metric-sub">${s.totalSent}</div>
+      <div class="metric-sub" style="color:${s.color};">${s.totalSent}</div>
     </div>
     <div class="metric">
       <div class="metric-val metric-val-sm">${s.recvKBps}</div>
       <div class="metric-label">RX KB/S</div>
-      <div class="metric-sub">${s.totalRecv}</div>
+      <div class="metric-sub" style="color:${s.color};">${s.totalRecv}</div>
     </div>
     <div class="metric">
       <div class="metric-val metric-val-sm">${s.accepted}</div>
       <div class="metric-label">ACCEPT</div>
-      <div class="metric-sub">rej ${s.rejected} / to ${s.timedOut}</div>
+      <div class="metric-sub" style="color:${s.color};">rej ${s.rejected} / to ${s.timedOut}</div>
     </div>
   </div>
 </div>
@@ -254,7 +261,6 @@ ${summaries.map(s => html`
 
 <div class="section-bar"><span>THROUGHPUT</span></div>
 
-<div class="grid grid-cols-2">
 <div class="card chart-card">
 <div class="chart-title">HANDLERS / SEC</div>
 
@@ -263,7 +269,7 @@ tsChart({y: "handlersExecutedPerSecond", yLabel: "hnd/s"})
 ```
 
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">ERRORS / SEC</div>
 
 ```js
@@ -271,10 +277,8 @@ tsChart({y: "handlerErrorsPerSecond", yLabel: "err/s"})
 ```
 
 </div>
-</div>
 
-<div class="grid grid-cols-2">
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">TOTAL HANDLERS</div>
 
 ```js
@@ -282,7 +286,7 @@ tsChart({y: "totalHandlersExecuted", yLabel: "cumulative", legend: false})
 ```
 
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">TOTAL ERRORS</div>
 
 ```js
@@ -290,11 +294,9 @@ tsChart({y: "totalHandlerErrors", yLabel: "cumulative", legend: false})
 ```
 
 </div>
-</div>
 
 <div class="section-bar"><span>CONNECTIONS</span></div>
 
-<div class="grid grid-cols-2">
 <div class="card chart-card">
 <div class="chart-title">ACTIVE</div>
 
@@ -303,7 +305,7 @@ tsChart({y: "activeConnections", yLabel: "connections"})
 ```
 
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">PEAK</div>
 
 ```js
@@ -311,46 +313,42 @@ tsChart({y: "peakActiveConnections", yLabel: "peak", legend: false})
 ```
 
 </div>
-</div>
 
-<div class="grid grid-cols-4">
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">ACCEPTED</div>
 
 ```js
-tsChart({y: "acceptedConnections", yLabel: null, height: 160, legend: false})
+tsChart({y: "acceptedConnections", yLabel: null, height: 220, legend: false})
 ```
 
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">DISCONNECTED</div>
 
 ```js
-tsChart({y: "disconnectedConnections", yLabel: null, height: 160, legend: false})
+tsChart({y: "disconnectedConnections", yLabel: null, height: 220, legend: false})
 ```
 
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">REJECTED</div>
 
 ```js
-tsChart({y: "rejectedConnections", yLabel: null, height: 160, legend: false})
+tsChart({y: "rejectedConnections", yLabel: null, height: 220, legend: false})
 ```
 
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">TIMED OUT</div>
 
 ```js
-tsChart({y: "timedOutConnections", yLabel: null, height: 160, legend: false})
+tsChart({y: "timedOutConnections", yLabel: null, height: 220, legend: false})
 ```
 
-</div>
 </div>
 
 <div class="section-bar"><span>NETWORK</span></div>
 
-<div class="grid grid-cols-2">
 <div class="card chart-card">
 <div class="chart-title">TX RATE</div>
 
@@ -359,7 +357,7 @@ tsChart({y: d => d.sendBytesPerSecond / 1024, yLabel: "KB/s"})
 ```
 
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">RX RATE</div>
 
 ```js
@@ -367,10 +365,8 @@ tsChart({y: d => d.receiveBytesPerSecond / 1024, yLabel: "KB/s", legend: false})
 ```
 
 </div>
-</div>
 
-<div class="grid grid-cols-2">
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">TOTAL SENT</div>
 
 ```js
@@ -378,14 +374,13 @@ tsChart({y: d => d.bytesSent / 1048576, yLabel: "MB", legend: false})
 ```
 
 </div>
-<div class="card chart-card">
+<div class="card chart-card chart-card-spaced">
 <div class="chart-title">TOTAL RECEIVED</div>
 
 ```js
 tsChart({y: d => d.bytesReceived / 1048576, yLabel: "MB", legend: false})
 ```
 
-</div>
 </div>
 
 <div class="section-bar"><span>PACKET LIFECYCLE</span></div>
@@ -418,7 +413,8 @@ Plot.plot({
   color: {
     domain: ["Queue Wait", "Parse + Dispatch", "Handler Execution"],
     range: ["#ffab40", "#ab47bc", "#26c6da"],
-    legend: true
+    legend: true,
+    columns: stageLegendColumns
   },
   x: {...histogramXAxis, padding: 0.15},
   y: {label: "count", grid: true},
@@ -452,7 +448,7 @@ Plot.plot({
   height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: selected.length > 1},
+  color: {domain: colorDomain, range: colorRange, legend: selected.length > 1, columns: serverLegendColumns},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
@@ -479,7 +475,7 @@ Plot.plot({
   height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: false},
+  color: {domain: colorDomain, range: colorRange, legend: false, columns: serverLegendColumns},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
@@ -506,7 +502,7 @@ Plot.plot({
   height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: false},
+  color: {domain: colorDomain, range: colorRange, legend: false, columns: serverLegendColumns},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
@@ -535,7 +531,7 @@ Plot.plot({
   height: receivedHandlerChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
-  color: {domain: colorDomain, range: colorRange, legend: true},
+  color: {domain: colorDomain, range: colorRange, legend: true, columns: serverLegendColumns},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
@@ -679,6 +675,7 @@ form label:has(+ .toggle-group) {
 .toggle-group {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 .toggle-btn {
   display: inline-flex;
@@ -748,14 +745,14 @@ form label:has(+ .toggle-group) {
   flex-shrink: 0;
 }
 .panel-name {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 .panel-uptime {
   margin-left: auto;
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   color: var(--crush-muted);
   letter-spacing: 0.05em;
 }
@@ -775,27 +772,30 @@ form label:has(+ .toggle-group) {
   border-right: none;
 }
 .metric-val {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
   color: var(--crush-text);
+  font-variant-numeric: tabular-nums;
 }
 .metric-val-sm {
-  font-size: 1.05rem;
+  font-size: 1.2rem;
 }
 .metric-label {
-  font-size: 0.55rem;
+  font-size: 0.62rem;
   font-weight: 600;
   letter-spacing: 0.12em;
-  color: var(--crush-muted);
-  margin-top: 0.2rem;
+  color: #a9bdd4;
+  margin-top: 0.28rem;
 }
 .metric-sub {
-  font-size: 0.55rem;
-  color: #4a5e75;
-  margin-top: 0.15rem;
-  letter-spacing: 0.02em;
+  font-size: 0.66rem;
+  color: #72c7e7;
+  margin-top: 0.22rem;
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
 }
 .val-alert {
   color: var(--crush-red) !important;
@@ -822,6 +822,9 @@ form label:has(+ .toggle-group) {
   border-radius: 4px !important;
   padding: 0.75rem !important;
 }
+.chart-card-spaced {
+  margin-top: 0.75rem;
+}
 .chart-title {
   font-size: 0.72rem;
   font-weight: 700;
@@ -846,6 +849,12 @@ figure [aria-label="tip"] text,
 figure [aria-label="tip"] tspan {
   font-size: 14px !important;
   font-weight: 600 !important;
+}
+figure > div[style*="display: flex"] {
+  gap: 0.5rem !important;
+}
+figure > div[style*="display: flex"] > div {
+  margin-right: 0.5rem !important;
 }
 
 /* Table */
