@@ -25,19 +25,9 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
         </ContentWithTargetPath>
-        <ContentWithTargetPath Remove="Files\www\dashboard\**" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.Database\Arrowgene.Ddon.Database.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Compile Remove="Files\www\dashboard\**" />
-    </ItemGroup>
-    <ItemGroup>
-      <EmbeddedResource Remove="Files\www\dashboard\**" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Remove="Files\www\dashboard\**" />
     </ItemGroup>
 </Project>
