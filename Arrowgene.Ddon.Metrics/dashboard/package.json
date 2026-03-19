@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "observable preview",
     "build": "observable build",
+    "postbuild": "node ./scripts/copy-dist.mjs",
     "generate:dummy-data": "node ./scripts/generate-dummy-metrics.mjs"
   },
   "dependencies": {

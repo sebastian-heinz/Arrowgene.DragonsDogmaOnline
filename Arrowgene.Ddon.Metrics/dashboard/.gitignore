@@ -1,4 +1,4 @@
 /node_modules
 /dist
-/src/metrics
+/src/snapshot
 /src/.observablehq

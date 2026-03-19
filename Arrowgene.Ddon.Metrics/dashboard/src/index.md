@@ -4,9 +4,19 @@ toc: false
 ---
 
 ```js
-const metricsRoot = "metrics/";
-const servers = ["game", "login"];
-const colorMap = {"game": "#00e5ff", "login": "#ff6e40"};
+import {colorMap, metricFileNames, servers} from "./metrics-config.js";
+
+const metricFiles = Object.fromEntries(
+  servers.map(server => [
+    server,
+    Object.fromEntries(
+      Object.entries(metricFileNames).map(([metric, fileName]) => [
+        metric,
+        `snapshot/${server}/${fileName}`
+      ])
+    )
+  ])
+);
 ```
 
 ```js
@@ -40,14 +50,25 @@ function serverToggleInput() {
 ```
 
 ```js
+async function readMetric(path) {
+  const response = await fetch(path);
+  if (response.ok) return response.json();
+
+  const previewResponse = await fetch(`/_file/${path}`);
+  if (previewResponse.ok) return previewResponse.json();
+
+  return [];
+}
+
 const entries = await Promise.all(selected.map(async (s) => {
+  const files = metricFiles[s];
   const [timeseries, handlers, duration_histogram, parse_histogram, queue_delay_histogram, received_handler_duration_histogram] = await Promise.all([
-    fetch(`${metricsRoot}${s}/timeseries.json`).then(r => r.json()).catch(() => []),
-    fetch(`${metricsRoot}${s}/handlers.json`).then(r => r.json()).catch(() => []),
-    fetch(`${metricsRoot}${s}/duration_histogram.json`).then(r => r.json()).catch(() => []),
-    fetch(`${metricsRoot}${s}/parse_histogram.json`).then(r => r.json()).catch(() => []),
-    fetch(`${metricsRoot}${s}/queue_delay_histogram.json`).then(r => r.json()).catch(() => []),
-    fetch(`${metricsRoot}${s}/received_handler_duration_histogram.json`).then(r => r.json()).catch(() => []),
+    readMetric(files.timeseries),
+    readMetric(files.handlers),
+    readMetric(files.durationHistogram),
+    readMetric(files.parseHistogram),
+    readMetric(files.queueDelayHistogram),
+    readMetric(files.receivedHandlerDurationHistogram),
   ]);
   return [s, {timeseries, handlers, duration_histogram, parse_histogram, queue_delay_histogram, received_handler_duration_histogram}];
 }));
@@ -74,6 +95,11 @@ const allLifecycle = selected.flatMap(s => [
 const allQueueDelay = selected.flatMap(s => metrics[s].queue_delay_histogram.map(d => ({...d, server: s})));
 const allParse = selected.flatMap(s => metrics[s].parse_histogram.map(d => ({...d, server: s})));
 const allReceivedHandlerDuration = selected.flatMap(s => metrics[s].received_handler_duration_histogram.map(d => ({...d, server: s})));
+const chartTextColor = "#9fb4ce";
+const timeSeriesPlotStyle = {fontSize: "12px", color: chartTextColor};
+const histogramPlotStyle = {fontSize: "12.5px", color: chartTextColor};
+const histogramXAxis = {label: null, tickRotate: -55, padding: 0.2, domain: bucketOrder};
+const histogramMarginBottom = 92;
 ```
 
 ```js
@@ -112,7 +138,7 @@ function tsChart(opts) {
   return Plot.plot({
     width: opts.width ?? width,
     height: opts.height ?? 240,
-    style: {fontSize: "11px", color: "#8a9db5"},
+    style: timeSeriesPlotStyle,
     color: {domain: colorDomain, range: colorRange, legend: opts.legend !== false},
     x: {type: "utc", label: null},
     y: {label: opts.yLabel, grid: true, nice: true},
@@ -351,14 +377,15 @@ tsChart({y: d => d.bytesReceived / 1048576, yLabel: "MB", legend: false})
 ```js
 Plot.plot({
   width,
-  height: 320,
-  style: {fontSize: "11px", color: "#8a9db5"},
+  height: 340,
+  marginBottom: histogramMarginBottom,
+  style: histogramPlotStyle,
   color: {
     domain: ["Queue Wait", "Parse + Dispatch", "Handler Execution"],
     range: ["#ffab40", "#ab47bc", "#26c6da"],
     legend: true
   },
-  x: {label: null, tickRotate: -45, padding: 0.15, domain: bucketOrder},
+  x: {...histogramXAxis, padding: 0.15},
   y: {label: "count", grid: true},
   fx: selected.length > 1 ? {label: null} : undefined,
   marks: [
@@ -387,10 +414,11 @@ Plot.plot({
 ```js
 Plot.plot({
   width,
-  height: 220,
-  style: {fontSize: "11px", color: "#8a9db5"},
+  height: 250,
+  marginBottom: histogramMarginBottom,
+  style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: selected.length > 1},
-  x: {label: null, tickRotate: -45, padding: 0.2, domain: bucketOrder},
+  x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
     Plot.barY(allQueueDelay, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
@@ -406,10 +434,11 @@ Plot.plot({
 ```js
 Plot.plot({
   width,
-  height: 220,
-  style: {fontSize: "11px", color: "#8a9db5"},
+  height: 250,
+  marginBottom: histogramMarginBottom,
+  style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: false},
-  x: {label: null, tickRotate: -45, padding: 0.2, domain: bucketOrder},
+  x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
     Plot.barY(allParse, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
@@ -425,10 +454,11 @@ Plot.plot({
 ```js
 Plot.plot({
   width,
-  height: 220,
-  style: {fontSize: "11px", color: "#8a9db5"},
+  height: 250,
+  marginBottom: histogramMarginBottom,
+  style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: false},
-  x: {label: null, tickRotate: -45, padding: 0.2, domain: bucketOrder},
+  x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
     Plot.barY(allHistogram, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
@@ -446,10 +476,11 @@ Plot.plot({
 ```js
 Plot.plot({
   width,
-  height: 220,
-  style: {fontSize: "11px", color: "#8a9db5"},
+  height: 250,
+  marginBottom: histogramMarginBottom,
+  style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: true},
-  x: {label: null, tickRotate: -45, padding: 0.2, domain: bucketOrder},
+  x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
     Plot.barY(allReceivedHandlerDuration, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
@@ -729,18 +760,21 @@ form label:has(+ .toggle-group) {
   padding: 0.75rem !important;
 }
 .chart-title {
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   color: var(--crush-muted);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.65rem;
   text-transform: uppercase;
+  line-height: 1.35;
 }
 
 /* Plot overrides */
 [class*="plot-"] text,
 figure text {
   fill: #8a9db5 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
 }
 figure [aria-label="rule"] line {
   stroke: var(--crush-border) !important;
@@ -789,26 +823,28 @@ table tr:hover td {
 .pipeline-stage {
   border: 1px solid;
   border-radius: 4px;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.1rem;
   text-align: center;
   background: rgba(0, 0, 0, 0.2);
-  min-width: 140px;
+  min-width: 160px;
 }
 .pipeline-label {
-  font-size: 0.6rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  line-height: 1.25;
 }
 .pipeline-desc {
-  font-size: 0.5rem;
+  font-size: 0.58rem;
   color: var(--crush-muted);
-  margin-top: 0.15rem;
+  margin-top: 0.2rem;
   letter-spacing: 0.03em;
+  line-height: 1.35;
 }
 .pipeline-arrow {
   color: var(--crush-muted);
-  font-size: 1rem;
+  font-size: 1.15rem;
   opacity: 0.4;
 }
 
