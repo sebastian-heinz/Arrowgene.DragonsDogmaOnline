@@ -131,7 +131,7 @@ public class ServerCommand : ICommand
             {
                 if (_loginServerMetricsCollector == null)
                 {
-                    _loginServerMetricsCollector = CreateMetricsCollector(_setting.LoginMetricSettings, _loginServer);
+                    _loginServerMetricsCollector = CreateMetricsCollector(_setting.LoginMetricSettings, _loginServer, "login");
                 }
             }
         }
@@ -150,7 +150,7 @@ public class ServerCommand : ICommand
             {
                 if (_gameServerMetricsCollector == null)
                 {
-                    _gameServerMetricsCollector = CreateMetricsCollector(_setting.GameMetricSettings, _gameServer);
+                    _gameServerMetricsCollector = CreateMetricsCollector(_setting.GameMetricSettings, _gameServer, "game");
                 }
             }
         }
@@ -240,15 +240,19 @@ public class ServerCommand : ICommand
 
     private MetricsCollector<DdonServerMetricsSnapshot> CreateMetricsCollector(
         MetricSettings settings,
-        IMetricsCapture<DdonServerMetricsSnapshot> capture
+        IMetricsCapture<DdonServerMetricsSnapshot> capture,
+        string serverName
     )
     {
         IMetricsSink<DdonServerMetricsSnapshot> sink;
         switch (settings.MetricsSink)
         {
-            case MetricsSinkType.MemoryMetricsSink:
-                sink = new MemoryMetricsSink(
-                    TimeSpan.FromMinutes(settings.MemoryMetricsSinkRetention)
+            case MetricsSinkType.FileMetricsSink:
+                sink = new FileMetricsSink(
+                    TimeSpan.FromMinutes(settings.FileMetricsSinkRetention),
+                    settings.FileMetricsExportPath,
+                    serverName,
+                    settings.FileMetricsExportIntervalMs
                 );
                 break;
             default:

@@ -6,23 +6,29 @@ namespace Arrowgene.Ddon.Metrics
     public class MetricSettings
     {
         [DataMember(Order = 1)] public bool Enabled { get; set; }
-        [DataMember(Order = 20)] public int SamplingIntervalMs { get; set; }
         [DataMember(Order = 10)] public MetricsSinkType MetricsSink { get; set; }
-        [DataMember(Order = 20)] public long MemoryMetricsSinkRetention { get; set; }
+        [DataMember(Order = 20)] public int SamplingIntervalMs { get; set; }
+        [DataMember(Order = 50)] public long FileMetricsSinkRetention { get; set; }
+        [DataMember(Order = 51)] public string FileMetricsExportPath { get; set; }
+        [DataMember(Order = 52)] public int FileMetricsExportIntervalMs { get; set; }
 
 
         public MetricSettings()
         {
             Enabled = false;
-            MetricsSink = MetricsSinkType.MemoryMetricsSink;
-            MemoryMetricsSinkRetention = 1000;
+            MetricsSink = MetricsSinkType.FileMetricsSink;
+            FileMetricsSinkRetention = 1000;
+            FileMetricsExportPath = "metrics/";
+            FileMetricsExportIntervalMs = 30000;
         }
 
         public MetricSettings(MetricSettings setting)
         {
             Enabled = setting.Enabled;
             MetricsSink = setting.MetricsSink;
-            MemoryMetricsSinkRetention = setting.MemoryMetricsSinkRetention;
+            FileMetricsSinkRetention = setting.FileMetricsSinkRetention;
+            FileMetricsExportPath = setting.FileMetricsExportPath;
+            FileMetricsExportIntervalMs = setting.FileMetricsExportIntervalMs;
         }
     }
 }

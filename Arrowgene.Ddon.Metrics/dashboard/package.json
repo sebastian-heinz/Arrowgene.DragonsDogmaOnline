@@ -1,0 +1,12 @@
+{
+  "name": "ddon-metrics-dashboard",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "observable preview",
+    "build": "observable build"
+  },
+  "dependencies": {
+    "@observablehq/framework": "^1.12.0"
+  }
+}
