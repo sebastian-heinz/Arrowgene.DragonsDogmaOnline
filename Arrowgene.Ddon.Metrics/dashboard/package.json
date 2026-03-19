@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "observable preview",
-    "build": "observable build"
+    "build": "observable build",
+    "generate:dummy-data": "node ./scripts/generate-dummy-metrics.mjs"
   },
   "dependencies": {
     "@observablehq/framework": "^1.12.0"
