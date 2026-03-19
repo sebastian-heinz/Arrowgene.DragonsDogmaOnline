@@ -96,10 +96,31 @@ const allQueueDelay = selected.flatMap(s => metrics[s].queue_delay_histogram.map
 const allParse = selected.flatMap(s => metrics[s].parse_histogram.map(d => ({...d, server: s})));
 const allReceivedHandlerDuration = selected.flatMap(s => metrics[s].received_handler_duration_histogram.map(d => ({...d, server: s})));
 const chartTextColor = "#9fb4ce";
-const timeSeriesPlotStyle = {fontSize: "12px", color: chartTextColor};
-const histogramPlotStyle = {fontSize: "12.5px", color: chartTextColor};
+const sharedPlotFontSize = "13px";
+const timeSeriesPlotStyle = {fontSize: sharedPlotFontSize, color: chartTextColor};
+const histogramPlotStyle = {fontSize: sharedPlotFontSize, color: chartTextColor};
 const histogramXAxis = {label: null, tickRotate: -55, padding: 0.2, domain: bucketOrder};
 const histogramMarginBottom = 92;
+const lifecycleChartHeight = 420;
+const stageHistogramChartHeight = 380;
+const receivedHandlerChartHeight = 320;
+
+function formatTooltipTimestamp(timestamp) {
+  return new Date(timestamp).toLocaleString();
+}
+
+function formatTooltipValue(value) {
+  return Number.isFinite(value)
+    ? value.toLocaleString(undefined, {maximumFractionDigits: 2})
+    : String(value);
+}
+
+function formatHistogramTooltip(stage, d) {
+  return `${stage}
+Server: ${d.server}
+Bucket: ${d.bucket}
+Count: ${d.count.toLocaleString()}`;
+}
 ```
 
 ```js
@@ -135,6 +156,9 @@ function fmtBytes(b) {
 }
 
 function tsChart(opts) {
+  const yValue = typeof opts.y === "function" ? opts.y : d => d[opts.y];
+  const tipTitle = opts.tipTitle ?? opts.yLabel ?? "metric";
+  const valueFormat = opts.valueFormat ?? formatTooltipValue;
   return Plot.plot({
     width: opts.width ?? width,
     height: opts.height ?? 240,
@@ -146,7 +170,18 @@ function tsChart(opts) {
       Plot.ruleY([0], {stroke: "#1e2a3a"}),
       Plot.areaY(allTimeseries, {x: d => new Date(d.timestamp), y: opts.y, fill: "server", fillOpacity: 0.08}),
       Plot.lineY(allTimeseries, {x: d => new Date(d.timestamp), y: opts.y, stroke: "server", strokeWidth: 1.2}),
-      Plot.tip(allTimeseries, Plot.pointerX({x: d => new Date(d.timestamp), y: opts.y, stroke: "server"})),
+      Plot.tip(
+        allTimeseries,
+        Plot.pointerX({
+          x: d => new Date(d.timestamp),
+          y: opts.y,
+          stroke: "server",
+          title: d => `${tipTitle}
+Server: ${d.server}
+Time: ${formatTooltipTimestamp(d.timestamp)}
+Value: ${valueFormat(yValue(d))}`
+        })
+      ),
     ]
   });
 }
@@ -377,7 +412,7 @@ tsChart({y: d => d.bytesReceived / 1048576, yLabel: "MB", legend: false})
 ```js
 Plot.plot({
   width,
-  height: 340,
+  height: lifecycleChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
   color: {
@@ -407,21 +442,28 @@ Plot.plot({
 
 </div>
 
-<div class="grid grid-cols-3">
+<div class="grid grid-cols-1">
 <div class="card chart-card">
 <div class="chart-title" style="color: #ffab40;">QUEUE WAIT</div>
 
 ```js
 Plot.plot({
   width,
-  height: 250,
+  height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: selected.length > 1},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
-    Plot.barY(allQueueDelay, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.barY(allQueueDelay, {
+      x: "bucket",
+      y: "count",
+      fill: "server",
+      tip: true,
+      title: d => formatHistogramTooltip("Queue Wait", d),
+      sort: {x: null}
+    }),
     Plot.ruleY([0], {stroke: "#1e2a3a"}),
   ]
 })
@@ -434,14 +476,21 @@ Plot.plot({
 ```js
 Plot.plot({
   width,
-  height: 250,
+  height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: false},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
-    Plot.barY(allParse, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.barY(allParse, {
+      x: "bucket",
+      y: "count",
+      fill: "server",
+      tip: true,
+      title: d => formatHistogramTooltip("Parse + Dispatch", d),
+      sort: {x: null}
+    }),
     Plot.ruleY([0], {stroke: "#1e2a3a"}),
   ]
 })
@@ -454,14 +503,21 @@ Plot.plot({
 ```js
 Plot.plot({
   width,
-  height: 250,
+  height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: false},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
-    Plot.barY(allHistogram, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.barY(allHistogram, {
+      x: "bucket",
+      y: "count",
+      fill: "server",
+      tip: true,
+      title: d => formatHistogramTooltip("Handler Execution", d),
+      sort: {x: null}
+    }),
     Plot.ruleY([0], {stroke: "#1e2a3a"}),
   ]
 })
@@ -476,14 +532,21 @@ Plot.plot({
 ```js
 Plot.plot({
   width,
-  height: 250,
+  height: receivedHandlerChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: true},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
-    Plot.barY(allReceivedHandlerDuration, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.barY(allReceivedHandlerDuration, {
+      x: "bucket",
+      y: "count",
+      fill: "server",
+      tip: true,
+      title: d => formatHistogramTooltip("Received Data Handler Duration", d),
+      sort: {x: null}
+    }),
     Plot.ruleY([0], {stroke: "#1e2a3a"}),
   ]
 })
@@ -773,11 +836,16 @@ form label:has(+ .toggle-group) {
 [class*="plot-"] text,
 figure text {
   fill: #8a9db5 !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   font-weight: 500 !important;
 }
 figure [aria-label="rule"] line {
   stroke: var(--crush-border) !important;
+}
+figure [aria-label="tip"] text,
+figure [aria-label="tip"] tspan {
+  font-size: 14px !important;
+  font-weight: 600 !important;
 }
 
 /* Table */

@@ -15,7 +15,7 @@
 <link rel="modulepreload" href="./_observablehq/client.e18424d4.js">
 <link rel="modulepreload" href="./_observablehq/runtime.607a8173.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.277aeab8.js">
-<link rel="modulepreload" href="./_import/metrics-config.89761fe2.js">
+<link rel="modulepreload" href="./metrics-config.js">
 <link rel="modulepreload" href="./_npm/htl@0.3.1/72f4716c.js">
 <link rel="modulepreload" href="./_observablehq/stdlib/inputs.31cd1366.js">
 <link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.17/7c43807f.js">
@@ -61,7 +61,7 @@
 import {define} from "./_observablehq/client.e18424d4.js";
 
 define({id: "78aa584a", outputs: ["colorMap","metricFileNames","servers","metricFiles"], body: async () => {
-const {colorMap, metricFileNames, servers} = await import("./_import/metrics-config.89761fe2.js");
+const {colorMap, metricFileNames, servers} = await import("./metrics-config.js");
 
 const metricFiles = Object.fromEntries(
   servers.map(server => [
@@ -135,7 +135,7 @@ const metrics = Object.fromEntries(entries);
 return {readMetric,entries,metrics};
 }});
 
-define({id: "e189fcb6", inputs: ["selected","metrics","colorMap"], outputs: ["allTimeseries","allHandlers","allHistogram","colorDomain","colorRange","bucketOrder","stageColorMap","allLifecycle","allQueueDelay","allParse","allReceivedHandlerDuration","chartTextColor","timeSeriesPlotStyle","histogramPlotStyle","histogramXAxis","histogramMarginBottom"], body: (selected,metrics,colorMap) => {
+define({id: "3f6cb781", inputs: ["selected","metrics","colorMap"], outputs: ["allTimeseries","allHandlers","allHistogram","colorDomain","colorRange","bucketOrder","stageColorMap","allLifecycle","allQueueDelay","allParse","allReceivedHandlerDuration","chartTextColor","sharedPlotFontSize","timeSeriesPlotStyle","histogramPlotStyle","histogramXAxis","histogramMarginBottom","lifecycleChartHeight","stageHistogramChartHeight","receivedHandlerChartHeight","formatTooltipTimestamp","formatTooltipValue","formatHistogramTooltip"], body: (selected,metrics,colorMap) => {
 const allTimeseries = selected.flatMap(s => metrics[s].timeseries.map(d => ({...d, server: s})));
 const allHandlers = selected.flatMap(s => metrics[s].handlers.map(d => ({...d, server: s})));
 const allHistogram = selected.flatMap(s => metrics[s].duration_histogram.map(d => ({...d, server: s})));
@@ -156,14 +156,35 @@ const allQueueDelay = selected.flatMap(s => metrics[s].queue_delay_histogram.map
 const allParse = selected.flatMap(s => metrics[s].parse_histogram.map(d => ({...d, server: s})));
 const allReceivedHandlerDuration = selected.flatMap(s => metrics[s].received_handler_duration_histogram.map(d => ({...d, server: s})));
 const chartTextColor = "#9fb4ce";
-const timeSeriesPlotStyle = {fontSize: "12px", color: chartTextColor};
-const histogramPlotStyle = {fontSize: "12.5px", color: chartTextColor};
+const sharedPlotFontSize = "13px";
+const timeSeriesPlotStyle = {fontSize: sharedPlotFontSize, color: chartTextColor};
+const histogramPlotStyle = {fontSize: sharedPlotFontSize, color: chartTextColor};
 const histogramXAxis = {label: null, tickRotate: -55, padding: 0.2, domain: bucketOrder};
 const histogramMarginBottom = 92;
-return {allTimeseries,allHandlers,allHistogram,colorDomain,colorRange,bucketOrder,stageColorMap,allLifecycle,allQueueDelay,allParse,allReceivedHandlerDuration,chartTextColor,timeSeriesPlotStyle,histogramPlotStyle,histogramXAxis,histogramMarginBottom};
+const lifecycleChartHeight = 420;
+const stageHistogramChartHeight = 380;
+const receivedHandlerChartHeight = 320;
+
+function formatTooltipTimestamp(timestamp) {
+  return new Date(timestamp).toLocaleString();
+}
+
+function formatTooltipValue(value) {
+  return Number.isFinite(value)
+    ? value.toLocaleString(undefined, {maximumFractionDigits: 2})
+    : String(value);
+}
+
+function formatHistogramTooltip(stage, d) {
+  return `${stage}
+Server: ${d.server}
+Bucket: ${d.bucket}
+Count: ${d.count.toLocaleString()}`;
+}
+return {allTimeseries,allHandlers,allHistogram,colorDomain,colorRange,bucketOrder,stageColorMap,allLifecycle,allQueueDelay,allParse,allReceivedHandlerDuration,chartTextColor,sharedPlotFontSize,timeSeriesPlotStyle,histogramPlotStyle,histogramXAxis,histogramMarginBottom,lifecycleChartHeight,stageHistogramChartHeight,receivedHandlerChartHeight,formatTooltipTimestamp,formatTooltipValue,formatHistogramTooltip};
 }});
 
-define({id: "83a834cb", inputs: ["metrics","colorMap","Plot","width","timeSeriesPlotStyle","colorDomain","colorRange","allTimeseries","selected"], outputs: ["serverSummary","fmtBytes","tsChart","summaries"], body: (metrics,colorMap,Plot,width,timeSeriesPlotStyle,colorDomain,colorRange,allTimeseries,selected) => {
+define({id: "9b53914f", inputs: ["metrics","colorMap","formatTooltipValue","Plot","width","timeSeriesPlotStyle","colorDomain","colorRange","allTimeseries","formatTooltipTimestamp","selected"], outputs: ["serverSummary","fmtBytes","tsChart","summaries"], body: (metrics,colorMap,formatTooltipValue,Plot,width,timeSeriesPlotStyle,colorDomain,colorRange,allTimeseries,formatTooltipTimestamp,selected) => {
 function serverSummary(s) {
   const ts = metrics[s]?.timeseries ?? [];
   const latest = ts.length > 0 ? ts[ts.length - 1] : null;
@@ -196,6 +217,9 @@ function fmtBytes(b) {
 }
 
 function tsChart(opts) {
+  const yValue = typeof opts.y === "function" ? opts.y : d => d[opts.y];
+  const tipTitle = opts.tipTitle ?? opts.yLabel ?? "metric";
+  const valueFormat = opts.valueFormat ?? formatTooltipValue;
   return Plot.plot({
     width: opts.width ?? width,
     height: opts.height ?? 240,
@@ -207,7 +231,18 @@ function tsChart(opts) {
       Plot.ruleY([0], {stroke: "#1e2a3a"}),
       Plot.areaY(allTimeseries, {x: d => new Date(d.timestamp), y: opts.y, fill: "server", fillOpacity: 0.08}),
       Plot.lineY(allTimeseries, {x: d => new Date(d.timestamp), y: opts.y, stroke: "server", strokeWidth: 1.2}),
-      Plot.tip(allTimeseries, Plot.pointerX({x: d => new Date(d.timestamp), y: opts.y, stroke: "server"})),
+      Plot.tip(
+        allTimeseries,
+        Plot.pointerX({
+          x: d => new Date(d.timestamp),
+          y: opts.y,
+          stroke: "server",
+          title: d => `${tipTitle}
+Server: ${d.server}
+Time: ${formatTooltipTimestamp(d.timestamp)}
+Value: ${valueFormat(yValue(d))}`
+        })
+      ),
     ]
   });
 }
@@ -352,11 +387,11 @@ tsChart({y: d => d.bytesReceived / 1048576, yLabel: "MB", legend: false})
 ))
 }});
 
-define({id: "eea5a0c5", inputs: ["Plot","width","histogramMarginBottom","histogramPlotStyle","histogramXAxis","selected","allLifecycle","display"], body: async (Plot,width,histogramMarginBottom,histogramPlotStyle,histogramXAxis,selected,allLifecycle,display) => {
+define({id: "2937e853", inputs: ["Plot","width","lifecycleChartHeight","histogramMarginBottom","histogramPlotStyle","histogramXAxis","selected","allLifecycle","display"], body: async (Plot,width,lifecycleChartHeight,histogramMarginBottom,histogramPlotStyle,histogramXAxis,selected,allLifecycle,display) => {
 display(await(
 Plot.plot({
   width,
-  height: 340,
+  height: lifecycleChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
   color: {
@@ -385,72 +420,100 @@ Plot.plot({
 ))
 }});
 
-define({id: "243d44ec", inputs: ["Plot","width","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","selected","histogramXAxis","allQueueDelay","display"], body: async (Plot,width,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,selected,histogramXAxis,allQueueDelay,display) => {
+define({id: "e78f02e2", inputs: ["Plot","width","stageHistogramChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","selected","histogramXAxis","allQueueDelay","formatHistogramTooltip","display"], body: async (Plot,width,stageHistogramChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,selected,histogramXAxis,allQueueDelay,formatHistogramTooltip,display) => {
 display(await(
 Plot.plot({
   width,
-  height: 250,
+  height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: selected.length > 1},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
-    Plot.barY(allQueueDelay, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.barY(allQueueDelay, {
+      x: "bucket",
+      y: "count",
+      fill: "server",
+      tip: true,
+      title: d => formatHistogramTooltip("Queue Wait", d),
+      sort: {x: null}
+    }),
     Plot.ruleY([0], {stroke: "#1e2a3a"}),
   ]
 })
 ))
 }});
 
-define({id: "e103ee62", inputs: ["Plot","width","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","histogramXAxis","allParse","display"], body: async (Plot,width,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,histogramXAxis,allParse,display) => {
+define({id: "67e85de3", inputs: ["Plot","width","stageHistogramChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","histogramXAxis","allParse","formatHistogramTooltip","display"], body: async (Plot,width,stageHistogramChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,histogramXAxis,allParse,formatHistogramTooltip,display) => {
 display(await(
 Plot.plot({
   width,
-  height: 250,
+  height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: false},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
-    Plot.barY(allParse, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.barY(allParse, {
+      x: "bucket",
+      y: "count",
+      fill: "server",
+      tip: true,
+      title: d => formatHistogramTooltip("Parse + Dispatch", d),
+      sort: {x: null}
+    }),
     Plot.ruleY([0], {stroke: "#1e2a3a"}),
   ]
 })
 ))
 }});
 
-define({id: "f3343da0", inputs: ["Plot","width","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","histogramXAxis","allHistogram","display"], body: async (Plot,width,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,histogramXAxis,allHistogram,display) => {
+define({id: "2a75ef97", inputs: ["Plot","width","stageHistogramChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","histogramXAxis","allHistogram","formatHistogramTooltip","display"], body: async (Plot,width,stageHistogramChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,histogramXAxis,allHistogram,formatHistogramTooltip,display) => {
 display(await(
 Plot.plot({
   width,
-  height: 250,
+  height: stageHistogramChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: false},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
-    Plot.barY(allHistogram, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.barY(allHistogram, {
+      x: "bucket",
+      y: "count",
+      fill: "server",
+      tip: true,
+      title: d => formatHistogramTooltip("Handler Execution", d),
+      sort: {x: null}
+    }),
     Plot.ruleY([0], {stroke: "#1e2a3a"}),
   ]
 })
 ))
 }});
 
-define({id: "10991bd5", inputs: ["Plot","width","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","histogramXAxis","allReceivedHandlerDuration","display"], body: async (Plot,width,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,histogramXAxis,allReceivedHandlerDuration,display) => {
+define({id: "7a608f7a", inputs: ["Plot","width","receivedHandlerChartHeight","histogramMarginBottom","histogramPlotStyle","colorDomain","colorRange","histogramXAxis","allReceivedHandlerDuration","formatHistogramTooltip","display"], body: async (Plot,width,receivedHandlerChartHeight,histogramMarginBottom,histogramPlotStyle,colorDomain,colorRange,histogramXAxis,allReceivedHandlerDuration,formatHistogramTooltip,display) => {
 display(await(
 Plot.plot({
   width,
-  height: 250,
+  height: receivedHandlerChartHeight,
   marginBottom: histogramMarginBottom,
   style: histogramPlotStyle,
   color: {domain: colorDomain, range: colorRange, legend: true},
   x: histogramXAxis,
   y: {label: "count", grid: true},
   marks: [
-    Plot.barY(allReceivedHandlerDuration, {x: "bucket", y: "count", fill: "server", tip: true, sort: {x: null}}),
+    Plot.barY(allReceivedHandlerDuration, {
+      x: "bucket",
+      y: "count",
+      fill: "server",
+      tip: true,
+      title: d => formatHistogramTooltip("Received Data Handler Duration", d),
+      sort: {x: null}
+    }),
     Plot.ruleY([0], {stroke: "#1e2a3a"}),
   ]
 })
@@ -500,8 +563,8 @@ tsChart({y: d => d.uptimeSeconds / 3600, yLabel: "hours", height: 160})
 <div class="observablehq observablehq--block"><!--:78aa584a:--></div>
 <div class="observablehq observablehq--block"><!--:2e0d811c:--></div>
 <div class="observablehq observablehq--block"><!--:028bdc48:--></div>
-<div class="observablehq observablehq--block"><!--:e189fcb6:--></div>
-<div class="observablehq observablehq--block"><!--:83a834cb:--></div>
+<div class="observablehq observablehq--block"><!--:3f6cb781:--></div>
+<div class="observablehq observablehq--block"><!--:9b53914f:--></div>
 <div class="dash-title">
   <span class="title-sub">SERVER METRICS</span>
 </div>
@@ -605,25 +668,25 @@ tsChart({y: d => d.uptimeSeconds / 3600, yLabel: "hours", height: 160})
     <div class="pipeline-desc">business logic</div>
   </div>
 </div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:eea5a0c5:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:2937e853:--></div>
 </div>
-<div class="grid grid-cols-3">
+<div class="grid grid-cols-1">
 <div class="card chart-card">
 <div class="chart-title" style="color: #ffab40;">QUEUE WAIT</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:243d44ec:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:e78f02e2:--></div>
 </div>
 <div class="card chart-card">
 <div class="chart-title" style="color: #ab47bc;">PARSE + DISPATCH</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:e103ee62:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:67e85de3:--></div>
 </div>
 <div class="card chart-card">
 <div class="chart-title" style="color: #26c6da;">HANDLER EXECUTION</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:f3343da0:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:2a75ef97:--></div>
 </div>
 </div>
 <div class="card chart-card">
 <div class="chart-title">RECEIVED DATA HANDLER DURATION (NETWORKING LAYER)</div>
-<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:10991bd5:--></div>
+<div class="observablehq observablehq--block"><observablehq-loading></observablehq-loading><!--:7a608f7a:--></div>
 </div>
 <div class="section-bar"><span>HANDLER ANALYSIS</span></div>
 <div class="card chart-card">
@@ -872,11 +935,16 @@ form label:has(+ .toggle-group) {
 [class*="plot-"] text,
 figure text {
   fill: #8a9db5 !important;
-  font-size: 12px !important;
+  font-size: 13px !important;
   font-weight: 500 !important;
 }
 figure [aria-label="rule"] line {
   stroke: var(--crush-border) !important;
+}
+figure [aria-label="tip"] text,
+figure [aria-label="tip"] tspan {
+  font-size: 14px !important;
+  font-weight: 600 !important;
 }
 
 /* Table */
@@ -954,7 +1022,7 @@ table tr:hover td {
 </style>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2026-03-19T14:42:08">Mar 19, 2026</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2026-03-19T15:22:19">Mar 19, 2026</a>.</div>
 </footer>
 </div>
 </body>
