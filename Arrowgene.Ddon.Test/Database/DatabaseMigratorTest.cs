@@ -343,6 +343,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool ReplacePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null) { return true; }
         public bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null) { return true; }
         public bool UpdatePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null) { return true; }
+        public bool UpdatePawnCraftFinishTime(uint craftCharacterId, uint craftLeadPawnId, long finishAt, DbConnection? connectionIn = null) { return true; }
         public bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null) { return true; }
         public bool UpdateQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step, DbConnection? connectionIn = null) { return true; }
         public bool UpdateReleasedWarpPoint(uint characterId, ReleasedWarpPoint updatedReleasedWarpPoint) { return true; }

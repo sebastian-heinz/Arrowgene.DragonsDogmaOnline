@@ -512,5 +512,30 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Select(x => (ItemId) x.ItemId)
                 .FirstOrDefault(itemId);
         }
+
+        public void UpdateOnlineCraftingProgress()
+        {
+            long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var onlineClients = _server.ClientLookup.GetAll();
+
+            foreach (var client in onlineClients)
+            {
+                if (client?.Character == null) continue;
+
+                foreach (var pawn in client.Character.Pawns.Where(p => p.PawnState == PawnState.Craft))
+                {
+                    if (pawn.CraftingFinishAt > 0 && currentTime >= pawn.CraftingFinishAt)
+                    {
+                        _server.Database.ExecuteInTransaction(connection =>
+                        {
+                            _server.Database.UpdatePawnCraftFinishTime(client.Character.CharacterId, pawn.PawnId, 0, connection);
+                        });
+
+                        pawn.CraftingFinishAt = 0;
+                        client.Send(new S2CCraftFinishCraftNtc { PawnId = pawn.PawnId });
+                    }
+                }
+            }
+        }
     }
 }

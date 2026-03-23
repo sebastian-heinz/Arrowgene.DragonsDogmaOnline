@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint ItemId { get; set; }
 
         public ushort AdditionalStatusId { get; set; }
-        public uint RemainTime { get; set; }
+        public uint FinishAt { get; set; }
         public bool ExpBonus { get; set; }
         public uint CreateCount { get; set; }
         public uint PlusValue { get; set; }

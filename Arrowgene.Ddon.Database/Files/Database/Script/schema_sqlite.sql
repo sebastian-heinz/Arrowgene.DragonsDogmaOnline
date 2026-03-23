@@ -661,7 +661,7 @@ CREATE TABLE IF NOT EXISTS "ddon_pawn_craft_progress"
     "npc_action_id"          INTEGER NOT NULL,
     "item_id"                INTEGER NOT NULL,
     "unk0"                   INTEGER NOT NULL,
-    "remain_time"            INTEGER NOT NULL,
+    "finish_at"              INTEGER NOT NULL,
     "exp_bonus"              BOOLEAN NOT NULL,
     "create_count"           INTEGER NOT NULL,
 
@@ -865,8 +865,9 @@ CREATE TABLE IF NOT EXISTS "ddon_partner_pawn_pending_rewards"
     "character_id" INTEGER NOT NULL,
     "pawn_id"      INTEGER NOT NULL,
     "reward_level" INTEGER NOT NULL,
-    CONSTRAINT "pk_ddon_partner_pawn_pending_rewards" PRIMARY KEY ("character_id", "pawn_id"),
-    CONSTRAINT "fk_ddon_partner_pawn_pending_rewards_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_partner_pawn_pending_rewards" PRIMARY KEY ("character_id", "pawn_id", "reward_level"),
+    CONSTRAINT "fk_ddon_partner_pawn_pending_rewards_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE,
+    CONSTRAINT "fk_ddon_partner_pawn_pending_rewards_pawn_id" FOREIGN KEY ("pawn_id") REFERENCES "ddon_pawn" ("pawn_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_achievement_progress"
@@ -1096,3 +1097,6 @@ CREATE TABLE IF NOT EXISTS "ddon_bbm_reset_gg"
 
 INSERT INTO "ddon_schedule_next"(type, timestamp)
 VALUES (20, 0);
+
+INSERT INTO "ddon_schedule_next"(type, timestamp)
+VALUES (25, 0);

@@ -440,6 +440,23 @@ public partial class DdonSqlDb : SqlDb
             }
         );
 
+        ExecuteReader(
+            conn,
+            SqlSelectPawnCraftProgress,
+            command =>
+            {
+                AddParameter(command, "@craft_character_id", pawn.CharacterId);
+                AddParameter(command, "@craft_lead_pawn_id", pawn.PawnId);
+            },
+            reader =>
+            {
+                if (reader.Read())
+                {
+                    pawn.CraftingFinishAt = GetUInt32(reader, "finish_at");
+                }
+            }
+        );
+
         pawn.PartnerPawnData = GetPartnerPawnRecord(pawn.CharacterId, pawn.PawnId, conn) ?? new PartnerPawnData();
     }
 

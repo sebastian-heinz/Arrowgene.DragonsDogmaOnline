@@ -14,6 +14,8 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
         AreaRankResetStart, //null
         AreaRankResetEnd, //null
         BoardQuestDailyRotation, //null
+        
+        UpdateCrafting, // RpcCraftingTimerData
 
         //InternalChatRoute
         SendTellMessage, // RpcChatData

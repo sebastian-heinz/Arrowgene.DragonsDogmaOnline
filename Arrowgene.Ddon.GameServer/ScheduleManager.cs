@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.GameServer
         private static readonly int TIMER_TICK_HOURLY = 1 * 1000; // 1 second
         private static readonly int TIMER_TICK_DAILY = 10 * 1000; // 10 seconds
         private static readonly int TIMER_TICK_WEEKLY = 30 * 1000; // 30 seconds
+        private static readonly int TIMER_TICK_SECONDLY = 1 * 1000; // 1 second
 
         public ScheduleManager(DdonGameServer server)
         {
@@ -34,6 +35,7 @@ namespace Arrowgene.Ddon.GameServer
                 new AreaPointResetTask(DayOfWeek.Monday, 5, 0),
                 new RankingBoardResetTask(DayOfWeek.Monday, 5, 0),
                 new BBMResetTicketTask(DayOfWeek.Monday, 5, 0),
+                new CraftingSchedulerTask(),
                 new PawnLikabilityIncreaseResetTask(5, 0),
                 new EquipmentRecycleResetTask(5, 0),
                 new BoardQuestRotationTask(5, 0),
@@ -50,6 +52,8 @@ namespace Arrowgene.Ddon.GameServer
                     return TIMER_TICK_DAILY;
                 case ScheduleInterval.Weekly:
                     return TIMER_TICK_WEEKLY;
+                case ScheduleInterval.Secondly:
+                    return TIMER_TICK_SECONDLY;
                 default:
                     return TIMER_TICK_HOURLY;
             }

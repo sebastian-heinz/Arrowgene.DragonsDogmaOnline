@@ -130,6 +130,11 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                                 Message = "BoardQuestDailyRotation"
                             };
                         }
+                    case RpcInternalCommand.UpdateCrafting:
+                        {
+                            gameServer.CraftManager.UpdateOnlineCraftingProgress();
+                            return new RpcCommandResult(this, true);
+                        }
                     default:
                         return new RpcCommandResult(this, false);
                 }

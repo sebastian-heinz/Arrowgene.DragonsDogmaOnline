@@ -133,6 +133,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     actionType = NpcActionType.NpcActionDesk;
                 }
+                
+                uint duration = Server.CraftManager.CalculateRecipeProductionSpeed(recipe.Time, itemInfo, craftPawns) * request.CreateCount;
+                long finishAt = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + duration;
+                leadPawn.CraftingFinishAt = finishAt;
 
                 CraftProgress craftProgress = new CraftProgress
                     {
@@ -145,8 +149,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         NpcActionId = actionType,
                         ItemId = recipe.ItemID,
                         AdditionalStatusId = request.AdditionalStatusId,
-                        // TODO: implement mechanism to deduct time periodically
-                        RemainTime = Server.CraftManager.CalculateRecipeProductionSpeed(recipe.Time, itemInfo, craftPawns),
+                        FinishAt = (uint)finishAt,
+
                         CreateCount = recipe.Num * request.CreateCount,
                         PlusValue = plusValue,
                         GreatSuccess = isGreatSuccessEquipmentQuality || isGreatSuccessConsumableQuantity,

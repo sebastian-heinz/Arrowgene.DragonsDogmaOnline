@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class CraftTimeSaveHandler : GameRequestPacketQueueHandler<C2SCraftTimeSaveReq, S2CCraftTimeSaveRes>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftCancelCraftHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftTimeSaveHandler));
 
         public CraftTimeSaveHandler(DdonGameServer server) : base(server)
         {
@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             CraftProgress craftProgress = Server.Database.SelectPawnCraftProgress(client.Character.CharacterId, request.PawnID)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INVALID_CRAFT_STAGE);
-            craftProgress.RemainTime = 0;
+            craftProgress.FinishAt = 0;
 
             // TODO: Fetch the actual cost via the ID in the req which points to some time save config sent also via craft setting handler
             bool walletUpdate = Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, request.Num);

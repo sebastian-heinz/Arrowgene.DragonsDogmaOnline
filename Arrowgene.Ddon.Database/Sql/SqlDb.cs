@@ -345,6 +345,7 @@ public abstract class SqlDb : IDatabase
     public abstract bool ReplacePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
     public abstract bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
     public abstract bool UpdatePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
+    public abstract bool UpdatePawnCraftFinishTime(uint craftCharacterId, uint craftLeadPawnId, long finishAt, DbConnection? connectionIn = null);
     public abstract bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
     public abstract CraftProgress? SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
     public abstract bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill);

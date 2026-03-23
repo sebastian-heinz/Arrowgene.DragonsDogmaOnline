@@ -71,6 +71,12 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool IsRented {  get; set; }
         public PawnState PawnState { get; set; }
 
+        /// <summary>
+        /// In-Memory Cache for the Unix timestamp when the current craft finishes.
+        /// Used to reduce database load in the CraftManager background task.
+        /// </summary>
+        public long CraftingFinishAt {get; set; } = 0;
+
         public List<CDataPawnHistory> PawnHistory { get; set; } = [];
         public CDataPawnTotalScore PawnScore { get; set; } = new();
 
