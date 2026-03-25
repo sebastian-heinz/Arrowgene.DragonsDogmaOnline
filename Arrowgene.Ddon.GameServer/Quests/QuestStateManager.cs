@@ -860,6 +860,49 @@ namespace Arrowgene.Ddon.GameServer.Quests
             this.Server = server;
         }
 
+        private Dictionary<QuestId, int> BuildMutualExclusionLookup()
+        {
+            var lookup = new Dictionary<QuestId, int>();
+            var groups = Server.GameSettings.GameServerSettings.MutuallyExclusiveWorldQuestGroups;
+            for (int i = 0; i < groups.Count; i++)
+            {
+                foreach (var questId in groups[i])
+                {
+                    lookup[(QuestId)questId] = i;
+                }
+            }
+            return lookup;
+        }
+
+        private void EnforceMutualExclusion()
+        {
+            var lookup = BuildMutualExclusionLookup();
+            var rolledGroups = new HashSet<int>();
+
+            lock (ActiveQuests)
+            {
+                foreach (var scheduleIds in RolledInstanceWorldQuests.Values)
+                {
+                    var toRemove = new List<uint>();
+                    foreach (var scheduleId in scheduleIds)
+                    {
+                        var quest = QuestManager.GetQuestByScheduleId(scheduleId);
+                        if (quest != null && lookup.TryGetValue(quest.QuestId, out int groupIndex))
+                        {
+                            if (!rolledGroups.Add(groupIndex))
+                            {
+                                toRemove.Add(scheduleId);
+                            }
+                        }
+                    }
+                    foreach (var scheduleId in toRemove)
+                    {
+                        scheduleIds.Remove(scheduleId);
+                    }
+                }
+            }
+        }
+
         public override void EnforceInitialPoolEligibility()
         {
             var settings = Server.GameSettings.GameServerSettings;
@@ -868,14 +911,23 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 // Copy the server-wide pool and apply rank filter (no re-roll replacement).
                 ApplyServerPool(Server.WorldQuestManager.GetCurrentPool());
+                EnforceMutualExclusion();
                 return;
             }
 
             // InstanceReset mode: re-roll ineligible slots for this party.
-            if (!settings.WorldQuestFilterByLeaderAreaRank) return;
+            if (!settings.WorldQuestFilterByLeaderAreaRank)
+            {
+                EnforceMutualExclusion();
+                return;
+            }
 
             var leaderCharacter = Party.Leader?.Client.Character;
-            if (leaderCharacter == null) return;
+            if (leaderCharacter == null)
+            {
+                EnforceMutualExclusion();
+                return;
+            }
 
             lock (ActiveQuests)
             {
@@ -898,6 +950,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     }
                 }
             }
+
+            EnforceMutualExclusion();
         }
 
         /// <summary>
@@ -949,6 +1003,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
 
             ApplyServerPool(serverPool);
+            EnforceMutualExclusion();
             SendWorldQuestListNtc();
         }
 
@@ -986,7 +1041,32 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         protected override Quest RollQuestVariant(QuestId questId)
         {
+            var lookup = BuildMutualExclusionLookup();
+            if (lookup.TryGetValue(questId, out int groupIndex))
+            {
+                var rolledQuestIds = GetRolledQuestIds();
+                var groups = Server.GameSettings.GameServerSettings.MutuallyExclusiveWorldQuestGroups;
+                if (groups[groupIndex].Any(gid => (QuestId)gid != questId && rolledQuestIds.Contains((QuestId)gid)))
+                {
+                    return null;
+                }
+            }
             return RollEligibleQuestVariant(questId, Party.Leader?.Client.Character);
+        }
+
+        private HashSet<QuestId> GetRolledQuestIds()
+        {
+            lock (ActiveQuests)
+            {
+                var result = new HashSet<QuestId>();
+                foreach (var scheduleIds in RolledInstanceWorldQuests.Values)
+                    foreach (var sid in scheduleIds)
+                    {
+                        var quest = QuestManager.GetQuestByScheduleId(sid);
+                        if (quest != null) result.Add(quest.QuestId);
+                    }
+                return result;
+            }
         }
 
         public override bool CompleteQuestProgress(uint questScheduleId, DbConnection? connectionIn = null)
