@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.WebServer
             public string Password { get; set; }
             public string Email { get; set; }
 
-            public AccountVerification(string username, string password, string email)
+            public AccountVerification(string username, string password, string email, bool mailRequired)
             {
                 Username = (username is not null) ? username : "";
                 Password = (password is not null) ? password : "";
@@ -81,20 +81,22 @@ namespace Arrowgene.Ddon.WebServer
                     Message = "Password cannot contain spaces";
                     return;
                 }
-                
-                if (Email == null || Email.Trim().Length == 0)
-                {
-                    Error = true;
-                    Message = "E-mail cannot be empty";
-                    return;
-                }
 
-
-                if (!Regex.IsMatch(Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                if (mailRequired)
                 {
-                    Error = true;
-                    Message = "Invalid e-mail format";
-                    return;
+                    if (Email == null || Email.Trim().Length == 0)
+                    {
+                        Error = true;
+                        Message = "E-mail cannot be empty";
+                        return;
+                    }
+
+                    if (!Regex.IsMatch(Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                    {
+                        Error = true;
+                        Message = "Invalid e-mail format";
+                        return;
+                    }
                 }
             }
         }
@@ -115,7 +117,7 @@ namespace Arrowgene.Ddon.WebServer
             }
 
             AccountResponse res = new AccountResponse();
-            AccountVerification accountCheck = new(req.Account, req.Password, req.Email);
+            AccountVerification accountCheck = new(req.Account, req.Password, req.Email, (bool)_webServerSetting.MailSetting.MailRequired);
 
             switch (req.Action)
             {
@@ -258,6 +260,11 @@ namespace Arrowgene.Ddon.WebServer
             }
 
             Account email = _database.SelectAccountByEmail(mail);
+            if (!(bool)_webServerSetting.MailSetting.MailRequired && string.IsNullOrWhiteSpace(mail))
+            {
+                mail = $"{name}@dd.on";
+            }
+
             if (email != null)
             {
                 Logger.Error($"{mail} - CreateAccount: email already taken");
