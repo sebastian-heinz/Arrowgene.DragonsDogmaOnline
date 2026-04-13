@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (quest != null)
             {
                 client.Party.ExmInProgress = true;
-                client.Party.ExmInitialPartySize = client.Party.MemberCount();
+                client.Party.ExmInitialPartySize = (uint)client.Party.MemberCount();
                 client.Party.QuestState.AddNewQuest(quest);
                 var ntc = new S2CQuestTimeGainQuestPlayStartNtc()
                 {

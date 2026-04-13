@@ -36,10 +36,6 @@ namespace Arrowgene.Ddon.WebServer
             public string Token { get; set; }
         }
 
-        private class AccountRouteException(string message) : Exception(message)
-        {
-        }
-
         private class AccountVerification
         {
             public bool Error { get; set; }
@@ -58,26 +54,34 @@ namespace Arrowgene.Ddon.WebServer
 
                 if (Username.Trim().Length == 0)
                 {
-                    throw new AccountRouteException("Account ID cannot be empty.");
+                    Error = true;
+                    Message = "Account ID cannot be empty";
+                    return;
                 }
 
                 // Disallow any whitespace.
 
                 if (Regex.IsMatch(Username, @"\s"))
                 {
-                    throw new AccountRouteException("Account ID cannot contain spaces.");
+                    Error = true;
+                    Message = "Account ID cannot contain spaces";
+                    return;
                 }
 
                 if (Password.Trim().Length == 0)
                 {
-                    throw new AccountRouteException("Password cannot be empty.");
+                    Error = true;
+                    Message = "Password cannot be empty";
+                    return;
                 }
 
                 if (Regex.IsMatch(Password, @"\s"))
                 {
-                    throw new AccountRouteException("Password cannot contain spaces.");
+                    Error = true;
+                    Message = "Password cannot contain spaces";
+                    return;
                 }
-                
+
                 if (Email == null || Email.Trim().Length == 0)
                 {
                     Error = true;
@@ -111,7 +115,19 @@ namespace Arrowgene.Ddon.WebServer
             }
 
             AccountResponse res = new AccountResponse();
-            AccountVerification accountCheck = new(req.Account, req.Password, req.Email);
+
+            if (_database.CheckBannedIp(request.Host))
+            {
+                res.Error = "You have been IP banned.";
+                WebResponse banresponse = new()
+                {
+                    StatusCode = 401
+                };
+                await banresponse.WriteJsonAsync(res);
+                return banresponse;
+            }
+
+            AccountVerification accountCheck = new(req.Account, req.Password, req.Email); 
 
             switch (req.Action)
             {
@@ -120,7 +136,7 @@ namespace Arrowgene.Ddon.WebServer
                     string token = CreateLoginToken(req.Account, req.Password);
                     if (token == null)
                     {
-                        if((bool)_webServerSetting.MailSetting.MailRequired)
+                        if ((bool)_webServerSetting.MailSetting.MailRequired)
                             res.Error = "Either your account or password are incorrect, or your email isn't verified yet";
                         else
                             res.Error = "Account or password wrong";
@@ -146,7 +162,7 @@ namespace Arrowgene.Ddon.WebServer
                         res.Error = "Account or e-mail already in use";
                         break;
                     }
-                    try 
+                    try
                     {
                         if ((bool)_webServerSetting.MailSetting.MailRequired)
                         {
@@ -211,7 +227,7 @@ namespace Arrowgene.Ddon.WebServer
                         res.Error = "Email not found";
                         break;
                     }
-                    
+
                     res.Message = "Email verified";
                     break;
 
@@ -250,7 +266,7 @@ namespace Arrowgene.Ddon.WebServer
             if (account != null)
             {
                 Logger.Error($"{name} - CreateAccount: account already taken");
-                throw new AccountRouteException("Account already exists.");
+                return null;
             }
 
             Account email = _database.SelectAccountByEmail(mail);
@@ -272,22 +288,16 @@ namespace Arrowgene.Ddon.WebServer
             if (account == null)
             {
                 Logger.Error($"{name} - CreateToken: account does not exist");
-                throw new AccountRouteException("Account or password wrong.");
+                return null;
             }
 
             if (!PasswordHash.Verify(password, account.Hash))
             {
                 Logger.Error($"{name} - CreateToken: wrong password provided");
-                throw new AccountRouteException("Account or password wrong.");
+                return null;
             }
 
-            if (account.State <= AccountStateType.Banned)
-            {
-                Logger.Error($"{name} - CreateToken: attempted login to banned account.");
-                throw new AccountRouteException("This account has been banned.");
-            }
-
-            if (!account.MailVerified && (bool)_webServerSetting.MailSetting.MailRequired )
+            if (!account.MailVerified && (bool)_webServerSetting.MailSetting.MailRequired)
             {
                 Logger.Error($"{name} - CreateToken: email not verified yet");
                 return null;
@@ -338,7 +348,7 @@ namespace Arrowgene.Ddon.WebServer
 
         private bool VerifyEmail(string name, string emailToken)
         {
-            
+
             Account account = _database.SelectAccountByMailTokenAndName(name, emailToken);
             if (account == null)
             {

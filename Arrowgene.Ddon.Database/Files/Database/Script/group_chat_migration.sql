@@ -1,3 +1,23 @@
+CREATE TABLE IF NOT EXISTS "account_ip_ban"
+(
+    "addr"                TEXT      PRIMARY KEY NOT NULL,
+    "date"                DATETIME              NOT NULL DEFAULT (CURRENT_TIMESTAMP)
+);
+CREATE INDEX IF NOT EXISTS "idx_account_ip_ban_addr" ON "account_ip_ban" ("addr");
+
+CREATE TABLE IF NOT EXISTS "ddon_mail"
+(
+    "message_id"    INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "character_id"  INTEGER                           NOT NULL,
+    "message_state" INTEGER                           NOT NULL,
+    "sender_id"     INTEGER                           NOT NULL,
+    "message_title" VARCHAR(256)                      NOT NULL DEFAULT '',
+    "message_body"  VARCHAR(2048)                     NOT NULL DEFAULT '',
+    "send_date"     INTEGER                           NOT NULL DEFAULT 0,
+    CONSTRAINT "fk_ddon_mail_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS "idx_ddon_mail_character_id" ON "ddon_mail" ("character_id");
+
 CREATE TABLE "ddon_group_chat_groups"
 (
     "group_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,

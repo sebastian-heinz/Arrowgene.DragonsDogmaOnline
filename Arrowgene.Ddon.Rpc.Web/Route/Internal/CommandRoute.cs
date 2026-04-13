@@ -37,6 +37,8 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                     RpcInternalCommand.AreaRankResetEnd => HandleAreaRankResetEnd(gameServer),
                     RpcInternalCommand.BoardQuestDailyRotation => HandleBoardQuestDailyRotation(gameServer),
                     RpcInternalCommand.StampReset => HandleStampReset(gameServer),
+                    RpcInternalCommand.UpdateCrafting => HandleUpdateCrafting(gameServer),
+                    RpcInternalCommand.WorldQuestReset => HandleWorldQuestReset(gameServer),
                     _ => new RpcCommandResult(this, false),
                 };
             }
@@ -144,27 +146,6 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
 
                 QuestManager.AddQuests(gameServer, quests);
 
-                            return new RpcCommandResult(this, true)
-                            {
-                                Message = "BoardQuestDailyRotation"
-                            };
-                        }
-                    case RpcInternalCommand.UpdateCrafting:
-                        {
-                            gameServer.CraftManager.UpdateOnlineCraftingProgress();
-                            return new RpcCommandResult(this, true);
-                        }
-                    case RpcInternalCommand.WorldQuestReset:
-                        {
-                            long seed = _entry.GetData<long>();
-                            gameServer.WorldQuestManager.PerformReset(seed);
-                            return new RpcCommandResult(this, true)
-                            {
-                                Message = $"WorldQuestReset with seed {seed}"
-                            };
-                        }
-                    default:
-                        return new RpcCommandResult(this, false);
                 return new RpcCommandResult(this, true)
                 {
                     Message = _entry.Command.ToString()
@@ -181,6 +162,23 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                 return new RpcCommandResult(this, true)
                 {
                     Message = _entry.Command.ToString()
+                };
+            }
+
+            private RpcCommandResult HandleUpdateCrafting(DdonGameServer gameServer)
+            {
+                gameServer.CraftManager.UpdateOnlineCraftingProgress();
+                return new RpcCommandResult(this, true);
+
+
+            }
+            private RpcCommandResult HandleWorldQuestReset(DdonGameServer gameServer)
+            {
+                long seed = _entry.GetData<long>();
+                gameServer.WorldQuestManager.PerformReset(seed);
+                return new RpcCommandResult(this, true)
+                {
+                    Message = $"WorldQuestReset with seed {seed}"
                 };
             }
         }

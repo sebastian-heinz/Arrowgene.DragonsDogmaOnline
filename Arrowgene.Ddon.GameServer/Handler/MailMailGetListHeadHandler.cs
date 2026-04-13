@@ -1,4 +1,3 @@
-using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
@@ -15,8 +14,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CMailMailGetListHeadRes Handle(GameClient client, C2SMailMailGetListHeadReq request)
         {
-            // client.Send(InGameDump.Dump_77);
-
             var messages = Server.Database.SelectMailMessages(client.Character.CharacterId);
 
             return new S2CMailMailGetListHeadRes() 

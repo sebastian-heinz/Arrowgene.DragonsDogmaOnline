@@ -61,8 +61,7 @@ public partial class DdonSqlDb : SqlDb
             SELECT * 
             FROM ddon_communication_message
             NATURAL JOIN ddon_communication_message_set
-            WHERE character_id = @character_id
-            ORDER BY set_no, message_no;
+            WHERE character_id = @character_id;
         """;
 
     public override bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null)
@@ -164,7 +163,7 @@ public partial class DdonSqlDb : SqlDb
 
     public override List<CDataCharacterMsgSet> SelectCommunicationSet(uint characterId, DbConnection? connectionIn = null)
     {
-        List<CDataCharacterMsgSet> result = [];
+        Dictionary<uint, CDataCharacterMsgSet> result = new();
 
         ExecuteQuerySafe(connectionIn, connection =>
         {
@@ -180,16 +179,16 @@ public partial class DdonSqlDb : SqlDb
                         var emotion = GetUInt32(reader, "emotion");
                         var emotochat = GetBoolean(reader, "emotochat");
 
-                        if (setNo > result.Count)
+                        if (!result.ContainsKey(setNo))
                         {
-                            result.Add(new()
+                            result.Add(setNo, new()
                             {
                                 SetNo = setNo,
                                 MsgSetName = setName
                             });
                         }
 
-                        result[(int)setNo - 1].CharacterMessageList.Add(new()
+                        result[setNo].CharacterMessageList.Add(new()
                         {
                             MessageNo = messageNo,
                             Message = message,
@@ -201,6 +200,6 @@ public partial class DdonSqlDb : SqlDb
             );
         });
 
-        return result;
+        return result.OrderBy(x => x.Key).Select(x => x.Value).ToList();
     }
 }

@@ -35,7 +35,6 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public readonly ulong ContentId;
         public bool ExmInProgress;
-        public int ExmInitialPartySize;
 
         public InstanceEnemyManager InstanceEnemyManager { get; }
         public SharedQuestStateManager QuestState { get; }

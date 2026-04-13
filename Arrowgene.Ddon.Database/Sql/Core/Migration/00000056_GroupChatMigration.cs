@@ -4,8 +4,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
     public class GroupChatMigration(DatabaseSetting databaseSetting) : IMigrationStrategy
     {
-        public uint From => 53;
-        public uint To => 54;
+        public uint From => 55;
+        public uint To => 56;
 
         public bool Migrate(IDatabase db, DbConnection conn)
         {

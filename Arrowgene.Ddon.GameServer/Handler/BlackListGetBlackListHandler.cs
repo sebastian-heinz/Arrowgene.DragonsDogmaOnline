@@ -15,8 +15,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBlackListGetBlackListRes Handle(GameClient client, C2SBlackListGetBlackListReq request)
         {
-            //client.Send(InGameDump.Dump_73);
-
             return new()
             {
                 BlackList = Server.Database.SelectBlackListFull(client.Character.CharacterId)

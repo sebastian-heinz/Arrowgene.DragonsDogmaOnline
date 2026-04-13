@@ -30,12 +30,6 @@ public class ChatCommand : IChatCommand
                         $"/gm ban [accountId]: Ban a player."
                     ]));
 
-                    //responses.Add(ChatResponse.ServerChat(client, $"/gm help: Print this."));
-                    //responses.Add(ChatResponse.ServerChat(client, $"/gm list: See the current online player details."));
-                    //responses.Add(ChatResponse.ServerChat(client, $"/gm kick [accountId]: Kick a player."));
-                    //responses.Add(ChatResponse.ServerChat(client, $"/gm mute [accountId]: Mute a player."));
-                    //responses.Add(ChatResponse.ServerChat(client, $"/gm unmute [accountId]: Unmute a player."));
-                    //responses.Add(ChatResponse.ServerChat(client, $"/gm ban [accountId]: Ban a player."));
                     break;
                 }
             case "list":

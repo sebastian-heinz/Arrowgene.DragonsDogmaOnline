@@ -170,9 +170,14 @@ namespace Arrowgene.Ddon.GameServer.Chat
 
         private void Deliver(GameClient client, ChatResponse response)
         {
-            switch (client.Account.State != AccountStateType.Muted 
-                ? response.Type 
-                : LobbyChatMsgType.ManagementAlertN)
+            if (client.Account.State == AccountStateType.Muted)
+            {
+                response.Recipients.Add(client);
+                Send(response);
+                return;
+            }
+
+            switch (response.Type)
             {
                 case LobbyChatMsgType.Say:
                     // Quick-chats are local/party-shared.
