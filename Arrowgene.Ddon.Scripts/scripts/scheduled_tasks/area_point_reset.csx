@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public class AreaPointResetTask : WeeklyTask
 {
     public AreaPointResetTask(DayOfWeek day, uint hour, uint minute)
@@ -21,9 +23,14 @@ public class AreaPointResetTask : WeeklyTask
                     server.Database.InsertAreaRankSupply(characterId, rank.AreaId, reward.Index, reward.ItemId, reward.Num, connection);
                 }
             }
+
+            foreach (var character in server.ClientLookup.GetAllCharacter())
+            {
+                character.AreaSupply = server.Database.SelectAreaRankSupply(character.CharacterId, connection);
+            }
         });
 
-        server.RpcManager.AnnounceAll("internal/command", RpcInternalCommand.AreaRankResetEnd, null);
+        server.RpcManager.AnnounceOthers("internal/command", RpcInternalCommand.AreaRankResetEnd, null);
     }
 }
 

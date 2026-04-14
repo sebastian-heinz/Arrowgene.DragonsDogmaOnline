@@ -6,7 +6,17 @@ public class BoardQuestRotationTask : DailyTask
     public override void RunTask(DdonGameServer server)
     {
         server.LightQuestManager.InsertRecordsFromAsset();
-        server.RpcManager.AnnounceAll("internal/command", RpcInternalCommand.BoardQuestDailyRotation, null);
+
+        var questRecords = server.Database.SelectLightQuestRecords();
+        var extantQuests = QuestManager.GetQuestsByType(QuestType.Light);
+
+        var quests = questRecords
+            .Where(x => !extantQuests.Contains(x.QuestScheduleId))
+            .Select(x => server.LightQuestManager.GenerateQuestFromRecord(x));
+
+        QuestManager.AddQuests(server, quests);
+
+        server.RpcManager.AnnounceOthers("internal/command", RpcInternalCommand.BoardQuestDailyRotation, null);
     }
 }
 
