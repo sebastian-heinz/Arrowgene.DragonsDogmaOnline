@@ -18,46 +18,52 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestGetPriorityQuestRes Handle(GameClient client, C2SQuestGetPriorityQuestReq request)
         {
-            // client.Send(GameFull.Dump_144);
             S2CQuestGetPriorityQuestRes res = new S2CQuestGetPriorityQuestRes();
 
             Character partyLeader = client.Party.Leader?.Client.Character ?? client.Character;
             CDataPriorityQuestSetting setting = new CDataPriorityQuestSetting();
             setting.CharacterId = partyLeader.CharacterId;
 
-            var priorityQuestScheduleIds = Server.Database.GetPriorityQuestScheduleIds(partyLeader.CommonId);
-            foreach (var questScheduleId in priorityQuestScheduleIds)
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                if (!QuestManager.IsQuestEnabled(questScheduleId))
+                var priorityQuestScheduleIds = Server.Database.GetPriorityQuestScheduleIds(partyLeader.CommonId, connection);
+                foreach (var questScheduleId in priorityQuestScheduleIds)
                 {
-                    Logger.Error(client, $"Priority quest for quest state which doesn't exist or is not enabled, schedule {questScheduleId}");
-                    Server.Database.DeletePriorityQuest(client.Character.CommonId, questScheduleId);
-                    continue;
-                }
+                    if (!QuestManager.IsQuestEnabled(questScheduleId))
+                    {
+                        Logger.Error(client, $"Priority quest for quest state which doesn't exist or is not enabled, schedule {questScheduleId}");
+                        Server.Database.DeletePriorityQuest(client.Character.CommonId, questScheduleId, connection);
+                        continue;
+                    }
 
-                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                if (quest == null)
-                {
-                    Logger.Error(client, $"No quest object exists for {questScheduleId}");
-                    continue;
-                }
+                    var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                    if (quest == null)
+                    {
+                        Logger.Error(client, $"No quest object exists for {questScheduleId}");
+                        Server.Database.DeletePriorityQuest(client.Character.CommonId, questScheduleId, connection);
+                        continue;
+                    }
 
-                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
-                if (questStateManager == null)
-                {
-                    Logger.Error(client, $"Unable to fetch the quest state manager for {questScheduleId}");
-                    continue;
-                }
+                    var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                    if (questStateManager == null)
+                    {
+                        Logger.Error(client, $"Unable to fetch the quest state manager for {questScheduleId}");
+                        Server.Database.DeletePriorityQuest(client.Character.CommonId, questScheduleId, connection);
+                        continue;
+                    }
 
-                var questState = questStateManager.GetQuestState(questScheduleId);
-                if (questState == null)
-                {
-                    Logger.Error(client, $"Failed to find quest state for {questScheduleId}");
-                    continue;
-                }
+                    var questState = questStateManager.GetQuestState(questScheduleId);
+                    if (questState == null)
+                    {
+                        Logger.Error(client, $"Failed to find quest state for {questScheduleId}");
+                        Server.Database.DeletePriorityQuest(client.Character.CommonId, questScheduleId, connection);
+                        continue;
+                    }
 
-                setting.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState?.Step ?? 0));
-            }
+                    setting.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState?.Step ?? 0));
+                }
+            });
+            
 
             res.PriorityQuestSettingsList.Add(setting);
 
