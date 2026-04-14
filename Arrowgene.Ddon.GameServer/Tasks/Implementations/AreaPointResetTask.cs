@@ -44,9 +44,14 @@ namespace Arrowgene.Ddon.GameServer.Tasks.Implementations
                         server.Database.InsertAreaRankSupply(characterId, rank.AreaId, reward.Index, reward.ItemId, reward.Num, connection);
                     }
                 }
+
+                foreach (var character in server.ClientLookup.GetAllCharacter())
+                {
+                    character.AreaSupply = server.Database.SelectAreaRankSupply(character.CharacterId, connection);
+                }
             });
 
-            server.RpcManager.AnnounceAll("internal/command", RpcInternalCommand.AreaRankResetEnd, null);
+            server.RpcManager.AnnounceOthers("internal/command", RpcInternalCommand.AreaRankResetEnd, null);
         }
     }
 }

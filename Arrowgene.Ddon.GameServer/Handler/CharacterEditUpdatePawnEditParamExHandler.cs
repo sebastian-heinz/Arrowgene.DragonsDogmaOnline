@@ -4,7 +4,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -37,13 +36,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = ItemNoticeType.StorePostItemMail //Probably an abuse of this notice type.
             };
 
-            List<(EquipType, EquipSlot)> forceRemovals = new List<(EquipType, EquipSlot)>();
+            List<(EquipType, EquipSlot)> forceRemovals = [];
 
             //Weirdly enough, pawns can reincarnate while wearing gender-locked equipment just fine.
             Server.Database.ExecuteInTransaction(connection =>
             {
                 forceRemovals = Server.EquipManager.CleanGenderedEquipTemplates(Server, pawn, connection);
-                if (forceRemovals.Any())
+                if (forceRemovals.Count != 0)
                 {
                     foreach ((EquipType, EquipSlot) force in forceRemovals)
                     {
@@ -58,17 +57,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             pawn.Equipment.GetStorageSlot(equipType, (byte)slot),
                             1,
                             destinationStorage,
-                            0
+                            0, connection
                         ));
                     }
                 }
             });
 
-            if (forceRemovals.Any())
+            if (forceRemovals.Count != 0)
             {
                 client.Send(updateCharacterItemNtc);
 
-                S2CEquipChangePawnEquipNtc updateEquipNtc = new S2CEquipChangePawnEquipNtc()
+                S2CEquipChangePawnEquipNtc updateEquipNtc = new()
                 {
                     CharacterId = client.Character.CharacterId,
                     PawnId = pawn.PawnId,

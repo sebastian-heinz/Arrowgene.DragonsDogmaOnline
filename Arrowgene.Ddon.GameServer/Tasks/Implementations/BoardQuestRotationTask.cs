@@ -1,16 +1,10 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Ddon.Shared.Model.Scheduler;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Arrowgene.Ddon.GameServer.Quests.LightQuests;
-using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Tasks.Implementations
 {
@@ -33,7 +27,16 @@ namespace Arrowgene.Ddon.GameServer.Tasks.Implementations
 
             server.LightQuestManager.InsertRecordsFromAsset();
 
-            server.RpcManager.AnnounceAll("internal/command", RpcInternalCommand.BoardQuestDailyRotation, null);
+            var questRecords = server.Database.SelectLightQuestRecords();
+            var extantQuests = QuestManager.GetQuestsByType(QuestType.Light);
+
+            var quests = questRecords
+                .Where(x => !extantQuests.Contains(x.QuestScheduleId))
+                .Select(x => server.LightQuestManager.GenerateQuestFromRecord(x));
+
+            QuestManager.AddQuests(server, quests);
+
+            server.RpcManager.AnnounceOthers("internal/command", RpcInternalCommand.BoardQuestDailyRotation, null);
         }
     }
 }
