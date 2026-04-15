@@ -3,7 +3,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -21,8 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.PriceInfo.Add(new CDataCharacterEditPriceInfo()
             {
                 UpdateType = 1, //Beauty Parlor
-                Prices = new List<CDataWalletPoint>()
-                {
+                Prices =
+                [
                     new()
                     {
                         Type = WalletType.GoldenGemstones,
@@ -33,33 +32,33 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         Type = WalletType.SilverTickets,
                         Value = Server.GameSettings.GameServerSettings.BeautyParlorSTPrice,
                     },
-                }
+                ]
             });
 
             res.PriceInfo.Add(new CDataCharacterEditPriceInfo()
             {
                 UpdateType = 2, //Reincarnation
-                Prices = new List<CDataWalletPoint>()
-                {
+                Prices =
+                [
                     new()
                     {
                         Type = WalletType.GoldenGemstones,
                         Value = Server.GameSettings.GameServerSettings.ReincarnationGGPrice,
                     },
-                }
+                ]
             });
 
             res.PriceInfo.Add(new CDataCharacterEditPriceInfo()
             {
                 UpdateType = 3, // Pawn Beauty Parlor
-                Prices = new List<CDataWalletPoint>()
-                {
+                Prices =
+                [
                     new()
                     {
                         Type = WalletType.GoldenGemstones,
                         Value = Server.GameSettings.GameServerSettings.BeautyParlorGGPrice,
                     },
-                }
+                ]
             });
 
             return res;
@@ -78,6 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_SHOP_PRICE_NO_MATCH);
                 case 3:
                     if (priceType == WalletType.GoldenGemstones && value == server.GameSettings.GameServerSettings.BeautyParlorGGPrice) return;
+                    if (priceType == WalletType.SilverTickets && value == server.GameSettings.GameServerSettings.BeautyParlorSTPrice) return;
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_SHOP_PRICE_NO_MATCH);
                 default:
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_SHOP_PRICE_NO_MATCH);
