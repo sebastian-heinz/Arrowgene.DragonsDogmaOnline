@@ -36,7 +36,7 @@ CREATE TABLE "ddon_group_chat"
 );
 
 INSERT INTO "ddon_schedule_next"(type, timestamp)
-VALUES (25, 0);
+VALUES (26, 0);
 
 CREATE TABLE "ddon_black_list"
 (
