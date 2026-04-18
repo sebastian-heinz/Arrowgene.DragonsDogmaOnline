@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Model
         BlowPower = 10,
         ChanceAttack = 11,
         ExhaustAttack = 12,
-        KnockoutPower = 13,
+        StunPower = 13,
         FireResist = 14,
         IceResist = 15,
         ThunderResist = 16,

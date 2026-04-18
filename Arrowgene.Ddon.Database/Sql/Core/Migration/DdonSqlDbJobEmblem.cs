@@ -11,8 +11,8 @@ public partial class DdonSqlDb : SqlDb
     {
         "character_id", "job_id", "emblem_level", "emblem_points_used",
         "physical_attack", "magick_attack", "physical_defense", "magick_defense",
-        "max_hp", "max_stamina", "healing_power", "endurance", "blow_power", "chance_attack", "exhaust_attack",
-        "knockout_power", "fire_resist", "ice_resist", "thunder_resist", "holy_resist", "dark_resist"
+        "max_hp", "max_stamina", "healing_power", "endurance", "knockdown_power", "chance_attack", "exhaust_attack",
+        "stun_power", "fire_resist", "ice_resist", "thunder_resist", "holy_resist", "dark_resist"
     };
 
     private readonly string SqlUpsertJobEmblemData = $"""
@@ -46,10 +46,10 @@ public partial class DdonSqlDb : SqlDb
                 AddParameter(command, "max_stamina", jobEmblem.StatLevels[EquipStatId.MaxStamina]);
                 AddParameter(command, "healing_power", jobEmblem.StatLevels[EquipStatId.HealingPower]);
                 AddParameter(command, "endurance", jobEmblem.StatLevels[EquipStatId.Endurance]);
-                AddParameter(command, "blow_power", jobEmblem.StatLevels[EquipStatId.BlowPower]);
+                AddParameter(command, "knockdown_power", jobEmblem.StatLevels[EquipStatId.BlowPower]);
                 AddParameter(command, "chance_attack", jobEmblem.StatLevels[EquipStatId.ChanceAttack]);
                 AddParameter(command, "exhaust_attack", jobEmblem.StatLevels[EquipStatId.ExhaustAttack]);
-                AddParameter(command, "knockout_power", jobEmblem.StatLevels[EquipStatId.KnockoutPower]);
+                AddParameter(command, "stun_power", jobEmblem.StatLevels[EquipStatId.StunPower]);
                 AddParameter(command, "fire_resist", jobEmblem.StatLevels[EquipStatId.FireResist]);
                 AddParameter(command, "ice_resist", jobEmblem.StatLevels[EquipStatId.IceResist]);
                 AddParameter(command, "thunder_resist", jobEmblem.StatLevels[EquipStatId.ThunderResist]);
@@ -116,10 +116,10 @@ public partial class DdonSqlDb : SqlDb
         result.StatLevels[EquipStatId.MaxStamina] = GetByte(reader, "max_stamina");
         result.StatLevels[EquipStatId.HealingPower] = GetByte(reader, "healing_power");
         result.StatLevels[EquipStatId.Endurance] = GetByte(reader, "endurance");
-        result.StatLevels[EquipStatId.BlowPower] = GetByte(reader, "blow_power");
+        result.StatLevels[EquipStatId.BlowPower] = GetByte(reader, "knockdown_power");
         result.StatLevels[EquipStatId.ChanceAttack] = GetByte(reader, "chance_attack");
         result.StatLevels[EquipStatId.ExhaustAttack] = GetByte(reader, "exhaust_attack");
-        result.StatLevels[EquipStatId.KnockoutPower] = GetByte(reader, "knockout_power");
+        result.StatLevels[EquipStatId.StunPower] = GetByte(reader, "stun_power");
         result.StatLevels[EquipStatId.FireResist] = GetByte(reader, "fire_resist");
         result.StatLevels[EquipStatId.IceResist] = GetByte(reader, "ice_resist");
         result.StatLevels[EquipStatId.ThunderResist] = GetByte(reader, "thunder_resist");

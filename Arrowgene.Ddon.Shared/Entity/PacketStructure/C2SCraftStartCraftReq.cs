@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public string RefineMaterialUID { get; set; } // Refine material UID
         /// <summary>
         /// ID for the Additional Status
-        /// 3/0x3 == Blow Power +15
+        /// 3/0x3 == Knockdown Power +15
         /// 20/0x14 == Ogre Slaying +15
         /// 18/0x12 == Demihuman Slaying +10
         /// </summary>
