@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Arrowgene.Ddon.Database.Model
 {
@@ -8,6 +8,7 @@ namespace Arrowgene.Ddon.Database.Model
         public int AccountId { get; set; }
         public ConnectionType Type { get; set; }
         public DateTime Created { get; set; }
+        public uint? CharacterId { get; set; }
 
         public Connection()
         {

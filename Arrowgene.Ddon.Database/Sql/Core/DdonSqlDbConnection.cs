@@ -5,22 +5,27 @@ namespace Arrowgene.Ddon.Database.Sql.Core;
 
 public partial class DdonSqlDb : SqlDb
 {
-    private const string SqlInsertConnection =
-        "INSERT INTO \"ddon_connection\" (\"server_id\", \"account_id\", \"type\", \"created\") VALUES (@server_id, @account_id, @type, @created);";
+    private static readonly string[] ConnectionFields =
+    [
+        "server_id", "account_id", "type", "created", "character_id"
+    ];
 
-    private const string SqlSelectConnections =
-        "SELECT \"server_id\", \"account_id\", \"type\", \"created\" FROM \"ddon_connection\";";
+    private readonly string SqlInsertConnection =
+        $"INSERT INTO \"ddon_connection\" ({BuildQueryField(ConnectionFields)}) VALUES ({BuildQueryInsert(ConnectionFields)});";
 
-    private const string SqlSelectConnectionsByAccountId =
-        "SELECT \"server_id\", \"account_id\", \"type\", \"created\" FROM \"ddon_connection\" WHERE \"account_id\" = @account_id;";
+    private readonly string SqlSelectConnections =
+        $"SELECT {BuildQueryField(ConnectionFields)} FROM \"ddon_connection\";";
 
-    private const string SqlDeleteConnectionsByAccountId =
+    private readonly string SqlSelectConnectionsByAccountId =
+        $"SELECT {BuildQueryField(ConnectionFields)} FROM \"ddon_connection\" WHERE \"account_id\" = @account_id;";
+
+    private readonly string SqlDeleteConnectionsByAccountId =
         "DELETE FROM \"ddon_connection\" WHERE \"account_id\"=@account_id;";
 
-    private const string SqlDeleteConnectionsByServerId =
+    private readonly string SqlDeleteConnectionsByServerId =
         "DELETE FROM \"ddon_connection\" WHERE \"server_id\"=@server_id;";
 
-    private const string SqlDeleteConnection =
+    private readonly string SqlDeleteConnection =
         "DELETE FROM \"ddon_connection\" WHERE \"server_id\"=@server_id AND \"account_id\"=@account_id;";
 
     public override bool InsertConnection(Connection connection)
@@ -31,6 +36,7 @@ public partial class DdonSqlDb : SqlDb
             AddParameter(command, "@account_id", connection.AccountId);
             AddParameterEnumInt32(command, "@type", connection.Type);
             AddParameter(command, "@created", connection.Created);
+            AddParameter(command, "@character_id", connection.CharacterId);
         });
 
         return rowsAffected > NoRowsAffected;
@@ -50,6 +56,10 @@ public partial class DdonSqlDb : SqlDb
                     connection.AccountId = GetInt32(reader, "account_id");
                     connection.Type = GetEnumInt32<ConnectionType>(reader, "type");
                     connection.Created = GetDateTime(reader, "created");
+                    if (!reader.IsDBNull(reader.GetOrdinal("character_id")))
+                    {
+                        connection.CharacterId = GetUInt32(reader, "character_id");
+                    }
                     connections.Add(connection);
                 }
             });
@@ -69,6 +79,10 @@ public partial class DdonSqlDb : SqlDb
                     connection.AccountId = GetInt32(reader, "account_id");
                     connection.Type = GetEnumInt32<ConnectionType>(reader, "type");
                     connection.Created = GetDateTime(reader, "created");
+                    if (!reader.IsDBNull(reader.GetOrdinal("character_id")))
+                    {
+                        connection.CharacterId = GetUInt32(reader, "character_id");
+                    }
                     connections.Add(connection);
                 }
             });
