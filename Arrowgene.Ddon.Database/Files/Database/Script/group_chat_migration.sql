@@ -70,3 +70,4 @@ CREATE TABLE "ddon_communication_message"
 
 ALTER TABLE ddon_stamp_bonus DROP COLUMN last_stamp_time;
 ALTER TABLE ddon_stamp_bonus ADD COLUMN can_stamp BOOLEAN NOT NULL DEFAULT TRUE;
+INSERT INTO "ddon_schedule_next"(type, timestamp) VALUES (2, 0);
