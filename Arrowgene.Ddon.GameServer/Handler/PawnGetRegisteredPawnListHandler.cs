@@ -2,8 +2,10 @@ using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -15,6 +17,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             HashSet<uint> clanPawns = [];
             List<CDataRegisterdPawnList> registeredPawns = [];
+
+            // Pre-process the request params to make the SQL easier.
+            // The DB stores 0 as the default skill level, but the client parses this as 1, so we offset.
+            var craftParams = request.SearchParam.CraftSkillList.ToDictionary(k => k.Type, v => v.Level);
+            for (CraftSkillType skillType = CraftSkillType.ProductionSpeed; skillType <= CraftSkillType.CostPerformance; skillType++)
+            {
+                craftParams.TryAdd(skillType, 1);
+            }
+            request.SearchParam.CraftSkillList = [.. craftParams.Select(x => new CDataPawnCraftSkill() { Type = x.Key, Level = x.Value-1 })];
 
             Server.Database.ExecuteInTransaction(connection =>
             {
