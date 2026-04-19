@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -20,24 +21,64 @@ public partial class DdonSqlDb : SqlDb
     private const string SqlSelectPawnOwnerId =
         "SELECT * FROM ddon_pawn WHERE \"pawn_id\" = @pawn_id;";
 
+    //TODO: Filter by CraftSkillList, LevelMin/LevelMax, ItemRankMin/ItemRankMax, DragonAbilitiesList
     private const string SqlSelectRegisteredPawns =
-        "SELECT \"ddon_pawn\".\"name\", \"ddon_pawn\".\"pawn_id\", \"active_job\".\"job\", \"active_job\".\"lv\", \"ddon_pawn\".\"craft_rank\", \"ddon_edit_info\".\"sex\" "
-        + "FROM \"ddon_pawn\" "
-        + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
-        + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
-        + "LEFT JOIN \"ddon_character_job_data\" \"active_job\" ON \"active_job\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" AND \"active_job\".\"job\" = \"ddon_character_common\".\"job\" "
-        + "LEFT JOIN \"ddon_character\" \"owner\" ON \"owner\".\"character_id\" = \"ddon_pawn\".\"character_id\" "
-        + "WHERE \"ddon_pawn\".\"character_id\" != @character_id "
-        + "AND (@dont_filter_by_owner_name OR ( "
-        + " LOWER(\"owner\".\"first_name\") LIKE LOWER(@first_name) "
-        + " AND LOWER(\"owner\".\"last_name\") LIKE LOWER(@last_name))) "
-        + "AND (@dont_filter_by_pawn_name OR LOWER(\"ddon_pawn\".\"name\") LIKE LOWER(@pawn_name)) "
-        + "AND (@dont_filter_by_sex OR \"ddon_edit_info\".\"sex\" = @sex) "
-        + "AND (@dont_filter_by_vocation OR \"active_job\".\"lv\" BETWEEN @vocation_min AND @vocation_max) "
-        + "AND (@dont_filter_by_craft_rank OR \"ddon_pawn\".\"craft_rank\" BETWEEN @craft_rank_min AND @craft_rank_max) "
-        // TODO: Filter by CraftSkillList, LevelMin/LevelMax, ItemRankMin/ItemRankMax, IsFriend, IsClan and DragonAbilitiesList
-        + "AND (@dont_filter_by_jobs OR ((1 << \"active_job\".\"job\") & @job_bitfield) != 0) "
-        + "LIMIT 250;"; // Any more and we overflow the client UI's button IDs (It uses a byte)
+        """
+        SELECT
+        	ddon_pawn.name,
+        	ddon_pawn.pawn_id,
+        	active_job.job,
+        	active_job.lv,
+        	ddon_pawn.craft_rank,
+        	ddon_pawn.production_speed_level,
+        	ddon_pawn.equipment_enhancement_level,
+        	ddon_pawn.equipment_quality_level,
+        	ddon_pawn.consumable_quantity_level,
+        	ddon_pawn.cost_performance_level,
+        	ddon_edit_info.sex,
+        	clan.clan_id = @clan_id as is_clan,
+        	contact.status = 2 as is_friend
+        FROM ddon_pawn
+        LEFT JOIN ddon_character_common
+        	ON ddon_character_common.character_common_id = ddon_pawn.character_common_id
+        LEFT JOIN ddon_edit_info
+        	ON ddon_edit_info.character_common_id = ddon_pawn.character_common_id
+        LEFT JOIN ddon_character_job_data AS active_job
+        	ON active_job.character_common_id = ddon_pawn.character_common_id
+        	AND active_job.job = ddon_character_common.job
+        LEFT JOIN ddon_character AS owner
+        	ON owner.character_id = ddon_pawn.character_id
+        LEFT OUTER JOIN ddon_clan_membership AS clan
+        	ON owner.character_id = clan.character_id
+        LEFT OUTER JOIN ddon_contact_list as contact
+        	ON contact.status = 2
+        	AND contact.type = 0
+        	AND ((contact.requester_character_id = @character_id AND contact.requested_character_id = owner.character_id)
+        		OR (contact.requested_character_id = @character_id AND contact.requester_character_id = owner.character_id)
+        	)
+        WHERE
+        	ddon_pawn.character_id != @character_id
+        	AND (
+        		@dont_filter_by_owner_name
+        		OR (
+        			LOWER(owner.first_name) LIKE LOWER(@first_name)
+        			AND LOWER(owner.last_name) LIKE LOWER(@last_name)
+        		)
+        	)
+        	AND (@dont_filter_by_pawn_name OR LOWER(ddon_pawn.name) LIKE LOWER(@pawn_name))
+        	AND (@dont_filter_by_sex OR ddon_edit_info.sex = @sex)
+        	AND (@dont_filter_by_vocation OR active_job.lv BETWEEN @vocation_min AND @vocation_max)
+        	AND (@dont_filter_by_craft_rank OR ddon_pawn.craft_rank BETWEEN @craft_rank_min AND @craft_rank_max)
+        	AND (@dont_filter_by_jobs OR ((1 << active_job.job) & @job_bitfield) != 0)
+        	AND (@dont_filter_by_clan OR is_clan)
+        	AND (@dont_filter_by_friends OR is_friend)
+        	AND (ddon_pawn.production_speed_level >= @search_production_speed_level)
+        	AND (ddon_pawn.equipment_enhancement_level >= @search_equipment_enhancement_level)
+        	AND (ddon_pawn.equipment_quality_level >= @search_equipment_quality_level)
+        	AND (ddon_pawn.consumable_quantity_level >= @search_consumable_quantity_level)
+        	AND (ddon_pawn.cost_performance_level >= @search_cost_performance_level)
+        LIMIT 250;
+        """;
 
     private const string SqlSelectClanPawns =
         @"SELECT ""ddon_pawn"".* FROM ddon_pawn 
@@ -277,20 +318,41 @@ public partial class DdonSqlDb : SqlDb
                 {
                     while (reader.Read())
                     {
-                        uint lv = GetUInt32(reader, "lv");
                         registeredPawns.Add(
                             new CDataRegisterdPawnList
                             {
                                 Name = GetString(reader, "name"),
                                 PawnId = GetUInt32(reader, "pawn_id"),
-                                RentalCost = lv * 10,
                                 Sex = GetByte(reader, "sex"),
                                 Updated = DateTimeOffset.UtcNow, // TODO: Updated
                                 PawnListData = new CDataPawnListData
                                 {
+                                    // TODO: LatestReturnDate?
                                     Job = (JobId)GetByte(reader, "job"),
-                                    Level = lv,
-                                    CraftRank = GetUInt32(reader, "craft_rank")
+                                    Level = GetUInt32(reader, "lv"),
+                                    CraftRank = GetUInt32(reader, "craft_rank"),
+                                    PawnCraftSkillList = [
+                                        new() {
+                                            Type = CraftSkillType.ProductionSpeed,
+                                            Level = GetUInt32(reader, "production_speed_level")
+                                        },
+                                        new() {
+                                            Type = CraftSkillType.EquipmentEnhancement,
+                                            Level = GetUInt32(reader, "equipment_enhancement_level")
+                                        },
+                                        new() {
+                                            Type = CraftSkillType.EquipmentQuality,
+                                            Level = GetUInt32(reader, "equipment_quality_level")
+                                        },
+                                        new() {
+                                            Type = CraftSkillType.ConsumableQuantity,
+                                            Level = GetUInt32(reader, "consumable_quantity_level")
+                                        },
+                                        new() {
+                                            Type = CraftSkillType.CostPerformance,
+                                            Level = GetUInt32(reader, "cost_performance_level")
+                                        }
+                                    ]
                                 }
                             }
                         );
@@ -800,6 +862,7 @@ public partial class DdonSqlDb : SqlDb
     )
     {
         AddParameter(command, "character_id", searchingCharacter.CharacterId);
+        AddParameter(command, "clan_id", searchingCharacter.ClanId);
         AddParameter(
             command,
             "dont_filter_by_owner_name",
@@ -829,5 +892,16 @@ public partial class DdonSqlDb : SqlDb
         AddParameter(command, "craft_rank_max", searchParams.CraftRankMax);
         AddParameter(command, "dont_filter_by_jobs", searchParams.CharacterParam.Job == 0);
         AddParameter(command, "job_bitfield", searchParams.CharacterParam.Job);
+        AddParameter(command, "dont_filter_by_friends", !searchParams.IsFriend);
+        AddParameter(command, "dont_filter_by_clan", !(searchParams.IsClan && searchingCharacter.ClanId != 0));
+        
+        // Yes its super stupid how we keep flipping this back from list to dictionary.
+        // Guaranteed to have these keys at call site.
+        var craftParams = searchParams.CraftSkillList.ToDictionary(k => k.Type, v => v.Level);
+        AddParameter(command, "search_production_speed_level", craftParams[CraftSkillType.ProductionSpeed]);
+        AddParameter(command, "search_equipment_enhancement_level", craftParams[CraftSkillType.EquipmentEnhancement]);
+        AddParameter(command, "search_equipment_quality_level", craftParams[CraftSkillType.EquipmentQuality]);
+        AddParameter(command, "search_consumable_quantity_level", craftParams[CraftSkillType.ConsumableQuantity]);
+        AddParameter(command, "search_cost_performance_level", craftParams[CraftSkillType.CostPerformance]);
     }
 }
