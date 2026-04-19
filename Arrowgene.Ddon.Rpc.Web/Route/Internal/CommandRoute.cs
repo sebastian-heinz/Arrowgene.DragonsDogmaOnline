@@ -53,8 +53,8 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
 
             private RpcCommandResult HandleNotifyPlayerList(DdonGameServer gameServer)
             {
-                List<RpcCharacterData> data = _entry.GetData<List<RpcCharacterData>>();
-                gameServer.RpcManager.ReceivePlayerList(_entry.Origin, _entry.Timestamp, data);
+                gameServer.RpcManager.UpdatePlayerList();
+
                 return new RpcCommandResult(this, true)
                 {
                     Message = $"NotifyPlayerList Channel {_entry.Origin}"

@@ -202,6 +202,11 @@ public partial class DdonPostgresDb : DdonSqlDb
         AddTypedParameter(command, name, (int)value);
     }
 
+    public override void AddParameter(DbCommand command, string name, uint? value)
+    {
+        AddTypedParameter(command, name, (int?)value);
+    }
+
     public override void AddParameterEnumInt32<T>(DbCommand command, string name, T value)
     {
         AddTypedParameter(command, name, (int)(object)value);

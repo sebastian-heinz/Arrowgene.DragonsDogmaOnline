@@ -23,7 +23,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ServerId = request.GameServerUniqueID,
                 AccountId = client.Account.Id,
                 Type = ConnectionType.GameServer,
-                Created = DateTime.UtcNow
+                Created = DateTime.UtcNow,
+                CharacterId = client.Character?.CharacterId,
             };
             
             if (!Server.RpcManager.DoesGameServerExist(request.GameServerUniqueID))

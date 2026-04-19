@@ -460,10 +460,11 @@ CREATE TABLE IF NOT EXISTS "ddon_game_token"
 
 CREATE TABLE IF NOT EXISTS "ddon_connection"
 (
-    "server_id"  INTEGER  NOT NULL,
-    "account_id" INTEGER  NOT NULL,
-    "type"       INTEGER  NOT NULL,
-    "created"    DATETIME NOT NULL,
+    "server_id"     INTEGER  NOT NULL,
+    "account_id"    INTEGER  NOT NULL,
+    "type"          INTEGER  NOT NULL,
+    "created"       DATETIME NOT NULL,
+    "character_id"  INTEGER,
     CONSTRAINT "uq_ddon_connection_server_id_account_id" UNIQUE ("server_id", "account_id"),
     CONSTRAINT "fk_ddon_connection_token_account_id" FOREIGN KEY ("account_id") REFERENCES "account" ("id") ON DELETE CASCADE
 );

@@ -8,8 +8,8 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Model.Clan;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Ddon.Shared.Model.Scheduler;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -414,6 +414,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool ReplaceAbilityPreset(uint characterId, CDataPresetAbilityParam preset) {return true; }
         public bool UpdateAbilityPreset(uint characterId, CDataPresetAbilityParam preset) { return true; }
         public bool UpdateCharacterBinaryData(uint characterId, byte[] data) { return true; }
+        public Dictionary<ushort, List<RpcCharacterData>> SelectCharacterTrackingList(DbConnection? connectionIn = null) { return []; }
+
         public bool InsertBBMCharacterId(uint characterId, uint bbmCharacterId) { return false; }
         public uint SelectBBMCharacterId(uint characterId, DbConnection? connectionIn = null) { return 0; }
         public uint SelectBBMNormalCharacterId(uint bbmCharacterId) { return 0; }

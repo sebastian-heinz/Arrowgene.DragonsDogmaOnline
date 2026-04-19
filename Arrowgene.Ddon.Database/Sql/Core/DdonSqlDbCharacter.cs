@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Model.Rpc;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core;
 
@@ -122,6 +122,22 @@ public partial class DdonSqlDb : SqlDb
 
     private static readonly string SqlSelectStorageLimitBreakByCharacter =
         $"SELECT {BuildQueryField(EquipmentLimitBreakFieldsForCharacter)} FROM \"ddon_equipment_limit_break\" WHERE \"character_id\" = @character_id;";
+
+    private readonly string SqlSelectCharacterListTracking = """
+        select 
+            "ddon_connection"."server_id",
+            "ddon_character"."character_id", 
+            "ddon_character"."first_name", 
+            "ddon_character"."last_name", 
+            coalesce("ddon_clan_param"."clan_id", 0) as clan_id,
+            "ddon_clan_param"."name" as clan_name,
+            "ddon_clan_param"."short_name" as clan_short_name
+        FROM "ddon_connection"
+        LEFT OUTER JOIN "ddon_character" on "ddon_connection"."character_id" = "ddon_character"."character_id"
+        LEFT OUTER JOIN "ddon_clan_membership" on "ddon_character"."character_id" = "ddon_clan_membership"."character_id"
+        LEFT OUTER JOIN "ddon_clan_param" on "ddon_clan_param"."clan_id" = "ddon_clan_membership"."clan_id"
+        WHERE "ddon_connection"."type" = 1 and "ddon_connection"."character_id" is not null;
+    """;
 
     public override bool CreateCharacter(Character character)
     {
@@ -756,5 +772,38 @@ public partial class DdonSqlDb : SqlDb
         });
 
         return rowsAffected > NoRowsAffected;
+    }
+
+    public override Dictionary<ushort, List<RpcCharacterData>> SelectCharacterTrackingList(DbConnection? connectionIn = null)
+    {
+        Dictionary<ushort, List<RpcCharacterData>> result = [];
+        ExecuteQuerySafe(connectionIn, connection =>
+        {
+            ExecuteReader(connection, SqlSelectCharacterListTracking,
+            command => {},
+            reader =>
+            {
+                while (reader.Read())
+                {
+                    ushort serverId = GetUInt16(reader, "server_id");
+
+                    if (!result.TryGetValue(serverId, out var characterList))
+                    {
+                        result[serverId] = characterList = [];
+                    }
+
+                    characterList.Add(new()
+                    {
+                        CharacterId = GetUInt32(reader, "character_id"),
+                        FirstName = GetString(reader, "first_name"),
+                        LastName = GetString(reader, "last_name"),
+                        ClanId = GetUInt32(reader, "clan_id"),
+                        ClanName = GetStringNullable(reader, "clan_name") ?? string.Empty,
+                        ClanShortName = GetStringNullable(reader, "clan_short_name") ?? string.Empty,
+                    });
+                }
+            });
+        });
+        return result;
     }
 }

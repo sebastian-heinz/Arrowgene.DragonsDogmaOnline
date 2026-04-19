@@ -69,11 +69,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // registering the connection
             client.Account = account;
 
-            Connection connection = new Connection();
-            connection.ServerId = Server.Id;
-            connection.AccountId = account.Id;
-            connection.Type = ConnectionType.GameServer;
-            connection.Created = now;
+            Connection connection = new Connection
+            {
+                ServerId = Server.Id,
+                AccountId = account.Id,
+                Type = ConnectionType.GameServer,
+                Created = now,
+                CharacterId = token.CharacterId
+            };
+
             if (!Database.InsertConnection(connection))
             {
                 Logger.Error(client, $"Failed to register game connection");
