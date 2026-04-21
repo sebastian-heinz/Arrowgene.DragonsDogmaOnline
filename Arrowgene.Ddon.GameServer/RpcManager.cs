@@ -430,6 +430,28 @@ namespace Arrowgene.Ddon.GameServer
         }
         #endregion
 
+
+        public void AnnounceCharacterPacket<T>(T packet, uint characterId)
+            where T : class, IPacketStructure, new()
+        {
+            RpcPacketData data = new()
+            {
+                GroupId = packet.Id.GroupId,
+                HandlerId = packet.Id.HandlerId,
+                HandlerSubId = packet.Id.HandlerSubId,
+                CharacterId = characterId,
+                Data = EntitySerializer.Get<T>().Write(packet)
+            };
+
+            foreach(var (serverId, charMap) in CharacterTrackingMap)
+            {
+                if (charMap.TryGetValue(characterId, out _))
+                {
+                    Announce(serverId, "internal/packet", RpcInternalCommand.AnnouncePacketAll, data);
+                }
+            }
+        }
+
         public void AnnounceAllPacket<T>(T packet, uint characterId = 0)
             where T : class, IPacketStructure, new()
         {

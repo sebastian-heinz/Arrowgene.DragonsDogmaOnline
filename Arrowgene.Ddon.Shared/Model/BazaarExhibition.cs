@@ -5,12 +5,7 @@ namespace Arrowgene.Ddon.Shared.Model
     public class BazaarExhibition
     {
         public uint CharacterId { get; set; }
-        public CDataBazaarCharacterInfo Info { get; set; }
-        
-        public BazaarExhibition()
-        {
-            Info = new CDataBazaarCharacterInfo();
-        }
+        public CDataBazaarCharacterInfo Info { get; set; } = new();
     }
 
     public enum BazaarExhibitionState : byte

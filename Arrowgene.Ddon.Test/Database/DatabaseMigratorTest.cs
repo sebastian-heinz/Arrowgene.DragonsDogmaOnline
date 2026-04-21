@@ -197,7 +197,7 @@ namespace Arrowgene.Ddon.Test.Database
         public void CreateListItems(DbConnection conn, Character character, StorageType storageType, List<(uint ItemId, uint Amount)> itemList) {}
 
         public bool DeleteAccount(int accountId) { return true; }
-        public int DeleteBazaarExhibition(ulong bazaarId) { return 1; }
+        public int DeleteBazaarExhibition(ulong bazaarId, DbConnection? connectionIn = null) { return 1; }
         public bool DeleteBoxRewardItem(uint commonId, uint uniqId, DbConnection? connectionIn = null) { return true; }
         public bool DeleteCharacter(uint characterId) { return true; }
         public bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo) { return true; }
@@ -228,7 +228,7 @@ namespace Arrowgene.Ddon.Test.Database
         public DbConnection OpenExistingConnection() { return null; }
         public void Execute(string sql, bool rethrowException = false) {}
         public void Execute(DbConnection conn, string sql, bool rethrowException = false) {}
-        public List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId) { return new List<BazaarExhibition>(); }
+        public List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId, DbConnection? connectionIn = null) { return new List<BazaarExhibition>(); }
         public CompletedQuest GetCompletedQuestsById(uint characterCommonId, QuestId questId, DbConnection? connectionIn = null) { return new CompletedQuest(); }
         public List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null) { return new List<CompletedQuest>(); }
         public bool CreateMeta(DatabaseMeta meta) { return true; }
@@ -236,7 +236,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<uint> GetPriorityQuestScheduleIds(uint characterCommonId, DbConnection? connectionIn = null) { return new List<uint>(); }
         public QuestProgress GetQuestProgressByScheduleId(uint characterCommonId, uint questScheduleId, DbConnection? connectionIn = null) { return new QuestProgress(); }
         public List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null) { return new List<QuestProgress>(); }
-        public ulong InsertBazaarExhibition(BazaarExhibition exhibition) { return 1; }
+        public ulong InsertBazaarExhibition(BazaarExhibition exhibition, DbConnection? connectionIn = null) { return 1; }
         public bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards, DbConnection? connectionIn = null) { return true; }
         public bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null) { return true; }
         public bool InsertConnection(Connection connection) { return true; }
@@ -293,7 +293,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId, DbConnection? connectionIn = null) { return new List<BazaarExhibition>(); }
         public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(List<uint> itemIds, uint excludedCharacterId, DbConnection? connectionIn = null) { return new List<BazaarExhibition>(); }
         public List<AbilityId> SelectAllUnlockedSecretAbilities(uint commonId, DbConnection? connectionIn = null) { return new List<AbilityId>(); }
-        public BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId) { return new BazaarExhibition(); }
+        public BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId, DbConnection? connectionIn = null) { return new BazaarExhibition(); }
         public List<QuestBoxRewards> SelectBoxRewardItems(uint commonId, DbConnection? connectionIn = null) { return new List<QuestBoxRewards>(); }
         public Character SelectCharacter(uint characterId, DbConnection? connectionIn = null) { return new Character(); }
         public List<Character> SelectCharactersByAccountId(int accountId, GameMode gameMode) { return new List<Character>(); }
@@ -337,7 +337,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool CheckBannedIp(string addr) { return true; }
         public bool InsertBannedIp(string addr) { return true; }
         public bool DeleteBannedIp(string addr) { return true; }
-        public int UpdateBazaarExhibiton(BazaarExhibition exhibition) { return 1; }
+        public int UpdateBazaarExhibiton(BazaarExhibition exhibition, DbConnection? connectionIn = null) { return 1; }
         public bool UpdateCharacterProfile(CharacterCommon characterCommon, DbConnection? connectionIn = null) { return true; }
         public bool UpdateCharacterBaseInfo(Character character) { return true; }
         public bool UpdateCharacterCommonBaseInfo(CharacterCommon common, DbConnection? connectionIn = null) { return true; }
