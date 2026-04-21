@@ -41,104 +41,78 @@ public partial class DdonSqlDb : SqlDb
         $"UPDATE \"{BazaarExhibitionTableName}\" SET {BuildQueryUpdate(BazaarExhibitionFields)} WHERE \"bazaar_id\"=@bazaar_id";
 
 
-    public override ulong InsertBazaarExhibition(BazaarExhibition exhibition)
+    public override ulong InsertBazaarExhibition(BazaarExhibition exhibition, DbConnection? connectionIn = null)
     {
-        using DbConnection conn = OpenNewConnection();
-        return InsertBazaarExhibition(conn, exhibition);
-    }
+        return ExecuteQuerySafe<ulong>(connectionIn, conn =>
+        {
+            int rowsAffected = ExecuteNonQuery(conn, SqlInsertBazaarExhibition, command => { AddParameter(command, exhibition); }, out long autoIncrement);
 
-    public ulong InsertBazaarExhibition(DbConnection conn, BazaarExhibition exhibition)
-    {
-        int rowsAffected = ExecuteNonQuery(conn, SqlInsertBazaarExhibition, command => { AddParameter(command, exhibition); }, out long autoIncrement);
-
-        if (rowsAffected > NoRowsAffected) return (ulong)autoIncrement;
-
-        return 0;
-    }
-
-    public override int UpdateBazaarExhibiton(BazaarExhibition exhibition)
-    {
-        using DbConnection conn = OpenNewConnection();
-        return UpdateBazaarExhibiton(conn, exhibition);
-    }
-
-    public int UpdateBazaarExhibiton(DbConnection conn, BazaarExhibition exhibition)
-    {
-        int rowsAffected = ExecuteNonQuery(conn, SqlUpdateBazaarExhibitionByBazaarId, command => { AddParameter(command, exhibition); });
-
-        return rowsAffected;
-    }
-
-    public override int DeleteBazaarExhibition(ulong bazaarId)
-    {
-        using DbConnection conn = OpenNewConnection();
-        return DeleteBazaarExhibition(conn, bazaarId);
-    }
-
-    public int DeleteBazaarExhibition(DbConnection conn, ulong bazaarId)
-    {
-        int rowsAffected = ExecuteNonQuery(conn, SqlDeleteBazaarExhibitionByBazaarId, command => { AddParameter(command, "@bazaar_id", bazaarId); });
-        return rowsAffected;
-    }
-
-    public int DeleteBazaarExhibitionsOutdated()
-    {
-        using DbConnection conn = OpenNewConnection();
-        return DeleteBazaarExhibitionsOutdated(conn);
-    }
-
-    public int DeleteBazaarExhibitionsOutdated(DbConnection conn)
-    {
-        int rowsAffected = ExecuteNonQuery(conn, SqlDeleteBazaarExhibitionOutdated, command => { AddParameter(command, "@now", DateTimeOffset.UtcNow.UtcDateTime); });
-        return rowsAffected;
-    }
-
-    public override BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId)
-    {
-        using DbConnection conn = OpenNewConnection();
-        return SelectBazaarExhibitionByBazaarId(conn, bazaarId);
-    }
-
-    public BazaarExhibition SelectBazaarExhibitionByBazaarId(DbConnection conn, ulong bazaarId)
-    {
-        BazaarExhibition entity = null;
-        ExecuteReader(conn, SqlSelectBazaarExhibitionByBazaarId,
-            command => { AddParameter(command, "@bazaar_id", bazaarId); }, reader =>
+            if (rowsAffected > NoRowsAffected)
             {
-                if (reader.Read()) entity = ReadBazaarExhibition(reader);
-            });
+                return (ulong)autoIncrement;
+            }
 
-        return entity;
+            return 0;
+        });
     }
 
-    public override List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId)
+    public override int UpdateBazaarExhibiton(BazaarExhibition exhibition, DbConnection? connectionIn = null)
     {
-        using DbConnection conn = OpenNewConnection();
-        DeleteBazaarExhibitionsOutdated(conn);
-        return SelectBazaarExhibitionsByCharacterId(conn, characterId);
+        return ExecuteQuerySafe(connectionIn, conn =>
+        {
+            int rowsAffected = ExecuteNonQuery(conn, SqlUpdateBazaarExhibitionByBazaarId, command => { AddParameter(command, exhibition); });
+
+            return rowsAffected;
+        });
+
     }
 
-    public List<BazaarExhibition> SelectBazaarExhibitionsByCharacterId(uint characterId)
+    public override int DeleteBazaarExhibition(ulong bazaarId, DbConnection? connectionIn = null)
     {
-        using DbConnection conn = OpenNewConnection();
-        return SelectBazaarExhibitionsByCharacterId(conn, characterId);
+        return ExecuteQuerySafe(connectionIn, conn =>
+        {
+            int rowsAffected = ExecuteNonQuery(conn, SqlDeleteBazaarExhibitionByBazaarId, command => { AddParameter(command, "@bazaar_id", bazaarId); });
+            return rowsAffected;
+        });
     }
 
-    public List<BazaarExhibition> SelectBazaarExhibitionsByCharacterId(DbConnection conn, uint characterId)
+
+    public override BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId, DbConnection? connectionIn = null)
     {
-        List<BazaarExhibition> entities = new();
-        ExecuteReader(conn, SqlSelectBazaarExhibitionsByCharacterId,
-            command => { AddParameter(command, "@character_id", characterId); }, reader =>
-            {
-                while (reader.Read())
+        return ExecuteQuerySafe(connectionIn, conn =>
+        {
+            BazaarExhibition entity = null;
+            ExecuteReader(conn, SqlSelectBazaarExhibitionByBazaarId,
+                command => { AddParameter(command, "@bazaar_id", bazaarId); }, reader =>
                 {
-                    BazaarExhibition e = ReadBazaarExhibition(reader);
-                    entities.Add(e);
-                }
-            });
+                    if (reader.Read()) entity = ReadBazaarExhibition(reader);
+                });
 
-        return entities;
+            return entity;
+        });
     }
+
+
+    public override List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId, DbConnection? connectionIn = null)
+    {
+        return ExecuteQuerySafe(connectionIn, conn =>
+        {
+            int rowsAffected = ExecuteNonQuery(conn, SqlDeleteBazaarExhibitionOutdated, command => { AddParameter(command, "@now", DateTimeOffset.UtcNow.UtcDateTime); });
+            List<BazaarExhibition> entities = new();
+            ExecuteReader(conn, SqlSelectBazaarExhibitionsByCharacterId,
+                command => { AddParameter(command, "@character_id", characterId); }, reader =>
+                {
+                    while (reader.Read())
+                    {
+                        BazaarExhibition e = ReadBazaarExhibition(reader);
+                        entities.Add(e);
+                    }
+                });
+
+            return entities;
+        });
+    }
+
 
     public override List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId, DbConnection? connectionIn = null)
     {
@@ -180,8 +154,10 @@ public partial class DdonSqlDb : SqlDb
 
     private BazaarExhibition ReadBazaarExhibition(DbDataReader reader)
     {
-        BazaarExhibition exhibition = new();
-        exhibition.CharacterId = GetUInt32(reader, "character_id");
+        BazaarExhibition exhibition = new()
+        {
+            CharacterId = GetUInt32(reader, "character_id")
+        };
         exhibition.Info.State = (BazaarExhibitionState)GetByte(reader, "state");
         exhibition.Info.Proceeds = GetUInt32(reader, "proceeds");
         exhibition.Info.Expire = GetDateTime(reader, "expire");

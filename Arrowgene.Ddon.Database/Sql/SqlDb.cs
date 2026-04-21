@@ -492,11 +492,11 @@ public abstract class SqlDb : IDatabase
     public abstract bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
     public abstract bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam param, DbConnection? connectionIn = null);
     public abstract CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null);
-    public abstract ulong InsertBazaarExhibition(BazaarExhibition exhibition);
-    public abstract int UpdateBazaarExhibiton(BazaarExhibition exhibition);
-    public abstract int DeleteBazaarExhibition(ulong bazaarId);
-    public abstract BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId);
-    public abstract List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId);
+    public abstract ulong InsertBazaarExhibition(BazaarExhibition exhibition, DbConnection? connectionIn = null);
+    public abstract int UpdateBazaarExhibiton(BazaarExhibition exhibition, DbConnection? connectionIn = null);
+    public abstract int DeleteBazaarExhibition(ulong bazaarId, DbConnection? connectionIn = null);
+    public abstract BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId, DbConnection? connectionIn = null);
+    public abstract List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId, DbConnection? connectionIn = null);
     public abstract List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId, DbConnection? connectionIn = null);
     public abstract List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(List<uint> itemIds, uint excludedCharacterId, DbConnection? connectionIn = null);
     public abstract bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards, DbConnection? connectionIn = null);

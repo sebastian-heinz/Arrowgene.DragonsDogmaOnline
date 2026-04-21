@@ -304,11 +304,11 @@ public interface IDatabase
     CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null);
 
     // Bazaar
-    ulong InsertBazaarExhibition(BazaarExhibition exhibition);
-    int UpdateBazaarExhibiton(BazaarExhibition exhibition);
-    int DeleteBazaarExhibition(ulong bazaarId);
-    BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId);
-    List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId);
+    ulong InsertBazaarExhibition(BazaarExhibition exhibition, DbConnection? connectionIn = null);
+    int UpdateBazaarExhibiton(BazaarExhibition exhibition, DbConnection? connectionIn = null);
+    int DeleteBazaarExhibition(ulong bazaarId, DbConnection? connectionIn = null);
+    BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId, DbConnection? connectionIn = null);
+    List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId, DbConnection? connectionIn = null);
 
     List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId, DbConnection? connectionIn = null);
 
