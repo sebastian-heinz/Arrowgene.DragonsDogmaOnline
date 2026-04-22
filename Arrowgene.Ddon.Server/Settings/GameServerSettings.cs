@@ -259,6 +259,35 @@ namespace Arrowgene.Ddon.Server.Settings
         private const uint _AdventureGuideMaxQuestList = 50;
 
         /// <summary>
+        /// Groups of mutually exclusive world quest IDs. When rolling world quests for a party,
+        /// at most one quest from each group will be selected at a time. Use this to prevent
+        /// conflicting quests from appearing simultaneously. Quest IDs should be specified as
+        /// uint values (e.g. 21000079).
+        /// </summary>
+        [DefaultValue(
+            "new List<List<uint>>\n" +
+            "{\n" +
+            "    new List<uint> { 21000079, 21000089 },\n" +
+            "    new List<uint> { 20995009, 21000008 },\n" +
+            "}"
+        )]
+        public List<List<uint>> MutuallyExclusiveWorldQuestGroups
+        {
+            set
+            {
+                SetSetting("MutuallyExclusiveWorldQuestGroups", value);
+            }
+            get
+            {
+                return TryGetSetting("MutuallyExclusiveWorldQuestGroups", new List<List<uint>>
+                {
+                    new List<uint> { 21000079, 21000089 },
+                    new List<uint> { 20995009, 21000008 },
+                });
+            }
+        }
+
+        /// <summary>
         /// Uses the automatic exp calculation system for all enemies instead of just using the
         /// ones marked in quest files.
         /// </summary>
