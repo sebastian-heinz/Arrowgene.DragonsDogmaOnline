@@ -558,6 +558,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertLightQuestRecord(LightQuestRecord lightQuestRecord, DbConnection? connectionIn = null) { return true; }
         public List<LightQuestRecord> SelectLightQuestRecords(DbConnection? connectionIn = null) { return new(); }
         public bool DeleteLightQuestRecord(uint scheduleId, DbConnection? connectionIn = null) { return true; }
+        public int DeleteLightQuestCompletion(DbConnection? connectionIn = null) { return 0; }
+
 
         public bool InsertPawnFavorite(uint characterId, uint pawnId, DbConnection? connectionIn = null) { return true; }
         public bool DeletePawnFavorite(uint characterId, uint pawnId, DbConnection? connectionIn = null) { return true; }

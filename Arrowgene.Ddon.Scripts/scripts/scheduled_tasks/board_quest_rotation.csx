@@ -5,6 +5,16 @@ public class BoardQuestRotationTask : DailyTask
 
     public override void RunTask(DdonGameServer server)
     {
+        foreach (var character in server.ClientLookup.GetAllCharacter())
+        {
+            foreach (var key in character.CompletedQuests.Keys
+                .Where(QuestManager.IsBoardQuest)
+                .ToList())
+            {
+                character.CompletedQuests.Remove(key);
+            }
+        }
+
         server.LightQuestManager.InsertRecordsFromAsset();
 
         var questRecords = server.Database.SelectLightQuestRecords();

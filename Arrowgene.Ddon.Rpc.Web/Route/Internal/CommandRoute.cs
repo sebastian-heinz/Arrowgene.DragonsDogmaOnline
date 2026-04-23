@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
+using Microsoft.AspNetCore.Hosting.Server;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -145,6 +146,16 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                     .Select(x => gameServer.LightQuestManager.GenerateQuestFromRecord(x));
 
                 QuestManager.AddQuests(gameServer, quests);
+
+                foreach (var character in gameServer.ClientLookup.GetAllCharacter())
+                {
+                    foreach (var key in character.CompletedQuests.Keys
+                        .Where(QuestManager.IsBoardQuest)
+                        .ToList())
+                    {
+                        character.CompletedQuests.Remove(key);
+                    }
+                }
 
                 return new RpcCommandResult(this, true)
                 {

@@ -680,6 +680,8 @@ public abstract class SqlDb : IDatabase
     public abstract bool InsertLightQuestRecord(LightQuestRecord lightQuestRecord, DbConnection? connectionIn = null);
     public abstract List<LightQuestRecord> SelectLightQuestRecords(DbConnection? connectionIn = null);
     public abstract bool DeleteLightQuestRecord(uint scheduleId, DbConnection? connectionIn = null);
+    public abstract int DeleteLightQuestCompletion(DbConnection? connectionIn = null);
+
 
     public abstract bool SetMeta(DatabaseMeta meta);
 
