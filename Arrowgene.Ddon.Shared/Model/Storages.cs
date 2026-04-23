@@ -314,9 +314,34 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
+        public List<(Item? Item, ushort Slot, EquipType Type)> GetItemsTuple()
+        {
+            List<(Item? Item, ushort Slot, EquipType Type)> items = [];
+            foreach (var e in Enum.GetValues<EquipType>())
+            {
+                items.AddRange(GetItems(e).Select((x, i) => (x, GetStorageSlot(e, (byte)(i+1)), e)));
+            }
+
+            return items;
+        }
+
         public ushort GetStorageSlot(EquipType equipType, byte equipSlot)
         {
             return (ushort)(Offset + calculateEquipTypeOffset(equipType) + equipSlot);
+        }
+
+        /// <summary>
+        /// This is sketchy and goes around the Offset private set, but its needed for a specific circumstance when the pawnList gets rearranged by deletion.
+        /// </summary>
+        /// <param name="newOffset"></param>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void SetOffset(int newOffset)
+        {
+            if (Storage.EmptySlots() != Storage.MaxSlots())
+            {
+                throw new InvalidOperationException("Storage offset cannot be adjusted while items are in the storage.");
+            }
+            Offset = newOffset;
         }
 
         public List<CDataContextEquipData> AsCDataContextEquipData(EquipType equipType)

@@ -16,20 +16,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPawnDeleteMyPawnRes Handle(GameClient client, C2SPawnDeleteMyPawnReq request)
         {
-            S2CPawnDeleteMyPawnRes res = new S2CPawnDeleteMyPawnRes();
+            S2CPawnDeleteMyPawnRes res = new();
             int pawnIndex = request.SlotNo - 1;
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc
             {
                 UpdateType = ItemNoticeType.DeletePawn
             };
+
+            Pawn pawn = client.Character.Pawns[pawnIndex];
+            Equipment pawnEquipment = client.Character.Storage.GetPawnEquipment(pawnIndex);
+            List<Item> pawnStorageItems = [.. pawnEquipment.GetItems(EquipType.Performance), .. pawnEquipment.GetItems(EquipType.Visual)];
+
             Server.Database.ExecuteInTransaction(connection =>
             {
-                Pawn pawn = client.Character.Pawns[pawnIndex];
-                Equipment pawnEquipment = client.Character.Storage.GetPawnEquipment(pawnIndex);
-                List<Item> pawnStorageItems = new List<Item>(pawnEquipment.GetItems(EquipType.Performance).ToArray());
-                pawnStorageItems.AddRange(pawnEquipment.GetItems(EquipType.Visual).ToArray());
-
                 foreach (Item storageItem in pawnStorageItems)
                 {
                     if (storageItem == null)
@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (request.IsKeepEquip)
                     {
                         updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.MoveItem(Server, client.Character, pawn.Equipment.Storage, storageItem.UId, 1,
-                            client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, connection));
+                            client.Character.Storage.GetStorage(StorageType.ItemPost), 0, connection));
                     }
                     else
                     {
@@ -55,24 +55,40 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
 
                 // Later pawns in the list have to have their gear shuffled down to accomodate.
-                // Or be lazy and just throw them all into the item post.
-                // TODO: Stop being lazy and actually put them in their proper equip slots.
+                Dictionary<Pawn, List<(Item? Item, ushort Slot, EquipType Type)>> nextPawnEquipment = [];
+                var itemPost = client.Character.Storage.GetStorage(StorageType.ItemPost);
                 for (int nextIndex = pawnIndex + 1; nextIndex < client.Character.Pawns.Count; nextIndex++)
                 {
                     Pawn nextPawn = client.Character.Pawns[nextIndex];
-                    Equipment nextEquipment = client.Character.Storage.GetPawnEquipment(nextIndex);
-                    List<Item> nextStorageItems = new List<Item>(nextEquipment.GetItems(EquipType.Performance).ToArray());
-                    nextStorageItems.AddRange(nextEquipment.GetItems(EquipType.Visual).ToArray());
-
-                    foreach (Item nextItem in nextStorageItems)
+                    nextPawnEquipment[nextPawn] = client.Character.Storage.GetPawnEquipment(nextIndex).GetItemsTuple();
+                    foreach (var (item, slot, type) in nextPawnEquipment[nextPawn])
                     {
-                        updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.MoveItem(Server, client.Character, nextPawn.Equipment.Storage, nextItem.UId, 1,
-                            client.Character.Storage.GetStorage(StorageType.ItemPost), 0, connection));
+                        if (item is null) continue;
+                        // Put equipped items in the item post, temporarily. We don't care about the updates because this is just bookkeeping for the DB.
+                        Server.ItemManager.MoveItem(Server, client.Character, nextPawn.Equipment.Storage, item.UId, 1, itemPost, 0, connection);
                     }
                 }
 
                 client.Character.Pawns.Remove(pawn);
                 Server.Database.DeletePawn(pawn.PawnId, connection);
+
+                // Fix the shuffled pawns equipment in the DB.
+                foreach (var (nextPawn, equipmentList) in nextPawnEquipment)
+                {
+                    // Their internal offset for their equipment storage needs to be adjusted so further operations don't throw equipment into the void.
+                    int deltaOffset = EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2;
+                    int offset = pawnIndex++ * deltaOffset;
+                    nextPawn.Equipment.SetOffset(offset);
+
+                    foreach (var (item, slot, type) in equipmentList)
+                    {
+                        if (item is null) continue;
+                        ushort newSlot = (ushort)(slot - deltaOffset);
+                        
+                        // Re-equip the stuff we put in the Item Post.
+                        Server.ItemManager.MoveItem(Server, client.Character, itemPost, item.UId, 1, nextPawn.Equipment.Storage, newSlot, connection);
+                    }
+                }
             });
 
             client.Send(updateCharacterItemNtc);
