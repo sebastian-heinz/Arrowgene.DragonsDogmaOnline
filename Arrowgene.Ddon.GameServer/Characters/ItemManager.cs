@@ -1,7 +1,5 @@
 #nullable enable
 using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Model;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -217,17 +215,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return ItemIdWalletTypeAndQuantity[itemId];
         }
 
-        public (PacketQueue queue, bool IsSpecial) HandleSpecialItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, ItemId item, uint count, bool isOnUse, DbConnection? connectionIn = null)
+
+        public (PacketQueue queue, bool IsSpecial) HandleSpecialItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, ItemId item, uint count, SpecialItemMode mode = SpecialItemMode.OnAcquire, DbConnection? connectionIn = null)
         {
             var itemInfo = _Server.AssetRepository.ClientItemInfos[item];
-            if (ItemIdWalletTypeAndQuantity.ContainsKey(item))
+            if (ItemIdWalletTypeAndQuantity.TryGetValue(item, out (WalletType Type, uint Quantity) value))
             {
-                var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[item];
-                uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * count;
+                var (walletType, quantity) = value;
+                uint totalQuantityToAdd = quantity * count;
 
-                
                 ntc.UpdateWalletList.Add(
-                    _Server.WalletManager.AddToWallet(client.Character, walletTypeAndQuantity.Type, totalQuantityToAdd, 0, connectionIn
+                    _Server.WalletManager.AddToWallet(client.Character, walletType, totalQuantityToAdd, 0, connectionIn
                 ));
                 return (new(), true);
             }
@@ -235,11 +233,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 return (_Server.AreaRankManager.AddAreaPoint(client, pointArea, (10 * count, 0), connectionIn), true);
             }
-            else if (isOnUse && PointItems.ContainsKey(item))
+            else if ((mode == SpecialItemMode.OnUse || mode == SpecialItemMode.OnSell) && PointItems.TryGetValue(item, out (PointType PointType, uint Quantity) pointItem))
             {
                 PacketQueue queue = new();
-                var pointItem = PointItems[item];
-
                 var gainedPoints = (pointItem.Quantity * count, 0U);
                 switch (pointItem.PointType)
                 {
@@ -278,7 +274,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public PacketQueue GatherItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
         {
-            var (queue, isSpecial) = HandleSpecialItem(client, ntc, gatheringItem.ItemId, pickedGatherItems, false, connectionIn);
+            var (queue, isSpecial) = HandleSpecialItem(client, ntc, gatheringItem.ItemId, pickedGatherItems, SpecialItemMode.OnAcquire, connectionIn);
             if (!isSpecial)
             {
                 List<CDataItemUpdateResult> results = AddItem(_Server, client.Character, true, (uint)gatheringItem.ItemId, pickedGatherItems, connectionIn: connectionIn);
@@ -1165,6 +1161,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
 
         #endregion
+    }
+
+    public enum SpecialItemMode
+    {
+        OnAcquire,
+        OnUse,
+        OnSell,
     }
 
     [Serializable]

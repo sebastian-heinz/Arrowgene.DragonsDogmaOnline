@@ -51,8 +51,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     var ntcData = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, targetStorage, consumeItem.ItemUId, consumeItem.Num, connection);
                     ntc.UpdateItemList.AddRange(ntcData);
 
-                    uint goldValue = Server.AssetRepository.ClientItemInfos[ntcData.First().ItemList.ItemId].Price;
+                    var itemId = ntcData.First().ItemList.ItemId;
+
+                    uint goldValue = Server.AssetRepository.ClientItemInfos[itemId].Price;
                     uint amountToAdd = goldValue * consumeItem.Num;
+
+                    var (specialQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)itemId, consumeItem.Num, SpecialItemMode.OnSell, connection);
+                    if (isSpecial)
+                    {
+                        packetQueue.AddRange(specialQueue);
+                        amountToAdd = 0;
+                    }
+
                     totalAmountToAdd += amountToAdd;
                 }
                 CDataUpdateWalletPoint walletUpdate = Server.WalletManager.AddToWallet(client.Character, WalletType.Gold, totalAmountToAdd, 0, connection);

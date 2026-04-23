@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -69,7 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     var reward = coalescedRewards[rewardUID];
 
-                    var (specialQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, updateCharacterItemNtc, reward.ItemId, reward.Num, false, connection);
+                    var (specialQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, updateCharacterItemNtc, reward.ItemId, reward.Num, SpecialItemMode.OnAcquire, connection);
                     if (isSpecial)
                     {
                         queue.AddRange(specialQueue);
