@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -79,7 +80,7 @@ namespace Arrowgene.Ddon.GameServer
                     }
                     else 
                     {
-                        var (bonusQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)bonus.BonusType, bonus.BonusValue, false);
+                        var (bonusQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)bonus.BonusType, bonus.BonusValue, SpecialItemMode.OnAcquire);
                         if (isSpecial)
                         {
                             queue.AddRange(bonusQueue);

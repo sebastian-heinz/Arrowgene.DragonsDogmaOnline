@@ -1,4 +1,5 @@
 using System.Collections;
+using static Arrowgene.Ddon.GameServer.Characters.ItemManager;
 
 public class ChatCommand : IChatCommand
 {
@@ -67,7 +68,7 @@ public class ChatCommand : IChatCommand
             UpdateType = ItemNoticeType.Gather
         };
 
-        var (queue, isSpecial) = server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)itemId, amount, false);
+        var (queue, isSpecial) = server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)itemId, amount, SpecialItemMode.OnAcquire);
         if (!isSpecial)
         {
             ntc.UpdateItemList.AddRange(server.ItemManager.AddItem(server, client.Character, true, itemId, amount));

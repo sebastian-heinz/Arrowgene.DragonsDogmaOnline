@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -34,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     PlusValue = (byte)craftProgress.PlusValue
                 };
 
-                var (specialQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, new(), (ItemId)craftProgress.ItemId, craftProgress.CreateCount, false, connection);
+                var (specialQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, new(), (ItemId)craftProgress.ItemId, craftProgress.CreateCount, SpecialItemMode.OnAcquire, connection);
 
                 if (isSpecial)
                 {

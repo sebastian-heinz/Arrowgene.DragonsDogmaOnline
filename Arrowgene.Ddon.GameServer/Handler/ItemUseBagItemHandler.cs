@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.EpitaphRoadManager.EvaluateItemUsed(client.Party, item.ItemId);
             }
 
-            var (specialQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)item.ItemId, request.Amount, true);
+            var (specialQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)item.ItemId, request.Amount, SpecialItemMode.OnUse);
             queue.AddRange(specialQueue);
 
             CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult()
