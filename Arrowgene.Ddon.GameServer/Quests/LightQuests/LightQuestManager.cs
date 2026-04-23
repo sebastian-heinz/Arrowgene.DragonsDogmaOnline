@@ -114,6 +114,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
                         Server.Database.InsertLightQuestRecord(lightQuest.QuestRecord, connection);
                     }
                 }
+
+                Server.Database.DeleteLightQuestCompletion(connection);
             });
         }
 

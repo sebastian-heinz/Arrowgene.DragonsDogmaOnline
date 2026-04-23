@@ -589,6 +589,8 @@ public interface IDatabase
     bool InsertLightQuestRecord(LightQuestRecord lightQuestRecord, DbConnection? connectionIn = null);
     List<LightQuestRecord> SelectLightQuestRecords(DbConnection? connectionIn = null);
     bool DeleteLightQuestRecord(uint scheduleId, DbConnection? connectionIn = null);
+    int DeleteLightQuestCompletion(DbConnection? connectionIn = null);
+
 
     // Pawn Favorites
     bool InsertPawnFavorite(uint characterId, uint pawnId, DbConnection? connectionIn = null);

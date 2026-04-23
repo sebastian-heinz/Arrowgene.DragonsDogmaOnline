@@ -25,6 +25,16 @@ namespace Arrowgene.Ddon.GameServer.Tasks.Implementations
         {
             Logger.Info("Performing daily light quest rotation");
 
+            foreach (var character in server.ClientLookup.GetAllCharacter())
+            {
+                foreach (var key in character.CompletedQuests.Keys
+                    .Where(QuestManager.IsBoardQuest)
+                    .ToList())
+                {
+                    character.CompletedQuests.Remove(key);
+                }
+            }
+
             server.LightQuestManager.InsertRecordsFromAsset();
 
             var questRecords = server.Database.SelectLightQuestRecords();

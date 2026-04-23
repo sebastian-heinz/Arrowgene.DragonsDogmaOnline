@@ -1144,6 +1144,23 @@ namespace Arrowgene.Ddon.Server.Settings
         private const int _LightQuestGenerationAttemptsPerQuest = 20;
 
         /// <summary>
+        /// The number of times a player can repeat a board quest before it is no longer offered. Resets when quests rotate.
+        /// </summary>
+        [DefaultValue(_LightQuestRepeatsPerDay)]
+        public uint Board
+        {
+            set
+            {
+                SetSetting("LightQuestRepeatsPerDay", value);
+            }
+            get
+            {
+                return TryGetSetting("LightQuestRepeatsPerDay", _LightQuestRepeatsPerDay);
+            }
+        }
+        private const uint _LightQuestRepeatsPerDay = 10000;
+
+        /// <summary>
         /// 
         /// </summary>
         [DefaultValue(_UrlDomain)]

@@ -21,21 +21,29 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestGetLightQuestListRes Handle(GameClient client, C2SQuestGetLightQuestListReq request)
         {
-            S2CQuestGetLightQuestListRes res = new S2CQuestGetLightQuestListRes();
+            S2CQuestGetLightQuestListRes res = new S2CQuestGetLightQuestListRes
+            {
+                BaseId = request.BaseId,
 
-            res.BaseId = request.BaseId;
+                // TODO: Investigate these values.
+                NotCompleteQuestNum = 10,
+                GpCompleteEnable = false,
+                GpCompletePriceGp = 1,
 
-            // TODO: Investigate these values.
-            res.NotCompleteQuestNum = 10;
-            res.GpCompleteEnable = false;
-            res.GpCompletePriceGp = 1;
-
-            res.LightQuestList = new List<CDataLightQuestList>();
+                LightQuestList = []
+            };
             var quests = QuestManager.GetQuestsByType(QuestType.Light).Where(x => QuestManager.GetQuestByScheduleId(x).LightQuestDetail.BoardId == request.BaseId);
             foreach (var questScheduleId in quests)
             {
                 var lightQuest = QuestManager.GetQuestByScheduleId(questScheduleId);
                 if (lightQuest.IsDistributionTimed && (DateTimeOffset.Now < lightQuest.DistributionStart || DateTimeOffset.Now > lightQuest.DistributionEnd))
+                {
+                    continue;
+                }
+
+                if (QuestManager.IsBoardQuest(questScheduleId) 
+                    && client.Character.CompletedQuests.GetValueOrDefault(lightQuest.QuestId)?.ClearCount 
+                        >= Server.GameSettings.GameServerSettings.LightQuestGenerationAttemptsPerQuest)
                 {
                     continue;
                 }

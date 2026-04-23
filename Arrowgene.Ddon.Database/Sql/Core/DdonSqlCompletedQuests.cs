@@ -32,6 +32,8 @@ public partial class DdonSqlDb : SqlDb
             DO UPDATE SET "clear_count" = EXCLUDED."clear_count";
         """;
 
+    private readonly string SqlDeleteLightQuestCompletion = "DELETE FROM \"ddon_completed_quests\" WHERE \"quest_id\" BETWEEN 40000000 AND 49999999;";
+
     public override List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null)
     {
         return ExecuteQuerySafe(connectionIn, connection =>
@@ -119,6 +121,14 @@ public partial class DdonSqlDb : SqlDb
                 AddParameter(command, "quest_type", (uint)questType);
                 AddParameter(command, "clear_count", count);
             }) == 1;
+        });
+    }
+
+    public override int DeleteLightQuestCompletion(DbConnection? connectionIn = null)
+    {
+        return ExecuteQuerySafe(connectionIn, connection =>
+        {
+            return ExecuteNonQuery(connection, SqlDeleteLightQuestCompletion, command => { });
         });
     }
 }
