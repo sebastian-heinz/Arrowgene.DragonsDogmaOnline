@@ -68,7 +68,7 @@ public class ChatCommand : IChatCommand
             UpdateType = ItemNoticeType.Gather
         };
 
-        var (queue, isSpecial) = server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)itemId, amount, SpecialItemMode.OnAcquire);
+        var (queue, isSpecial) = server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)itemId, amount);
         if (!isSpecial)
         {
             ntc.UpdateItemList.AddRange(server.ItemManager.AddItem(server, client.Character, true, itemId, amount));

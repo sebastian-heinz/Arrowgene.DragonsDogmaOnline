@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             var results = new Dictionary<JobId, JobEmblem>();
 
-            foreach (var jobId in Enum.GetValues(typeof(JobId)).Cast<JobId>())
+            foreach (var jobId in Enum.GetValues<JobId>())
             {
                 if (jobId == JobId.None)
                 {
@@ -40,12 +40,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         EmblemPointsUsed = 0,
                     };
 
-                    foreach (var equipStat in Enum.GetValues(typeof(EquipStatId)).Cast<EquipStatId>())
+                    for (byte i = (byte)EquipStatId.PhysicalAttack; i <= (byte)EquipStatId.DarkResist; i++)
                     {
-                        if (equipStat == EquipStatId.EmblemLevel)
-                        {
-                            continue;
-                        }
+                        var equipStat = (EquipStatId)i;
                         results[jobId].StatLevels[equipStat] = 0;
                     }
                 }
