@@ -120,6 +120,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 })]
             });
 
+            client.Send(new S2CSkillSetPresetAbilityNtc()
+            {
+                CharacterId = client.Character.CharacterId,
+                AbilityDataList = [.. client.Character.EquippedAbilitiesDictionary[client.Character.Job]
+                .Where(x => x != null)
+                .Select((x, i) => x.AsCDataContextAcquirementData((byte)(i + 1)))]
+            });
+
             return new S2CCharacterSwitchGameModeRes()
             {
                 GameMode = packet.GameMode,

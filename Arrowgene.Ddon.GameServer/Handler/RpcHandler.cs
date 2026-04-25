@@ -2,13 +2,8 @@ using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.RpcPacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -32,11 +27,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
         }
 
-        public static readonly Dictionary<RpcNetMsgDti, Dictionary<ushort, IRpcPacket>> gRpcPacketHandlers = new Dictionary<RpcNetMsgDti, Dictionary<ushort, IRpcPacket>>
+        public static readonly Dictionary<RpcNetMsgDti, Dictionary<ushort, IRpcPacket>> gRpcPacketHandlers = new()
         {
             [RpcNetMsgDti.cNetMsgCtrlAction] = new Dictionary<ushort, IRpcPacket>
             {
                 {(ushort) RpcMsgIdControl.NET_MSG_ID_PERIODIC_TOP, new RpcCtrlPeriodicTop()},
+                {(ushort) RpcMsgIdControl.NET_MSG_ID_CS_CHANGE, new RpcCtrlCsChange()}
             }
         };
     }

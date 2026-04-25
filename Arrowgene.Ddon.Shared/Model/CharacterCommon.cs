@@ -72,6 +72,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint GreenHp { get; set; }
         public uint WhiteHp { get; set; }
 
+        public byte CustomSkillGroup { get; set; }
+
         #region CData Conversions
 
         public CDataOrbGainExtendParam CalculateFullExtendedParams()
@@ -168,7 +170,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     GainMagicDefense = StatusInfo.GainMagicDefense,
                     // ActNo?
                     RevivePoint = StatusInfo.RevivePoint,
-                    // CustomSkillGroup?
+                    CustomSkillGroup = CustomSkillGroup,
                     JobList = [.. CharacterJobDataList.Select(x => new CDataContextJobData(x))],
                     ChargeEffectList = [], // TODO
                     OcdActiveList = [], // TODO
