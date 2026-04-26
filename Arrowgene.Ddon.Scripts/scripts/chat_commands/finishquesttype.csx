@@ -25,6 +25,7 @@ public class ChatCommand : IChatCommand
                     if (!client.Character.HasQuestCompleted(quest.QuestId))
                     {
                         server.Database.InsertCompletedQuest(client.Character.CommonId, quest.QuestId, quest.QuestType, connection);
+                        server.Database.RemoveQuestProgress(client.Character.CommonId, quest.QuestScheduleId, quest.QuestType, connection);
                     }
                 }
             });

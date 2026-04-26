@@ -78,6 +78,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CharacterId = token.CharacterId
             };
 
+#if DEBUG
+            if (client.Identity.Contains("127.0.0.1"))
+            {
+                client.Account.State = AccountStateType.GameMaster;
+            }
+#endif
+
             if (!Database.InsertConnection(connection))
             {
                 Logger.Error(client, $"Failed to register game connection");
