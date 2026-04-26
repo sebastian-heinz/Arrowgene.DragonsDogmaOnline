@@ -4,8 +4,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
     public class CharacterTrackingMigration(DatabaseSetting databaseSetting) : IMigrationStrategy
     {
-        public uint From => 56;
-        public uint To => 57;
+        public uint From => 58;
+        public uint To => 59;
 
         public bool Migrate(IDatabase db, DbConnection conn)
         {
