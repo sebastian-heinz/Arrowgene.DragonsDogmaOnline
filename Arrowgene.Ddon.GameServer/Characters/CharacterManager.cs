@@ -345,6 +345,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 pawn.MaxAdventureCount = Server.GameSettings.GameServerSettings.RentalPawnAdventureCount;
                 pawn.MaxCraftCount = Server.GameSettings.GameServerSettings.RentalPawnCraftCount;
+
+                foreach (var item in pawn.Equipment.GetItems(EquipType.Performance))
+                {
+                    if (item is not null && item.ItemId == (uint)pawn.Job.VocationEmblemItemId())
+                    {
+                        pawn.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob(character, pawn.Job);
+                        item.EquipElementParamList = Server.JobEmblemManager.GetEmblemCrestsForCurrentJob(character, pawn.Job);
+                    }
+                }
             }
         }
 

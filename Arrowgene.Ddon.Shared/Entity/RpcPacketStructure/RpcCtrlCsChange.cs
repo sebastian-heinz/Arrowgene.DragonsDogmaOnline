@@ -1,6 +1,7 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.Shared.Entity.RpcPacketStructure
 {
@@ -11,11 +12,6 @@ namespace Arrowgene.Ddon.Shared.Entity.RpcPacketStructure
     {
         private static readonly Logger Logger = LogProvider.Logger<Logger>(typeof(RpcCtrlCsChange));
 
-        /// <summary>
-        /// These seem to always be the same?
-        /// Doesn't obviously depend on HP, vocation, equipment, position, or stage.
-        /// </summary>
-        public byte[] Unk { get; set; } = new byte[32];
         /// <summary>
         /// 0 for the main pallet, 1 for the alt pallet.
         /// </summary>
@@ -39,8 +35,10 @@ namespace Arrowgene.Ddon.Shared.Entity.RpcPacketStructure
         {
             RpcCtrlCsChange obj = new RpcCtrlCsChange();
 
-            obj.Unk = ReadBytes(buffer, 32);
-            obj.CustomSkillGroup = ReadByte(buffer);
+            // TODO: Figure out what the rest of the bytes are for.
+            // It's usually a 33 byte packet.
+            var bytes = buffer.GetAllBytes();
+            obj.CustomSkillGroup = bytes.Last();
 
             return obj;
         }

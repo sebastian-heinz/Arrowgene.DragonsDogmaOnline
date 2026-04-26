@@ -121,7 +121,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return VocationEmblemReleaseIds[jobId];
         }
 
-        private static readonly Dictionary<JobId, ItemId> JobEmblemItemIds = new Dictionary<JobId, ItemId>()
+        public static readonly Dictionary<JobId, ItemId> JobEmblemItemIds = new Dictionary<JobId, ItemId>()
         {
             [JobId.Fighter] = ItemId.EmblemStoneFighter,
             [JobId.Seeker] = ItemId.EmblemStoneSeeker,

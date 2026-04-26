@@ -172,6 +172,31 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return GetEquipStatParamList(emblemData);
         }
 
+        public List<CDataEquipElementParam> GetEmblemCrestsForCurrentJob(Character character, JobId jobId)
+        {
+            if (jobId == JobId.None)
+            {
+                Logger.Error($"The character {character.CharacterId} attempted to calculate emblem crests for JobId.None");
+                return [];
+            }
+
+            var emblemData = character.JobEmblems[jobId];
+            if (emblemData.UIDs.Count == 0)
+            {
+                return [];
+            }
+
+            var uid = emblemData.UIDs.First();
+            var itemT = character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, uid);
+            
+            if (itemT is null)
+            {
+                return [];
+            }
+
+            return itemT.Item2.Item2.EquipElementParamList;
+        }
+
         public List<CDataEquipStatParam> GetEmblemStatsForCurrentJob(Character character)
         {
             return GetEmblemStatsForCurrentJob(character, character.ActiveCharacterJobData.Job);

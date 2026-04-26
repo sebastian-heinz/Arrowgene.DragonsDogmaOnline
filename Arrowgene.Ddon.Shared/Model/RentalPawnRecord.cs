@@ -131,6 +131,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 CharacterProfile = PawnProfile
             };
 
+            
             return pawn;
         }
     }
