@@ -52,6 +52,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<Ability> LearnedAbilities { get; set; } = [];
         public Dictionary<JobId, List<Ability?>> EquippedAbilitiesDictionary { get; set; }
         public OnlineStatus OnlineStatus { get; set; } = OnlineStatus.Offline;
+        public OnlineStatus SavedOnlineStatus { get; set; } = OnlineStatus.Online;
         public CDataOrbGainExtendParam ExtendedParams { get; set; } = new();
         public Dictionary<JobId, CDataOrbGainExtendParam> ExtendedJobParams { get; set; } = [];
         public Dictionary<JobId, HashSet<uint>> ReleasedExtendedJobParams { get; set; } = [];

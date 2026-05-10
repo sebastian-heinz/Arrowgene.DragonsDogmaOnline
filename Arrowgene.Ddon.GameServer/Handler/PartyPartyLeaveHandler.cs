@@ -15,6 +15,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
+         private static OnlineStatus GetDefaultOnlineStatus(GameClient client)
+         {
+            return client.Character.SavedOnlineStatus switch
+            {
+                OnlineStatus.Online => OnlineStatus.Online,
+                OnlineStatus.Offline => OnlineStatus.Offline,
+                OnlineStatus.Leaving => OnlineStatus.Leaving,
+                OnlineStatus.Busy => OnlineStatus.Busy,
+                _ => OnlineStatus.Online
+            };
+        }
+
         public override S2CPartyPartyLeaveRes Handle(GameClient client, C2SPartyPartyLeaveReq request)
         {
             PartyGroup party = client.Party
@@ -29,7 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (!data.IsInRecreate)
                 {
                     Server.BoardManager.RemoveCharacterFromGroup(client.Character);
-                    Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+                    Server.CharacterManager.UpdateOnlineStatus(client, client.Character, GetDefaultOnlineStatus(client));
 
                     if (BoardManager.BoardIdIsExm(party.ContentId))
                     {
@@ -43,12 +55,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, GetDefaultOnlineStatus(client));
             }
 
             if (party.MemberCount() == 1 && party.Leader != null && !BoardManager.BoardIdIsExm(party.ContentId))
             {
-                Server.CharacterManager.UpdateOnlineStatus(party.Leader.Client, party.Leader.Client.Character, OnlineStatus.Online);
+                Server.CharacterManager.UpdateOnlineStatus(party.Leader.Client, party.Leader.Client.Character, GetDefaultOnlineStatus(party.Leader.Client));
             }
 
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();

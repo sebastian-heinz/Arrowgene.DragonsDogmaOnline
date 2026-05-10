@@ -37,6 +37,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var acquirableAbilities = client.Character.AcquirableAbilities;
             var dispelSeals = client.Character.DispelSeals;
             var msgSetList = client.Character.MsgSetList;
+            var onlineStatus = client.Character.OnlineStatus;
+            var savedOnlineStatus = client.Character.SavedOnlineStatus;
 
             var serverInfo = client.Character.Server;
 
@@ -74,7 +76,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.BbmProgress = bbmProgress;
             client.Character.WalletPointList = walletPointList;
             client.Character.ReleasedWarpPoints = warpPointList;
-            client.Character.OnlineStatus = OnlineStatus.Online;
+            client.Character.OnlineStatus = onlineStatus;
+            client.Character.SavedOnlineStatus = savedOnlineStatus;
             client.Character.ClanId = clanId;
             client.Character.ClanName = clanName;
             client.Character.AchievementStatus = achievements.AchievementStatus;

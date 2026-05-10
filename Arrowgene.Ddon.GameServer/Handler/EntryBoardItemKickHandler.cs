@@ -16,6 +16,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
+        private static OnlineStatus GetDefaultOnlineStatus(GameClient client)
+        {
+            return client.Character.SavedOnlineStatus switch
+            {
+                OnlineStatus.Online => OnlineStatus.Online,
+                OnlineStatus.Offline => OnlineStatus.Offline,
+                OnlineStatus.Leaving => OnlineStatus.Leaving,
+                OnlineStatus.Busy => OnlineStatus.Busy,
+                _ => OnlineStatus.Online
+            };
+        }
+
         public override S2CEntryBoardItemKickRes Handle(GameClient client, C2SEntryBoardItemKickReq request)
         {
             var data = Server.BoardManager.RecreateGroup(client.Character);
@@ -48,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             kickedMemberClient.Send(new S2CEntryBoardEntryBoardItemLeaveNtc());
             
             Server.BoardManager.RemoveCharacterFromGroup(kickedMemberClient.Character);
-            Server.CharacterManager.UpdateOnlineStatus(kickedMemberClient, kickedMemberClient.Character, OnlineStatus.Online);
+            Server.CharacterManager.UpdateOnlineStatus(kickedMemberClient, kickedMemberClient.Character, GetDefaultOnlineStatus(kickedMemberClient));
 
             return new S2CEntryBoardItemKickRes();
         }

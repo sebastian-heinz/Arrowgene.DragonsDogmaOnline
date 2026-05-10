@@ -15,7 +15,7 @@ public partial class DdonSqlDb : SqlDb
 
     private static readonly string[] CharacterCommonFields = new[]
     {
-        "job", "hide_equip_head", "hide_equip_lantern"
+        "job", "hide_equip_head", "hide_equip_lantern", "saved_online_status"
     };
 
     private static readonly string[] CDataEditInfoFields = new[]
@@ -431,6 +431,7 @@ public partial class DdonSqlDb : SqlDb
         common.HideEquipHead = GetBoolean(reader, "hide_equip_head");
         common.HideEquipLantern = GetBoolean(reader, "hide_equip_lantern");
         common.JewelrySlotNum = 0;
+        common.SavedOnlineStatus = (OnlineStatus)GetByte(reader, "saved_online_status");
 
         common.EditInfo.Sex = GetByte(reader, "sex");
         common.EditInfo.Voice = GetByte(reader, "voice");
@@ -532,6 +533,7 @@ public partial class DdonSqlDb : SqlDb
         AddParameter(command, "@job", (byte)common.Job);
         AddParameter(command, "@hide_equip_head", common.HideEquipHead);
         AddParameter(command, "@hide_equip_lantern", common.HideEquipLantern);
+        AddParameter(command, "@saved_online_status", (byte)common.SavedOnlineStatus);
         // CDataEditInfoFields
         AddParameter(command, "@sex", common.EditInfo.Sex);
         AddParameter(command, "@voice", common.EditInfo.Voice);
