@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Rpc.Command;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
@@ -31,6 +32,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                 {
                     RpcInternalCommand.Ping => HandlePing(),
                     RpcInternalCommand.NotifyPlayerList => HandleNotifyPlayerList(gameServer),
+                    RpcInternalCommand.NotifyOnlineStatusChanged => HandleNotifyOnlineStatusChanged(gameServer),
                     RpcInternalCommand.NotifyClanQuestCompletion => HandleNotifyClanQuestCompletion(gameServer),
                     RpcInternalCommand.EpitaphRoadWeeklyReset => HandleEpitaphRoadWeeklyReset(gameServer),
                     RpcInternalCommand.KickInternal => HandleKickInternal(gameServer),
@@ -50,6 +52,36 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                 return new RpcCommandResult(this, true)
                 {
                     Message = $"Ping {_entry.Origin}"
+                };
+            }
+
+            private RpcCommandResult HandleNotifyOnlineStatusChanged(DdonGameServer gameServer)
+            {
+                RpcOnlineStatusData data = _entry.GetData<RpcOnlineStatusData>();
+
+                gameServer.RpcManager.UpdatePlayerList();
+
+                gameServer.RpcManager.UpdateRemoteOnlineStatus(data.CharacterId, data.ServerId, data.OnlineStatus);
+
+                var characterListElement = gameServer.RpcManager.GetTrackedCharacterListElement(data.CharacterId);
+
+                if (characterListElement != null)
+                {
+                    var ntc = new S2CCharacterCommunityCharacterStatusUpdateNtc();
+                    ntc.UpdateCharacterList.Add(characterListElement);
+
+                    foreach (var localClient in gameServer.ClientLookup.GetAll())
+                    {
+                        if (localClient.Character != null)
+                        {
+                            localClient.Send(ntc);
+                        }
+                    }
+                }
+
+                return new RpcCommandResult(this, true)
+                {
+                    Message = $"NotifyOnlineStatusChanged CharacterId {data.CharacterId} Status {data.OnlineStatus}"
                 };
             }
 

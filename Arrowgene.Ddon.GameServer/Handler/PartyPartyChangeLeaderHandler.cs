@@ -20,18 +20,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        private static OnlineStatus GetDefaultOnlineStatus(GameClient client)
-        {
-            return client.Character.SavedOnlineStatus switch
-            {
-                OnlineStatus.Online => OnlineStatus.Online,
-                OnlineStatus.Offline => OnlineStatus.Offline,
-                OnlineStatus.Leaving => OnlineStatus.Leaving,
-                OnlineStatus.Busy => OnlineStatus.Busy,
-                _ => OnlineStatus.Online
-            };
-        }
-
         public override S2CPartyPartyChangeLeaderRes Handle(GameClient client, C2SPartyPartyChangeLeaderReq request)
         {
             S2CPartyPartyChangeLeaderRes res = new S2CPartyPartyChangeLeaderRes();
@@ -71,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (party.MemberCount() == 1)
             {
-                Server.CharacterManager.UpdateOnlineStatus(currentLeader.Client, currentLeader.Client.Character, GetDefaultOnlineStatus(currentLeader.Client));
+                Server.CharacterManager.UpdateOnlineStatus(currentLeader.Client, currentLeader.Client.Character, CharacterManager.GetDefaultOnlineStatus(currentLeader.Client.Character));
             }
             else
             {

@@ -37,11 +37,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
                 else
                 {
-                    var matchServer = Server.RpcManager.FindPlayerById(character.CommunityCharacterBaseInfo.CharacterId);
-                    if (matchServer != 0)
+                    var presence = Server.RpcManager.FindPlayerPresenceById(character.CommunityCharacterBaseInfo.CharacterId);
+                    if (presence.ChannelId != 0)
                     {
-                        character.OnlineStatus = OnlineStatus.Online; // TODO
-                        character.ServerId = matchServer;
+                        character.OnlineStatus = presence.OnlineStatus;
+                        character.ServerId = presence.ChannelId;
                     }
                     else
                     {

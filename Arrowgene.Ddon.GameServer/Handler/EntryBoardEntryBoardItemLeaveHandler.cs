@@ -21,18 +21,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        private static OnlineStatus GetDefaultOnlineStatus(GameClient client)
-        {
-            return client.Character.SavedOnlineStatus switch
-            {
-                OnlineStatus.Online => OnlineStatus.Online,
-                OnlineStatus.Offline => OnlineStatus.Offline,
-                OnlineStatus.Leaving => OnlineStatus.Leaving,
-                OnlineStatus.Busy => OnlineStatus.Busy,
-                _ => OnlineStatus.Online
-            };
-        }
-
         public override S2CEntryBoardEntryBoardItemLeaveRes Handle(GameClient client, C2SEntryBoardEntryBoardItemLeaveReq request)
         {
             var data = Server.BoardManager.GetGroupDataForCharacter(client.Character);
@@ -45,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (memberClient != null)
                     {
                         memberClient.Send(new S2CEntryBoardEntryBoardItemLeaveNtc());
-                        Server.CharacterManager.UpdateOnlineStatus(memberClient, memberClient.Character, GetDefaultOnlineStatus(memberClient));
+                        Server.CharacterManager.UpdateOnlineStatus(memberClient, memberClient.Character, CharacterManager.GetDefaultOnlineStatus(memberClient.Character));
                     }
                 }
             }
@@ -80,7 +68,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.BoardManager.RemoveCharacterFromGroup(client.Character);
                 Server.BoardManager.RestartRecruitment(data.EntryItem.Id);
 
-                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, GetDefaultOnlineStatus(client));
+                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, CharacterManager.GetDefaultOnlineStatus(client.Character));
             }
 
             return new S2CEntryBoardEntryBoardItemLeaveRes();

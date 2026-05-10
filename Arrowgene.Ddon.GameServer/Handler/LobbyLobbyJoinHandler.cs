@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -24,6 +25,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var ownOnlineStatus = client.Character.SavedOnlineStatus;
 
             client.Character.OnlineStatus = ownOnlineStatus;
+
+            Server.RpcManager.UpdatePlayerList();
+
+            foreach (var element in Server.RpcManager.GetTrackedCharacterListElement())
+            {
+                if (element.CommunityCharacterBaseInfo.CharacterId == client.Character.CharacterId)
+                {
+                    continue;
+                }
+
+                var ntc = new S2CCharacterCommunityCharacterStatusUpdateNtc();
+                ntc.UpdateCharacterList.Add(element);
+                client.Send(ntc);
+            }
+
+            Server.RpcManager.AnnounceOthers(
+                "internal/command",
+                RpcInternalCommand.NotifyOnlineStatusChanged,
+                new RpcOnlineStatusData()
+                {
+                    CharacterId = client.Character.CharacterId,
+                    ServerId = (ushort)Server.Id,
+                    OnlineStatus = client.Character.OnlineStatus
+                }
+            );
 
             // Notify new player of already present players
             S2CUserListJoinNtc alreadyPresentUsersNtc = new S2CUserListJoinNtc();

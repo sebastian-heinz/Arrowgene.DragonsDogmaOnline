@@ -6,6 +6,7 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
         Ping, // null
 
         NotifyPlayerList, // List<RpcCharacterData>
+        NotifyOnlineStatusChanged, // RpcOnlineStatusData
         NotifyClanQuestCompletion, //RpcQuestCompletionData
 
         KickInternal, // int
