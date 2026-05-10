@@ -43,6 +43,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     return null;
                 }
 
+                character.OnlineStatus = character.SavedOnlineStatus;
+
                 character.Server = Server.AssetRepository.ServerList.Where(server => server.Id == Server.Id).Single().ToCDataGameServerListInfo();
                 
                 // Apply Emblem stats before setting up character equipment
