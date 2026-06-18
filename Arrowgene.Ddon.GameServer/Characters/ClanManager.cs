@@ -473,11 +473,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
                 else
                 {
-                    var channelId = Server.RpcManager.FindPlayerById(memberInfo.CharacterId);
-                    if (channelId > 0)
+                    var presence = Server.RpcManager.FindPlayerPresenceById(memberInfo.CharacterId);
+                    if (presence.ChannelId > 0)
                     {
-                        member.CharacterListElement.OnlineStatus = OnlineStatus.Online;
-                        member.CharacterListElement.ServerId = channelId;
+                        member.CharacterListElement.OnlineStatus = presence.OnlineStatus;
+                        member.CharacterListElement.ServerId = presence.ChannelId;
                     }
                     else
                     {

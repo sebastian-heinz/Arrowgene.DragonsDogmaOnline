@@ -284,6 +284,72 @@ namespace Arrowgene.Ddon.GameServer
             return 0;
         }
     
+        public (ushort ChannelId, OnlineStatus OnlineStatus) FindPlayerPresenceById(uint characterId)
+        {
+            lock (CharacterTrackingMap)
+            {
+                foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
+                {
+                    if (channelMembers.TryGetValue(characterId, out var player))
+                    {
+                        return (channelId, player.OnlineStatus);
+                    }
+                }
+            }
+
+            return (0, OnlineStatus.Offline);
+        }
+
+        public CDataCharacterListElement GetTrackedCharacterListElement(uint characterId)
+        {
+            lock (CharacterTrackingMap)
+            {
+                foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
+                {
+                    lock (channelMembers)
+                    {
+                        if (channelMembers.TryGetValue(characterId, out var player))
+                        {
+                            return new CDataCharacterListElement()
+                            {
+                                CommunityCharacterBaseInfo = player.CommunityCharacterBaseInfo,
+                                ServerId = channelId,
+                                OnlineStatus = player.OnlineStatus,
+                            };
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public List<CDataCharacterListElement> GetTrackedCharacterListElement()
+        {
+            List<CDataCharacterListElement> results = [];
+
+            lock (CharacterTrackingMap)
+            {
+                foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
+                {
+                    lock (channelMembers)
+                    {
+                        foreach (var player in channelMembers.Values)
+                        {
+                            results.Add(new CDataCharacterListElement()
+                            {
+                                CommunityCharacterBaseInfo = player.CommunityCharacterBaseInfo,
+                                ServerId = channelId,
+                                OnlineStatus = player.OnlineStatus,
+                            });
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
+
         public void AnnouncePlayerList(Character exception = null)
         {
             UpdatePlayerList(exception);
@@ -293,9 +359,46 @@ namespace Arrowgene.Ddon.GameServer
         public void UpdatePlayerList(Character exception = null)
         {
             var trackingData = Server.Database.SelectCharacterTrackingList();
+
             foreach (var item in trackingData)
             {
-                CharacterTrackingMap[item.Key] = new RpcTrackingMap(item.Key, [.. item.Value.Where(x => x.CharacterId != exception?.CharacterId)]);
+                ushort channelId = item.Key;
+
+                var newMap = new RpcTrackingMap(channelId, [.. item.Value.Where(x => x.CharacterId != exception?.CharacterId)]);
+
+                if (CharacterTrackingMap.TryGetValue(channelId, out var oldMap))
+                {
+                    foreach (var characterData in newMap.Values)
+                    {
+                        if (oldMap.TryGetValue(characterData.CharacterId, out var oldCharacterData))
+                        {
+                            characterData.OnlineStatus = oldCharacterData.OnlineStatus;
+                        }
+                    }
+                }
+
+                CharacterTrackingMap[channelId] = newMap;
+            }
+        }
+
+        public void UpdateRemoteOnlineStatus(uint characterId, ushort serverId, OnlineStatus onlineStatus)
+        {
+            lock (CharacterTrackingMap)
+            {
+                if (!CharacterTrackingMap.ContainsKey(serverId))
+                {
+                    return;
+                }
+
+                var channelMembers = CharacterTrackingMap[serverId];
+
+                lock (channelMembers)
+                {
+                    if (channelMembers.TryGetValue(characterId, out var characterData))
+                    {
+                        characterData.OnlineStatus = onlineStatus;
+                    }
+                }
             }
         }
 

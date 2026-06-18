@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -48,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             kickedMemberClient.Send(new S2CEntryBoardEntryBoardItemLeaveNtc());
             
             Server.BoardManager.RemoveCharacterFromGroup(kickedMemberClient.Character);
-            Server.CharacterManager.UpdateOnlineStatus(kickedMemberClient, kickedMemberClient.Character, OnlineStatus.Online);
+            Server.CharacterManager.UpdateOnlineStatus(kickedMemberClient, kickedMemberClient.Character, CharacterManager.GetDefaultOnlineStatus(kickedMemberClient.Character));
 
             return new S2CEntryBoardItemKickRes();
         }

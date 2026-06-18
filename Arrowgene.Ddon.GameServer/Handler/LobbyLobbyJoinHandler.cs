@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -21,7 +22,34 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CLobbyJoinRes Handle(GameClient client, C2SLobbyJoinReq request)
         {
-            client.Character.OnlineStatus = OnlineStatus.Online;
+            var ownOnlineStatus = client.Character.SavedOnlineStatus;
+
+            client.Character.OnlineStatus = ownOnlineStatus;
+
+            Server.RpcManager.UpdatePlayerList();
+
+            foreach (var element in Server.RpcManager.GetTrackedCharacterListElement())
+            {
+                if (element.CommunityCharacterBaseInfo.CharacterId == client.Character.CharacterId)
+                {
+                    continue;
+                }
+
+                var ntc = new S2CCharacterCommunityCharacterStatusUpdateNtc();
+                ntc.UpdateCharacterList.Add(element);
+                client.Send(ntc);
+            }
+
+            Server.RpcManager.AnnounceOthers(
+                "internal/command",
+                RpcInternalCommand.NotifyOnlineStatusChanged,
+                new RpcOnlineStatusData()
+                {
+                    CharacterId = client.Character.CharacterId,
+                    ServerId = (ushort)Server.Id,
+                    OnlineStatus = client.Character.OnlineStatus
+                }
+            );
 
             // Notify new player of already present players
             S2CUserListJoinNtc alreadyPresentUsersNtc = new S2CUserListJoinNtc();
@@ -40,7 +68,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             PawnId = 0,
                             Unk0 = 1,
                             Unk1 = 0,
-                            OnlineStatus = OnlineStatus.Online
+                            OnlineStatus = otherClient.Character.OnlineStatus
                         }
                     );
                 }
@@ -60,7 +88,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     ClanName = client.Character.ClanName.ShortName,
                     Unk0 = 1, // Platform PC?
                     Unk1 = 0,
-                    OnlineStatus = OnlineStatus.Online  // OnlineStatus?
+                    OnlineStatus = ownOnlineStatus
                 },
             };
 

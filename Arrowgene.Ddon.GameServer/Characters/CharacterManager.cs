@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     return null;
                 }
+
+                character.OnlineStatus = character.SavedOnlineStatus;
 
                 character.Server = Server.AssetRepository.ServerList.Where(server => server.Id == Server.Id).Single().ToCDataGameServerListInfo();
                 
@@ -93,6 +96,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 return character;
             });
+        }
+
+        public static OnlineStatus GetDefaultOnlineStatus(Character character)
+        {
+            return character.SavedOnlineStatus switch
+            {
+                OnlineStatus.Online => OnlineStatus.Online,
+                OnlineStatus.Offline => OnlineStatus.Offline,
+                OnlineStatus.Leaving => OnlineStatus.Leaving,
+                OnlineStatus.Busy => OnlineStatus.Busy,
+                _ => OnlineStatus.Online
+            };
         }
 
         /**
@@ -373,6 +388,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 memberClient.Send(charUpdateNtc);
             }
+
+            Server.RpcManager.AnnounceOthers(
+                "internal/command",
+                RpcInternalCommand.NotifyOnlineStatusChanged,
+                new RpcOnlineStatusData()
+                {
+                    CharacterId = character.CharacterId,
+                    ServerId = (ushort)Server.Id,
+                    OnlineStatus = onlineStatus
+                }
+            );
         }
 
         public uint GetMaxAugmentAllocation(CharacterCommon character)

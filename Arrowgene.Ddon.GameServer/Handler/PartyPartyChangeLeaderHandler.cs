@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (party.MemberCount() == 1)
             {
-                Server.CharacterManager.UpdateOnlineStatus(currentLeader.Client, currentLeader.Client.Character, OnlineStatus.Online);
+                Server.CharacterManager.UpdateOnlineStatus(currentLeader.Client, currentLeader.Client.Character, CharacterManager.GetDefaultOnlineStatus(currentLeader.Client.Character));
             }
             else
             {

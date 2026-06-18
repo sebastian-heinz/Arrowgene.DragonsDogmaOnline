@@ -10,6 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
             LastName = string.Empty;
             ClanName = string.Empty;
             ClanShortName = string.Empty;
+            OnlineStatus = OnlineStatus.Offline;
         }
 
         public RpcCharacterData(Character character)
@@ -20,6 +21,7 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
             ClanName = character.ClanName.Name;
             ClanShortName = character.ClanName.ShortName;
             ClanId = character.ClanId;
+            OnlineStatus = character.OnlineStatus;
         }
 
         public uint CharacterId { get; set; }
@@ -28,6 +30,7 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
         public string LastName { get; set; }
         public string ClanName { get; set; }
         public string ClanShortName { get; set; }
+        public OnlineStatus OnlineStatus { get; set; }
 
         public CDataCommunityCharacterBaseInfo CommunityCharacterBaseInfo
         {

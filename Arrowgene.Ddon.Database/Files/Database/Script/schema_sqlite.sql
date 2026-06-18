@@ -61,7 +61,8 @@ CREATE TABLE IF NOT EXISTS "ddon_character_common"
     "character_common_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "job"                 SMALLINT                          NOT NULL,
     "hide_equip_head"     BOOLEAN                           NOT NULL,
-    "hide_equip_lantern"  BOOLEAN                           NOT NULL
+    "hide_equip_lantern"  BOOLEAN                           NOT NULL,
+    "saved_online_status" INTEGER                           NOT NULL DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_character"

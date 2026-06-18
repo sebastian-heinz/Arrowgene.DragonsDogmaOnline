@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CConnectionLogoutRes Handle(GameClient client, C2SConnectionLogoutReq request)
         {
             S2CConnectionLogoutRes res = new S2CConnectionLogoutRes();
-            client.Character.OnlineStatus = OnlineStatus.Offline;
+            Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Offline);
             return res;
         }
     }

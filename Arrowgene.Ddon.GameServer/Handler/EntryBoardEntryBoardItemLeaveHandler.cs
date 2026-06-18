@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (memberClient != null)
                     {
                         memberClient.Send(new S2CEntryBoardEntryBoardItemLeaveNtc());
-                        Server.CharacterManager.UpdateOnlineStatus(client, memberClient.Character, OnlineStatus.Online);
+                        Server.CharacterManager.UpdateOnlineStatus(memberClient, memberClient.Character, CharacterManager.GetDefaultOnlineStatus(memberClient.Character));
                     }
                 }
             }
@@ -68,7 +68,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.BoardManager.RemoveCharacterFromGroup(client.Character);
                 Server.BoardManager.RestartRecruitment(data.EntryItem.Id);
 
-                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, CharacterManager.GetDefaultOnlineStatus(client.Character));
             }
 
             return new S2CEntryBoardEntryBoardItemLeaveRes();
