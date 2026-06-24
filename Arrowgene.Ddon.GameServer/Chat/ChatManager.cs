@@ -6,7 +6,9 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Chat
@@ -319,6 +321,72 @@ namespace Arrowgene.Ddon.GameServer.Chat
             foreach (GameClient client in response.Recipients.Distinct())
             {
                 client.Send(notice);
+            }
+        }
+
+        public void SendSystemMail(uint recieverId, string senderName, string title, string body, IEnumerable<(ItemId ItemId, uint Count)> itemIds, DbConnection? connectionIn = null)
+        {
+            MailMessage mail = new()
+            {
+                SenderName = senderName,
+                CharacterId = recieverId,
+                Title = title,
+                Body = body,
+                MessageState = MailState.Unopened,
+                SendDate = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            };
+
+            foreach (var (itemId, count) in itemIds)
+            {
+                mail.Attachments.Add(new SystemMailAttachment()
+                {
+                    AttachmentType = SystemMailAttachmentType.Item,
+                    AttachmentId = (ulong)(mail.Attachments.Count + 1),
+                    Param1 = (uint)itemId,
+                    Param2 = count,
+                    IsReceived = false,
+                });
+            }
+
+            _Server.Database.ExecuteQuerySafe(connectionIn, connection =>
+            {
+                uint messageId = (uint)_Server.Database.InsertSystemMailMessage(connection, mail);
+
+                foreach (var attachment in mail.Attachments)
+                {
+                    attachment.MessageId = messageId;
+                    _Server.Database.InsertSystemMailAttachment(connection, attachment);
+                }
+            });
+
+            byte itemState = 0;
+            if (mail.Attachments.Count > 0)
+            {
+                // TODO: Should item state be based on attachment type?
+                itemState = (byte)(mail.Attachments.All(x => x.IsReceived) ? MailItemState.Exist : MailItemState.Exist | MailItemState.Item);
+            }
+
+            var channel = _Server.RpcManager.FindPlayerById(recieverId);
+            var notice = new S2CMailSystemMailSendNtc()
+            {
+                MailInfo = mail.ToCDataMailInfo(itemState)
+            };
+
+            if (channel == _Server.Id)
+            {
+                // Player is online on this channel.
+                var client = _Server.ClientLookup.GetClientByCharacterId(recieverId);
+                client.Send(notice);
+            }
+            else if (channel != 0)
+            {
+                // Player is online on another server.
+                _Server.RpcManager.AnnounceCharacterPacket(notice, recieverId);
+            }
+            else
+            {
+                // Player is offline.
+                // Do nothing.
             }
         }
     }
