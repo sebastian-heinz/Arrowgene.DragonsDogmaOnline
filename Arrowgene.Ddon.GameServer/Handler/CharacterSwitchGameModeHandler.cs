@@ -125,12 +125,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 VisualEquipItemList = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Visual),
             });
 
+            List<StorageType> swappedStorages = [.. ItemManager.ItemBagStorageTypes, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion];
             client.Send(new S2CItemSortGetItemSortdataBinNtc()
             {
-                SortData = [.. ItemManager.ItemBagStorageTypes.Select(x => new CDataItemSort()
+                SortData = [.. swappedStorages.Select(x => new CDataItemSort()
                 {
                     StorageType = x,
-                    Bin = client.Character.Storage.GetStorage(x).SortData
+                    Bin = client.Character.Storage.GetStorage(x).SortData,
                 })]
             });
 
