@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 #if DEBUG
             if (client.Identity.Contains("127.0.0.1"))
             {
-                client.Account.State = AccountStateType.GameMaster;
+                client.Account.State = AccountStateType.Admin;
             }
 #endif
 
