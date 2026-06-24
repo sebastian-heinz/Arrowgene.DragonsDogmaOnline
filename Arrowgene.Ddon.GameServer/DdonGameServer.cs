@@ -647,7 +647,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetEndContentsGroupHandler(this));
             AddHandler(new QuestGetEndContentsRecruitListHandler(this));
             AddHandler(new QuestGetLevelBonusListHandler(this));
-            AddHandler(new QuestGetLightQuestList(this));
+            AddHandler(new QuestGetLightQuestListHandler(this));
             AddHandler(new QuestGetLotQuestListHandler(this));
             AddHandler(new QuestGetMainQuestListHandler(this));
             AddHandler(new QuestGetMobHuntQuestListHandler(this));

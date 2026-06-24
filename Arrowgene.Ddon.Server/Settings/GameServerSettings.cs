@@ -1147,7 +1147,7 @@ namespace Arrowgene.Ddon.Server.Settings
         /// The number of times a player can repeat a board quest before it is no longer offered. Resets when quests rotate.
         /// </summary>
         [DefaultValue(_LightQuestRepeatsPerDay)]
-        public uint Board
+        public uint LightQuestRepeatsPerDay
         {
             set
             {
