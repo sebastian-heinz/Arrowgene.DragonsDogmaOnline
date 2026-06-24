@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 {
     public class ClientErrorCodeAssetDeserializer : IAssetDeserializer<Dictionary<ErrorCode, ClientErrorCode>>
     {
-        private static readonly ILogger Logger = LogProvider.Logger(typeof(CostExpScalingAssetDeserializer));
+        private static readonly ILogger Logger = LogProvider.Logger(typeof(ClientErrorCodeAssetDeserializer));
 
         public Dictionary<ErrorCode, ClientErrorCode> ReadPath(string path)
         {
