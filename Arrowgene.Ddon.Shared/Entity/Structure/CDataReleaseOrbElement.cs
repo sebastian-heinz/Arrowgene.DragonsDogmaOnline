@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure;
 
 public class CDataReleaseOrbElement
 {
-    public UInt32 ElementId { get; set; }
+    public uint ElementId { get; set; }
     public byte PageNo { get; set; }
     public byte GroupNo { get; set; }
     public byte Index {  get; set; }
