@@ -138,5 +138,9 @@
     {
         "code": "ERROR_CODE_BLACK_LIST_TARGET_INVALID",
         "en": "The target could not be added to your blacklist; either they are already on it, or they are a Game Master or Moderator."
+    },
+    {
+        "code": "ERROR_CODE_PAWN_ALREADY_GIFTED",
+        "en": "Your pawn politely refuses additional gifts until tomorrow."
     }
 ]
