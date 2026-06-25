@@ -18,6 +18,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public ushort MainPawnSlot { get; set; }
         public ushort SupportPawnSlot { get; set; }
 
+        // Not serialized but stored here for convenience.
+        public ushort MainPawnLostRate { get; set; }
+
         public static CDataOrbGainExtendParam operator +(CDataOrbGainExtendParam a, CDataOrbGainExtendParam b)
         {
             return new CDataOrbGainExtendParam()

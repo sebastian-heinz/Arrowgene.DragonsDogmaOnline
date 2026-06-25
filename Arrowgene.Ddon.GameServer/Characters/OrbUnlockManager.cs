@@ -123,12 +123,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     obj.MainPawnSlot += (ushort)upgrade.Amount;
                     // When the player unlocks this, the total number will be increased to 3.
                     client.Character.MyPawnSlotNum += (byte)upgrade.Amount;
-                    _Server.Database.UpdateMyPawnSlot(client.Character.CharacterId, client.Character.MyPawnSlotNum, connectionIn);
                     break;
                 case OrbGainParamType.SupportPawnSlot:
                     obj.SupportPawnSlot += (ushort)upgrade.Amount;
                     client.Character.RentalPawnSlotNum += (byte)upgrade.Amount;
-                    _Server.Database.UpdateRentalPawnSlot(client.Character.CharacterId, client.Character.RentalPawnSlotNum, connectionIn);
                     break;
                 case OrbGainParamType.UseItemSlot:
                     obj.UseItemSlot += (ushort)upgrade.Amount;
@@ -145,6 +143,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.PawnCraftNum:
                 // TODO: OrbGainParamType.MainPawnLostRate
                 case OrbGainParamType.MainPawnLostRate:
+                    obj.MainPawnLostRate += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.SecretAbility:
                     queue.Enqueue(client, _Server.JobManager.UnlockSecretAbility(client, character, upgrade.SecretAbility, connectionIn));
@@ -302,20 +301,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             PacketQueue queue = new();
 
             DragonForceUpgrade upgrade = common is Character arisen ? GetPlayerUpgrade(elementId) : GetPawnUpgrade(elementId);
-
-            if (character is Character)
-            {
-                upgrade = GetPlayerUpgrade(client, (Character)character, elementId);
-            }
-            else
-            {
-                upgrade = GetPawnUpgrade(client, (Pawn)character, elementId);
-            }
-
-            if (upgrade == null)
-            {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_INVALID_ELEMENT_ID);
-            }
 
             // Check for Valid Conditions before continuing
             if (upgrade.IsRestrictedByTotalLevels())
@@ -515,12 +500,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     GroupNo.Group5 => Category.Other,
                     _ => Category.None,
                 };
-                        return Category.Combat;
-                    case GroupNo.Group5:
-                        return Category.Other;
-                }
-
-                return Category.None;
             }
         }
 
