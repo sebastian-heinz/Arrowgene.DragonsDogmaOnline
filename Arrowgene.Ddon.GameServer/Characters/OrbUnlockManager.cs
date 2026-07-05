@@ -239,7 +239,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             obj.SupportPawnSlot += (ushort)upgrade.Amount;
                             if (character is Character characterArisen)
                             {
-                                characterArisen.MyPawnSlotNum += (byte)upgrade.Amount;
+                                characterArisen.RentalPawnSlotNum += (byte)upgrade.Amount;
                             }
                             break;
                         }

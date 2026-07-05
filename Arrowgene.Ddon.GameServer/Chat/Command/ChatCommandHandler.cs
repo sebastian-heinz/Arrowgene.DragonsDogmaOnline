@@ -9,8 +9,8 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
 {
     public class ChatCommandHandler : IChatHandler
     {
-        public static readonly char ChatCommandStart = '/';
-        public static readonly char ChatCommandSeparator = ' ';
+        public const char ChatCommandStart = '/';
+        public const char ChatCommandSeparator = ' ';
 
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ChatCommandHandler));
 
