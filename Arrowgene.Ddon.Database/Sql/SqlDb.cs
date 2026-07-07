@@ -489,9 +489,6 @@ public abstract class SqlDb : IDatabase
 
     public abstract bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo, DbConnection? connectionIn = null);
     public abstract List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId, DbConnection? connectionIn = null);
-    public abstract bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
-    public abstract bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam param, DbConnection? connectionIn = null);
-    public abstract CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null);
     public abstract ulong InsertBazaarExhibition(BazaarExhibition exhibition, DbConnection? connectionIn = null);
     public abstract int UpdateBazaarExhibiton(BazaarExhibition exhibition, DbConnection? connectionIn = null);
     public abstract int DeleteBazaarExhibition(ulong bazaarId, DbConnection? connectionIn = null);

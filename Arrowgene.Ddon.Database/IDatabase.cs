@@ -299,10 +299,6 @@ public interface IDatabase
         uint commonId, DbConnection? connectionIn = null
     );
 
-    bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
-    bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam param, DbConnection? connectionIn = null);
-    CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null);
-
     // Bazaar
     ulong InsertBazaarExhibition(BazaarExhibition exhibition, DbConnection? connectionIn = null);
     int UpdateBazaarExhibiton(BazaarExhibition exhibition, DbConnection? connectionIn = null);

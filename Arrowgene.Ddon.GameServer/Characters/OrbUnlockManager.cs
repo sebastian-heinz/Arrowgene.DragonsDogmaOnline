@@ -195,6 +195,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public CDataOrbGainExtendParam GetBaseExtendParam(CharacterCommon character)
         {
             CDataOrbGainExtendParam obj = new();
+
             foreach (var release in character.OrbRelease)
             {
                 DragonForceUpgrade upgrade = character is Character ? gPlayerDragonForceUpgrades.GetValueOrDefault(release.ElementId) : gPawnDragonForceUpgrades.GetValueOrDefault(release.ElementId);
@@ -225,24 +226,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         obj.JewelrySlot += (ushort)upgrade.Amount;
                         break;
                     case OrbGainParamType.MainPawnSlot:
-                        {
-                            obj.MainPawnSlot += (ushort)upgrade.Amount;
-
-                            if (character is Character characterArisen)
-                            {
-                                characterArisen.MyPawnSlotNum += (byte)upgrade.Amount;
-                            }
-                            break;
-                        }
+                        obj.MainPawnSlot += (ushort)upgrade.Amount;
+                        break;
                     case OrbGainParamType.SupportPawnSlot:
-                        {
-                            obj.SupportPawnSlot += (ushort)upgrade.Amount;
-                            if (character is Character characterArisen)
-                            {
-                                characterArisen.RentalPawnSlotNum += (byte)upgrade.Amount;
-                            }
-                            break;
-                        }
+                        obj.SupportPawnSlot += (ushort)upgrade.Amount;
+                        break;
                     case OrbGainParamType.UseItemSlot:
                         obj.UseItemSlot += (ushort)upgrade.Amount;
                         break;
@@ -255,23 +243,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
 
-            // Checking for two cases:
-            // 1) Player has completed A Servant's Pledge.
-            // 2) Player has done the pawn creation step of A Servant's Pledge but somehow not finished the quest.
-            if (character is Character arisen 
-                && (arisen.CompletedQuests.ContainsKey(Shared.Model.Quest.QuestId.AServantsPledge)
-                //|| (client.QuestState.IsQuestAccepted(QuestManager.GetScheduleId(_Server, Shared.Model.Quest.QuestId.AServantsPledge, 0))
-                //    && client.Character.Pawns.Any()
-                //   )
-                )
-            )
+            if (character is Character characterArisen)
             {
-                obj.MainPawnSlot += 2;
-                arisen.MyPawnSlotNum += 2;
+                if (characterArisen.CompletedQuests.ContainsKey(Shared.Model.Quest.QuestId.AServantsPledge))
+                {
+                    obj.MainPawnSlot += 2;
+                    characterArisen.MyPawnSlotNum += 2;
 
-                obj.SupportPawnSlot += 3;
-                arisen.RentalPawnSlotNum += 3;
-            }
+                    obj.SupportPawnSlot += 3;
+                    characterArisen.RentalPawnSlotNum += 3;
+                }
+
+                characterArisen.MyPawnSlotNum += (byte)obj.MainPawnSlot;
+                characterArisen.RentalPawnSlotNum += (byte)obj.SupportPawnSlot;
+
+                if (characterArisen.GameMode == GameMode.BitterblackMaze)
+                {
+                    obj.JewelrySlot += 3;
+                }
+             }
 
             return obj;
         }

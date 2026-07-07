@@ -481,24 +481,6 @@ CREATE TABLE IF NOT EXISTS "ddon_dragon_force_augmentation"
     CONSTRAINT "fk_ddon_dragon_force_augmentation_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "ddon_orb_gain_extend_param"
-(
-    "character_common_id" INTEGER PRIMARY KEY NOT NULL,
-    "hp_max"              INTEGER             NOT NULL,
-    "stamina_max"         INTEGER             NOT NULL,
-    "physical_attack"     INTEGER             NOT NULL,
-    "physical_defence"    INTEGER             NOT NULL,
-    "magic_attack"        INTEGER             NOT NULL,
-    "magic_defence"       INTEGER             NOT NULL,
-    "ability_cost"        INTEGER             NOT NULL,
-    "jewelry_slot"        INTEGER             NOT NULL,
-    "use_item_slot"       INTEGER             NOT NULL,
-    "material_item_slot"  INTEGER             NOT NULL,
-    "equip_item_slot"     INTEGER             NOT NULL,
-    "main_pawn_slot"      INTEGER             NOT NULL,
-    "support_pawn_slot"   INTEGER             NOT NULL,
-    CONSTRAINT "fk_ddon_orb_gain_extend_param_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
-);
 
 CREATE TABLE IF NOT EXISTS "ddon_unlocked_secret_ability"
 (

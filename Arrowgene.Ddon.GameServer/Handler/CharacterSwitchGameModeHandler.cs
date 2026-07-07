@@ -372,17 +372,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            // Populate extra tables for the characters
-            CDataOrbGainExtendParam ExtendParams = new CDataOrbGainExtendParam()
-            {
-                JewelrySlot = 3,
-            };
-
-            if (!Database.InsertGainExtendParam(bbmCharacter.CommonId, ExtendParams))
-            {
-                return null;
-            }
-
             Enum.GetValues(typeof(JobId)).Cast<JobId>().Select(job => new CDataJobPlayPoint()
             {
                 Job = job,

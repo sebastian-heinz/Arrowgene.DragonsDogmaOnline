@@ -111,7 +111,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true, client.Character);
 
             Database.CreatePawn(pawn);
-            Database.InsertGainExtendParam(pawn.CommonId, pawn.ExtendedParams);
 
             pawn = Server.Database.SelectPawnsByCharacterId(client.Character.CharacterId).Find(x => x.PawnId == pawn.PawnId);
             Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true, client.Character);

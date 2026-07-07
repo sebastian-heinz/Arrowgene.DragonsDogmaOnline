@@ -461,14 +461,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             }
 
             // Populate extra tables for the characters
-            CDataOrbGainExtendParam ExtendParams = new CDataOrbGainExtendParam();
-            if (!Database.InsertGainExtendParam(character.CommonId, ExtendParams))
-            {
-                Logger.Error(client, "Failed to create orb extend params");
-                res.Result = 1;
-                client.Send(res);
-            }
-
             Database.ExecuteInTransaction(connection =>
             {
                 // Populate playpoint data.
