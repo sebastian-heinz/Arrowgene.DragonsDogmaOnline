@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 character.FavoritedPawnIds = Server.Database.GetPawnFavorites(character.CharacterId, connectionIn);
 
-                character.ExtendedParams = Server.OrbUnlockManager.GetBaseExtendParam(character);
+                character.ExtendedParams = OrbUnlockManager.GetBaseExtendParam(character);
                 character.ReleasedExtendedJobParams = Server.JobOrbUnlockManager.GetReleasedElements(character, connectionIn);
                 Server.JobOrbUnlockManager.EvaluateJobOrbTreeUnlocks(character);
 
@@ -317,7 +317,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 Pawn pawn = character.Pawns[i];
                 pawn.Server = character.Server;
                 pawn.Equipment = character.Storage.GetPawnEquipment(i);
-                pawn.ExtendedParams = Server.OrbUnlockManager.GetBaseExtendParam(pawn);
+                pawn.ExtendedParams = OrbUnlockManager.GetBaseExtendParam(pawn);
                 pawn.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob(character, pawn.Job);
                 if (pawn.PawnType != PawnType.Main)
                 {
