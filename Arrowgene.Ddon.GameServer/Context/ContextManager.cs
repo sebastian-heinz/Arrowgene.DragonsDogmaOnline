@@ -96,7 +96,7 @@ namespace Arrowgene.Ddon.GameServer.Context
         }
 
         public static List<ulong> CreateEnemyUIDs(InstanceEnemyManager enemyManager, CDataStageLayoutId stageLayoutId)
-        {   
+        {
             List<InstancedEnemy> enemies = enemyManager.GetAssets(stageLayoutId);
 
             List<ulong> results = new List<ulong>();
@@ -117,11 +117,11 @@ namespace Arrowgene.Ddon.GameServer.Context
             {
                 if (client.Character.ContextOwnership.ContainsKey(enemyId))
                 {
-                    Logger.Error($"Attempting to double assign context for ${clientIndex}:{enemyId:x16}");
-                    continue;
+                    Logger.Error($"Attempting to double assign context for ${clientIndex}:{enemyId:x16} - re-negotiating");
                 }
+
                 var otherClients = client.Party.Clients.Where(x => x != client && x.Character.ContextOwnership.ContainsKey(enemyId));
-                if (otherClients.Any())
+                if (otherClients.Any() && otherClients.Any(x => x.Character.ContextOwnership[enemyId]))
                 {
                     //Somebody else got here first, so wait in line.
                     AwaitMaster(client, enemyId);
@@ -164,14 +164,14 @@ namespace Arrowgene.Ddon.GameServer.Context
 
             client.Party.SendToAll(new S2CContextMasterChangeNtc()
             {
-                Info = new List<CDataMasterInfo>()
-                        {
+                Info =
+                        [
                             new CDataMasterInfo()
                             {
                                 UniqueId = uniqueID,
                                 MasterIndex = (sbyte)clientIndex
                             }
-                        }
+                        ]
             });
         }
 
@@ -236,23 +236,18 @@ namespace Arrowgene.Ddon.GameServer.Context
 
             if (isOwner)
             {
-                var otherClients = client.Party.Clients.Where(x => x.Character.ContextOwnership.ContainsKey(uniqueID));
-                if (otherClients.Any())
+                var otherClients = client.Party.Clients.Where(x => x != client && x.Character.ContextOwnership.ContainsKey(uniqueID));
+                GameClient newOwner = otherClients.FirstOrDefault() ?? client.Party.Clients.FirstOrDefault(x => x != client);
+                if (newOwner != null)
                 {
-                    GameClient newOwner = otherClients.First();
                     AssignMaster(newOwner, uniqueID);
-                }
-                else
-                {
-                    //TODO: Test if returning to host is correct?
-                    return;
                 }
             }
         }
 
         public static void DelegateAllMasters(GameClient client)
         {
-            foreach (var key in client.Character.ContextOwnership.Keys)
+            foreach (var key in client.Character.ContextOwnership.Keys.ToList())
             {
                 DelegateMaster(client, key);
             }
