@@ -138,7 +138,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.PawnCraftNum:
                 // TODO: OrbGainParamType.MainPawnLostRate
                 case OrbGainParamType.MainPawnLostRate:
-                    obj.MainPawnLostRate += (ushort)upgrade.Amount;
+                    if (character is Character arisen)
+                    {
+                        arisen.MainPawnLostRate += (ushort)upgrade.Amount;
+                    }
                     break;
                 case OrbGainParamType.SecretAbility:
                     queue.Enqueue(client, _Server.JobManager.UnlockSecretAbility(client, character, upgrade.SecretAbility, connectionIn));

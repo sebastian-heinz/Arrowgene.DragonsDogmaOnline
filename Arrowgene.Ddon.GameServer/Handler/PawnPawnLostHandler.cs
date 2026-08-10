@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
 
-            bool isLost = Random.Shared.NextDouble() > (client.Character.ExtendedParams.MainPawnLostRate / 100.0);
+            bool isLost = Random.Shared.NextDouble() > (client.Character.MainPawnLostRate / 100.0);
 
             client.Enqueue(new S2CPawnPawnLostRes()
             {
