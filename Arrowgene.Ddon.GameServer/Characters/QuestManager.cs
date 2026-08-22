@@ -2827,16 +2827,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsKilledTargetEnemySetGroup2NoMarker, Param01 = flagNo, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Checks if a contents timer (Timer List B) has elapsed past its stored boundary. */
-            public static CDataQuestCommand IsContentsTimerBElapsed(int timerNo, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Checks if a timer has elapsed past a certain amount of time. */
+            public static CDataQuestCommand IsTimerElapsed(int timerNo, int sec, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsContentsTimerBElapsed, Param01 = timerNo, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsTimerElapsed, Param01 = timerNo, Param02 = sec, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Checks if the quest clear count has reached a threshold. */
-            public static CDataQuestCommand IsQuestClearCountNotLess(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Checks if a timer has not elapsed past a certain amount of time. */
+            public static CDataQuestCommand IsTimerNotElapsed(int timerNo, int sec, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsQuestClearCountNotLess, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsTimerNotElapsed, Param01 = timerNo, Param02 = sec, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief S3-only: checks if the contents mode elapsed timer >= timeSec. */
@@ -4039,6 +4039,47 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public static CDataQuestProgressWork KilledTargetEnemySetGroup1(NpcId npcId, int work02 = 0, int work03 = 0, int work04 = 0)
             {
                 return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.FulfillDeliverItem, Work01 = (int)npcId, Work02 = work02, Work03 = work03, Work04 = work04 };
+            }
+
+            /**
+             * @brief
+             * @param idx
+             * @param num
+             */
+            public static CDataQuestProgressWork KeyItemPoint(int idx, int num, int work03 = 0, int work04 = 0)
+            {
+                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.KeyItemPoint, Work01 = idx, Work02 = num, Work03 = work03, Work04 = work04 };
+            }
+
+            /**
+             * @param idx
+             * @param num
+             */
+            public static CDataQuestProgressWork KeyItemPointEq(int idx, int num, int work03 = 0, int work04 = 0)
+            {
+                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.KeyItemPointEq, Work01 = idx, Work02 = num, Work03 = work03, Work04 = work04 };
+            }
+
+            /**
+             * @brief
+             * @param timerNo
+             * @param sec
+             * @param date
+             */
+            public static CDataQuestProgressWork IsTimerElapsed(int timerNo, int sec, int date, int work04 = 0)
+            {
+                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.IsTimerElapsed, Work01 = timerNo, Work02 = sec, Work03 = date, Work04 = work04 };
+            }
+
+            /**
+             * @brief
+             * @param timerNo
+             * @param sec
+             * @param date
+             */
+            public static CDataQuestProgressWork IsTimerNotElapsed(int timerNo, int sec, int date, int work04 = 0)
+            {
+                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.IsTimerNotElapsed, Work01 = timerNo, Work02 = sec, Work03 = date, Work04 = work04 };
             }
         }
 

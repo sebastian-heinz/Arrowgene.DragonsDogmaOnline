@@ -4315,7 +4315,7 @@ IsReleaseWarpPointAnyoneNoMarker(int waypointId, int param02 = 0, int param03 = 
 IsSubstoryProgressInRange(int minValue, int maxValue, int param03 = 0, int param04 = 0);
 ```
 
-### IsQuestClearCountNotLess (245)
+### IsTimerNotElapsed (245)
 
 | Field | Value |
 |-------|-------|
@@ -4325,10 +4325,15 @@ IsSubstoryProgressInRange(int minValue, int maxValue, int param03 = 0, int param
 
 ```
 /**
- * @brief Checks if the current quest clear count has reached or exceeded a threshold.
- * @param param01 Threshold or context value passed to FUN_009d0230
+ * @brief Checks if a timer has not elapsed past a certain amount of time.
+ * Requires sending a notify command with work01 = timerNo, work02 = sec and work03 = (int) unix timer start date + sec.
+ * Calls FUN_0064d170(timerNo) which retrieves current time (A) and compares against work03 (B).
+ * Returns 1 if A ≤ B. param02 is unused by the quest command and its sole purpose is date calculation.
+ * @note Params 3-4 are unused. Param2 is only used for date calculation.
+ * @param param01 timerNo
+ * @param param02 sec
  */
-IsQuestClearCountNotLess(int param01, int param02 = 0, int param03 = 0, int param04 = 0);
+IsTimerNotElapsed(int timerNo, int sec, int param03 = 0, int param04 = 0);
 ```
 
 ### IsContentsModeTimerNotLess (246)
@@ -4494,7 +4499,7 @@ IsKilledTargetEnemySetGroup2(int flagNo, int param03 = 0, int param04 = 0, int p
 IsKilledTargetEnemySetGroup2NoMarker(int flagNo, int param03 = 0, int param04 = 0, int param05 = 0);
 ```
 
-### IsContentsTimerBElapsed (244)
+### IsTimerElapsed (244)
 
 | Field | Value |
 |-------|-------|
@@ -4505,15 +4510,17 @@ IsKilledTargetEnemySetGroup2NoMarker(int flagNo, int param03 = 0, int param04 = 
 
 ```
 /**
- * @brief Checks if a Timer List B entry's elapsed value is within a stored 64-bit time boundary.
- * Calls FUN_0064d170(timerNo) to find the entry in Timer List B (ctx+0x104) and gets its elapsed
- * value at entry+8. Returns 1 if elapsed <= boundary.
+ * @brief Checks if a timer has elapsed past a certain amount of time.
+ * Requires sending a notify command with work01 = timerNo, work02 = sec and work03 = (int) unix timer start date + sec.
+ * Calls FUN_0064d170(timerNo) which retrieves current time (A) and compares against work03 (B).
+ * Returns 1 if A > B. param02 is unused by the quest command and its sole purpose is date calculation.
  * @note Formerly named "IsEndContentsTimer0". Previous description "evaluates bit-flag, not elapsed time"
  *       was INCORRECT — this performs a 64-bit elapsed-time comparison against DAT_0220456c+0xb28/+0xb2c.
- * @note Params 2-4 are unused.
+ * @note Params 3-4 are unused. Param2 is only used for date calculation.
  * @param timerNo Timer identifier
+ * @param sec     Time elapsed since timer start
  */
-IsContentsTimerBElapsed(int timerNo, int param02_unused = 0, int param03_unused = 0, int param04_unused = 0);
+IsTimerElapsed(int timerNo, int sec, int param03_unused = 0, int param04_unused = 0);
 ```
 
 ### IsWildHuntEnemyKilled (248)

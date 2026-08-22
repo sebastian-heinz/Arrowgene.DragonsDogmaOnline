@@ -51,7 +51,7 @@
                     "comment": "Phindymian Ent",
                     "enemy_id": "0x015032",
                     "level": 75,
-                    "exp": 607000,
+                    "exp": 68375,
                     "named_enemy_params_id": 1239,
                     "is_boss": true
                 }
@@ -62,12 +62,13 @@
                 "id": 382,
                 "group_id": 0
             },
+            "starting_index": 3,
             "enemies": [
                 {
                     "comment": "Black Knight Loeg",
-                    "enemy_id": "0x080501",
+                    "enemy_id": "0x020700",
                     "level": 75,
-                    "exp": 607000,
+                    "exp": 68375,
                     "named_enemy_params_id": 1240,
                     "is_boss": true
                 }
@@ -88,7 +89,11 @@
                     "message_id": 15851,
                     "flags": [
                         {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
-                        {"type": "MyQst", "action": "Set", "value": 1, "comment": "Allow process 1 to correct player"}
+                        {"type": "WorldManageLayout", "action": "Set", "value": 4372, "quest_id": 70023001, "comment": "Stage 880 warp - Vegasa"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 4373, "quest_id": 70023001, "comment": "Stage 881 warp - Vegasa"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 4507, "quest_id": 70023001, "comment": "Stage 880 warp - Gathering Area"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 4508, "quest_id": 70023001, "comment": "Stage 881 warp - Gathering Area"},
+                        {"type": "WorldManageQuest", "action": "Set", "value": 2564, "quest_id": 70023001, "comment": "Unlocks Hollow of Gatherings"}
                     ]
                 },
                 {
@@ -103,7 +108,13 @@
                         "z": -19507
                     },
                     "flags": [
-                        {"type": "QstLayout", "action": "Set", "value": 4054, "comment": "Spawn NPCs"}
+                        {"type": "QstLayout", "action": "Set", "value": 4054, "comment": "Spawn NPCs"},
+                        {"type": "QstLayout", "action": "Set", "value": 4995, "comment": "Cecily - Hollow of Beginnings"}
+                    ],
+                    "result_commands": [
+                        {"type": "QstTalkChg", "Param1": 3, "Param2": 17364, "comment": "Klaus"},
+                        {"type": "QstTalkChg", "Param1": 23, "Param2": 17365, "comment": "Gearóid"},
+                        {"type": "QstTalkChg", "Param1": 20, "Param2": 17366, "comment": "Cecily"}
                     ]
                 },
                 {
@@ -123,12 +134,25 @@
                     "announce_type": "Update",
                     "checkpoint": true,
                     "npc_id": "Gearoid0",
-                    "message_id": 15865
+                    "message_id": 15865,
+                    "result_commands": [
+                        {"type": "QstTalkChg", "Param1": 20, "Param2": 17367, "comment": "Cecily"},
+                        {"type": "QstTalkChg", "Param1": 501, "Param2": 17368, "comment": "Gurdolin"},
+                        {"type": "QstTalkChg", "Param1": 13, "Param2": 17369, "comment": "Lise"},
+                        {"type": "QstTalkChg", "Param1": 21, "Param2": 17370, "comment": "Elliot"}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "check_commands": [
+                        [{"type": "StageNoWithoutMarker", "Param1": 122}],
+                        [{"type": "Prt", "Param1": 122, "Param2": -1020, "Param3": 908, "Param4": -93585}, {"type": "DummyNotProgress"}]
+                    ]
                 },
                 {
                     "type": "PartyGather",
-                    "announce_type": "Update",
-                    "checkpoint": true,
                     "stage_id": {
                         "id": 373
                     },
@@ -138,7 +162,11 @@
                         "z": -93585
                     },
                     "flags": [
-                        {"type": "QstLayout", "action": "Set", "value": 4795, "comment": "Spawn Cecily"}
+                        {"type": "QstLayout", "action": "Set", "value": 4795, "comment": "Cecily - Kingal Canyon"},
+                        {"type": "QstLayout", "action": "Clear", "value": 4995, "comment": "Cecily - Hollow of Beginnings"}
+                    ],
+                    "result_commands": [
+                        {"type": "QstTalkChg", "Param1": 20, "Param2": 20125, "comment": "Cecily"}
                     ]
                 },
                 {
@@ -153,7 +181,7 @@
                     "announce_type": "Update",
                     "groups": [ 0 ],
                     "flags": [
-                        {"type": "QstLayout", "action": "Clear", "value": 4795, "comment": "Spawn Cecily"},
+                        {"type": "QstLayout", "action": "Clear", "value": 4795, "comment": "Cecily - Kingal Canyon"},
                         {"type": "QstLayout", "action": "Set", "value": 4056, "comment": "Spawn Cecily and boss walls"}
                     ]
                 },
@@ -163,7 +191,10 @@
                         "id": 373
                     },
                     "event_id": 5,
-                    "bgm_stop": true
+                    "bgm_stop": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 4056, "comment": "Spawn Cecily and boss walls"}
+                    ]
                 },
                 {
                     "type": "PartyGather",
@@ -176,10 +207,7 @@
                         "x": -247,
                         "y": -405,
                         "z": -2072
-                    },
-                    "flags": [
-                        {"type": "QstLayout", "action": "Clear", "value": 4056, "comment": "Spawn Cecily and boss walls"}
-                    ]
+                    }
                 },
                 {
                     "type": "PlayEvent",
@@ -198,13 +226,25 @@
                     },
                     "flags": [
                         {"type": "QstLayout", "action": "Set", "value": 4057, "comment": "Spawns Glowing Item"},
-                        {"type": "QstLayout", "action": "Set", "value": 4213, "comment": "Spawns NPCs"}
+                        {"type": "QstLayout", "action": "Set", "value": 4213, "comment": "Cecily - Sacred Drops Chamber"}
+                    ],
+                    "result_commands": [
+                        {"type": "QstTalkChg", "Param1": 20, "Param2": 17374, "comment": "Cecily"}
+                    ]
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 382
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 4057, "comment": "Spawns Glowing Item"}
                     ]
                 },
                 {
                     "type": "PartyGather",
-                    "announce_type": "Update",
-                    "checkpoint": true,
                     "stage_id": {
                         "id": 382
                     },
@@ -212,7 +252,18 @@
                         "x": 34,
                         "y": 1521,
                         "z": -19507
-                    }
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 4213, "comment": "Cecily - Sacred Drops Chamber"},
+                        {"type": "QstLayout", "action": "Set", "value": 4995, "comment": "Cecily - Hollow of Beginnings"}
+                    ],
+                    "result_commands": [
+                        {"type": "QstTalkChg", "Param1": 23, "Param2": 17372, "comment": "Gearóid"},
+                        {"type": "QstTalkChg", "Param1": 20, "Param2": 17373, "comment": "Cecily"},
+                        {"type": "QstTalkChg", "Param1": 501, "Param2": 17375, "comment": "Gurdolin"},
+                        {"type": "QstTalkChg", "Param1": 13, "Param2": 17376, "comment": "Lise"},
+                        {"type": "QstTalkChg", "Param1": 21, "Param2": 17377, "comment": "Elliot"}
+                    ]
                 },
                 {
                     "type": "PlayEvent",
@@ -222,42 +273,78 @@
                     "event_id": 15,
                     "flags": [
                         {"type": "QstLayout", "action": "Clear", "value": 4054, "comment": "Spawn NPCs"},
-                        {"type": "QstLayout", "action": "Set", "value": 4212, "comment": "Walls"},
-                        {"type": "QstLayout", "action": "Set", "value": 4059, "comment": "Battle NPCs"}
+                        {"type": "QstLayout", "action": "Clear", "value": 4995, "comment": "Cecily - Hollow of Beginnings"}
                     ]
                 },
                 {
                     "type": "KillGroup",
                     "announce_type": "Update",
-                    "groups": [ 1 ]
+                    "groups": [ 1 ],
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 4212, "comment": "Walls"},
+                        {"type": "QstLayout", "action": "Set", "value": 4059, "comment": "Battle NPCs"}
+                    ],
+                    "result_commands": [
+                        {"type": "PlayMessage", "Param1": 15882, "Param2": 10, "comment": "Black Knight: Annoying, worthless bugs..."},
+                        {"type": "PlayMessage", "Param1": 15891, "Param2": 10, "comment": "Cecily: Release Loeg!"},
+                        {"type": "PlayMessage", "Param1": 15900, "Param2": 10, "comment": "Gurdolin: What is your true identity!"},
+                        {"type": "PlayMessage", "Param1": 15883, "Param2": 10, "comment": "Black Knight: You should lament being in my world."},
+                        {"type": "PlayMessage", "Param1": 15892, "Param2": 10, "comment": "Cecily: Everyone, be careful!"},
+                        {"type": "PlayMessage", "Param1": 15884, "Param2": 10, "comment": "Black Knight: The order of the strong does not require the weak."},
+                        {"type": "PlayMessage", "Param1": 15901, "Param2": 10, "comment": "Gurdolin: You smoky bastard!"},
+                        {"type": "PlayMessage", "Param1": 15893, "Param2": 10, "comment": "Cecily: Taaa—!"},
+                        {"type": "PlayMessage", "Param1": 15906, "Param2": 10, "comment": "Elliot: I want Master Joseph to witness this valiant form!"},
+                        {"type": "PlayMessage", "Param1": 15912, "Param2": 10, "comment": "Lise: I despise your persistence!"},
+                        {"type": "PlayMessage", "Param1": 15894, "Param2": 10, "comment": "Cecily: Ser Gurdolin, Elliot, Lise,and Captain..."},
+                        {"type": "PlayMessage", "Param1": 15885, "Param2": 10, "comment": "Black Knight: Be martyred in service to the fallen dragon."},
+                        {"type": "PlayMessage", "Param1": 15895, "Param2": 10, "comment": "Cecily: Everyone, please survive..."},
+                        {"type": "PlayMessage", "Param1": 15902, "Param2": 10, "comment": "Gurdolin: You dare call yourself a knight?"},
+                        {"type": "PlayMessage", "Param1": 15907, "Param2": 10, "comment": "Elliot: I won't lose! I absolutely will not lose!"},
+                        {"type": "PlayMessage", "Param1": 15913, "Param2": 10, "comment": "Lise: I'm not afraid of such attacks!"},
+                        {"type": "PlayMessage", "Param1": 15886, "Param2": 10, "comment": "Black Knight: You are nothing but detritus in this great realm."},
+                        {"type": "PlayMessage", "Param1": 15896, "Param2": 10, "comment": "Cecily: Aaaaahhh!"},
+                        {"type": "PlayMessage", "Param1": 15903, "Param2": 10, "comment": "Gurdolin: Hey, Captain! Tell him what for!"},
+                        {"type": "PlayMessage", "Param1": 15914, "Param2": 10, "comment": "Lise: This is where we dig in our heels!"},
+                        {"type": "PlayMessage", "Param1": 15908, "Param2": 10, "comment": "Elliot: I'm pretty capable, aren't I?"},
+                        {"type": "PlayMessage", "Param1": 15887, "Param2": 10, "comment": "Black Knight: Did you think you could win..."},
+                        {"type": "PlayMessage", "Param1": 15897, "Param2": 10, "comment": "Cecily: Loeg! Come to your senses!"},
+                        {"type": "PlayMessage", "Param1": 15909, "Param2": 10, "comment": "Elliot: Black Knight? Loeg? Who are you fighting against!?"},
+                        {"type": "PlayMessage", "Param1": 15915, "Param2": 10, "comment": "Lise: Right now, I may be at the peak of my Arisen life!"},
+                        {"type": "PlayMessage", "Param1": 15888, "Param2": 10, "comment": "Black Knight: I didn't expect you to persist this much... Crushing you will be worth my time."},
+                        {"type": "PlayMessage", "Param1": 15898, "Param2": 10, "comment": "Cecily: The shadows of Phindym will not be harbored by evil!"},
+                        {"type": "PlayMessage", "Param1": 15904, "Param2": 10, "comment": "Gurdolin: You guys bet all your money my loss!"},
+                        {"type": "PlayMessage", "Param1": 15916, "Param2": 10, "comment": "Lise: Aren't I shining brightly?"},
+                        {"type": "PlayMessage", "Param1": 15889, "Param2": 10, "comment": "Black Knight: Death is ever present beside you."},
+                        {"type": "PlayMessage", "Param1": 15899, "Param2": 10, "comment": "Cecily: You coward who lurks in the shadows! Leave this place at once!"},
+                        {"type": "PlayMessage", "Param1": 15911, "Param2": 10, "comment": "Elliot: Loeg, don't you recognize me?!"},
+                        {"type": "PlayMessage", "Param1": 15905, "Param2": 10, "comment": "Gurdolin: I'm exhausted... give me a break!"},
+                        {"type": "PlayMessage", "Param1": 15917, "Param2": 10, "comment": "Lise: I can do it!"},
+                        {"type": "PlayMessage", "Param1": 15890, "Param2": 10, "comment": "Black Knight: You half-hearted Arisen... how insolent!"}
+                    ]
                 },
                 {
-                    "type": "PlayEvent",
-                    "stage_id": {
-                        "id": 382
-                    },
-                    "event_id": 20,
-                    "bgm_stop": true,
+                    "type": "Raw",
                     "flags": [
                         {"type": "QstLayout", "action": "Clear", "value": 4212, "comment": "Walls"},
-                        {"type": "QstLayout", "action": "Clear", "value": 4059, "comment": "Battle NPCs"},
-                        {"type": "MyQst", "action": "Clear", "value": 1, "comment": "Stop process 1 from correcting player position"},
-                        {"type": "QstLayout", "action": "Set", "value": 4374, "comment": "Spawn NPCs"}
+                        {"type": "QstLayout", "action": "Clear", "value": 4059, "comment": "Battle NPCs"}
                     ],
-                    "jump_stage_id": {
-                        "id": 371
-                    }
+                    "result_commands": [
+                        {"type": "EventExecCont", "Param1": 880, "Param2": 20, "Param3": 120, "Param4": 6},
+                        {"type": "StopMessage"},
+                        {"type": "BgmStop"}
+                    ],
+                    "check_commands": [
+                        {"type": "EventEnd", "Param1": 880, "Param2": 20}
+                    ]
                 },
                 {
-                    "type": "PlayEvent",
-                    "stage_id": {
-                        "id": 371
-                    },
-                    "event_id": 40,
-                    "jump_stage_id": {
-                        "id": 383
-                    },
-                    "start_pos_no": 6
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "EventExecCont", "Param1": 120, "Param2": 40, "Param3": 881, "Param4": 6}
+                    ],
+                    "check_commands": [
+                        {"type": "EventEnd", "Param1": 120, "Param2": 40}
+                    ]
                 },
                 {
                     "type": "TalkToNpc",
@@ -267,41 +354,28 @@
                     "announce_type": "Update",
                     "checkpoint": true,
                     "npc_id": "TheWhiteDragon",
-                    "message_id": 15934
-                }
-            ]
-        },
-        {
-            "comment": "Forces player to correct stage. Flags are set currently to force player to StageNo 881 but the quest takes place on StageNo 880",
-            "blocks": [
-                {
-                    "type": "IsStageNo",
-                    "show_marker": false,
-                    "stage_id": {
-                        "id": 383
-                    }
-                },
-                {
-                    "comment": "Check to make sure we still want a correction",
-                    "type": "MyQstFlags",
-                    "check_flags": [1]
-                },
-                {
-                    "type": "Raw",
-                    "check_commands": [
-                        {"type": "StageNo", "Param1": 880}
+                    "message_id": 15934,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 4374, "comment": "Spawn NPCs"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 4372, "quest_id": 70023001, "comment": "Stage 880 warp - Vegasa"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 4373, "quest_id": 70023001, "comment": "Stage 881 warp - Vegasa"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 4507, "quest_id": 70023001, "comment": "Stage 880 warp - Gathering Area"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 4508, "quest_id": 70023001, "comment": "Stage 881 warp - Gathering Area"},
+                        {"type": "WorldManageQuest", "action": "Clear", "value": 2564, "quest_id": 70023001, "comment": "Unlocks Hollow of Gatherings"}
                     ],
                     "result_commands": [
-                        {"type": "StageJump", "Param1": 880, "Param2": 1}
+                        {"type": "QstTalkChg", "Param1": 23, "Param2": 17378, "comment": "Gearóid"},
+                        {"type": "QstTalkChg", "Param1": 20, "Param2": 17379, "comment": "Cecily"},
+                        {"type": "QstTalkChg", "Param1": 501, "Param2": 17380, "comment": "Gurdolin"},
+                        {"type": "QstTalkChg", "Param1": 13, "Param2": 17382, "comment": "Lise"},
+                        {"type": "QstTalkChg", "Param1": 21, "Param2": 17383, "comment": "Elliot"},
+                        {"type": "QstTalkChg", "Param1": 2610, "Param2": 17384, "comment": "Mordred"},
+                        {"type": "QstTalkChg", "Param1": 2620, "Param2": 17385, "comment": "Doherty"},
+                        {"type": "QstTalkChg", "Param1": 2621, "Param2": 17386, "comment": "Maia"},
+                        {"type": "QstTalkChg", "Param1": 2622, "Param2": 17387, "comment": "Tadgh"},
+                        {"type": "QstTalkChg", "Param1": 3, "Param2": 17388, "comment": "Klaus"},
+                        {"type": "QstTalkChg", "Param1": 4, "Param2": 17389, "comment": "Joseph"}
                     ]
-                },
-                {
-                    "type": "ReturnCheckPoint",
-                    "stage_id": {
-                        "id": 382
-                    },
-                    "process_no": 1,
-                    "block_no": 1
                 }
             ]
         }

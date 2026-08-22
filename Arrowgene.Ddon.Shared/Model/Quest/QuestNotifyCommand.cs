@@ -17,8 +17,12 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         KilledEnemyLight = 6,
         SetQuestClearNum = 32, // Set Quest AKA world quest
         MakeCraft = 33,
+        KeyItemPoint = 64,
         KilledTargetEnemySetGroup = 109, // notifyKilledTargetEnemySetGroup(cQuestTask::cQuestProcess *this, u32 flagNo, u32 stageNo, u32 groupNo);
         KilledTargetEmSetGrpNoMarker = 110, // this is a guess based on packet data and comes in pair with previous command (and almost same exact arguments besides command value)
         Craft = 159,
+        KeyItemPointEq = 201,
+        IsTimerElapsed = 244,
+        IsTimerNotElapsed = 245,
     }
 }

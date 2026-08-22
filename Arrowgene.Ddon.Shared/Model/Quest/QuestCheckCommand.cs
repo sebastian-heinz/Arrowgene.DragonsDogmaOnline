@@ -428,19 +428,20 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         IsKilledTargetEnemySetGroup2NoMarker = 243, // 0x006370B0 (cQuestProcess* this, s32 flagNo, s32 param02, s32 param03, s32 param04)
 
         /// <summary>
-        /// Checks if a contents timer (Timer List B) has elapsed past a stored 64-bit time boundary.
-        /// Reads the boundary from DAT_0220456c+0xb28/+0xb2c. Calls FUN_0064d170(timerNo) which searches
-        /// Timer List B at offset +0x104 for an entry with +4 == timerNo and returns its +8 field (elapsed value).
-        /// Returns 1 if the elapsed value is within the boundary. Params 2-4 are unused.
-        /// @note Previous description "evaluates bit-flag, not elapsed time" was incorrect - this IS a time comparison.
+        /// Checks if a timer has elapsed past a certain amount of time.
+        /// Requires sending a notify command with work01 = timerNo, work02 = sec and work03 = (int) unix timer start date + param02.
+        /// Calls FUN_0064d170(timerNo) which retrieves current time (A) and compares against work03 (B).
+        /// Returns 1 if A > B. param02 is unused by the quest command and its sole purpose is date calculation.
         /// </summary>
-        IsContentsTimerBElapsed = 244, // 0x00637180 (cQuestProcess* this, s32 timerNo, s32 param02_unused, s32 param03_unused, s32 param04_unused)
+        IsTimerElapsed = 244, // 0x00637180 (cQuestProcess* this, s32 timerNo, s32 sec, s32 param03, s32 param04_unused)
 
         /// <summary>
-        /// Checks if the current quest clear count has reached a threshold. Calls FUN_009d0230 and FUN_0064d170,
-        /// then compares against stored counts at DAT_0220456c+0xb28/0xb2c.
+        /// Checks if a timer has not elapsed past a certain amount of time.
+        /// Requires sending a notify command with work01 = timerNo, work02 = sec and work03 = (int) unix timer start date + param02.
+        /// Calls FUN_0064d170(timerNo) which retrieves current time (A) and compares against work03 (B).
+        /// Returns 1 if A ≤ B. param02 is unused by the quest command and its sole purpose is date calculation.
         /// </summary>
-        IsQuestClearCountNotLess = 245, // 0x00637250 (cQuestProcess* this, s32 param01, s32 param02, s32 param03, s32 param04)
+        IsTimerNotElapsed = 245, // 0x00637250 (cQuestProcess* this, s32 timerNo, s32 sec, s32 param03, s32 param04_unused)
 
         /// <summary>
         /// S3-only: checks if the contents mode elapsed timer (FUN_00bc15d0) >= timeSec.

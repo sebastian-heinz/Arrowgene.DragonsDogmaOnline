@@ -924,17 +924,17 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdIsContentsTimerBElapsed(this QuestBlock questBlock, int timerNo, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdIsTimerElapsed(this QuestBlock questBlock, int timerNo, int sec, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsContentsTimerBElapsed(timerNo);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsTimerElapsed(timerNo, sec);
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdIsQuestClearCountNotLess(this QuestBlock questBlock, int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdIsTimerNotElapsed(this QuestBlock questBlock, int timerNo, int sec, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsQuestClearCountNotLess(param01, param02, param03, param04);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsTimerNotElapsed(timerNo, sec);
             return questBlock;
         }
 

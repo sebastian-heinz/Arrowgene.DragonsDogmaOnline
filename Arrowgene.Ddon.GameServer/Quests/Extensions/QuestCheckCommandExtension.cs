@@ -358,7 +358,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
 
         public static List<CDataQuestCommand> AddCheckCmdIsStageNo(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, bool showMarker = true)
         {
-            checkCommands.Add(showMarker ? 
+            checkCommands.Add(showMarker ?
                 QuestManager.CheckCommand.StageNo(stageInfo.StageNo) :
                 QuestManager.CheckCommand.StageNoWithoutMarker(stageInfo.StageNo));
             return checkCommands;
@@ -834,15 +834,15 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdIsContentsTimerBElapsed(this List<CDataQuestCommand> checkCommands, int timerNo)
+        public static List<CDataQuestCommand> AddCheckCmdIsTimerElapsed(this List<CDataQuestCommand> checkCommands, int timerNo, int sec)
         {
-            checkCommands.Add(QuestManager.CheckCommand.IsContentsTimerBElapsed(timerNo));
+            checkCommands.Add(QuestManager.CheckCommand.IsTimerElapsed(timerNo, sec));
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdIsQuestClearCountNotLess(this List<CDataQuestCommand> checkCommands, int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+        public static List<CDataQuestCommand> AddCheckCmdIsTimerNotElapsed(this List<CDataQuestCommand> checkCommands, int timerNo, int sec)
         {
-            checkCommands.Add(QuestManager.CheckCommand.IsQuestClearCountNotLess(param01, param02, param03, param04));
+            checkCommands.Add(QuestManager.CheckCommand.IsTimerNotElapsed(timerNo, sec));
             return checkCommands;
         }
 
