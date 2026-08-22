@@ -36,6 +36,7 @@ namespace Arrowgene.Ddon.Shared.Model
             IsRented = false;
             PawnState = PawnState.None;
             PartnerPawnData = new();
+            ShareRange = 1;
         }
         
         public Pawn(uint ownerCharacterId) : this()
@@ -66,7 +67,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint TrainingPoints { get; set; } // Training xp?
         public uint AvailableTraining { get; set; } // Training lv?
         public PartnerPawnData PartnerPawnData { get; set; }
-
+        public byte ShareRange { get; set; }
         public bool IsOfficialPawn {  get; set; }
         public bool IsRented {  get; set; }
         public PawnState PawnState { get; set; }
@@ -152,7 +153,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     AbilityCostMax = BASE_ABILITY_COST_AMOUNT + extendParams.AbilityCost,
                     ExtendParam = extendParams,
                     PawnType = PawnType,
-                    ShareRange = 1,
+                    ShareRange = ShareRange,
                     Likability = PartnerPawnData.NumGifts,
                     TrainingStatus = TrainingStatus.GetValueOrDefault(Job, new byte[64]),
                     PawnTrainingProfile = new() { 

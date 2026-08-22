@@ -19,11 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID);
 
             //TODO: Actually update the pawn's share range in the database
-            // pawn.ShareRange = request.ShareRange;
-            // Server.Database.ExecuteInTransaction(conn =>
-            // {
-            //     Server.Database.UpdatePawnShareRange(request.PawnId, request.ShareRange, conn);
-            // });
+            pawn.ShareRange = request.ShareRange;
 
             var res = new S2CPawnUpdatePawnShareRangeRes()
             {
