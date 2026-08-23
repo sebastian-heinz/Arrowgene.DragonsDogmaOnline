@@ -36,7 +36,6 @@ namespace Arrowgene.Ddon.Shared.Model
             IsRented = false;
             PawnState = PawnState.None;
             PartnerPawnData = new();
-            ShareRange = 1;
         }
         
         public Pawn(uint ownerCharacterId) : this()

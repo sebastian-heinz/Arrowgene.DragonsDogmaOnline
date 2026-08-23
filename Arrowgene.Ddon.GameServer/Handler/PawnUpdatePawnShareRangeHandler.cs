@@ -18,9 +18,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Pawn pawn = client.Character.Pawns.Find(x => x.PawnId == request.PawnId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID);
 
-            //TODO: Actually update the pawn's share range in the database
             pawn.ShareRange = request.ShareRange;
 
+            Server.Database.UpdatePawnShareRange(pawn.PawnId, pawn.ShareRange);
             var res = new S2CPawnUpdatePawnShareRangeRes()
             {
                 PawnId = request.PawnId,
