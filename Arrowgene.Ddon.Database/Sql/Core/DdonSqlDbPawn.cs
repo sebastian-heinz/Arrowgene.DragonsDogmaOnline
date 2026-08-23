@@ -819,6 +819,7 @@ public partial class DdonSqlDb : SqlDb
         AddParameter(command, "@training_points", pawn.TrainingPoints);
         AddParameter(command, "@available_training", pawn.AvailableTraining);
         AddParameter(command, "@is_official_pawn", false);
+        AddParameter(command, "@share_range", pawn.ShareRange);
 
         AddParameter(command, "@craft_exp", pawn.CraftData.CraftExp);
         AddParameter(command, "@craft_rank", pawn.CraftData.CraftRank);

@@ -86,6 +86,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ExtendedParams = new CDataOrbGainExtendParam(),
                 Server = client.Character.Server,
                 PartnerPawnData = new PartnerPawnData(),
+                ShareRange = request.PawnInfo.ShareRange,
                 CraftData = new CDataPawnCraftData
                 {
                     CraftExp = 0,
