@@ -16,7 +16,7 @@ public partial class DdonSqlDb : SqlDb
         @"SELECT * FROM ddon_pawn WHERE is_official_pawn=true;";
 
     private const string SqlSelectAllPlayerPawns =
-        @"SELECT * FROM ddon_pawn WHERE is_official_pawn=false LIMIT @limit;";
+        @"SELECT * FROM ddon_pawn WHERE is_official_pawn=false AND share_range < 5 LIMIT @limit;";
 
     private const string SqlSelectPawnOwnerId =
         "SELECT * FROM ddon_pawn WHERE \"pawn_id\" = @pawn_id;";
