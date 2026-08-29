@@ -338,9 +338,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetSubstoryEnemyInvincible(this QuestBlock questBlock, int enemyGroupFlag, int invincible)
+        public static QuestBlock AddResultCmdSetEnemyAggroFlag(this QuestBlock questBlock, int type, int param02)
         {
-            questBlock.ResultCommands.AddResultCmdSetSubstoryEnemyInvincible(enemyGroupFlag, invincible);
+            questBlock.ResultCommands.AddResultCmdSetEnemyAggroFlag(type, param02);
             return questBlock;
         }
 

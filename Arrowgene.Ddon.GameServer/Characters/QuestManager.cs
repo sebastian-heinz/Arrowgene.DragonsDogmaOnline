@@ -3857,10 +3857,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.QstTalkChgFsm, Param01 = (int) npcId, Param02 = msgNo, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Sets invincibility on a substory enemy group. param02=1 sets invincible. */
-            public static CDataQuestCommand SetSubstoryEnemyInvincible(int enemyGroupFlag, int invincible, int param03 = 0, int param04 = 0)
+            /** @brief Sets or clears a global enemy aggression flag. Has additional functionality depending on param02. */
+            public static CDataQuestCommand SetEnemyAggroFlag(int type, int param02, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetSubstoryEnemyInvincible, Param01 = enemyGroupFlag, Param02 = invincible, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetEnemyAggroFlag, Param01 = type, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Duplicate of SetRandom. */

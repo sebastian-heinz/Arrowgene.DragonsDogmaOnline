@@ -156,10 +156,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         QstTalkChgFsm = 104, // 0x00633A30 (cQuestProcess* this, s32 npcId, s32 msgNo, s32 param03, s32 param04)
 
         /// <summary>
-        /// Sets invincibility on a substory enemy group. param01=groupFlag triggers FUN_00b5ba00(4,0x15,param01,1,0);
-        /// param02=1 sets invincible via FUN_00be9b60.
+        /// Sets (type = 1) or clears (type = 0) a global enemy aggression flag.
+        /// When set, enemies within spawn range endlessly converge on the player's position.
+        /// Also calls FUN_00be9b60 with 0 or 1 depending on param02. Unclear what this is supposed to do.
         /// </summary>
-        SetSubstoryEnemyInvincible = 105, // 0x00633A80 (cQuestProcess* this, s32 enemyGroupFlag, s32 invincible, s32 param03, s32 param04)
+        SetEnemyAggroFlag = 105, // 0x00633A80 (cQuestProcess* this, s32 type, s32 param02, s32 param03, s32 param04)
 
         Padding106 = 106, // 0x00633B00 stub/nop - always returns 0
 

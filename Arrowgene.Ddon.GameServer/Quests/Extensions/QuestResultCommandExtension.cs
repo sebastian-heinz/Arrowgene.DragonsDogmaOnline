@@ -341,9 +341,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetSubstoryEnemyInvincible(this List<CDataQuestCommand> resultCommands, int enemyGroupFlag, int invincible)
+        public static List<CDataQuestCommand> AddResultCmdSetEnemyAggroFlag(this List<CDataQuestCommand> resultCommands, int type, int param02)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetSubstoryEnemyInvincible(enemyGroupFlag, invincible));
+            resultCommands.Add(QuestManager.ResultCommand.SetEnemyAggroFlag(type, param02));
             return resultCommands;
         }
 
