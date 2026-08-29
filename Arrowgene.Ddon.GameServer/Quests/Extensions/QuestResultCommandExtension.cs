@@ -317,21 +317,21 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdTriggerSubstoryEvent(this List<CDataQuestCommand> resultCommands, int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+        public static List<CDataQuestCommand> AddResultCmdUpdateSubstoryProgress(this List<CDataQuestCommand> resultCommands, int progressDelta, int param02 = 0, int param03 = 0, int param04 = 0)
         {
-            resultCommands.Add(QuestManager.ResultCommand.TriggerSubstoryEvent(param01, param02, param03, param04));
+            resultCommands.Add(QuestManager.ResultCommand.UpdateSubstoryProgress(progressDelta, param02, param03, param04));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdEnableSubstoryUIElement(this List<CDataQuestCommand> resultCommands)
+        public static List<CDataQuestCommand> AddResultCmdEnableSubstoryGauge(this List<CDataQuestCommand> resultCommands)
         {
-            resultCommands.Add(QuestManager.ResultCommand.EnableSubstoryUIElement());
+            resultCommands.Add(QuestManager.ResultCommand.EnableSubstoryGauge());
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdDisableSubstoryUIElement(this List<CDataQuestCommand> resultCommands)
+        public static List<CDataQuestCommand> AddResultCmdDisableSubstoryGauge(this List<CDataQuestCommand> resultCommands)
         {
-            resultCommands.Add(QuestManager.ResultCommand.DisableSubstoryUIElement());
+            resultCommands.Add(QuestManager.ResultCommand.DisableSubstoryGauge());
             return resultCommands;
         }
 
@@ -347,87 +347,87 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdAddFsmTalkNpc(this List<CDataQuestCommand> resultCommands, int npcId)
+        public static List<CDataQuestCommand> AddResultCmdSetRandom2(this List<CDataQuestCommand> resultCommands, int randomNo, int minValue, int maxValue)
         {
-            resultCommands.Add(QuestManager.ResultCommand.AddFsmTalkNpc(npcId));
+            resultCommands.Add(QuestManager.ResultCommand.SetRandom2(randomNo, minValue, maxValue, resultValue: 0));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdAchievementBanner(this List<CDataQuestCommand> resultCommands, int categoryNo, int bannerNo)
+        public static List<CDataQuestCommand> AddResultCmdCallGreatPurpose(this List<CDataQuestCommand> resultCommands, int categoryNo, int purposeNo)
         {
-            resultCommands.Add(QuestManager.ResultCommand.AchievementBanner(categoryNo, bannerNo));
+            resultCommands.Add(QuestManager.ResultCommand.CallGreatPurpose(categoryNo, purposeNo));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdEnableSubstoryElementB(this List<CDataQuestCommand> resultCommands)
+        public static List<CDataQuestCommand> AddResultCmdEnableSubstoryTextBox(this List<CDataQuestCommand> resultCommands)
         {
-            resultCommands.Add(QuestManager.ResultCommand.EnableSubstoryElementB());
+            resultCommands.Add(QuestManager.ResultCommand.EnableSubstoryTextBox());
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdDisableSubstoryElementB(this List<CDataQuestCommand> resultCommands)
+        public static List<CDataQuestCommand> AddResultCmdDisableSubstoryTextBox(this List<CDataQuestCommand> resultCommands)
         {
-            resultCommands.Add(QuestManager.ResultCommand.DisableSubstoryElementB());
+            resultCommands.Add(QuestManager.ResultCommand.DisableSubstoryTextBox());
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetEnvironmentalEffect(this List<CDataQuestCommand> resultCommands, int param01 = 0, int param02 = 0)
+        public static List<CDataQuestCommand> AddResultCmdSetCustomWeather(this List<CDataQuestCommand> resultCommands, int param01 = 0, int param02 = 0)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetEnvironmentalEffect(param01, param02));
+            resultCommands.Add(QuestManager.ResultCommand.SetCustomWeather(param01, param02));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdResetEnvironmentalEffect(this List<CDataQuestCommand> resultCommands)
+        public static List<CDataQuestCommand> AddResultCmdResetCustomWeather(this List<CDataQuestCommand> resultCommands)
         {
-            resultCommands.Add(QuestManager.ResultCommand.ResetEnvironmentalEffect());
+            resultCommands.Add(QuestManager.ResultCommand.ResetCustomWeather());
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetFsmNpcSchedule(this List<CDataQuestCommand> resultCommands, int scheduleId)
+        public static List<CDataQuestCommand> AddResultCmdLayoutFlagRandomOn2(this List<CDataQuestCommand> resultCommands, int flagNo1, int flagNo2, int flagNo3)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetFsmNpcSchedule(scheduleId: scheduleId));
+            resultCommands.Add(QuestManager.ResultCommand.LayoutFlagRandomOn2(flagNo1, flagNo2, flagNo3, resultNo: 0));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetQuestEnemyLevel(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int level)
+        public static List<CDataQuestCommand> AddResultCmdSetOmHitCount(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int count)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetQuestEnemyLevel(stageInfo.StageNo, groupNo, setNo, level));
+            resultCommands.Add(QuestManager.ResultCommand.SetOmHitCount(stageInfo.StageNo, groupNo, setNo, count));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetQuestEnemyLevelEx(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int level)
+        public static List<CDataQuestCommand> AddResultCmdSetQuestOmHitCount(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int count)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetQuestEnemyLevelEx(stageInfo.StageNo, groupNo, setNo, level));
+            resultCommands.Add(QuestManager.ResultCommand.SetQuestOmHitCount(stageInfo.StageNo, groupNo, setNo, count));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetQuestEnemyTierUp(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int tier)
+        public static List<CDataQuestCommand> AddResultCmdSetOmTierUp(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int tier)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetQuestEnemyTierUp(stageInfo.StageNo, groupNo, setNo, tier));
+            resultCommands.Add(QuestManager.ResultCommand.SetOmTierUp(stageInfo.StageNo, groupNo, setNo, tier));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetQuestEnemyTierUpEx(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int tier)
+        public static List<CDataQuestCommand> AddResultCmdSetQuestOmTierUp(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int tier)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetQuestEnemyTierUpEx(stageInfo.StageNo, groupNo, setNo, tier));
+            resultCommands.Add(QuestManager.ResultCommand.SetQuestOmTierUp(stageInfo.StageNo, groupNo, setNo, tier));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetQuestOmMontageFix(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int montagueNo)
+        public static List<CDataQuestCommand> AddResultCmdSetOmState(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int state)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetQuestOmMontageFix(stageInfo.StageNo, groupNo, setNo, montagueNo));
+            resultCommands.Add(QuestManager.ResultCommand.SetOmState(stageInfo.StageNo, groupNo, setNo, state));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetQuestOmMontageFixEx(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int montagueNo)
+        public static List<CDataQuestCommand> AddResultCmdSetQuestOmState(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int state)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetQuestOmMontageFixEx(stageInfo.StageNo, groupNo, setNo, montagueNo));
+            resultCommands.Add(QuestManager.ResultCommand.SetQuestOmState(stageInfo.StageNo, groupNo, setNo, state));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetQuestLayoutEnemyLevel(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int level)
+        public static List<CDataQuestCommand> AddResultCmdSetNamedEnemyParam(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int groupNo, int setNo, int param)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetQuestLayoutEnemyLevel(stageInfo.StageNo, groupNo, setNo, level));
+            resultCommands.Add(QuestManager.ResultCommand.SetNamedEnemyParam(stageInfo.StageNo, groupNo, setNo, param));
             return resultCommands;
         }
 
@@ -437,15 +437,15 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetEnemyExpeditionState(this List<CDataQuestCommand> resultCommands, int mode)
+        public static List<CDataQuestCommand> AddResultCmdSetMagmaState(this List<CDataQuestCommand> resultCommands, int phase, int state)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetEnemyExpeditionState(mode));
+            resultCommands.Add(QuestManager.ResultCommand.SetMagmaState(phase, state));
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdTriggerSubstoryEndSequence(this List<CDataQuestCommand> resultCommands)
+        public static List<CDataQuestCommand> AddResultCmdTriggerDarkDungeonEndSequence(this List<CDataQuestCommand> resultCommands)
         {
-            resultCommands.Add(QuestManager.ResultCommand.TriggerSubstoryEndSequence());
+            resultCommands.Add(QuestManager.ResultCommand.TriggerDarkDungeonEndSequence());
             return resultCommands;
         }
 
