@@ -938,10 +938,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdIsContentsModeTimerNotLess(this QuestBlock questBlock, int timeSec, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdRisingMagmaTime(this QuestBlock questBlock, int timeSec, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsContentsModeTimerNotLess(timeSec);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdRisingMagmaTime(timeSec);
             return questBlock;
         }
 

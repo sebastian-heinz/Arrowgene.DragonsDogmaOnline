@@ -4343,7 +4343,7 @@ IsSubstoryProgressInRange(int minValue, int maxValue, int param03 = 0, int param
 IsTimerNotElapsed(int timerNo, int sec, int param03 = 0, int param04 = 0);
 ```
 
-### IsContentsModeTimerNotLess (246)
+### RisingMagmaTime (246)
 
 | Field | Value |
 |-------|-------|
@@ -4353,11 +4353,13 @@ IsTimerNotElapsed(int timerNo, int sec, int param03 = 0, int param04 = 0);
 
 ```
 /**
- * @brief S3-only: checks if the contents mode elapsed timer >= timeSec.
- * Returns 0 if not in the correct season phase.
+ * @brief Checks how long magma has been rising on the current map. Requires cpOmRisingMagma to be present on the map.
+ * Magma starts rising after result command SetMagmaState is used with phase = 3, which starts a counter.
+ * This counter, and magma height, increases by 1/sec once started. Check passes when param01 >= counter.
+ * Can be used as a time or height comparison depending on how you look at it.
  * @param timeSec Minimum elapsed seconds
  */
-IsContentsModeTimerNotLess(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0);
+RisingMagmaTime(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### IsTriggerFlagSetAndClear (247)

@@ -846,9 +846,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdIsContentsModeTimerNotLess(this List<CDataQuestCommand> checkCommands, int timeSec)
+        public static List<CDataQuestCommand> AddCheckCmdRisingMagmaTime(this List<CDataQuestCommand> checkCommands, int timeSec)
         {
-            checkCommands.Add(QuestManager.CheckCommand.IsContentsModeTimerNotLess(timeSec));
+            checkCommands.Add(QuestManager.CheckCommand.RisingMagmaTime(timeSec));
             return checkCommands;
         }
 

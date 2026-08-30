@@ -444,10 +444,12 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         IsTimerNotElapsed = 245, // 0x00637250 (cQuestProcess* this, s32 timerNo, s32 sec, s32 param03, s32 param04_unused)
 
         /// <summary>
-        /// S3-only: checks if the contents mode elapsed timer (FUN_00bc15d0) >= timeSec.
-        /// Guards on season-phase pointer at DAT_0220456c+0x9f4.
+        /// Checks how long magma has been rising on the current map. Requires cpOmRisingMagma to be present on the map.
+        /// Magma starts rising after result command SetMagmaState is used with phase = 3, which starts a counter.
+        /// This counter, and magma height, increases by 1/sec once started. Check passes when param01 >= counter.
+        /// Can be used as a time or height comparison depending on how you look at it.
         /// </summary>
-        IsContentsModeTimerNotLess = 246, // 0x00637320 (cQuestProcess* this, s32 timeSec, s32 param02, s32 param03, s32 param04)
+        RisingMagmaTime = 246, // 0x00637320 (cQuestProcess* this, s32 timeSec, s32 param02, s32 param03, s32 param04)
 
         /// <summary>
         /// Fire-once trigger: reads byte at DAT_021af4f4+0xEEA. If == 1, clears it and returns 1; otherwise returns 0.

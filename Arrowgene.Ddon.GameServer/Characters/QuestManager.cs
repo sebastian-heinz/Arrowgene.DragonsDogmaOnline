@@ -2839,10 +2839,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsTimerNotElapsed, Param01 = timerNo, Param02 = sec, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief S3-only: checks if the contents mode elapsed timer >= timeSec. */
-            public static CDataQuestCommand IsContentsModeTimerNotLess(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Checks how long magma has been rising on the current map (param01 >= timeSec). Requires cpOmRisingMagma to be present on the map. */
+            public static CDataQuestCommand RisingMagmaTime(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsContentsModeTimerNotLess, Param01 = timeSec, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.RisingMagmaTime, Param01 = timeSec, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Fire-once trigger: reads and clears a byte flag at DAT_021af4f4+0xEEA. Returns 1 if flag was set. */
