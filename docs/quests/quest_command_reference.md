@@ -3682,20 +3682,21 @@ TriggerDarkDungeonEndSequence(int param01 = 0, int param02 = 0, int param03 = 0,
 EndChain(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
-### SetPawnExpeditionFlag (133)
+### GetDragonAbility (133)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x006347A0` |
 | Table index | 133 |
-| Key callees | mode=1: `FUN_00b6ce30()` (writes action `DAT_01d4db50`); mode=2: `FUN_00b6cde0()` (writes action `DAT_01d4db54`) |
+| Key callees | type=1: `FUN_00b6ce30()` (writes action `DAT_01d4db50`); type=2: `FUN_00b6cde0()` (writes action `DAT_01d4db54`) |
 
 ```
 /**
- * @brief Starts or stops a pawn expedition.
- * @param mode  1 = start expedition, 2 = stop expedition
+ * @brief Activates a player's bonus dragon abilities if they meet the threshold. Gated by type.
+ * @param Type 1 = Dragon Protection, Type 2 = Dragon Blessing. Plays GUI message.
+ * @param Dragon protection seems functional and actually raises stats.
  */
-SetPawnExpeditionFlag(int mode, int param02 = 0, int param03 = 0, int param04 = 0);
+GetDragonAbility(int type, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### SetQuestLayoutOmMontageFix (134)
@@ -3727,21 +3728,21 @@ SetQuestLayoutOmMontageFix(StageNo stageNo, int groupNo, int setNo, int montague
 The following check commands were found by analysing the check function dispatch table at `.data:02126998`.
 The dispatch function is at approximately `.text:0063E04A`. It validates `commandId < 0x101` (257 entries, indices 0–256).
 
-### IsSubstoryProgressBit18 (211)
+### IsPartyDisbanded (211)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x00635A00` |
 | Table index | 211 |
-| State offset | `cQuestProcess+0x5c+0x20c` (substory state word), bit 18 (0x12) |
+| State offset | `cQuestProcess+0x5c+0x20c` notice bit 18 (0x12) |
 
 ```
 /**
- * @brief Returns bit 18 of the substory progress state word.
- * All four quest params are unused — only the implicit `this` context is read.
- * State word is at *(cQuestProcess+0x5c)+0x20c.
+ * @brief Checks if the player's party has disbanded (notice bit 18). 
+ * Only triggers after disbanding a multiplayer party (exm with pawns will also work).
+ * Notice bit is at *(cQuestProcess+0x5c)+0x20c.
  */
-IsSubstoryProgressBit18(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+IsPartyDisbanded(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### SetGlobalSubstoryProgressBit17Inverse (212)

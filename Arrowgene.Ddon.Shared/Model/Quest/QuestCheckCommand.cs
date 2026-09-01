@@ -225,9 +225,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         // @note Parameter names are inferred from decompilation and may not match original source.
 
         /// <summary>
-        /// Returns bit 18 of the substory state word at this→substory+0x20c (field offset 0x5c+0x20c from cQuestProcess base).
+        /// Checks if the player's party has disbanded (notice bit 18).
         /// </summary>
-        IsSubstoryStateBit18 = 211, // 0x00635A00 (cQuestProcess* this, s32 param01, s32 param02, s32 param03, s32 param04)
+        IsPartyDisbanded = 211, // 0x00635A00 (cQuestProcess* this, s32 param01, s32 param02, s32 param03, s32 param04)
 
         /// <summary>
         /// Reads bit 17 (0x20000) of *(ctx+0x5c)+0x20c, inverts it, and stores the boolean result into the global

@@ -660,9 +660,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
 
         // Ghidra-discovered check commands (IDs 211–256)
 
-        public static List<CDataQuestCommand> AddCheckCmdIsSubstoryStateBit18(this List<CDataQuestCommand> checkCommands)
+        public static List<CDataQuestCommand> AddCheckCmdIsPartyDisbanded(this List<CDataQuestCommand> checkCommands)
         {
-            checkCommands.Add(QuestManager.CheckCommand.IsSubstoryStateBit18());
+            checkCommands.Add(QuestManager.CheckCommand.IsPartyDisbanded());
             return checkCommands;
         }
 

@@ -286,10 +286,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         Padding132 = 132, // 0x00634750 stub/nop - always returns 0
 
         /// <summary>
-        /// Controls pawn expedition. mode=1: FUN_00b6ce30() starts expedition (writes action DAT_01d4db50).
-        /// mode=2: FUN_00b6cde0() stops expedition (writes action DAT_01d4db54).
+        /// Activates a player's bonus dragon abilities if they meet the threshold. Gated by type.
+        /// Type 1 = Dragon Protection, Type 2 = Dragon Blessing. Plays GUI message.
+        /// Dragon protection seems functional and actually raises stats.
         /// </summary>
-        SetPawnExpeditionFlag = 133, // 0x006347A0 (cQuestProcess* this, s32 mode, s32 param02, s32 param03, s32 param04)
+        GetDragonAbility = 133, // 0x006347A0 (cQuestProcess* this, s32 type, s32 param02, s32 param03, s32 param04)
 
         /// <summary>
         /// Sets a body/pose mode on a layout enemy (type 2). Looks up entity via FUN_00a41780, checks OM alive,

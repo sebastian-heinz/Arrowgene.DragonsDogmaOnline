@@ -2653,10 +2653,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // Ghidra-discovered check commands (IDs 211–256)
 
-            /** @brief Returns bit 18 of the substory state word at ctx+0x5c+0x20c. */
-            public static CDataQuestCommand IsSubstoryStateBit18(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Checks if the player's party has disbanded (notice bit 18). */
+            public static CDataQuestCommand IsPartyDisbanded(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsSubstoryStateBit18, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsPartyDisbanded, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Side-effect writer: reads bit 17 of ctx+0x5c+0x20c, inverts it, stores to DAT_021c06b8+0x263. No quest params. */
@@ -3971,10 +3971,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EndChain, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Controls pawn expedition. mode=1: starts; mode=2: stops. */
-            public static CDataQuestCommand SetPawnExpeditionFlag(int mode, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Activates a player's bonus dragon abilities if they meet the threshold. Gated by type. */
+            public static CDataQuestCommand GetDragonAbility(int type, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetPawnExpeditionFlag, Param01 = mode, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.GetDragonAbility, Param01 = type, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Sets a body/pose mode on a layout enemy (type 2) via FUN_005be380(poseId). */

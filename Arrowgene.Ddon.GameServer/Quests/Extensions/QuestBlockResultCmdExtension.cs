@@ -452,9 +452,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetPawnExpeditionFlag(this QuestBlock questBlock, int mode)
+        public static QuestBlock AddResultCmdGetDragonAbility(this QuestBlock questBlock, int type)
         {
-            questBlock.ResultCommands.AddResultCmdSetPawnExpeditionFlag(mode);
+            questBlock.ResultCommands.AddResultCmdGetDragonAbility(type);
             return questBlock;
         }
 

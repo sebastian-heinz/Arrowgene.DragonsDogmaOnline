@@ -455,9 +455,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetPawnExpeditionFlag(this List<CDataQuestCommand> resultCommands, int mode)
+        public static List<CDataQuestCommand> AddResultCmdGetDragonAbility(this List<CDataQuestCommand> resultCommands, int type)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetPawnExpeditionFlag(mode));
+            resultCommands.Add(QuestManager.ResultCommand.GetDragonAbility(type));
             return resultCommands;
         }
 
