@@ -376,6 +376,7 @@ public abstract class SqlDb : IDatabase
     public abstract List<CDataRegisterdPawnList> SelectRegisteredPawns(Character searchingCharacter, CDataPawnSearchParameter searchParams, DbConnection? connectionIn = null);
     public abstract bool DeletePawn(uint pawnId, DbConnection? connectionIn = null);
     public abstract bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null);
+    public abstract bool UpdatePawnShareRange(uint pawnId, byte shareRange);
     public abstract uint GetPawnOwnerCharacterId(uint pawnId, DbConnection? connectionIn = null);
     public abstract bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null);
     public abstract bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus, DbConnection? connectionIn = null);
