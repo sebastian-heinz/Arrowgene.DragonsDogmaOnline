@@ -37,7 +37,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         PawnCraftSkillList = pawn.CraftData.PawnCraftSkillList,
                         // TODO: CommentSize, LatestReturnDate
                     },
-                    // TODO: ShareRange, Unk0, Unk1, Unk2
+                    ShareRange = pawn.ShareRange,
+                    // TODO: Unk0, Unk1, Unk2
                 };
                 res.PawnList.Add(pawnListData);
             }

@@ -365,6 +365,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateNormalSkillParam(uint commonId, JobId job, uint skillNo, CDataNormalSkillParam normalSkillParam) { return true; }
         public bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null) { return true; }
         public bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
+        public bool UpdatePawnShareRange(uint pawnId, byte shareRange) { return true; }
         public bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null) { return true; }
         public bool ReplacePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null) { return true; }
         public bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null) { return true; }
