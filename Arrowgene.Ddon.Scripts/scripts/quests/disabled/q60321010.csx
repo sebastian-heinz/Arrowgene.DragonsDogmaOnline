@@ -161,7 +161,7 @@ public class ScriptedQuest : IQuest
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.FirefallMountainCampsite, NpcId.Bacias, 30163)
             .AddResultCmdQstLayoutFlagOff(8032);
         process0.AddProcessEndBlock(true)
-            .AddResultCmdAchievementBanner(6, 13);
+            .AddResultCmdCallGreatPurpose(6, 13);
     }
 }
 

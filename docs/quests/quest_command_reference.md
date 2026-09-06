@@ -3261,7 +3261,7 @@ SubstoryProgress(int substoryId, int param02, int param03, int param04 = 0);
 AddSubstoryProgress(int substoryId, int progressDelta, int param03 = 0, int param04 = 0);
 ```
 
-### TriggerSubstoryEvent (101)
+### UpdateSubstoryProgress (101)
 
 | Field | Value |
 |-------|-------|
@@ -3271,13 +3271,13 @@ AddSubstoryProgress(int substoryId, int progressDelta, int param03 = 0, int para
 
 ```
 /**
- * @brief Triggers a substory event sequence when the quest mode is 0xb.
- * Calls FUN_00598590 to set timer data on the substory structure.
+ * @brief Triggers a substory progress update sequence when the quest mode is 0xb.
+ * Calls FUN_00598590 to set progress data on the substory structure and sends C2S_QUEST_ADD_PACKAGE_QUEST_POINT_REQ with schedule ID and progress value.
  */
-TriggerSubstoryEvent(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+TriggerSubstoryEvent(int progressDelta, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
-### EnableSubstoryUIElement (102)
+### EnableSubstoryGauge (102)
 
 | Field | Value |
 |-------|-------|
@@ -3294,7 +3294,7 @@ TriggerSubstoryEvent(int param01 = 0, int param02 = 0, int param03 = 0, int para
 EnableSubstoryUIElement(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
-### DisableSubstoryUIElement (103)
+### DisableSubstoryGauge (103)
 
 | Field | Value |
 |-------|-------|
@@ -3310,7 +3310,7 @@ EnableSubstoryUIElement(int param01 = 0, int param02 = 0, int param03 = 0, int p
 DisableSubstoryUIElement(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
-### SetSubstoryTalkTarget (104)
+### QstTalkChgFsm (104)
 
 | Field | Value |
 |-------|-------|
@@ -3324,46 +3324,48 @@ DisableSubstoryUIElement(int param01 = 0, int param02 = 0, int param03 = 0, int 
  * @param param01 NPC/group identifier
  * @param param02 Talk context identifier
  */
-SetSubstoryTalkTarget(int param01, int param02, int param03 = 0, int param04 = 0);
+QstTalkChgFsm(int param01, int param02, int param03 = 0, int param04 = 0);
 ```
 
-### SetSubstoryEnemyInvincible (105)
+### SetEnemyAggroFlag (105)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x00633A80` |
 | Table index | 105 |
-| Key callees | `FUN_00b5ba00(4, 0x15, enemyGroupFlag, 1, 0)`, `FUN_00be9b60(invincible)` |
+| Key callees | `sFlag::setFlag(4, 0x15, flag, 1, 0)`, `FUN_00be9b60(0 or 1)` |
 
 ```
 /**
- * @brief Sets or clears invincibility on a substory enemy group.
- * Uses enemy type 4 / category 0x15. FUN_00be9b60 writes flag at +0x92 on matching NPCs.
- * @param enemyGroupFlag  Group flag / filter value passed to FUN_00b5ba00
- * @param invincible      1 = invincible, 0 = vulnerable
+ * @brief Sets (type = 1) or clears (type = 0) a global enemy aggression flag.
+ * When set, enemies within spawn range endlessly converge on the player's position.
+ * Also calls FUN_00be9b60 with 0 or 1 depending on param02. Unclear what this is supposed to do.
+ * @param type            1 = set, 0 = clear, passed to sFlag::setFlag
+ * @param param02         1 = unknown, 0 = unknown
  */
-SetSubstoryEnemyInvincible(int enemyGroupFlag, int invincible, int param03 = 0, int param04 = 0);
+SetEnemyAggroFlag(int type, int param02, int param03 = 0, int param04 = 0);
 ```
 
-### AddFsmTalkNpc (107)
+### SetRandom2 (107)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x00633B30` |
 | Table index | 107 |
-| Key callees | `FUN_009d07f0` (FSM mode check), `FUN_009cfe00`, `FUN_009d2ba0(npcId, param04)` |
+| Key callees | `FUN_009d07f0`, `FUN_009cfe00`, `FUN_009d2ba0` |
 
 ```
 /**
- * @brief Adds an NPC to the FSM talk NPC list (this+0x94/0xa0).
- * Only executes when in FSM quest mode.
- * @param npcId   NPC or group identifier
- * @param param04 Secondary value passed to FUN_009d2ba0
+ * @brief Identical/duplicate function of SetRandom.
+ * @param randomNo    Index of the random slot to write (0-based).
+ * @param minValue    Inclusive lower bound of the random range (server-side only).
+ * @param maxValue    Inclusive upper bound of the random range (server-side only).
+ * @param resultValue The rolled value, computed server-side from [minValue, maxValue].
  */
-AddFsmTalkNpc(int npcId, int param02 = 0, int param03 = 0, int param04 = 0);
+SetRandom2(int randomNo, int minValue, int maxValue, int resultValue);
 ```
 
-### AchievementBanner (108)
+### CallGreatPurpose (108)
 
 | Field | Value |
 |-------|-------|
@@ -3372,15 +3374,15 @@ AddFsmTalkNpc(int npcId, int param02 = 0, int param03 = 0, int param04 = 0);
 
 ```
 /**
- * @brief Displays an achievement banner from a given category.
- * Only category 6 (Great Purpose) has banners to display.
+ * @brief Looks up a table for Great Purpose (category 6) entries (1-16).
+ * Forwards parameters to an announce display function if it finds a match.
  * @param categoryNo  Achievement category
- * @param bannerNo    Banner number (1 to 16, 15 is empty/unused)
+ * @param purposeNo   Great purpose table index (1 to 16, 15 is empty/unused)
  */
-AchievementBanner(int category, int flagValue, int param03 = 0, int param04 = 0);
+CallGreatPurpose(int categoryNo, int purposeNo, int param03 = 0, int param04 = 0);
 ```
 
-### EnableSubstoryElementB (109)
+### EnableSubstoryTextBox (109)
 
 | Field | Value |
 |-------|-------|
@@ -3390,12 +3392,12 @@ AchievementBanner(int category, int flagValue, int param03 = 0, int param04 = 0)
 
 ```
 /**
- * @brief Enables substory element variant B (field +0x4c). Paired with DisableSubstoryElementB.
+ * @brief Enables dialogue text boxes for substory cutscenes (field +0x4c). Paired with DisableSubstoryTextBox.
  */
 EnableSubstoryElementB(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
-### DisableSubstoryElementB (110)
+### DisableSubstoryTextBox (110)
 
 | Field | Value |
 |-------|-------|
@@ -3405,12 +3407,12 @@ EnableSubstoryElementB(int param01 = 0, int param02 = 0, int param03 = 0, int pa
 
 ```
 /**
- * @brief Disables substory element variant B (field +0x4c). Paired with EnableSubstoryElementB.
+ * @brief Disables dialogue text boxes for substory cutscenes (field +0x4c). Paired with EnableSubstoryTextBox.
  */
-DisableSubstoryElementB(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+DisableSubstoryTextBox(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
-### SetEnvironmentalEffect (111)
+### SetCustomWeather (111)
 
 | Field | Value |
 |-------|-------|
@@ -3425,10 +3427,10 @@ DisableSubstoryElementB(int param01 = 0, int param02 = 0, int param03 = 0, int p
  * @param param01 Time of day
  * @param param02 Cloud type passed to FUN_00c19920
  */
-SetEnvironmentalEffect(int param01, int param02, int param03 = 0, int param04 = 0);
+SetCustomWeather(int param01, int param02, int param03 = 0, int param04 = 0);
 ```
 
-### ResetEnvironmentalEffect (112)
+### ResetCustomWeather (112)
 
 | Field | Value |
 |-------|-------|
@@ -3438,50 +3440,52 @@ SetEnvironmentalEffect(int param01, int param02, int param03 = 0, int param04 = 
 
 ```
 /**
- * @brief Resets environmental effects set by SetEnvironmentalEffect.
+ * @brief Resets environmental effects set by SetCustomWeather.
  */
-ResetEnvironmentalEffect(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+ResetCustomWeather(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
-### SetFsmNpcSchedule (113)
+### LayoutFlagRandomOn2 (113)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x00633D50` |
 | Table index | 113 |
-| Key callees | `FUN_009d1a60(scheduleId)` — param04 is read from stack at +0x10 |
+| Key callees | `FUN_009d1a60` — param04 is read from stack at +0x10 |
 
 ```
 /**
- * @brief Schedules an FSM NPC behavior by schedule ID.
- * @note  param04 / scheduleId is consumed from the stack slot at offset +0x10.
- * @param scheduleId Schedule identifier
+ * @brief Identical function to LayoutFlagRandomOn.
+ * @param flagNo1
+ * @param flagNo2
+ * @param flagNo3
+ * @param resultNo
  */
-SetFsmNpcSchedule(int param01 = 0, int param02 = 0, int param03 = 0, int scheduleId = 0);
+LayoutFlagRandomOn2(int flagNo1, int flagNo2, int flagNo3, int resultNo);
 ```
 
-### SetQuestEnemyLevel (114)
+### SetOmHitCount (114)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x00633D80` |
 | Table index | 114 |
-| Key callees | `FUN_00a41780(stageNo, groupNo, setNo, 0)` (quest enemy type 3 lookup), `FUN_00bc0670(enemy, level)` |
+| Key callees | `FUN_00a41780(stageNo, groupNo, setNo, 0)`, `FUN_00bc0670(object, count)` |
 
 ```
 /**
- * @brief Sets the level tier (bits controlling level) of a quest enemy group (type 3).
- * Phase-gated: checks DAT_0220456c offsets 0x4654 vs 0x45cc.
+ * @brief Increases a breakable object's hit counter, lowering its current HP. Breaks instantly if count >= BreakHitNum (each num = 10 player hits).
+ * Phase-gated: checks DAT_0220456c offsets 0x4654 vs 0x45cc. Looks up by (stageNo, groupNo, setNo) via FUN_00a41780, then calls FUN_00bc0670 (layout unique ID, count).
  * @note FUN_00bc0670 checks for OMs 503136 and 503143 - destructible flag objects found in War Missions
  * @param stageNo  Stage number
  * @param groupNo  Enemy group number
  * @param setNo    Enemy set number
- * @param level    Level tier value passed to FUN_00bc0670
+ * @param count    Hit count passed to FUN_00bc0670
  */
-SetQuestEnemyLevel(StageNo stageNo, int groupNo, int setNo, int level);
+SetOmHitCount(StageNo stageNo, int groupNo, int setNo, int count);
 ```
 
-### SetQuestEnemyLevelEx (115)
+### SetQuestOmHitCount (115)
 
 | Field | Value |
 |-------|-------|
@@ -3491,18 +3495,18 @@ SetQuestEnemyLevel(StageNo stageNo, int groupNo, int setNo, int level);
 
 ```
 /**
- * @brief Area-aware variant of SetQuestEnemyLevel.
+ * @brief Quest object variant of SetOmHitCount.
  * Uses FUN_00a41890 when an area instance is active (FUN_009cff70 != 0).
  * @note FUN_00bc0670 checks for OMs 503136 and 503143 - destructible flag objects found in War Missions
  * @param stageNo  Stage number
  * @param groupNo  Enemy group number
  * @param setNo    Enemy set number
- * @param level    Level tier value
+ * @param level    Hit count
  */
-SetQuestEnemyLevelEx(StageNo stageNo, int groupNo, int setNo, int level);
+SetQuestOmHitCount(StageNo stageNo, int groupNo, int setNo, int count);
 ```
 
-### SetQuestEnemyTierUp (116)
+### SetOmTierUp (116)
 
 | Field | Value |
 |-------|-------|
@@ -3513,7 +3517,7 @@ SetQuestEnemyLevelEx(StageNo stageNo, int groupNo, int setNo, int level);
 ```
 /**
  * @brief Sets the danger tier (bits 23–21) of a quest enemy group.
- * Phase-gated like SetQuestEnemyLevel.
+ * Phase-gated like SetOmHitCount.
  * @note FUN_00bc0670 checks for OMs 503136 and 503143 - destructible flag objects found in War Missions
  * @param stageNo  Stage number
  * @param groupNo  Enemy group number
@@ -3523,7 +3527,7 @@ SetQuestEnemyLevelEx(StageNo stageNo, int groupNo, int setNo, int level);
 SetQuestEnemyTierUp(StageNo stageNo, int groupNo, int setNo, int tier);
 ```
 
-### SetQuestEnemyTierUpEx (117)
+### SetQuestOmTierUp (117)
 
 | Field | Value |
 |-------|-------|
@@ -3533,7 +3537,7 @@ SetQuestEnemyTierUp(StageNo stageNo, int groupNo, int setNo, int tier);
 
 ```
 /**
- * @brief Area-aware variant of SetQuestEnemyTierUp.
+ * @brief Quest object variant of SetQuestEnemyTierUp.
  * @note FUN_00bc0670 checks for OMs 503136 and 503143 - destructible flag objects found in War Missions
  * @param stageNo  Stage number
  * @param groupNo  Enemy group number
@@ -3543,66 +3547,65 @@ SetQuestEnemyTierUp(StageNo stageNo, int groupNo, int setNo, int tier);
 SetQuestEnemyTierUpEx(StageNo stageNo, int groupNo, int setNo, int tier);
 ```
 
-### SetQuestOmMontagueFix (118)
+### SetOmState (118)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x006341A0` |
 | Table index | 118 |
-| Key callees | `FUN_00a41780(stageNo, groupNo, setNo, 0)`, `FUN_00bbf670(npc, poseId)` (6-bit field, values 1–6) |
+| Key callees | `FUN_00a41780(stageNo, groupNo, setNo, 0)`, `FUN_00bbf670(object, state)` (6-bit field, values 1–6) |
 
 ```
 /**
- * @brief Sets a body/stance pose on a quest NPC or look/state of an object (like a chest).
+ * @brief Sets a body/stance pose on an NPC or look/state of an object (like a chest).
  * Montague IDs 1–6 map to different stances.
  * @param stageNo    Stage number
  * @param groupNo    Group number
  * @param setNo      Set number
- * @param montagueNo Pose/stance index (1–6)
+ * @param state      Pose/stance index (1–6)
  */
-SetQuestOmMontagueFix(StageNo stageNo, int groupNo, int setNo, int montagueNo);
+SetOmState(StageNo stageNo, int groupNo, int setNo, int state);
 ```
 
-### SetQuestOmMontagueFixEx (119)
+### SetQuestOmState (119)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x006341F0` |
 | Table index | 119 |
-| Key callees | Area-aware NPC lookup, `FUN_00bbf670` |
+| Key callees | Quest-aware object lookup, `FUN_00bbf670` |
 
 ```
 /**
- * @brief Area-aware variant of SetQuestOmMontague.
+ * @brief Quest object variant of SetOmState.
  * @param stageNo    Stage number
  * @param groupNo    Group number
  * @param setNo      Set number
- * @param montagueNo Pose/stance index (1–6)
+ * @param state      Pose/stance index (1–6)
  */
-SetQuestOmMontagueFixEx(StageNo stageNo, int groupNo, int setNo, int montagueNo);
+SetQuestOmState(StageNo stageNo, int groupNo, int setNo, int state);
 ```
 
-### SetQuestLayoutEnemyLevel (121)
+### SetNamedEnemyParam (121)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x00634300` |
 | Table index | 121 |
-| Key callees | `FUN_00a416a0(stageNo, groupNo, setNo, 0)` (layout enemy type 2), `FUN_00b55e70(enemy, level)` |
+| Key callees | `FUN_00a416a0(stageNo, groupNo, setNo, 0)` (layout enemy type 2), `FUN_00b55e70(enemy, param)` |
 | Notes | GM-mode guarded. Queues into a CS-guarded buffer (max 10 entries) at `this+0xe48`. |
 
 ```
 /**
- * @brief Sets the level of a layout enemy (type 2) via a thread-safe queue.
- * Guarded by GM mode check (FUN_00b19cc0) and player ID comparison.
- * Buffer at this+0xe48 holds up to 10 entries.
- * @note Calls getQuestId and compares against 90040004 (Acre Selund War Chronicles), checks stage number if this fails.
+ * @brief Sets the named param of an enemy by queuing it into a critical-section-guarded buffer via FUN_00b55e70.
+ * GM-mode guarded. Buffer holds up to 10 entries at this+0xe48. One enemy per command (setNo > -1).
+ * @note Skips stage check if quest ID = 90040004 (Acre Selund War Chronicles).
  * @param stageNo  Stage number
  * @param groupNo  Layout enemy group number
  * @param setNo    Layout enemy set number
- * @param level    Level value passed to FUN_00b55e70
+ * @param param    Named param value passed to FUN_00b55e70
  */
-SetQuestLayoutEnemyLevel(StageNo stageNo, int groupNo, int setNo, int level);
+SetNamedEnemyParam(StageNo stageNo, int groupNo, int setNo, int param);
 ```
 
 ### RemoveFsmNpcFromSchedule (124)
@@ -3622,24 +3625,28 @@ SetQuestLayoutEnemyLevel(StageNo stageNo, int groupNo, int setNo, int level);
 RemoveFsmNpcFromSchedule(int param01, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
-### SetEnemyExpeditionState (126)
+### SetMagmaState (126)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x00634450` |
 | Table index | 126 |
-| Key callees | mode=2: `FUN_00bc6ff0(9)` (sets global to 10, signals start); mode=3: `FUN_00bc7070(param02)` (iterates party, fires signal via `FUN_008fdf80`/`FUN_005b8070`) |
+| Key callees | phase=2: `FUN_00bc6ff0(9)` (sets global to 10, signals start); phase=3: `FUN_00bc7070(state)` (iterates list, fires signal via `FUN_008fdf80`/`FUN_005b8070`) |
 
 ```
 /**
- * @brief Controls enemy expedition state / area boss trigger.
- * @param mode    2 = start expedition signal, 3 = fire per-party-member signal
- * @param param02 Secondary value passed to FUN_00bc7070 when mode == 3
+ * @brief Changes magma OM behaviour on Evil Dragon's Roost maps to match boss phase mechanics.
+ * @brief Phase 2: Sets a global counter to 10, which immediately flips over to 1 (reset). Floor magma expands or contracts based on counter value.
+ * @brief Evil Dragon and their crystals directly increment or decrement this counter as part of their moveset.
+ * @brief Phase 3: Iterates a list of objects and sets state = param02 on them. Makes magma rise on the map based on state.
+ * @brief Requires the list (DAT) to be populated by a function beforehand (Evil Dragon populates this DAT with SetInfoOmRisingMagma).
+ * @param phase   2 = resets floor magma expansion, 3 = iterates object list and sets every match to state = param02
+ * @param state   Secondary value passed to FUN_00bc7070 when phase == 3
  */
-SetEnemyExpeditionState(int mode, int param02 = 0, int param03 = 0, int param04 = 0);
+SetMagmaState(int phase, int state, int param03 = 0, int param04 = 0);
 ```
 
-### EndContentsPurposePhaseChange (128)
+### TriggerDarkDungeonEndSequence (128)
 
 | Field | Value |
 |-------|-------|
@@ -3655,7 +3662,7 @@ SetEnemyExpeditionState(int mode, int param02 = 0, int param03 = 0, int param04 
  * Sends world-manager NPC messages 0x25f and 0x260.
  * @param
  */
-EndContentsPurposePhaseChange(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+TriggerDarkDungeonEndSequence(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### EndChain (130)
@@ -3675,20 +3682,21 @@ EndContentsPurposePhaseChange(int param01 = 0, int param02 = 0, int param03 = 0,
 EndChain(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
-### SetPawnExpeditionFlag (133)
+### GetDragonAbility (133)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x006347A0` |
 | Table index | 133 |
-| Key callees | mode=1: `FUN_00b6ce30()` (writes action `DAT_01d4db50`); mode=2: `FUN_00b6cde0()` (writes action `DAT_01d4db54`) |
+| Key callees | type=1: `FUN_00b6ce30()` (writes action `DAT_01d4db50`); type=2: `FUN_00b6cde0()` (writes action `DAT_01d4db54`) |
 
 ```
 /**
- * @brief Starts or stops a pawn expedition.
- * @param mode  1 = start expedition, 2 = stop expedition
+ * @brief Activates a player's bonus dragon abilities if they meet the threshold. Gated by type.
+ * @param Type 1 = Dragon Protection, Type 2 = Dragon Blessing. Plays GUI message.
+ * @param Dragon protection seems functional and actually raises stats.
  */
-SetPawnExpeditionFlag(int mode, int param02 = 0, int param03 = 0, int param04 = 0);
+GetDragonAbility(int type, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### SetQuestLayoutOmMontageFix (134)
@@ -3720,21 +3728,21 @@ SetQuestLayoutOmMontageFix(StageNo stageNo, int groupNo, int setNo, int montague
 The following check commands were found by analysing the check function dispatch table at `.data:02126998`.
 The dispatch function is at approximately `.text:0063E04A`. It validates `commandId < 0x101` (257 entries, indices 0–256).
 
-### IsSubstoryProgressBit18 (211)
+### IsPartyDisbanded (211)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x00635A00` |
 | Table index | 211 |
-| State offset | `cQuestProcess+0x5c+0x20c` (substory state word), bit 18 (0x12) |
+| State offset | `cQuestProcess+0x5c+0x20c` notice bit 18 (0x12) |
 
 ```
 /**
- * @brief Returns bit 18 of the substory progress state word.
- * All four quest params are unused — only the implicit `this` context is read.
- * State word is at *(cQuestProcess+0x5c)+0x20c.
+ * @brief Checks if the player's party has disbanded (notice bit 18). 
+ * Only triggers after disbanding a multiplayer party (exm with pawns will also work).
+ * Notice bit is at *(cQuestProcess+0x5c)+0x20c.
  */
-IsSubstoryProgressBit18(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+IsPartyDisbanded(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### SetGlobalSubstoryProgressBit17Inverse (212)
@@ -4336,7 +4344,7 @@ IsSubstoryProgressInRange(int minValue, int maxValue, int param03 = 0, int param
 IsTimerNotElapsed(int timerNo, int sec, int param03 = 0, int param04 = 0);
 ```
 
-### IsContentsModeTimerNotLess (246)
+### RisingMagmaTime (246)
 
 | Field | Value |
 |-------|-------|
@@ -4346,11 +4354,13 @@ IsTimerNotElapsed(int timerNo, int sec, int param03 = 0, int param04 = 0);
 
 ```
 /**
- * @brief S3-only: checks if the contents mode elapsed timer >= timeSec.
- * Returns 0 if not in the correct season phase.
+ * @brief Checks how long magma has been rising on the current map. Requires cpOmRisingMagma to be present on the map.
+ * Magma starts rising after result command SetMagmaState is used with phase = 3, which starts a counter.
+ * This counter, and magma height, increases by 1/sec once started. Check passes when param01 >= counter.
+ * Can be used as a time or height comparison depending on how you look at it.
  * @param timeSec Minimum elapsed seconds
  */
-IsContentsModeTimerNotLess(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0);
+RisingMagmaTime(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### IsTriggerFlagSetAndClear (247)

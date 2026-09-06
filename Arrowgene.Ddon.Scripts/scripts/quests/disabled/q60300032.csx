@@ -79,7 +79,7 @@ public class ScriptedQuest : IQuest
             ]);
         process0.AddStageJumpBlock(QuestAnnounceType.None, Stage.FortressCityMegadoResidentialLevel2, 37);
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.Update, Stage.FortressCityMegadoResidentialLevel2, 0, 0, NpcId.Navid, 28723)
-			.AddResultCmdSetEnvironmentalEffect(12, 1)
+			.AddResultCmdSetCustomWeather(12, 1)
 			.AddResultCmdQstTalkChg(NpcId.Ennis, 28722)
 			.AddResultCmdQstLayoutFlagOn(7612);
         process0.AddStageJumpBlock(QuestAnnounceType.None, Stage.MarquiseKurtsresidence1, 0);
@@ -89,7 +89,7 @@ public class ScriptedQuest : IQuest
 			.AddResultCmdQstLayoutFlagOn(7613);
         process0.AddStageJumpBlock(QuestAnnounceType.None, Stage.MarquiseKurtsresidence1, 3);
         process0.AddRawBlock(QuestAnnounceType.Update)
-			.AddResultCmdSetEnvironmentalEffect(21, 1)
+			.AddResultCmdSetCustomWeather(21, 1)
 			.AddResultCmdQstLayoutFlagOff(7613)
 			.AddResultCmdQstLayoutFlagOn(7741)
 			.AddResultCmdQstLayoutFlagOn(7742)
@@ -121,7 +121,7 @@ public class ScriptedQuest : IQuest
 			.AddResultCmdQstLayoutFlagOn(7707);
         process0.AddStageJumpBlock(QuestAnnounceType.None, Stage.FortressCityMegadoResidentialLevel3, 40);
         process0.AddRawBlock(QuestAnnounceType.Update)
-			.AddResultCmdSetEnvironmentalEffect(21, 1)
+			.AddResultCmdSetCustomWeather(21, 1)
 			.AddResultCmdQstLayoutFlagOff(7707)
 			.AddResultCmdQstLayoutFlagOn(7744)
 			.AddCheckCmdSceHitIn(Stage.FortressCityMegadoResidentialLevel3, 15);
@@ -138,7 +138,7 @@ public class ScriptedQuest : IQuest
         process0.AddStageJumpBlock(QuestAnnounceType.None, Stage.FortressCityMegadoResidentialLevel1, 18);
         process0.AddProcessEndBlock(true)
             .AddResultCmdReleaseAnnounce(ContentsRelease.CooperatorsoftheRoyalFamily, TutorialId.ExposetheDarkSidetotheOneOperatingbehindtheScenesMephis)
-			.AddResultCmdAchievementBanner(6, 11);
+			.AddResultCmdCallGreatPurpose(6, 11);
 
         var process1 = AddNewProcess(1);
         process1.AddRawBlock(QuestAnnounceType.None)
