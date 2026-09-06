@@ -69,25 +69,25 @@ namespace Arrowgene.Ddon.GameServer.Context
             Quest = 7
         }
 
-        private static readonly Bitfield Kind          = new Bitfield( 3,  0, "Kind");
-        private static readonly Bitfield StageId       = new Bitfield(15,  4, "StageId");
-        private static readonly Bitfield LayoutGroup   = new Bitfield(24, 16, "LayoutGroup");
-        private static readonly Bitfield LayoutId      = new Bitfield(29, 25, "LayoutId");
-        private static readonly Bitfield InnerId       = new Bitfield(34, 30, "InnerId");
+        private static readonly Bitfield Kind           = new( 3,  0, "Kind");
+        private static readonly Bitfield StageId        = new(15,  4, "StageId");
+        private static readonly Bitfield LayoutGroup    = new(24, 16, "LayoutGroup");
+        private static readonly Bitfield LayoutId       = new(29, 25, "LayoutId");
+        private static readonly Bitfield InnerId        = new(34, 30, "InnerId");
 
         public static bool IsOmUID(ulong value)
         {
-            return ((byte) Kind.Get(value)) == (byte) UIDKind.OM;
+            return ((byte)Kind.Get(value)) == (byte)UIDKind.OM;
         }
 
         public static uint GetStageId(ulong value)
         {
-            return (uint) StageId.Get(value);
+            return (uint)StageId.Get(value);
         }
 
         public static ulong CreateEnemyUID(ulong setId, CDataStageLayoutId stageLayoutId)
         {
-            return (Kind.Value((ulong) UIDKind.Enemy) |
+            return (Kind.Value((ulong)UIDKind.Enemy) |
                     StageId.Value(stageLayoutId.StageId) |
                     LayoutGroup.Value(stageLayoutId.GroupId) |
                     LayoutId.Value(setId) |
@@ -99,10 +99,10 @@ namespace Arrowgene.Ddon.GameServer.Context
         {
             List<InstancedEnemy> enemies = enemyManager.GetAssets(stageLayoutId);
 
-            List<ulong> results = new List<ulong>();
-            for (int i = 0; i < enemies.Count(); i++)
+            List<ulong> results = [];
+            for (int i = 0; i < enemies.Count; i++)
             {
-                results.Add(CreateEnemyUID((ulong) i, stageLayoutId));
+                results.Add(CreateEnemyUID((ulong)i, stageLayoutId));
             }
 
             return results;
@@ -209,11 +209,6 @@ namespace Arrowgene.Ddon.GameServer.Context
 
         public static void AwaitMaster(GameClient client, ulong uniqueID, int clientIndex = -1)
         {
-            if (clientIndex == -1)
-            {
-                clientIndex = client.Party.ClientIndex(client);
-            }
-
             client.Character.ContextOwnership[uniqueID] = false;
         }
 
@@ -229,15 +224,13 @@ namespace Arrowgene.Ddon.GameServer.Context
 
         public static void DelegateMaster(GameClient client, ulong uniqueID)
         {
-            bool isOwner = client.Character.ContextOwnership.ContainsKey(uniqueID)
-                && client.Character.ContextOwnership[uniqueID];
+            bool isOwner = client.Character.ContextOwnership.TryGetValue(uniqueID, out var value) && value;
 
             client.Character.ContextOwnership.Remove(uniqueID);
 
             if (isOwner)
             {
-                var otherClients = client.Party.Clients.Where(x => x != client && x.Character.ContextOwnership.ContainsKey(uniqueID));
-                GameClient newOwner = otherClients.FirstOrDefault() ?? client.Party.Clients.FirstOrDefault(x => x != client);
+                GameClient newOwner = client.Party.Clients.FirstOrDefault(x => x != client && x.Character.ContextOwnership.ContainsKey(uniqueID));
                 if (newOwner != null)
                 {
                     AssignMaster(newOwner, uniqueID);
