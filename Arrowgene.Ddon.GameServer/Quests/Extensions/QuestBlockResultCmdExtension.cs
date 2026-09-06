@@ -314,21 +314,21 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdTriggerSubstoryEvent(this QuestBlock questBlock, int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+        public static QuestBlock AddResultCmdUpdateSubstoryProgress(this QuestBlock questBlock, int progressDelta, int param02 = 0, int param03 = 0, int param04 = 0)
         {
-            questBlock.ResultCommands.AddResultCmdTriggerSubstoryEvent(param01, param02, param03, param04);
+            questBlock.ResultCommands.AddResultCmdUpdateSubstoryProgress(progressDelta, param02, param03, param04);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdEnableSubstoryUIElement(this QuestBlock questBlock)
+        public static QuestBlock AddResultCmdEnableSubstoryGauge(this QuestBlock questBlock)
         {
-            questBlock.ResultCommands.AddResultCmdEnableSubstoryUIElement();
+            questBlock.ResultCommands.AddResultCmdEnableSubstoryGauge();
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdDisableSubstoryUIElement(this QuestBlock questBlock)
+        public static QuestBlock AddResultCmdDisableSubstoryGauge(this QuestBlock questBlock)
         {
-            questBlock.ResultCommands.AddResultCmdDisableSubstoryUIElement();
+            questBlock.ResultCommands.AddResultCmdDisableSubstoryGauge();
             return questBlock;
         }
 
@@ -338,93 +338,93 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetSubstoryEnemyInvincible(this QuestBlock questBlock, int enemyGroupFlag, int invincible)
+        public static QuestBlock AddResultCmdSetEnemyAggroFlag(this QuestBlock questBlock, int type, int param02)
         {
-            questBlock.ResultCommands.AddResultCmdSetSubstoryEnemyInvincible(enemyGroupFlag, invincible);
+            questBlock.ResultCommands.AddResultCmdSetEnemyAggroFlag(type, param02);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdAddFsmTalkNpc(this QuestBlock questBlock, int npcId)
+        public static QuestBlock AddResultCmdSetRandom2(this QuestBlock questBlock, int randomNo, int minValue, int maxValue)
         {
-            questBlock.ResultCommands.AddResultCmdAddFsmTalkNpc(npcId);
+            questBlock.ResultCommands.AddResultCmdSetRandom2(randomNo, minValue, maxValue);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdAchievementBanner(this QuestBlock questBlock, int categoryNo, int bannerNo)
+        public static QuestBlock AddResultCmdCallGreatPurpose(this QuestBlock questBlock, int categoryNo, int purposeNo)
         {
-            questBlock.ResultCommands.AddResultCmdAchievementBanner(categoryNo, bannerNo);
+            questBlock.ResultCommands.AddResultCmdCallGreatPurpose(categoryNo, purposeNo);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdEnableSubstoryElementB(this QuestBlock questBlock)
+        public static QuestBlock AddResultCmdEnableSubstoryTextBox(this QuestBlock questBlock)
         {
-            questBlock.ResultCommands.AddResultCmdEnableSubstoryElementB();
+            questBlock.ResultCommands.AddResultCmdEnableSubstoryTextBox();
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdDisableSubstoryElementB(this QuestBlock questBlock)
+        public static QuestBlock AddResultCmdDisableSubstoryTextBox(this QuestBlock questBlock)
         {
-            questBlock.ResultCommands.AddResultCmdDisableSubstoryElementB();
+            questBlock.ResultCommands.AddResultCmdDisableSubstoryTextBox();
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetEnvironmentalEffect(this QuestBlock questBlock, int param01 = 0, int param02 = 0)
+        public static QuestBlock AddResultCmdSetCustomWeather(this QuestBlock questBlock, int param01 = 0, int param02 = 0)
         {
-            questBlock.ResultCommands.AddResultCmdSetEnvironmentalEffect(param01, param02);
+            questBlock.ResultCommands.AddResultCmdSetCustomWeather(param01, param02);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdResetEnvironmentalEffect(this QuestBlock questBlock)
+        public static QuestBlock AddResultCmdResetCustomWeather(this QuestBlock questBlock)
         {
-            questBlock.ResultCommands.AddResultCmdResetEnvironmentalEffect();
+            questBlock.ResultCommands.AddResultCmdResetCustomWeather();
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetFsmNpcSchedule(this QuestBlock questBlock, int scheduleId)
+        public static QuestBlock AddResultCmdLayoutFlagRandomOn2(this QuestBlock questBlock, int flagNo1, int flagNo2, int flagNo3)
         {
-            questBlock.ResultCommands.AddResultCmdSetFsmNpcSchedule(scheduleId);
+            questBlock.ResultCommands.AddResultCmdLayoutFlagRandomOn2(flagNo1, flagNo2, flagNo3);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetQuestEnemyLevel(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int level)
+        public static QuestBlock AddResultCmdSetOmHitCount(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int count)
         {
-            questBlock.ResultCommands.AddResultCmdSetQuestEnemyLevel(stageInfo, groupNo, setNo, level);
+            questBlock.ResultCommands.AddResultCmdSetOmHitCount(stageInfo, groupNo, setNo, count);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetQuestEnemyLevelEx(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int level)
+        public static QuestBlock AddResultCmdSetQuestOmHitCount(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int count)
         {
-            questBlock.ResultCommands.AddResultCmdSetQuestEnemyLevelEx(stageInfo, groupNo, setNo, level);
+            questBlock.ResultCommands.AddResultCmdSetQuestOmHitCount(stageInfo, groupNo, setNo, count);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetQuestEnemyTierUp(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int tier)
+        public static QuestBlock AddResultCmdSetOmTierUp(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int tier)
         {
-            questBlock.ResultCommands.AddResultCmdSetQuestEnemyTierUp(stageInfo, groupNo, setNo, tier);
+            questBlock.ResultCommands.AddResultCmdSetOmTierUp(stageInfo, groupNo, setNo, tier);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetQuestEnemyTierUpEx(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int tier)
+        public static QuestBlock AddResultCmdSetQuestOmTierUp(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int tier)
         {
-            questBlock.ResultCommands.AddResultCmdSetQuestEnemyTierUpEx(stageInfo, groupNo, setNo, tier);
+            questBlock.ResultCommands.AddResultCmdSetQuestOmTierUp(stageInfo, groupNo, setNo, tier);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetQuestOmMontageFix(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int montagueNo)
+        public static QuestBlock AddResultCmdSetOmState(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int state)
         {
-            questBlock.ResultCommands.AddResultCmdSetQuestOmMontageFix(stageInfo, groupNo, setNo, montagueNo);
+            questBlock.ResultCommands.AddResultCmdSetOmState(stageInfo, groupNo, setNo, state);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetQuestOmMontageFixEx(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int montagueNo)
+        public static QuestBlock AddResultCmdSetQuestOmState(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int state)
         {
-            questBlock.ResultCommands.AddResultCmdSetQuestOmMontageFixEx(stageInfo, groupNo, setNo, montagueNo);
+            questBlock.ResultCommands.AddResultCmdSetQuestOmState(stageInfo, groupNo, setNo, state);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetQuestLayoutEnemyLevel(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int level)
+        public static QuestBlock AddResultCmdSetNamedEnemyParam(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, int param)
         {
-            questBlock.ResultCommands.AddResultCmdSetQuestLayoutEnemyLevel(stageInfo, groupNo, setNo, level);
+            questBlock.ResultCommands.AddResultCmdSetNamedEnemyParam(stageInfo, groupNo, setNo, param);
             return questBlock;
         }
 
@@ -434,15 +434,15 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetEnemyExpeditionState(this QuestBlock questBlock, int mode)
+        public static QuestBlock AddResultCmdSetMagmaState(this QuestBlock questBlock, int phase, int state)
         {
-            questBlock.ResultCommands.AddResultCmdSetEnemyExpeditionState(mode);
+            questBlock.ResultCommands.AddResultCmdSetMagmaState(phase, state);
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdTriggerSubstoryEndSequence(this QuestBlock questBlock)
+        public static QuestBlock AddResultCmdTriggerDarkDungeonEndSequence(this QuestBlock questBlock)
         {
-            questBlock.ResultCommands.AddResultCmdTriggerSubstoryEndSequence();
+            questBlock.ResultCommands.AddResultCmdTriggerDarkDungeonEndSequence();
             return questBlock;
         }
 
@@ -452,9 +452,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetPawnExpeditionFlag(this QuestBlock questBlock, int mode)
+        public static QuestBlock AddResultCmdGetDragonAbility(this QuestBlock questBlock, int type)
         {
-            questBlock.ResultCommands.AddResultCmdSetPawnExpeditionFlag(mode);
+            questBlock.ResultCommands.AddResultCmdGetDragonAbility(type);
             return questBlock;
         }
 

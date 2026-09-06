@@ -2653,10 +2653,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // Ghidra-discovered check commands (IDs 211–256)
 
-            /** @brief Returns bit 18 of the substory state word at ctx+0x5c+0x20c. */
-            public static CDataQuestCommand IsSubstoryStateBit18(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Checks if the player's party has disbanded (notice bit 18). */
+            public static CDataQuestCommand IsPartyDisbanded(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsSubstoryStateBit18, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsPartyDisbanded, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Side-effect writer: reads bit 17 of ctx+0x5c+0x20c, inverts it, stores to DAT_021c06b8+0x263. No quest params. */
@@ -2839,10 +2839,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsTimerNotElapsed, Param01 = timerNo, Param02 = sec, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief S3-only: checks if the contents mode elapsed timer >= timeSec. */
-            public static CDataQuestCommand IsContentsModeTimerNotLess(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Checks how long magma has been rising on the current map (param01 >= timeSec). Requires cpOmRisingMagma to be present on the map. */
+            public static CDataQuestCommand RisingMagmaTime(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsContentsModeTimerNotLess, Param01 = timeSec, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.RisingMagmaTime, Param01 = timeSec, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Fire-once trigger: reads and clears a byte flag at DAT_021af4f4+0xEEA. Returns 1 if flag was set. */
@@ -3833,22 +3833,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.AddSubstoryProgress, Param01 = substoryId, Param02 = progressDelta, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Triggers a substory event sequence. Checks mode; if mode==0xb fires substory FSM transition. */
-            public static CDataQuestCommand TriggerSubstoryEvent(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Triggers a substory progress update sequence. Checks mode; if mode==0xb fires substory FSM transition and sends C2S_QUEST_ADD_PACKAGE_QUEST_POINT_REQ. */
+            public static CDataQuestCommand UpdateSubstoryProgress(int progressDelta, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.TriggerSubstoryEvent, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.UpdateSubstoryProgress, Param01 = progressDelta, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Triggers display of the substory UI element. No command params used; value read from baked quest context. */
-            public static CDataQuestCommand EnableSubstoryUIElement(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand EnableSubstoryGauge(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EnableSubstoryUIElement, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EnableSubstoryGauge, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Disables the substory UI element (+0x44 reference cleared). */
-            public static CDataQuestCommand DisableSubstoryUIElement(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand DisableSubstoryGauge(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.DisableSubstoryUIElement, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.DisableSubstoryGauge, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Redirects NPC talk for a substory context via FUN_009ce930(param01, param02). */
@@ -3857,94 +3857,94 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.QstTalkChgFsm, Param01 = (int) npcId, Param02 = msgNo, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Sets invincibility on a substory enemy group. param02=1 sets invincible. */
-            public static CDataQuestCommand SetSubstoryEnemyInvincible(int enemyGroupFlag, int invincible, int param03 = 0, int param04 = 0)
+            /** @brief Sets or clears a global enemy aggression flag. Has additional functionality depending on param02. */
+            public static CDataQuestCommand SetEnemyAggroFlag(int type, int param02, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetSubstoryEnemyInvincible, Param01 = enemyGroupFlag, Param02 = invincible, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetEnemyAggroFlag, Param01 = type, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Adds an NPC to the FSM talk NPC list. Validates FSM mode first. */
-            public static CDataQuestCommand AddFsmTalkNpc(int npcId, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Duplicate of SetRandom. */
+            public static CDataQuestCommand SetRandom2(int randomNo, int minValue, int maxValue, int resultValue)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.AddFsmTalkNpc, Param01 = npcId, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetRandom2, Param01 = randomNo, Param02 = minValue, Param03 = maxValue, Param04 = resultValue };
             }
 
-            /** @brief Displays an achievement banner from a given category. Only category 6 (Great Purpose) has banners to display. */
-            public static CDataQuestCommand AchievementBanner(int categoryNo, int bannerNo, int param03 = 0, int param04 = 0)
+            /** @brief Looks up a table for Great Purpose (category 6) entries (1-16) and forwards parameters to an announce display function if it finds a match. */
+            public static CDataQuestCommand CallGreatPurpose(int categoryNo, int purposeNo, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.AchievementBanner, Param01 = categoryNo, Param02 = bannerNo, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.CallGreatPurpose, Param01 = categoryNo, Param02 = purposeNo, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Enables substory element variant B. Sets +0x4c reference via FUN_00598860. */
-            public static CDataQuestCommand EnableSubstoryElementB(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Enables text boxes for substory cutscenes. Sets +0x4c reference via FUN_00598860. */
+            public static CDataQuestCommand EnableSubstoryTextBox(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EnableSubstoryElementB, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EnableSubstoryTextBox, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Disables substory element variant B. Clears +0x4c reference via FUN_005986A0. */
-            public static CDataQuestCommand DisableSubstoryElementB(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Disables text boxes for substory cutscenes. Clears +0x4c reference via FUN_005986A0. */
+            public static CDataQuestCommand DisableSubstoryTextBox(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.DisableSubstoryElementB, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.DisableSubstoryTextBox, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Overrides lighting and clouds on current map. Effects are purely visual and not persistent. */
-            public static CDataQuestCommand SetEnvironmentalEffect(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand SetCustomWeather(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetEnvironmentalEffect, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetCustomWeather, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Resets environmental effects set by SetEnvironmentalEffect. */
-            public static CDataQuestCommand ResetEnvironmentalEffect(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Resets environmental effects set by SetCustomWeather. */
+            public static CDataQuestCommand ResetCustomWeather(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.ResetEnvironmentalEffect, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.ResetCustomWeather, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Schedules an FSM NPC behavior by calling FUN_009d1a60(scheduleId). scheduleId = param04. */
-            public static CDataQuestCommand SetFsmNpcSchedule(int param01 = 0, int param02 = 0, int param03 = 0, int scheduleId = 0)
+            /** @brief Duplicate of LayoutFlagRandomOn. */
+            public static CDataQuestCommand LayoutFlagRandomOn2(int flagNo1, int flagNo2, int flagNo3, int resultNo)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetFsmNpcSchedule, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = scheduleId };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.LayoutFlagRandomOn2, Param01 = flagNo1, Param02 = flagNo2, Param03 = flagNo3, Param04 = resultNo };
             }
 
-            /** @brief Sets the level of a quest enemy group (type 3) via FUN_00bc0670. Phase-gated. */
-            public static CDataQuestCommand SetQuestEnemyLevel(uint stageNo, int groupNo, int setNo, int level)
+            /** @brief Increases a breakable object's hit counter, lowering its current HP. Only works for OMs 503136 and 503143, does nothing otherwise. */
+            public static CDataQuestCommand SetOmHitCount(uint stageNo, int groupNo, int setNo, int count)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetQuestEnemyLevel, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = level };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetOmHitCount, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = count };
             }
 
-            /** @brief Area-aware variant of SetQuestEnemyLevel using FUN_00a41890. */
-            public static CDataQuestCommand SetQuestEnemyLevelEx(uint stageNo, int groupNo, int setNo, int level)
+            /** @brief Quest object variant of SetOmHitCount. */
+            public static CDataQuestCommand SetQuestOmHitCount(uint stageNo, int groupNo, int setNo, int count)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetQuestEnemyLevelEx, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = level };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetQuestOmHitCount, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = count };
             }
 
-            /** @brief Sets the danger tier (bits 23-21) of a quest enemy group via FUN_00bc0720. Phase-gated. */
-            public static CDataQuestCommand SetQuestEnemyTierUp(uint stageNo, int groupNo, int setNo, int tier)
+            /** @brief Sets the danger tier of a breakable object and restores its health to full. Only works for OMs 503136 and 503143, does nothing otherwise. */
+            public static CDataQuestCommand SetOmTierUp(uint stageNo, int groupNo, int setNo, int tier)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetQuestEnemyTierUp, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = tier };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetOmTierUp, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = tier };
             }
 
-            /** @brief Area-aware variant of SetQuestEnemyTierUp. */
-            public static CDataQuestCommand SetQuestEnemyTierUpEx(uint stageNo, int groupNo, int setNo, int tier)
+            /** @brief Quest object variant of SetOmTierUp. */
+            public static CDataQuestCommand SetQuestOmTierUp(uint stageNo, int groupNo, int setNo, int tier)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetQuestEnemyTierUpEx, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = tier };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetQuestOmTierUp, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = tier };
             }
 
-            /** @brief Sets a body/stance pose (1-6) on a quest NPC/enemy via FUN_00bbf670. */
-            public static CDataQuestCommand SetQuestOmMontageFix(uint stageNo, int groupNo, int setNo, int montagueNo)
+            /** @brief Sets a body/stance pose (1-6) on a NPC/enemy via FUN_00bbf670. */
+            public static CDataQuestCommand SetOmState(uint stageNo, int groupNo, int setNo, int state)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetQuestOmMontageFix, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = montagueNo };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetOmState, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = state };
             }
 
-            /** @brief Area-aware variant of AddResultCmdSetQuestOmMontageFix. */
-            public static CDataQuestCommand SetQuestOmMontageFixEx(uint stageNo, int groupNo, int setNo, int montagueNo)
+            /** @brief Quest object variant of SetOmState. */
+            public static CDataQuestCommand SetQuestOmState(uint stageNo, int groupNo, int setNo, int state)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetQuestOmMontageFixEx, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = montagueNo };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetQuestOmState, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = state };
             }
 
-            /** @brief Sets the level of a layout enemy (type 2) by queuing it into a critical-section-guarded buffer. */
-            public static CDataQuestCommand SetQuestLayoutEnemyLevel(uint stageNo, int groupNo, int setNo, int level)
+            /** @brief Sets the named param of an enemy by queuing it into a critical-section-guarded buffer. */
+            public static CDataQuestCommand SetNamedEnemyParam(uint stageNo, int groupNo, int setNo, int param)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetQuestLayoutEnemyLevel, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = level };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetNamedEnemyParam, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param };
             }
 
             /** @brief Removes an FSM NPC entry from the process list via FUN_0063dda0(param01). */
@@ -3953,16 +3953,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.RemoveFsmNpcFromSchedule, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Controls enemy expedition state. mode=2: starts; mode=3: iterates party members and fires expedition signal. */
-            public static CDataQuestCommand SetEnemyExpeditionState(int mode, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Controls magma OM state. Phase 2 = resets floor magma level. Phase 3 = makes magma rise and fill the map based on state. */
+            public static CDataQuestCommand SetMagmaState (int phase, int state, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetEnemyExpeditionState, Param01 = mode, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetMagmaState, Param01 = phase, Param02 = state, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Fires a substory ending sequence: calls FUN_00be9960, FUN_00b85670, and sends messages 0x25f/0x260. */
-            public static CDataQuestCommand TriggerSubstoryEndSequence(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Fires a chain dungeon ending sequence: calls FUN_00be9960, FUN_00b85670, and sends messages 0x25f/0x260. */
+            public static CDataQuestCommand TriggerDarkDungeonEndSequence(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.TriggerSubstoryEndSequence, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.TriggerDarkDungeonEndSequence, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Sends packet 63.5.16 (C2S_CHAIN_DUNGEON_END_CHAIN_NTC) kickstarting the rewards phase of chain dungeons. */
@@ -3971,10 +3971,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EndChain, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Controls pawn expedition. mode=1: starts; mode=2: stops. */
-            public static CDataQuestCommand SetPawnExpeditionFlag(int mode, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Activates a player's bonus dragon abilities if they meet the threshold. Gated by type. */
+            public static CDataQuestCommand GetDragonAbility(int type, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetPawnExpeditionFlag, Param01 = mode, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.GetDragonAbility, Param01 = type, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Sets a body/pose mode on a layout enemy (type 2) via FUN_005be380(poseId). */

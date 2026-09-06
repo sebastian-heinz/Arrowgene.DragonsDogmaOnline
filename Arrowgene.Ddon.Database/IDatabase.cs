@@ -123,6 +123,7 @@ public interface IDatabase
     bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null);
     uint GetPawnOwnerCharacterId(uint pawnId, DbConnection? connectionIn = null);
     bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null);
+    bool UpdatePawnShareRange(uint pawnId, byte shareRange);
 
     // Pawn Training Status
     bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus, DbConnection? connectionIn = null);

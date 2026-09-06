@@ -265,14 +265,14 @@ public class ScriptedQuest : IQuest
             ])
             .AddResultCommands([
                 QuestManager.ResultCommand.CallGeneralAnnounce (0, 100770),
-                QuestManager.ResultCommand.SetQuestOmMontageFix(3110, 160, 0, 2),
+                QuestManager.ResultCommand.SetOmState(3110, 160, 0, 2),
                 QuestManager.ResultCommand.QstLayoutFlagOff (8686),
                 QuestManager.ResultCommand.QstLayoutFlagOn (8687)
             ]);
         process3.AddRawBlock(QuestAnnounceType.None)
             .AddResultCommands([
                 QuestManager.ResultCommand.CallGeneralAnnounce (0, 100770),
-                QuestManager.ResultCommand.SetQuestOmMontageFix(3110, 161, 0, 2),
+                QuestManager.ResultCommand.SetOmState(3110, 161, 0, 2),
                 QuestManager.ResultCommand.QstLayoutFlagOff (8688),
                 QuestManager.ResultCommand.QstLayoutFlagOn (8689)
             ])

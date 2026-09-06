@@ -721,10 +721,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
 
         // Ghidra-discovered check commands (IDs 211–256)
 
-        public static QuestBlock AddCheckCmdIsSubstoryStateBit18(this QuestBlock questBlock, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdIsPartyDisbanded(this QuestBlock questBlock, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsSubstoryStateBit18();
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsPartyDisbanded();
             return questBlock;
         }
 
@@ -938,10 +938,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdIsContentsModeTimerNotLess(this QuestBlock questBlock, int timeSec, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdRisingMagmaTime(this QuestBlock questBlock, int timeSec, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsContentsModeTimerNotLess(timeSec);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdRisingMagmaTime(timeSec);
             return questBlock;
         }
 

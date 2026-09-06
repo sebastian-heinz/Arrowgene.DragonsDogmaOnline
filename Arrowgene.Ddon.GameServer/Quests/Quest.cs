@@ -404,7 +404,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                 x.Command != (ushort)QuestResultCommand.SetAnnounce &&
                                 x.Command != (ushort)QuestResultCommand.CallGeneralAnnounce &&
                                 x.Command != (ushort)QuestResultCommand.PlayMessage &&
-                                x.Command != (ushort)QuestResultCommand.AchievementBanner &&
+                                x.Command != (ushort)QuestResultCommand.CallGreatPurpose &&
                                 x.Command != (ushort)QuestResultCommand.HandItem &&
                                 x.Command != (ushort)QuestResultCommand.PushImteToPlBag)
                     .ToList();

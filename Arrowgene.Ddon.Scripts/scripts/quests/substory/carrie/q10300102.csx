@@ -77,7 +77,7 @@ public class ScriptedQuest : IQuest
             .AddResultCmdTutorialDialog(TutorialId.NPCEscortsFoodGauge)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 6746);
         process0.AddRawBlock(QuestAnnounceType.None)
-            .AddResultCmdEnableSubstoryUIElement()
+            .AddResultCmdEnableSubstoryGauge()
             .AddCheckCmdMyQstFlagOnFromFsm(3646)
             .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, 3645);
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.Update, Stage.RathniteFoothills, 1, 0, NpcId.Carrie2, 26282);
@@ -94,7 +94,7 @@ public class ScriptedQuest : IQuest
             .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, 3649);
         process0.AddStageJumpBlock(QuestAnnounceType.None, Stage.FortThinesGreatDiningHall, 2);
         process0.AddTalkToNpcBlock(QuestAnnounceType.Update, Stage.FortThinesGreatDiningHall, NpcId.Carrie2, 26158)
-            .AddResultCmdDisableSubstoryUIElement()
+            .AddResultCmdDisableSubstoryGauge()
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, 6747);
         process0.AddNoProgressBlock();
         process0.AddProcessEndBlock(true);

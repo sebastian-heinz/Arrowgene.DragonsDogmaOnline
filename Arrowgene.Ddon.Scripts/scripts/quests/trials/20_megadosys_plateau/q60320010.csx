@@ -129,7 +129,7 @@ public class ScriptedQuest : IQuest
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, 7484);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.FortressCityMegadoResidentialLevel1, NpcId.Doris, 28279);
         process0.AddProcessEndBlock(true)
-            .AddResultCmdAchievementBanner(6, 9)
+            .AddResultCmdCallGreatPurpose(6, 9)
             .AddWorldManageUnlock(QuestFlags.MegadosysPlateau.FlamesOfDarkness);
     }
 }
