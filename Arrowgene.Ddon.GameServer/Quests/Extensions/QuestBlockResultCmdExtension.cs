@@ -308,9 +308,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdAddSubstoryProgress(this QuestBlock questBlock, int substoryId, int progressDelta)
+        public static QuestBlock AddResultCmdAddWarProgress(this QuestBlock questBlock, int gaugeNo, int percentRate)
         {
-            questBlock.ResultCommands.AddResultCmdAddSubstoryProgress(substoryId, progressDelta);
+            questBlock.ResultCommands.AddResultCmdAddWarProgress(gaugeNo, percentRate);
             return questBlock;
         }
 

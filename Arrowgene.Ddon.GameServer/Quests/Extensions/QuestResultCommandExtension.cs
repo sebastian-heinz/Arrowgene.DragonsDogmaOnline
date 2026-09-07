@@ -311,9 +311,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdAddSubstoryProgress(this List<CDataQuestCommand> resultCommands, int substoryId, int progressDelta)
+        public static List<CDataQuestCommand> AddResultCmdAddWarProgress(this List<CDataQuestCommand> resultCommands, int gaugeNo, int percentRate)
         {
-            resultCommands.Add(QuestManager.ResultCommand.AddSubstoryProgress(substoryId, progressDelta));
+            resultCommands.Add(QuestManager.ResultCommand.AddWarProgress(gaugeNo, percentRate));
             return resultCommands;
         }
 
