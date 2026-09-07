@@ -123,10 +123,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         SubstoryProgress = 99, // 0x00633730 (cQuestProcess* this, s32 delta, s32 param02_unused, s32 param03_unused, s32 param04_unused)
 
         /// <summary>
-        /// Finds a substory entry by substoryId and adds progressDelta to its progress value, clamped to [0,100].
-        /// Does not seem to work?
+        /// Adds progress to an active war mission gauge, clamped to [0,100].
         /// </summary>
-        AddSubstoryProgress = 100, // 0x006338E0 (cQuestProcess* this, s32 substoryId, s32 progressDelta, s32 param03, s32 param04)
+        AddWarProgress = 100, // 0x006338E0 (cQuestProcess* this, s32 gaugeNo, s32 percentRate, s32 param03, s32 param04)
 
         /// <summary>
         /// Triggers a substory progress update sequence. Checks mode via FUN_009cffc0; if mode==0xb fires FUN_00bdee50 and FUN_00598590.

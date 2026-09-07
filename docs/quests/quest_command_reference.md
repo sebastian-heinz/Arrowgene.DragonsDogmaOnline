@@ -3243,22 +3243,23 @@ The dispatch function is at `.text:0063E254`. It validates `commandId < 0x87` (1
 SubstoryProgress(int substoryId, int param02, int param03, int param04 = 0);
 ```
 
-### AddSubstoryProgress (100)
+### AddWarProgress (100)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x006338E0` |
 | Table index | 100 |
-| Key callees | `FUN_00bd3730` (substory list lookup), clamps result to [0, 100] |
+| Key callees | `FUN_00bd3730` (war mission list lookup), clamps result to [0, 100] |
 
 ```
 /**
- * @brief Finds a substory entry by substoryId and adds progressDelta to its progress value.
- * Result is clamped to [0, 100].
- * @param substoryId   Substory identifier
- * @param progressDelta Amount to add (can be negative)
+ * @brief Adds progress to an active war mission gauge, clamped to [0,100].
+ * Gauges are started by S2C_FORT_DEFENSE_PLAY_START_NOTICE and S2C_QUEST_RAID_BOSS_PLAY_START_NTC.
+ * The command looks up the list for param01 = index and adds param02 to value (as a percentage).
+ * @param gaugeNo     War mission gauge identifier
+ * @param percentRate Amount to add (can be negative)
  */
-AddSubstoryProgress(int substoryId, int progressDelta, int param03 = 0, int param04 = 0);
+AddWarProgress(int gaugeNo, int percentRate, int param03 = 0, int param04 = 0);
 ```
 
 ### UpdateSubstoryProgress (101)
@@ -3636,10 +3637,11 @@ RemoveFsmNpcFromSchedule(int param01, int param02 = 0, int param03 = 0, int para
 ```
 /**
  * @brief Changes magma OM behaviour on Evil Dragon's Roost maps to match boss phase mechanics.
- * @brief Phase 2: Sets a global counter to 10, which immediately flips over to 1 (reset). Floor magma expands or contracts based on counter value.
- * @brief Evil Dragon and their crystals directly increment or decrement this counter as part of their moveset.
- * @brief Phase 3: Iterates a list of objects and sets state = param02 on them. Makes magma rise on the map based on state.
- * @brief Requires the list (DAT) to be populated by a function beforehand (Evil Dragon populates this DAT with SetInfoOmRisingMagma).
+ * Phase 2: Sets a global counter to 10, which immediately flips over to 1 (reset). Floor magma expands or contracts based on counter value.
+ * Evil Dragon and their crystals directly increment or decrement this counter as part of their moveset.
+ * Phase 3: Iterates a list of objects and sets state = param02 on them. Makes magma rise on the map based on state.
+ * Requires the list (DAT) to be populated by a function beforehand (Evil Dragon populates this DAT with SetInfoOmRisingMagma).
+ * @note War mission phase 3: check for linkage flag 6, then use (3, 1) and play the camera event.
  * @param phase   2 = resets floor magma expansion, 3 = iterates object list and sets every match to state = param02
  * @param state   Secondary value passed to FUN_00bc7070 when phase == 3
  */
@@ -3738,7 +3740,7 @@ The dispatch function is at approximately `.text:0063E04A`. It validates `comman
 
 ```
 /**
- * @brief Checks if the player's party has disbanded (notice bit 18). 
+ * @brief Checks if the player's party has disbanded (notice bit 18).
  * Only triggers after disbanding a multiplayer party (exm with pawns will also work).
  * Notice bit is at *(cQuestProcess+0x5c)+0x20c.
  */
@@ -3820,59 +3822,64 @@ NpcPreTalkAndOrderUi(StageNo stageNo, NpcId npcId, int noOrderGroupSerial, int s
 TalkNpcChoice(StageNo stageNo, int npcId, int choice, int param04 = 0);
 ```
 
-### SubstoryEnemyHpNotLess (215)
+### WarGaugeNotLess (215)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x00635BF0` |
 | Table index | 215 |
-| Key callees | `FUN_00be10d0(substoryId)` returns HP ratio as float; `ratio * 100 >= hpRatePercent` |
+| Key callees | `FUN_00be10d0(gaugeNo)` returns HP ratio as float; `ratio * 100 >= percentRate` |
 
 ```
 /**
- * @brief Checks if a specific substory enemy's current HP% >= hpRatePercent.
- * @param substoryId    Substory identifier used to look up the enemy
- * @param hpRatePercent HP percentage threshold (0–100)
+ * @brief Checks if a war mission gauge is not under the percent threshold.
+ * Gauges are started by S2C_FORT_DEFENSE_PLAY_START_NOTICE and S2C_QUEST_RAID_BOSS_PLAY_START_NTC.
+ * S3 added a fourth list for CDataCycleContentsPlayStartData with two uints (index and value).
+ * The command looks up the list for param01 = index and compares param02 against value (as a percentage).
+ * @param gaugeNo        Gauge identifier used to look up the value
+ * @param percentRate    Percentage threshold (0–100)
  */
-SubstoryEnemyHpNotLess(int substoryId, int hpRatePercent, int param03 = 0, int param04 = 0);
+WarGaugeNotLess(int gaugeNo, int percentRate, int param03 = 0, int param04 = 0);
 ```
 
-### SubstoryEnemyHpLess (216)
+### WarGaugeLess (216)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x00635C40` |
 | Table index | 216 |
-| Key callees | Same as SubstoryEnemyHpNotLess but inverted: `ratio * 100 < hpRatePercent` |
+| Key callees | Same as WarGaugeNotLess but inverted: `ratio * 100 < percentRate` |
 
 ```
 /**
- * @brief Checks if a specific substory enemy's current HP% < hpRatePercent.
- * @param substoryId    Substory identifier
- * @param hpRatePercent HP percentage threshold (0–100)
+ * @brief Checks if a war mission gauge is not under the percent threshold.
+ * See WarGaugeNotLess for a more detailed explanation.
+ * @param gaugeNo        Gauge identifier used to look up the value
+ * @param percentRate    Percentage threshold (0–100)
  */
-SubstoryEnemyHpLess(int substoryId, int hpRatePercent, int param03 = 0, int param04 = 0);
+WarGaugeLess(int gaugeNo, int percentRate, int param03 = 0, int param04 = 0);
 ```
 
-### SubstoryAvgEnemyHpNotLess (217)
+### WarGaugeAvgNotLess (217)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x00635C90` |
 | Table index | 217 |
-| Key callees | `FUN_00be1130()` computes average HP ratio across ALL substory NPCs |
+| Key callees | `FUN_00be1130()` computes average HP ratio across ALL war mission gauges |
 
 ```
 /**
- * @brief Checks if the average HP% of all substory NPCs >= hpRatePercent.
- * Uses the whole-list average, not a specific enemy.
- * @param param01       Unused / reserved
- * @param hpRatePercent HP percentage threshold (0–100)
+ * @brief Checks if the average of all war mission gauges are not under the percent threshold.
+ * Gauges are started by S2C_FORT_DEFENSE_PLAY_START_NOTICE and S2C_QUEST_RAID_BOSS_PLAY_START_NTC.
+ * S3 added a fourth list for CDataCycleContentsPlayStartData with two uints (index and value).
+ * The command looks up the entire list for values, converts them to a percentage and compares against param01.
+ * @param percentRate    Percentage threshold (0–100)
  */
-SubstoryAvgEnemyHpNotLess(int param01 = 0, int hpRatePercent = 0, int param03 = 0, int param04 = 0);
+WarGaugeAvgNotLess(int percentRate, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
-### SubstoryAvgEnemyHpLess (218)
+### WarGaugeAvgLess (218)
 
 | Field | Value |
 |-------|-------|
@@ -3882,11 +3889,11 @@ SubstoryAvgEnemyHpNotLess(int param01 = 0, int hpRatePercent = 0, int param03 = 
 
 ```
 /**
- * @brief Checks if the average HP% of all substory NPCs < hpRatePercent.
- * @param param01       Unused / reserved
- * @param hpRatePercent HP percentage threshold (0–100)
+ * @brief Checks if the average of all war mission gauges are under the percent threshold.
+ * See WarGaugeAvgNotLess for a more detailed explanation.
+ * @param percentRate    HP percentage threshold (0–100)
  */
-SubstoryAvgEnemyHpLess(int param01 = 0, int hpRatePercent = 0, int param03 = 0, int param04 = 0);
+WarGaugeAvgLess(int percentRate, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### IsOmBehaviorState (219)
@@ -4344,7 +4351,7 @@ IsSubstoryProgressInRange(int minValue, int maxValue, int param03 = 0, int param
 IsTimerNotElapsed(int timerNo, int sec, int param03 = 0, int param04 = 0);
 ```
 
-### RisingMagmaTime (246)
+### RisingMagmaLevel (246)
 
 | Field | Value |
 |-------|-------|
@@ -4354,13 +4361,13 @@ IsTimerNotElapsed(int timerNo, int sec, int param03 = 0, int param04 = 0);
 
 ```
 /**
- * @brief Checks how long magma has been rising on the current map. Requires cpOmRisingMagma to be present on the map.
+ * @brief Checks how much magma has risen on the current map. Requires cpOmRisingMagma to be present on the map.
  * Magma starts rising after result command SetMagmaState is used with phase = 3, which starts a counter.
- * This counter, and magma height, increases by 1/sec once started. Check passes when param01 >= counter.
- * Can be used as a time or height comparison depending on how you look at it.
- * @param timeSec Minimum elapsed seconds
+ * This counter keeps increasing as magma rises up to 50. Check passes when param01 >= counter.
+ * Not a height/time comparison, as magma level has been observed to not rise uniformly.
+ * @param level Magma level on current map (0-50).
  */
-RisingMagmaTime(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0);
+RisingMagmaLevel(int level, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### IsTriggerFlagSetAndClear (247)
@@ -4376,6 +4383,9 @@ RisingMagmaTime(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0);
  * @brief Fire-once trigger: reads byte at DAT_021af4f4+0xEEA.
  * If the byte equals 1, clears it to 0 and returns 1. Otherwise returns 0.
  * The flag is set by an external event; this command consumes it atomically.
+ * @note EEA = 1 when the player comes within 50f of a cpOmRisingMagma object.
+ * The event teleports the player to the nearest safe spot without taking damage and sets the flag on. Currently, this event is not triggering anywhere.
+ * This check is not passing even if you use an assembler to arrive at the flag-setting instruction: further investigation is needed.
  */
 IsTriggerFlagSetAndClear(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
