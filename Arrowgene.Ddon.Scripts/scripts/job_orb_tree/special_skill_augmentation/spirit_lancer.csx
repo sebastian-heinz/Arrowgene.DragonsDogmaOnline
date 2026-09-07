@@ -151,7 +151,7 @@ skillAugmentation.AddNode(26)
     .Location(4, 10)
     .BloodOrbCost(3500)
     .HasUnlockDependencies(25)
-    .HasQuestDependency((QuestId)60300022)
+    .HasQuestDependency(QuestId.HerosRestFeryanaRegion)
     .Unlocks(OrbGainParamType.JobPhysicalAttack, 1);
 // Row 11
 skillAugmentation.AddNode(27)
@@ -292,7 +292,7 @@ skillAugmentation.AddNode(51)
     .Location(4, 19)
     .BloodOrbCost(4000)
     .HasUnlockDependencies(50)
-    .HasQuestDependency(QuestId.HerosRestFeryanaRegion)
+    .HasQuestDependency((QuestId)60300022)
     .Unlocks(OrbGainParamType.JobPhysicalAttack, 1);
 // Row 20
 skillAugmentation.AddNode(52)
@@ -444,7 +444,7 @@ skillAugmentation.AddNode(77)
     .Location(3, 32)
     .HighOrbCost(300)
     .HasUnlockDependencies(76)
-	.HasSpecialConditionDependencies(12)
+    .HasSpecialConditionDependencies(12)
     .Unlocks(OrbGainParamType.JobMagicalDefence, 1);
 skillAugmentation.AddNode(78)
     .Location(4, 32)
@@ -455,7 +455,7 @@ skillAugmentation.AddNode(79)
     .Location(5, 32)
     .HighOrbCost(300)
     .HasUnlockDependencies(76)
-	.HasSpecialConditionDependencies(13)
+    .HasSpecialConditionDependencies(13)
     .Unlocks(OrbGainParamType.JobPhysicalDefence, 1);
 // Row 33	
 skillAugmentation.AddNode(80)
@@ -525,7 +525,7 @@ skillAugmentation.AddNode(92)
     .Location(4, 36)
     .HighOrbCost(500)
     .HasUnlockDependencies(89)
-	.HasSpecialConditionDependencies(11)
+    .HasSpecialConditionDependencies(11)
     .Unlocks(CustomSkillId.CureGlastaT);
 skillAugmentation.AddNode(93)
     .Location(5, 36)
@@ -537,7 +537,7 @@ skillAugmentation.AddNode(94)
     .Location(4, 37)
     .HighOrbCost(500)
     .HasUnlockDependencies(92)
-	.HasSpecialConditionDependencies(14)
+    .HasSpecialConditionDependencies(14)
     .Unlocks(OrbGainParamType.JobPhysicalAttack, 1);
 // Row 38
 skillAugmentation.AddNode(95)
