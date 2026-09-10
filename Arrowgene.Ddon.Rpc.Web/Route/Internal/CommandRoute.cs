@@ -41,6 +41,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                     RpcInternalCommand.UpdateCrafting => HandleUpdateCrafting(gameServer),
                     RpcInternalCommand.WorldQuestReset => HandleWorldQuestReset(gameServer),
                     RpcInternalCommand.ExtremeMissionRewardReset => HandleExtremeMissionRewardReset(gameServer),
+                    RpcInternalCommand.ScheduleManagerUpdateTasks => HandleScheduleManagerUpdateTasks(gameServer),
                     _ => new RpcCommandResult(this, false),
                 };
             }
@@ -164,6 +165,14 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                 };
             }
 
+            private RpcCommandResult HandleScheduleManagerUpdateTasks(DdonGameServer gameServer)
+            {
+                gameServer.ScheduleManager.UpdateTaskTimestamps();
+                return new RpcCommandResult(this, true)
+                {
+                    Message = _entry.Command.ToString()
+                };
+            }
             private RpcCommandResult HandleStampReset(DdonGameServer gameServer)
             {
                 foreach (var character in gameServer.ClientLookup.GetAllCharacter())

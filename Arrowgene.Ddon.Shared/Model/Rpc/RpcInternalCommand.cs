@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
         ExtremeMissionRewardReset, // null
 
         StampReset, //null
+        ScheduleManagerUpdateTasks, // null
 
         //InternalChatRoute
         SendTellMessage, // RpcChatData
