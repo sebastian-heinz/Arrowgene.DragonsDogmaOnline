@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Tasks;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Model.Scheduler;
+using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
@@ -49,14 +50,6 @@ namespace Arrowgene.Ddon.GameServer
 
         public void StartServerTasks()
         {
-            Tasks = Server.ScriptManager.SchedulerTaskModule.Tasks;
-
-            var settings = Server.GameSettings.GameServerSettings;
-            foreach (var task in Tasks)
-                task.GetOffset = () => settings.GetEffectiveUtcOffset();
-
-            TaskEntries = Server.Database.SelectAllTaskEntries();
-
             var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             foreach (var task in Tasks)
             {
@@ -77,6 +70,7 @@ namespace Arrowgene.Ddon.GameServer
                 {
                     task.RunTask(Server);
                     TaskEntries[task.Type].Timestamp = task.NextTimestamp();
+                    Server.RpcManager.AnnounceOthers("internal/command", RpcInternalCommand.ScheduleManagerUpdateTasks, null);
                     Server.Database.UpsertScheduleInfo(task.Type, TaskEntries[task.Type].Timestamp);
                 }
 
@@ -90,6 +84,7 @@ namespace Arrowgene.Ddon.GameServer
                         TaskEntries[task.Type].Timestamp = task.NextTimestamp();
                         if (task.Interval != ScheduleInterval.Secondly)
                         {
+                            Server.RpcManager.AnnounceOthers("internal/command", RpcInternalCommand.ScheduleManagerUpdateTasks, null);
                             Server.Database.UpsertScheduleInfo(task.Type, TaskEntries[task.Type].Timestamp);
                         }
                     }
@@ -124,6 +119,25 @@ namespace Arrowgene.Ddon.GameServer
         public List<SchedulerTask> GetTasks()
         {
             return Tasks;
+        }
+
+        public void PopulateTasks()
+        {
+            var settings = Server.GameSettings.GameServerSettings;
+            Tasks = Server.ScriptManager.SchedulerTaskModule.Tasks;
+            foreach (var task in Tasks)
+                task.GetOffset = () => settings.GetEffectiveUtcOffset();
+
+            TaskEntries = Server.Database.SelectAllTaskEntries();
+        }
+
+        public void UpdateTaskTimestamps()
+        {
+            foreach (var task in Tasks)
+            {
+                long next = task.NextTimestamp();
+                TaskEntries[task.Type].Timestamp = next;
+            }
         }
 
         public SchedulerTask GetTask(TaskType type)

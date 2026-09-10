@@ -164,7 +164,8 @@ namespace Arrowgene.Ddon.GameServer
             GpCourseManager.EvaluateCourses();
 
             AssetRepository.AssetChanged += OnAssetChanged;
-
+            
+            ScheduleManager.PopulateTasks();
             if (ServerUtils.IsHeadServer(this))
             {
                 ScheduleManager.StartServerTasks();
