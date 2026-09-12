@@ -73,7 +73,7 @@ public class Mixin : IEquipmentRecycleMixin
         {
             numRewards = 7;
         }
-        else if (IsSufficientlyEnhanced(item))
+        else if (IsSufficientlyEnhanced(itemInfo, item))
         {
             if (item.AddStatusParamList.Count > 1)
             {
@@ -166,9 +166,9 @@ public class Mixin : IEquipmentRecycleMixin
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    private bool IsSufficientlyEnhanced(Item item)
+    private bool IsSufficientlyEnhanced(ClientItemInfo itemInfo, Item item)
     {
-        return (item.PlusValue == 3) && (item.EquipPoints == 4) && (item.EquipElementParamList.Count > 0);
+        return (item.PlusValue == 3) && (itemInfo.Quality == 4) && (item.EquipElementParamList.Count > 0);
     }
 
     /// <summary>
@@ -178,7 +178,7 @@ public class Mixin : IEquipmentRecycleMixin
     /// <returns></returns>
     private bool IsMinimalRewardViable(ClientItemInfo itemInfo, Item item)
     {
-        return (item.PlusValue > 0) || (item.EquipPoints > 0) || (item.EquipElementParamList.Count > 0) && (itemInfo.Rank > 1);
+        return (item.PlusValue > 0) || (item.EquipPoints > 0) || (itemInfo.Quality > 0) || (item.EquipElementParamList.Count > 0) && (itemInfo.Rank > 1);
     }
 }
 
