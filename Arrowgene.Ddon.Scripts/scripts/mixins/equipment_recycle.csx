@@ -73,7 +73,7 @@ public class Mixin : IEquipmentRecycleMixin
         {
             numRewards = 7;
         }
-        else if (IsSufficientlyEnhanced(item))
+        else if (IsSufficientlyEnhanced(itemInfo, item))
         {
             if (item.AddStatusParamList.Count > 1)
             {
@@ -100,7 +100,7 @@ public class Mixin : IEquipmentRecycleMixin
     private uint CalculateBoAmount(ClientItemInfo itemInfo, Item item)
     {
         uint boAmount = 0;
-        if (IsGachaItem(itemInfo) || IsSufficientlyEnhanced(item))
+        if (IsGachaItem(itemInfo) || IsSufficientlyEnhanced(itemInfo, item))
         {
             var points = Math.Round(0.054614 * itemInfo.Rank * itemInfo.Rank - 1.348201 * itemInfo.Rank + 2.293587);
             boAmount = (uint)Math.Max(0, points);
@@ -130,7 +130,7 @@ public class Mixin : IEquipmentRecycleMixin
         {
             riftAmount = 1200;
         }
-        else if (IsSufficientlyEnhanced(item))
+        else if (IsSufficientlyEnhanced(itemInfo, item))
         {
             double points = 0.0606818 * itemInfo.Rank * itemInfo.Rank - 1.220454 * itemInfo.Rank + 43.50425 * enhancements;
             riftAmount = (uint)Math.Round(Math.Max(0, points));
@@ -166,9 +166,9 @@ public class Mixin : IEquipmentRecycleMixin
     /// </summary>
     /// <param name="item"></param>
     /// <returns></returns>
-    private bool IsSufficientlyEnhanced(Item item)
+    private bool IsSufficientlyEnhanced(ClientItemInfo itemInfo, Item item)
     {
-        return (item.PlusValue == 3) && (item.EquipPoints == 4) && (item.EquipElementParamList.Count > 0);
+        return (item.PlusValue == 3) && (itemInfo.Quality == 4) && (item.EquipElementParamList.Count > 0);
     }
 
     /// <summary>
@@ -178,7 +178,7 @@ public class Mixin : IEquipmentRecycleMixin
     /// <returns></returns>
     private bool IsMinimalRewardViable(ClientItemInfo itemInfo, Item item)
     {
-        return (item.PlusValue > 0) || (item.EquipPoints > 0) || (item.EquipElementParamList.Count > 0) && (itemInfo.Rank > 1);
+        return (item.PlusValue > 0) || (item.EquipPoints > 0) || (itemInfo.Quality > 0) || (item.EquipElementParamList.Count > 0) && (itemInfo.Rank > 1);
     }
 }
 
