@@ -268,10 +268,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             // The skill level has no unlock requirements
                             isRelease = true;
                         }
-                        else if (SkillData.Em4CustomSkills.ContainsKey(jobId) && SkillData.IsEm4Skill(jobId, skill.SkillNo, skillLevel.Lv))
+                        else if (SkillData.IsEm4Skill(jobId, skill.SkillNo, skillLevel.Lv))
                         {
                             // The skill has an unlock requirement on EM4
-                            isRelease = character.HasQuestCompleted(QuestId.TheShiningGate);
+                            isRelease = character.LearnedCustomSkills.Where(x => x.Job == jobId && x.SkillId == skill.SkillNo).Any();
                         }
                         else if (SkillData.IsUnlockableSkill(skill.Job, skill.SkillNo, skillLevel.Lv))
                         {

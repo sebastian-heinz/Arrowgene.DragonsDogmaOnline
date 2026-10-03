@@ -102,27 +102,33 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             var packets = new PacketQueue();
 
-            var unlockedSkills = new S2CSkillAcquirementLearnNtc();
-            // TODO: Track quest completion on per job instead of unlocking all
-            foreach (var (jobId, releaseId) in SkillData.Em4CustomSkills)
+            var jobId = client.Character.Job;
+            if (!SkillData.Em4CustomSkills.ContainsKey(jobId))
             {
-                Server.CharacterManager.UnlockCustomSkill(client.Character, jobId, releaseId, 1);
-
-                // Handle players who had existing skills before they were locked
-                var existing = client.Character.LearnedCustomSkills.Where(x => x.SkillId == releaseId && x.Job == jobId).FirstOrDefault();
-                if (existing == null && client.Character.CharacterJobDataList.Any(x => x.Job == jobId))
-                {
-                    Server.JobManager.UnlockCustomSkill(client, client.Character, jobId, releaseId, 1, connectionIn);
-                }
-
-                unlockedSkills.SkillParamList.Add(new CDataSkillLevelBaseParam()
-                {
-                    Job = jobId,
-                    SkillNo = releaseId,
-                    SkillLv = existing?.SkillLv ?? 1,
-                });
+                return new();
             }
-            packets.Enqueue(client, unlockedSkills);
+
+            var releaseId = SkillData.Em4CustomSkills[jobId];
+            if (client.Character.LearnedCustomSkills.Where(x => x.Job == jobId && x.SkillId == releaseId).Any())
+            {
+                return new();
+            }
+
+            Server.CharacterManager.UnlockCustomSkill(client.Character, jobId, releaseId, 1);
+            Server.JobManager.UnlockCustomSkill(client, client.Character, jobId, releaseId, 1, connectionIn);
+
+            var unlockedSkill = new S2CSkillAcquirementLearnNtc()
+            {
+                SkillParamList = [
+                    new()
+                    {
+                        Job = jobId,
+                        SkillNo = releaseId,
+                        SkillLv = 1,
+                    }
+                ]
+            };
+            packets.Enqueue(client, unlockedSkill);
 
             return packets;
         }
