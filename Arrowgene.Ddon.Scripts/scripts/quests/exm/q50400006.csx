@@ -32,12 +32,15 @@ public class ScriptedQuest : IQuest
         AddQuestOrderCondition(QuestOrderCondition.MinimumLevel(100));
     }
 
-	// TODO: Add rewards
     protected override void InitializeRewards()
     {
         AddPointReward(PointType.ExperiencePoints, 0);
         AddWalletReward(WalletType.Gold, 0);
         AddWalletReward(WalletType.RiftPoints, 0);
+
+        AddFixedItemReward(ItemId.KeystoneToRuin, 10, QuestRewardBucket.FirstClear);
+        AddFixedItemReward(ItemId.KeystoneToRuin, 2, QuestRewardBucket.PeriodFirstClear);
+        AddFixedItemReward(ItemId.CoinPouch10000G, 1, QuestRewardBucket.RepeatClear);
     }
 
     protected override void InitializeEnemyGroups()
@@ -54,11 +57,11 @@ public class ScriptedQuest : IQuest
                 .SetStartThinkTblNo(6)
                 .SetIsBoss(true),
             LibDdon.Enemy.Create(EnemyId.DragonCrystalOfDestructionShootsLaserRocks, 100, 0, 1)
-				.SetStartThinkTblNo(1)
+                .SetStartThinkTblNo(1)
                 .SetIsManualSet(true)
                 .SetIsRequired(false),
             LibDdon.Enemy.Create(EnemyId.DragonCrystalOfDestructionSucksYouInWithMagic0, 100, 0, 2)
-				.SetStartThinkTblNo(2)
+                .SetStartThinkTblNo(2)
                 .SetIsManualSet(true)
                 .SetIsRequired(false),
         });
@@ -86,9 +89,10 @@ public class ScriptedQuest : IQuest
             .AddResultCommands([
                 QuestManager.ResultCommand.QstLayoutFlagOn(8764)
             ]);
-        process0.AddRawBlock(QuestAnnounceType.None) // Send stop timer NTC here
+        process0.AddRawBlock(QuestAnnounceType.None)
             .AddResultCommands([
-                QuestManager.ResultCommand.EventExec(3400, 20, 0, 0)
+                QuestManager.ResultCommand.EventExec(3400, 20, 0, 0),
+                QuestManager.ResultCommand.StopCycleTimer()
             ])
             .AddCheckCommands([
                 QuestManager.CheckCommand.EventEnd(3400, 20)

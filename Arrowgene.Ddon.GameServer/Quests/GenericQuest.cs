@@ -314,6 +314,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Party.EnqueueToAll(new S2CQuestPlayAddTimerNtc() { PlayEndDateTime = newEndTime }, packets);
             }
 
+            // Stops content timer countdown and pauses server timer
+            if (BoardManager.BoardIdIsExm(client.Party.ContentId) && questBlock.ResultCommands.Any(x => x.Command == (ushort)QuestResultCommand.StopCycleTimer))
+            {
+                server.PartyQuestContentManager.StopTimer(client.Party.Id);
+                client.Party.EnqueueToAll(new S2CQuestStopTimerNtc(), packets);
+            }
+
             foreach (var item in questBlock.HandPlayerItems)
             {
                 var result = server.ItemManager.AddItem(server, client.Character, true, (uint)item.ItemId, item.Amount);

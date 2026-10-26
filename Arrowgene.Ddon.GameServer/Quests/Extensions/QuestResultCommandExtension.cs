@@ -509,5 +509,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             resultCommands.Add(QuestManager.ResultCommand.ResetDiePlayerReturnPos(stageInfo.StageNo, startPos));
             return resultCommands;
         }
+
+        public static List<CDataQuestCommand> AddResultCmdStopCycleTimer(this List<CDataQuestCommand> resultCommands)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.StopCycleTimer());
+            return resultCommands;
+        }
     }
 }
