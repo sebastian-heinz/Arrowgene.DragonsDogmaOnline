@@ -168,6 +168,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public void StopTimer(uint partyId)
+        {
+            lock (_ContentTimers)
+            {
+                Logger.Info($"(Content) Stopping timer for PartyId={partyId}");
+                _Server.TimerManager.PauseTimer(_ContentTimers[partyId]);
+            }
+        }
+
         public (TimeSpan Elapsed, TimeSpan MaximumDuration) CancelTimer(uint partyId)
         {
             lock (_ContentTimers)

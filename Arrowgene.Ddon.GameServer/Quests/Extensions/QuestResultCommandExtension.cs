@@ -311,9 +311,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdAddSubstoryProgress(this List<CDataQuestCommand> resultCommands, int substoryId, int progressDelta)
+        public static List<CDataQuestCommand> AddResultCmdAddWarProgress(this List<CDataQuestCommand> resultCommands, int gaugeNo, int percentRate)
         {
-            resultCommands.Add(QuestManager.ResultCommand.AddSubstoryProgress(substoryId, progressDelta));
+            resultCommands.Add(QuestManager.ResultCommand.AddWarProgress(gaugeNo, percentRate));
             return resultCommands;
         }
 
@@ -507,6 +507,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         public static List<CDataQuestCommand> AddResultCmdResetDiePlayerReturnPos(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int startPos)
         {
             resultCommands.Add(QuestManager.ResultCommand.ResetDiePlayerReturnPos(stageInfo.StageNo, startPos));
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> AddResultCmdStopCycleTimer(this List<CDataQuestCommand> resultCommands)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.StopCycleTimer());
             return resultCommands;
         }
     }

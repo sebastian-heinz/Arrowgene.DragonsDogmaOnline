@@ -678,27 +678,27 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdSubstoryEnemyHpNotLess(this List<CDataQuestCommand> checkCommands, int substoryId, int hpRatePercent)
+        public static List<CDataQuestCommand> AddCheckCmdWarGaugeNotLess(this List<CDataQuestCommand> checkCommands, int gaugeNo, int percentRate)
         {
-            checkCommands.Add(QuestManager.CheckCommand.SubstoryEnemyHpNotLess(substoryId, hpRatePercent));
+            checkCommands.Add(QuestManager.CheckCommand.WarGaugeNotLess(gaugeNo, percentRate));
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdSubstoryEnemyHpLess(this List<CDataQuestCommand> checkCommands, int substoryId, int hpRatePercent)
+        public static List<CDataQuestCommand> AddCheckCmdWarGaugeLess(this List<CDataQuestCommand> checkCommands, int gaugeNo, int percentRate)
         {
-            checkCommands.Add(QuestManager.CheckCommand.SubstoryEnemyHpLess(substoryId, hpRatePercent));
+            checkCommands.Add(QuestManager.CheckCommand.WarGaugeLess(gaugeNo, percentRate));
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdSubstoryAvgEnemyHpNotLess(this List<CDataQuestCommand> checkCommands, int param01, int hpRatePercent)
+        public static List<CDataQuestCommand> AddCheckCmdWarGaugeAvgNotLess(this List<CDataQuestCommand> checkCommands, int percentRate)
         {
-            checkCommands.Add(QuestManager.CheckCommand.SubstoryAvgEnemyHpNotLess(param01, hpRatePercent));
+            checkCommands.Add(QuestManager.CheckCommand.WarGaugeAvgNotLess(percentRate));
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdSubstoryAvgEnemyHpLess(this List<CDataQuestCommand> checkCommands, int param01, int hpRatePercent)
+        public static List<CDataQuestCommand> AddCheckCmdWarGaugeAvgLess(this List<CDataQuestCommand> checkCommands, int percentRate)
         {
-            checkCommands.Add(QuestManager.CheckCommand.SubstoryAvgEnemyHpLess(param01, hpRatePercent));
+            checkCommands.Add(QuestManager.CheckCommand.WarGaugeAvgLess(percentRate));
             return checkCommands;
         }
 
@@ -846,9 +846,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdRisingMagmaTime(this List<CDataQuestCommand> checkCommands, int timeSec)
+        public static List<CDataQuestCommand> AddCheckCmdRisingMagmaLevel(this List<CDataQuestCommand> checkCommands, int level)
         {
-            checkCommands.Add(QuestManager.CheckCommand.RisingMagmaTime(timeSec));
+            checkCommands.Add(QuestManager.CheckCommand.RisingMagmaLevel(level));
             return checkCommands;
         }
 

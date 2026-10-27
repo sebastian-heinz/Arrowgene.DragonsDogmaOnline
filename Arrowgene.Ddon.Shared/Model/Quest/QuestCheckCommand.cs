@@ -252,25 +252,25 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         TalkNpcChoice = 214, // 0x00635B10 (cQuestProcess* this, s32 stageNo, s32 npcId, s32 choice, s32 param04_unused)
 
         /// <summary>
-        /// Checks if a specific substory enemy's HP% >= hpRatePercent. Calls FUN_00be10d0(substoryId) to get HP ratio,
+        /// Checks if a war mission gauge is not under the percent threshold. Calls FUN_00be10d0(gaugeNo) to get HP ratio,
         /// multiplies by 100, compares >= param02. (0x00635BF0)
         /// </summary>
-        SubstoryEnemyHpNotLess = 215, // 0x00635BF0 (cQuestProcess* this, s32 substoryId, s32 hpRatePercent, s32 param03, s32 param04)
+        WarGaugeNotLess = 215, // 0x00635BF0 (cQuestProcess* this, s32 gaugeNo, s32 percentRate, s32 param03, s32 param04)
 
         /// <summary>
-        /// Checks if a specific substory enemy's HP% &lt; hpRatePercent. Inverse of SubstoryEnemyHpNotLess.
+        /// Checks if a war mission gauge is under the percent threshold. Inverse of WarGaugeNotLess.
         /// </summary>
-        SubstoryEnemyHpLess = 216, // 0x00635C40 (cQuestProcess* this, s32 substoryId, s32 hpRatePercent, s32 param03, s32 param04)
+        WarGaugeLess = 216, // 0x00635C40 (cQuestProcess* this, s32 gaugeNo, s32 percentRate, s32 param03, s32 param04)
 
         /// <summary>
-        /// Checks if the average HP% across ALL substory NPCs >= hpRatePercent. Calls FUN_00be1130 for the average.
+        /// Checks if the average of all war mission gauges are not under the percent threshold. Calls FUN_00be1130 for the average.
         /// </summary>
-        SubstoryAvgEnemyHpNotLess = 217, // 0x00635C90 (cQuestProcess* this, s32 param01, s32 hpRatePercent, s32 param03, s32 param04)
+        WarGaugeAvgNotLess = 217, // 0x00635C90 (cQuestProcess* this, s32 percentRate, s32 param02, s32 param03, s32 param04)
 
         /// <summary>
-        /// Checks if the average HP% across ALL substory NPCs &lt; hpRatePercent. Inverse of SubstoryAvgEnemyHpNotLess.
+        /// Checks if the average of all war mission gauges are under the percent threshold. Inverse of WarGaugeAvgNotLess.
         /// </summary>
-        SubstoryAvgEnemyHpLess = 218, // 0x00635CD0 (cQuestProcess* this, s32 param01, s32 hpRatePercent, s32 param03, s32 param04)
+        WarGaugeAvgLess = 218, // 0x00635CD0 (cQuestProcess* this, s32 percentRate, s32 param02, s32 param03, s32 param04)
 
         /// <summary>
         /// Checks if an OM's behavior state enum matches an expected value. Resolves OM via FUN_0063d480(stageNo, groupNo, setNo),
@@ -444,12 +444,12 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         IsTimerNotElapsed = 245, // 0x00637250 (cQuestProcess* this, s32 timerNo, s32 sec, s32 param03, s32 param04_unused)
 
         /// <summary>
-        /// Checks how long magma has been rising on the current map. Requires cpOmRisingMagma to be present on the map.
+        /// Checks how much magma has risen on the current map. Requires cpOmRisingMagma to be present on the map.
         /// Magma starts rising after result command SetMagmaState is used with phase = 3, which starts a counter.
-        /// This counter, and magma height, increases by 1/sec once started. Check passes when param01 >= counter.
-        /// Can be used as a time or height comparison depending on how you look at it.
+        /// This counter keeps increasing as magma rises up to 50. Check passes when param01 >= counter.
+        /// Not a height/time comparison, as magma level has been observed to not rise uniformly.
         /// </summary>
-        RisingMagmaTime = 246, // 0x00637320 (cQuestProcess* this, s32 timeSec, s32 param02, s32 param03, s32 param04)
+        RisingMagmaLevel = 246, // 0x00637320 (cQuestProcess* this, s32 level, s32 param02, s32 param03, s32 param04)
 
         /// <summary>
         /// Fire-once trigger: reads byte at DAT_021af4f4+0xEEA. If == 1, clears it and returns 1; otherwise returns 0.

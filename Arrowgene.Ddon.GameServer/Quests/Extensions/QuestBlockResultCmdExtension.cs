@@ -308,9 +308,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdAddSubstoryProgress(this QuestBlock questBlock, int substoryId, int progressDelta)
+        public static QuestBlock AddResultCmdAddWarProgress(this QuestBlock questBlock, int gaugeNo, int percentRate)
         {
-            questBlock.ResultCommands.AddResultCmdAddSubstoryProgress(substoryId, progressDelta);
+            questBlock.ResultCommands.AddResultCmdAddWarProgress(gaugeNo, percentRate);
             return questBlock;
         }
 
@@ -503,6 +503,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         public static QuestBlock AddResultCmdResetDiePlayerReturnPos(this QuestBlock questBlock, StageInfo stageInfo, int startPos)
         {
             questBlock.ResultCommands.AddResultCmdResetDiePlayerReturnPos(stageInfo, startPos);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdStopCycleTimer(this QuestBlock questBlock)
+        {
+            questBlock.ResultCommands.AddResultCmdStopCycleTimer();
             return questBlock;
         }
     }

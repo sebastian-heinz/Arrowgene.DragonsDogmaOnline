@@ -2671,28 +2671,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.NpcPreTalkAndOrderUi, Param01 = stageNo, Param02 = npcId, Param03 = noOrderGroupSerial, Param04 = storeVal };
             }
 
-            /** @brief Checks if substory enemy's HP% >= hpRatePercent. */
-            public static CDataQuestCommand SubstoryEnemyHpNotLess(int substoryId, int hpRatePercent, int param03 = 0, int param04 = 0)
+            /** @brief Checks if a war mission gauge is not under the percent threshold. */
+            public static CDataQuestCommand WarGaugeNotLess(int gaugeNo, int percentRate, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.SubstoryEnemyHpNotLess, Param01 = substoryId, Param02 = hpRatePercent, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.WarGaugeNotLess, Param01 = gaugeNo, Param02 = percentRate, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Checks if substory enemy's HP% < hpRatePercent. Inverse of SubstoryEnemyHpNotLess. */
-            public static CDataQuestCommand SubstoryEnemyHpLess(int substoryId, int hpRatePercent, int param03 = 0, int param04 = 0)
+            /** @brief Checks if a war mission gauge is under the percent threshold. Inverse of WarGaugeNotLess. */
+            public static CDataQuestCommand WarGaugeLess(int gaugeNo, int percentRate, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.SubstoryEnemyHpLess, Param01 = substoryId, Param02 = hpRatePercent, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.WarGaugeLess, Param01 = gaugeNo, Param02 = percentRate, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Checks if average HP% across all substory NPCs >= hpRatePercent. */
-            public static CDataQuestCommand SubstoryAvgEnemyHpNotLess(int param01, int hpRatePercent, int param03 = 0, int param04 = 0)
+            /** @brief Checks if the average of all war mission gauges are not under the percent threshold. */
+            public static CDataQuestCommand WarGaugeAvgNotLess(int percentRate, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.SubstoryAvgEnemyHpNotLess, Param01 = param01, Param02 = hpRatePercent, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.WarGaugeAvgNotLess, Param01 = percentRate, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Checks if average HP% across all substory NPCs < hpRatePercent. */
-            public static CDataQuestCommand SubstoryAvgEnemyHpLess(int param01, int hpRatePercent, int param03 = 0, int param04 = 0)
+            /** @brief Checks if the average of all war mission gauges are under the percent threshold. Inverse of WarGaugeAvgNotLess. */
+            public static CDataQuestCommand WarGaugeAvgLess(int percentRate, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.SubstoryAvgEnemyHpLess, Param01 = param01, Param02 = hpRatePercent, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.WarGaugeAvgLess, Param01 = percentRate, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Checks if an OM's behavior state enum matches behaviorState. */
@@ -2839,10 +2839,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsTimerNotElapsed, Param01 = timerNo, Param02 = sec, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Checks how long magma has been rising on the current map (param01 >= timeSec). Requires cpOmRisingMagma to be present on the map. */
-            public static CDataQuestCommand RisingMagmaTime(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Checks how much magma has risen on the current map. Requires cpOmRisingMagma to be present on the map. */
+            public static CDataQuestCommand RisingMagmaLevel(int level, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.RisingMagmaTime, Param01 = timeSec, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.RisingMagmaLevel, Param01 = level, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Fire-once trigger: reads and clears a byte flag at DAT_021af4f4+0xEEA. Returns 1 if flag was set. */
@@ -3827,10 +3827,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SubstoryProgress, Param01 = delta, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Finds a substory entry by substoryId and adds progressDelta to its progress, clamped to [0,100]. */
-            public static CDataQuestCommand AddSubstoryProgress(int substoryId, int progressDelta, int param03 = 0, int param04 = 0)
+            /** @brief Adds progress to an active war mission gauge, clamped to [0,100]. */
+            public static CDataQuestCommand AddWarProgress(int gaugeNo, int percentRate, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.AddSubstoryProgress, Param01 = substoryId, Param02 = progressDelta, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.AddWarProgress, Param01 = gaugeNo, Param02 = percentRate, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Triggers a substory progress update sequence. Checks mode; if mode==0xb fires substory FSM transition and sends C2S_QUEST_ADD_PACKAGE_QUEST_POINT_REQ. */
