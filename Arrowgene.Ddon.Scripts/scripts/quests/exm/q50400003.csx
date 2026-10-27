@@ -28,7 +28,7 @@ public class ScriptedQuest : IQuest
         MissionParams.JewelryAllowed = true;
         MissionParams.MaxPawns = 3;
 
-        AddQuestOrderCondition(QuestOrderCondition.MainQuestCompleted(QuestId.SpunTogetherHope));
+        AddQuestOrderCondition(QuestOrderCondition.ExtremeMissionCleared((QuestId)50400002));
         AddQuestOrderCondition(QuestOrderCondition.MinimumLevel(100));
     }
 

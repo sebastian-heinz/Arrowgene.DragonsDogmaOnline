@@ -76,6 +76,7 @@ public class ScriptedQuest : IQuest
             ]);
         process0.AddSpawnGroupBlock(QuestAnnounceType.None, EnemyGroupId.Encounter + 0)
             .AddResultCommands([
+                QuestManager.ResultCommand.BgmRequestFix(1, 403),
                 QuestManager.ResultCommand.StartMissionAnnounce(1),
                 QuestManager.ResultCommand.AddEndContentsPurpose(0, 1),
                 QuestManager.ResultCommand.SetDiePlayerReturnPos(3400, 0, 0),
@@ -92,7 +93,8 @@ public class ScriptedQuest : IQuest
         process0.AddRawBlock(QuestAnnounceType.None)
             .AddResultCommands([
                 QuestManager.ResultCommand.EventExec(3400, 20, 0, 0),
-                QuestManager.ResultCommand.StopCycleTimer()
+                QuestManager.ResultCommand.StopCycleTimer(),
+                QuestManager.ResultCommand.BgmStop()
             ])
             .AddCheckCommands([
                 QuestManager.CheckCommand.EventEnd(3400, 20)
