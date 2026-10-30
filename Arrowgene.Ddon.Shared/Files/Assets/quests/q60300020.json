@@ -89,7 +89,10 @@
                 "id": 550,
                 "group_id": 32,
                 "layer_no": 0
-            }
+            },
+			"result_commands": [
+				{"type": "CallGreatPurpose", "Param1": 6, "Param2": 2}
+			]
         },
         {
             "type": "TalkToNpc",

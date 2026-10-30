@@ -504,7 +504,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     client.Character.AchievementStatus.Add(asset.Id, DateTimeOffset.UtcNow);
                     queue.Enqueue(client, new S2CAchievementCompleteNtc()
                     {
-                        AchievementIdList = new() { new(asset.Id) }
+						AchievementIdList = new()
+						{
+							new CDataAchievementInfo()
+							{
+								UId = asset.Id,
+								Category = (byte)asset.Category
+							}
+						}
                     });
                     Server.Database.InsertAchievementStatus(client.Character.CharacterId, asset, asset.RewardId > 0, connectionIn);
                 }
