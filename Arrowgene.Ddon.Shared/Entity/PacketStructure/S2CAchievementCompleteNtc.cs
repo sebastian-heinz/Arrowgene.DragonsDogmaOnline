@@ -13,7 +13,7 @@ public class S2CAchievementCompleteNtc : IPacketStructure
 {
     public PacketId Id => PacketId.S2C_ACHIEVEMENT_ACHIEVEMENT_COMPLETE_NTC;
 
-    public List<CDataCommonU32> AchievementIdList { get; set; } = new();
+    public List<CDataAchievementInfo> AchievementIdList { get; set; } = new();
 
     public class Serializer : PacketEntitySerializer<S2CAchievementCompleteNtc>
     {
@@ -26,7 +26,7 @@ public class S2CAchievementCompleteNtc : IPacketStructure
         {
             S2CAchievementCompleteNtc obj = new S2CAchievementCompleteNtc();
 
-            obj.AchievementIdList = ReadEntityList<CDataCommonU32>(buffer);
+            obj.AchievementIdList = ReadEntityList<CDataAchievementInfo>(buffer);
 
             return obj;
         }

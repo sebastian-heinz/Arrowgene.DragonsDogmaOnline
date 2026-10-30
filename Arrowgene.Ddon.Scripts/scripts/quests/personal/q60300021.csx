@@ -37,7 +37,8 @@ public class ScriptedQuest : IQuest
         process0.AddIsStageNoBlock(QuestAnnounceType.Accept, Stage.HeroicSpiritSleepingPathFeryanaWilderness)
             .AddResultCmdReleaseAnnounce(ContentsRelease.None, flagInfo: QuestFlags.LookoutCastle.EpitaphRoadFeryanaWilderness);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.HeroicSpiritSleepingPathFeryanaWilderness, NpcId.Ira1, 26051);
-        process0.AddOmInteractEventBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.HeroicSpiritSleepingPathRuins, 101, 0, OmQuestType.WorldManageQuest, OmInteractType.Release);
+        process0.AddOmInteractEventBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.HeroicSpiritSleepingPathRuins, 101, 0, OmQuestType.WorldManageQuest, OmInteractType.Release)
+			.AddResultCmdCallGreatPurpose(6, 6);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.LookoutCastle1, NpcId.Mustafa, 26054);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.AudienceChamber, NpcId.TheWhiteDragon, 26213);
         process0.AddIsStageNoBlock(QuestAnnounceType.None, Stage.AudienceChamber)

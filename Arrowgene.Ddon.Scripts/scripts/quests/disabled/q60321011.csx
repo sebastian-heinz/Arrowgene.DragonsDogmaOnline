@@ -58,8 +58,7 @@ public class ScriptedQuest : IQuest
             .AddResultCmdQstTalkChg(NpcId.Bacias, 30177);
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Set8295, resetGroup: false);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.FirefallMountainCampsite, NpcId.Bacias, 30178);
-        process0.AddProcessEndBlock(true)
-            .AddResultCmdCallGreatPurpose(6, 13); // Should display the achievement name this time, but how?
+        process0.AddProcessEndBlock(true);
     }
 }
 
