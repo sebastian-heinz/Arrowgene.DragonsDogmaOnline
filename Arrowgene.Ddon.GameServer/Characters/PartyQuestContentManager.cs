@@ -177,6 +177,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public ulong RestartTimer(uint partyId)
+        {
+            lock (_ContentTimers)
+            {
+                Logger.Info($"(Content) Restarting timer duration for PartyId={partyId}");
+                return _Server.TimerManager.RestartTimer(_ContentTimers[partyId]);
+            }
+        }
+
         public (TimeSpan Elapsed, TimeSpan MaximumDuration) CancelTimer(uint partyId)
         {
             lock (_ContentTimers)

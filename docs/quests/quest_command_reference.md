@@ -1840,9 +1840,17 @@ IsReleaseMyRoom(int param01 = 0, int param02 = 0, int param03 = 0, int param04 =
 ```
 
 ### IsExistDividePlayer
+
+| Field | Value |
+|-------|-------|
+| Address | `0x00634420` |
+| Table index | 177 (check) |
+| Key callees | `FUN_00a41780: isExistDividePlayer` |
+
 ```
 /**
- * @brief
+ * @brief Checks if a quest phase event has successfully divided the player's party.
+ * The success flag is set by phase event 6 (setExistDividePlayer).
  */
 IsExistDividePlayer(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
@@ -2398,7 +2406,7 @@ EndCycle(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 /**
  * @brief Client stub. Intended to add sec seconds to the world quest cycle timer.
  * The client does not manage the cycle timer; the server is the authority.
- * @note Server should add sec to its WorldQuestManager cycle timer on execution.
+ * @note Server should add sec to its WorldQuestManager cycle timer on execution and send S2CQuestPlayAddTimerNtc with the new end time.
  * @param sec Seconds to add to the cycle timer
  */
 AddCycleTimer(int sec, int param02 = 0, int param03 = 0, int param04 = 0);
@@ -2874,7 +2882,7 @@ RemoveEndContentsPurpose(int announceNo, int param02 = 0, int param03 = 0, int p
 /**
  * @brief Client stub. Intended to stop the world quest cycle timer.
  * The client does not manage the cycle timer; the server is the authority.
- * @note Server should pause its WorldQuestManager cycle timer on execution.
+ * @note Server should pause its WorldQuestManager cycle timer on execution and send S2CQuestStopTimerNtc.
  */
 StopCycleTimer(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
@@ -2891,7 +2899,7 @@ StopCycleTimer(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 
 /**
  * @brief Client stub. Intended to restart the world quest cycle timer.
  * The client does not manage the cycle timer; the server is the authority.
- * @note Server should reset/restart its WorldQuestManager cycle timer on execution.
+ * @note Server should reset/restart its WorldQuestManager cycle timer on execution and send S2CQuestRestartTimerNtc with the new end time.
  */
 RestartCycleTimer(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
@@ -3095,9 +3103,17 @@ DecideDivideArea(StageNo stageNo, int startPosNo, int param03 = 0, int param04 =
 ```
 
 ### ShiftPhase
+
+| Field | Value |
+|-------|-------|
+| Address | `0x00633310` |
+| Table index | 90 (result) |
+| Notes | **Client stub** — body is `return 1` only. |
+
 ```
 /**
- * @brief
+ * @brief Client stub used to request a phase change from the server.
+ * @note Server should send S2CQuestQuestPhaseNtc with the phaseId and its event list.
  * @param phaseId
  */
 ShiftPhase(int phaseId, int param02 = 0, int param03 = 0, int param04 = 0);
@@ -3112,17 +3128,33 @@ ReleaseMyRoom(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0
 ```
 
 ### DivideSuccess
+
+| Field | Value |
+|-------|-------|
+| Address | `0x00633370` |
+| Table index | 92 (result) |
+| Notes | **Client stub** — body is `return 1` only. |
+
 ```
 /**
- * @brief
+ * @brief Client stub used to inform the server of a successful group divide request.
+ * @note Server should send S2CQuestQuestPhaseNtc with event 6 (setExistDividePlayer), type 2, index 0, value 1.
  */
 DivideSuccess(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### DivideFailed
+
+| Field | Value |
+|-------|-------|
+| Address | `0x00633390` |
+| Table index | 93 (result) |
+| Notes | **Client stub** — body is `return 1` only. |
+
 ```
 /**
- * @brief
+ * @brief Client stub used to inform the server of a failed group divide request.
+ * @note Server should send S2CQuestQuestPhaseNtc with event 6 (setExistDividePlayer), type 2, index 0, value 0.
  */
 DivideFailed(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
@@ -3328,7 +3360,7 @@ DisableSubstoryUIElement(int param01 = 0, int param02 = 0, int param03 = 0, int 
 QstTalkChgFsm(int param01, int param02, int param03 = 0, int param04 = 0);
 ```
 
-### SetEnemyAggroFlag (105)
+### SetEnemySpawnFlag (105)
 
 | Field | Value |
 |-------|-------|
@@ -3338,13 +3370,14 @@ QstTalkChgFsm(int param01, int param02, int param03 = 0, int param04 = 0);
 
 ```
 /**
- * @brief Sets (type = 1) or clears (type = 0) a global enemy aggression flag.
- * When set, enemies within spawn range endlessly converge on the player's position.
- * Also calls FUN_00be9b60 with 0 or 1 depending on param02. Unclear what this is supposed to do.
- * @param type            1 = set, 0 = clear, passed to sFlag::setFlag
- * @param param02         1 = unknown, 0 = unknown
+ * @brief Sets (1) or clears (0) two global enemy spawn behaviour flags.
+ * Flag 1 (isAggressive): enemies rush the player's party upon spawning.
+ * Flag 2 (isRoaming): enemies roam around until they find a player to attack.
+ * Roaming flag only works for quest types 6 and 7 (cycle contents).
+ * @param isAggressive            1 = set, 0 = clear, passed to sFlag::setFlag
+ * @param isRoaming               1 = set, 0 = clear
  */
-SetEnemyAggroFlag(int type, int param02, int param03 = 0, int param04 = 0);
+SetEnemySpawnFlag(int type, int param02, int param03 = 0, int param04 = 0);
 ```
 
 ### SetRandom2 (107)
@@ -3609,21 +3642,23 @@ SetQuestOmState(StageNo stageNo, int groupNo, int setNo, int state);
 SetNamedEnemyParam(StageNo stageNo, int groupNo, int setNo, int param);
 ```
 
-### RemoveFsmNpcFromSchedule (124)
+### RemoveKilledEnemyGroupNotice (124)
 
 | Field | Value |
 |-------|-------|
 | Address | `0x006343F0` |
 | Table index | 124 |
-| Key callees | `FUN_0063dda0(param01)` — removes entry from this+0x28/0x1c, frees children, shrinks list |
+| Key callees | `FUN_0063dda0(flagNo)` — removes matching flag entry from mKilledTargetEnemyInfo, frees children, shrinks list |
 
 ```
 /**
- * @brief Removes an FSM NPC entry from the process list and frees its children.
- * Paired with AddFsmTalkNpc / SetFsmNpcSchedule.
- * @param param01 NPC or process list entry identifier
+ * @brief Removes a matching enemy group from a quest process's mKilledTargetEnemyInfo array.
+ * The array is populated by work notices for commands IsKilledTargetEnemySetGroup and IsKilledTargetEnemySetGroupNoMarker (S2C_QUEST_PROGRESS_WORK_SAVE_NTC).
+ * Removing the entry means these commands will no longer succeed the check. Enemy group is not affected in any way.
+ * Intended usage is unknown, but the command index suggests 3.2 or 3.3 content.
+ * @note This command must be used before the checks are processed (not in the same quest block) otherwise the checks read the notice and progress the quest.
  */
-RemoveFsmNpcFromSchedule(int param01, int param02 = 0, int param03 = 0, int param04 = 0);
+RemoveKilledEnemyGroupNotice(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### SetMagmaState (126)
@@ -3646,6 +3681,23 @@ RemoveFsmNpcFromSchedule(int param01, int param02 = 0, int param03 = 0, int para
  * @param state   Secondary value passed to FUN_00bc7070 when phase == 3
  */
 SetMagmaState(int phase, int state, int param03 = 0, int param04 = 0);
+```
+
+### Unknown127 (127)
+
+| Field | Value |
+|-------|-------|
+| Address | `0x006344b0` |
+| Table index | 127 |
+| Key callees | None |
+
+```
+/**
+ * @brief Empty command that does nothing and returns 0.
+ * Packet captures show this command being used at the start of a chain dungeon EXM.
+ * It is likely this command was used to request a notice packet or trigger a server action.
+ */
+Unknown127(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
 ### TriggerDarkDungeonEndSequence (128)

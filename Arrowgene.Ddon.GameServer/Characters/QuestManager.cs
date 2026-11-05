@@ -3857,10 +3857,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.QstTalkChgFsm, Param01 = (int) npcId, Param02 = msgNo, Param03 = param03, Param04 = param04 };
             }
 
-            /** @brief Sets or clears a global enemy aggression flag. Has additional functionality depending on param02. */
-            public static CDataQuestCommand SetEnemyAggroFlag(int type, int param02, int param03 = 0, int param04 = 0)
+            /** @brief Sets (1) or clears (0) two global enemy spawn behaviour flags.*/
+            public static CDataQuestCommand SetEnemySpawnFlag(int isAggressive = 0, int isRoaming = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetEnemyAggroFlag, Param01 = type, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetEnemySpawnFlag, Param01 = isAggressive, Param02 = isRoaming, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Duplicate of SetRandom. */
@@ -3947,10 +3947,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetNamedEnemyParam, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param };
             }
 
-            /** @brief Removes an FSM NPC entry from the process list via FUN_0063dda0(param01). */
-            public static CDataQuestCommand RemoveFsmNpcFromSchedule(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            /** @brief Removes a pending progress work notice for IsKilledTargetEnemySetGroup and IsKilledTargetEnemySetGroupNoMarker. */
+            public static CDataQuestCommand RemoveKilledEnemyGroupNotice(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.RemoveFsmNpcFromSchedule, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.RemoveKilledEnemyGroupNotice, Param01 = flagNo, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /** @brief Controls magma OM state. Phase 2 = resets floor magma level. Phase 3 = makes magma rise and fill the map based on state. */

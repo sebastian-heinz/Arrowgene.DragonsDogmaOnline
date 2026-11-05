@@ -341,9 +341,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdSetEnemyAggroFlag(this List<CDataQuestCommand> resultCommands, int type, int param02)
+        public static List<CDataQuestCommand> AddResultCmdSetEnemySpawnFlag(this List<CDataQuestCommand> resultCommands, int isAggressive, int isRoaming)
         {
-            resultCommands.Add(QuestManager.ResultCommand.SetEnemyAggroFlag(type, param02));
+            resultCommands.Add(QuestManager.ResultCommand.SetEnemySpawnFlag(isAggressive, isRoaming));
             return resultCommands;
         }
 
@@ -431,9 +431,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdRemoveFsmNpcFromSchedule(this List<CDataQuestCommand> resultCommands, int param01 = 0)
+        public static List<CDataQuestCommand> AddResultCmdRemoveKilledEnemyGroupNotice(this List<CDataQuestCommand> resultCommands, int flagNo)
         {
-            resultCommands.Add(QuestManager.ResultCommand.RemoveFsmNpcFromSchedule(param01));
+            resultCommands.Add(QuestManager.ResultCommand.RemoveKilledEnemyGroupNotice(flagNo));
             return resultCommands;
         }
 
@@ -510,9 +510,21 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
+        public static List<CDataQuestCommand> AddResultCmdAddCycleTimer(this List<CDataQuestCommand> resultCommands, int sec)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.AddCycleTimer(sec));
+            return resultCommands;
+        }
+
         public static List<CDataQuestCommand> AddResultCmdStopCycleTimer(this List<CDataQuestCommand> resultCommands)
         {
             resultCommands.Add(QuestManager.ResultCommand.StopCycleTimer());
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> AddResultCmdRestartCycleTimer(this List<CDataQuestCommand> resultCommands)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.RestartCycleTimer());
             return resultCommands;
         }
     }

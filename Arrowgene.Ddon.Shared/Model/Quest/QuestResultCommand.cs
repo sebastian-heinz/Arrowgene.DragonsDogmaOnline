@@ -155,11 +155,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         QstTalkChgFsm = 104, // 0x00633A30 (cQuestProcess* this, s32 npcId, s32 msgNo, s32 param03, s32 param04)
 
         /// <summary>
-        /// Sets (type = 1) or clears (type = 0) a global enemy aggression flag.
-        /// When set, enemies within spawn range endlessly converge on the player's position.
-        /// Also calls FUN_00be9b60 with 0 or 1 depending on param02. Unclear what this is supposed to do.
+        /// Sets (1) or clears (0) two global enemy spawn behaviour flags.
+        /// Flag 1 (isAggressive): enemies rush the player's party upon spawning.
+        /// Flag 2 (isRoaming): enemies roam around until they find a player to attack. Only works for quest types 6 and 7 (cycle contents).
         /// </summary>
-        SetEnemyAggroFlag = 105, // 0x00633A80 (cQuestProcess* this, s32 type, s32 param02, s32 param03, s32 param04)
+        SetEnemySpawnFlag = 105, // 0x00633A80 (cQuestProcess* this, s32 isAggressive, s32 isRoaming, s32 param03, s32 param04)
 
         Padding106 = 106, // 0x00633B00 stub/nop - always returns 0
 
@@ -249,9 +249,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         Padding123 = 123, // 0x006343C0 stub/nop - always returns 0
 
         /// <summary>
-        /// Removes an FSM NPC entry from the process list at this+0x28/0x1c, freeing its children. Calls FUN_0063dda0(param01).
+        /// Removes a pending progress work notice for IsKilledTargetEnemySetGroup and IsKilledTargetEnemySetGroupNoMarker.
         /// </summary>
-        RemoveFsmNpcFromSchedule = 124, // 0x006343F0 (cQuestProcess* this, s32 param01, s32 param02, s32 param03, s32 param04)
+        RemoveKilledEnemyGroupNotice = 124, // 0x006343F0 (cQuestProcess* this, s32 flagNo, s32 param02, s32 param03, s32 param04)
 
         Padding125 = 125, // 0x00634410 stub/nop - always returns 0
 

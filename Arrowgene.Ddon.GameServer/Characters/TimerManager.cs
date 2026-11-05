@@ -89,6 +89,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public ulong RestartTimer(uint timerId)
+        {
+            lock (_Timers)
+            {
+                // TODO: This needs some guards to check if the timer exists.
+                Logger.Info($"Restarting timer for TimerId={timerId}");
+                _Timers[timerId].TimeStart = DateTime.Now;
+                return (ulong)((DateTimeOffset)(_Timers[timerId].TimeStart + _Timers[timerId].Duration)).ToUnixTimeSeconds();
+            }
+        }
+
         public void PauseTimer(uint timerId)
         {
             lock (_Timers)

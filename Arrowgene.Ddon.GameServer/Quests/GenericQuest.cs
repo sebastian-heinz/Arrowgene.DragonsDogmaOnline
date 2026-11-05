@@ -314,13 +314,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Party.EnqueueToAll(new S2CQuestPlayAddTimerNtc() { PlayEndDateTime = newEndTime }, packets);
             }
 
-            // Stops content timer countdown and pauses server timer
-            if (BoardManager.BoardIdIsExm(client.Party.ContentId) && questBlock.ResultCommands.Any(x => x.Command == (ushort)QuestResultCommand.StopCycleTimer))
-            {
-                server.PartyQuestContentManager.StopTimer(client.Party.Id);
-                client.Party.EnqueueToAll(new S2CQuestStopTimerNtc(), packets);
-            }
-
             foreach (var item in questBlock.HandPlayerItems)
             {
                 var result = server.ItemManager.AddItem(server, client.Character, true, (uint)item.ItemId, item.Amount);
@@ -415,6 +408,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
             PatchRandomCommands(ref questProcessState, questState);
             PatchRandomLayoutCommands(ref questProcessState);
             PatchTimerCommands(questProcessState, questState, client);
+            PatchAddTimerCommands(server, questProcessState, client);
+            PatchStopTimerCommands(server, questProcessState, client);
+            PatchRestartTimerCommands(server, questProcessState, client);
 
             return new List<CDataQuestProcessState>()
             {
@@ -534,6 +530,79 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }, null, TimeSpan.FromSeconds(sec), Timeout.InfiniteTimeSpan);
 
                 questState.TimerHandles[timerNo] = handle;
+            }
+        }
+
+        private void PatchAddTimerCommands(DdonGameServer server, CDataQuestProcessState processState, GameClient client)
+        {
+            bool hasAddTimer = processState.ResultCommandList
+                .Any(c => c.Command == (ushort)QuestResultCommand.AddCycleTimer);
+            if (!hasAddTimer)
+            {
+                return;
+            }
+
+            foreach (var cmd in processState.ResultCommandList)
+            {
+                if (cmd.Command != (ushort)QuestResultCommand.AddCycleTimer)
+                {
+                    continue;
+                }
+
+                int timeAmount = cmd.Param01;
+                if (timeAmount > 0 && BoardManager.BoardIdIsExm(client.Party.ContentId))
+                {
+                    var newEndTime = server.PartyQuestContentManager.ExtendTimer(client.Party.Id, (uint)timeAmount);
+                    client.Party.SendToAll(new S2CQuestPlayAddTimerNtc() { PlayEndDateTime = newEndTime });
+                }
+            }
+        }
+
+        private void PatchStopTimerCommands(DdonGameServer server, CDataQuestProcessState processState, GameClient client)
+        {
+            bool hasStopTimer = processState.ResultCommandList
+                .Any(c => c.Command == (ushort)QuestResultCommand.StopCycleTimer);
+            if (!hasStopTimer)
+            {
+                return;
+            }
+
+            foreach (var cmd in processState.ResultCommandList)
+            {
+                if (cmd.Command != (ushort)QuestResultCommand.StopCycleTimer)
+                {
+                    continue;
+                }
+
+                if (BoardManager.BoardIdIsExm(client.Party.ContentId))
+                {
+                    server.PartyQuestContentManager.StopTimer(client.Party.Id);
+                    client.Party.SendToAll(new S2CQuestStopTimerNtc());
+                }
+            }
+        }
+
+        private void PatchRestartTimerCommands(DdonGameServer server, CDataQuestProcessState processState, GameClient client)
+        {
+            bool hasRestartTimer = processState.ResultCommandList
+                .Any(c => c.Command == (ushort)QuestResultCommand.RestartCycleTimer);
+            if (!hasRestartTimer)
+            {
+                return;
+            }
+
+            foreach (var cmd in processState.ResultCommandList)
+            {
+                if (cmd.Command != (ushort)QuestResultCommand.RestartCycleTimer)
+                {
+                    continue;
+                }
+
+                if (BoardManager.BoardIdIsExm(client.Party.ContentId))
+                {
+                    var newEndTime = server.PartyQuestContentManager.RestartTimer(client.Party.Id);
+                    client.Party.SendToAll(new S2CQuestRestartTimerNtc() { PlayEndDateTime = newEndTime });
+                }
             }
         }
 
