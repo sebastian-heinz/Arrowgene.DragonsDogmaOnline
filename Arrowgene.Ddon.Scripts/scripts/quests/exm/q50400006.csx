@@ -32,12 +32,15 @@ public class ScriptedQuest : IQuest
         AddQuestOrderCondition(QuestOrderCondition.MinimumLevel(100));
     }
 
-	// TODO: Add rewards
     protected override void InitializeRewards()
     {
         AddPointReward(PointType.ExperiencePoints, 0);
         AddWalletReward(WalletType.Gold, 0);
         AddWalletReward(WalletType.RiftPoints, 0);
+
+        AddFixedItemReward(ItemId.KeystoneToRuin, 10, QuestRewardBucket.FirstClear);
+        AddFixedItemReward(ItemId.KeystoneToRuin, 2, QuestRewardBucket.PeriodFirstClear);
+        AddFixedItemReward(ItemId.CoinPouch10000G, 1, QuestRewardBucket.RepeatClear);
     }
 
     protected override void InitializeEnemyGroups()
@@ -54,11 +57,11 @@ public class ScriptedQuest : IQuest
                 .SetStartThinkTblNo(6)
                 .SetIsBoss(true),
             LibDdon.Enemy.Create(EnemyId.DragonCrystalOfDestructionShootsLaserRocks, 100, 0, 1)
-				.SetStartThinkTblNo(1)
+                .SetStartThinkTblNo(1)
                 .SetIsManualSet(true)
                 .SetIsRequired(false),
             LibDdon.Enemy.Create(EnemyId.DragonCrystalOfDestructionSucksYouInWithMagic0, 100, 0, 2)
-				.SetStartThinkTblNo(2)
+                .SetStartThinkTblNo(2)
                 .SetIsManualSet(true)
                 .SetIsRequired(false),
         });
@@ -73,8 +76,8 @@ public class ScriptedQuest : IQuest
             ]);
         process0.AddSpawnGroupBlock(QuestAnnounceType.None, EnemyGroupId.Encounter + 0)
             .AddResultCommands([
-                QuestManager.ResultCommand.StartMissionAnnounce(2, 0), // List sticks to memory, so clear it
-                QuestManager.ResultCommand.StartMissionAnnounce(2, 2), // (2, 1) can populate the list, but how to do it properly? Handler?
+                QuestManager.ResultCommand.BgmRequestFix(1, 403),
+                QuestManager.ResultCommand.StartMissionAnnounce(1),
                 QuestManager.ResultCommand.AddEndContentsPurpose(0, 1),
                 QuestManager.ResultCommand.SetDiePlayerReturnPos(3400, 0, 0),
                 QuestManager.ResultCommand.StartContentsTimer(900),
@@ -83,18 +86,20 @@ public class ScriptedQuest : IQuest
             .AddCheckCommands([
                 QuestManager.CheckCommand.IsLinkageEnemyFlag(3400, 1, 0, 1)
             ]);
-        process0.AddDestroyGroupBlock(QuestAnnounceType.None, EnemyGroupId.Encounter + 1)
+        process0.AddDestroyGroupBlock(QuestAnnounceType.None, EnemyGroupId.Encounter + 1) // BGM request fix here?
             .AddResultCommands([
                 QuestManager.ResultCommand.QstLayoutFlagOn(8764)
             ]);
         process0.AddRawBlock(QuestAnnounceType.None)
             .AddResultCommands([
-                QuestManager.ResultCommand.EventExec(3400, 20, 0, 0)
+                QuestManager.ResultCommand.EventExec(3400, 20, 0, 0),
+                QuestManager.ResultCommand.StopCycleTimer(),
+                QuestManager.ResultCommand.BgmStop()
             ])
             .AddCheckCommands([
                 QuestManager.CheckCommand.EventEnd(3400, 20)
             ]);
-        process0.AddRawBlock(QuestAnnounceType.None) // TODO: Timer needs to stop ticking here
+        process0.AddRawBlock(QuestAnnounceType.None)
             .AddResultCommands([
                 QuestManager.ResultCommand.UpdateAnnounceDirect(1, 3),
                 QuestManager.ResultCommand.RemoveEndContentsPurpose(0),

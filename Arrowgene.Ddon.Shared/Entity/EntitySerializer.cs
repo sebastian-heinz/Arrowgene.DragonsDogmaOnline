@@ -151,11 +151,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCraftSupportPawnID.Serializer());
             Create(new CDataCraftTimeSaveCost.Serializer());
             Create(new CDataCurrentEquipInfo.Serializer());
+            Create(new CDataCycleContentsPlayStartData.Serializer());
             Create(new CDataCycleContentsStateList.Serializer());
             Create(new CDataCycleContentsNews.Serializer());
             Create(new CDataCycleContentsNewsDetail.Serializer());
             Create(new CDataCycleContentsRank.Serializer());
             Create(new CDataCycleContentsUnk.Serializer());
+            Create(new CDataCycleContentsUnk1.Serializer());
 
             Create(new CDataDeliveredItem.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
@@ -175,6 +177,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataDispelLockCostData.Serializer());
             Create(new CDataDispelLockSealData.Serializer());
             Create(new CDataDragonAbility.Serializer());
+            Create(new CDataDragonSkill.Serializer());
             Create(new CDataDropItemSetInfo.Serializer());
 
             Create(new CDataEditInfo.Serializer());
@@ -1311,6 +1314,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CDispelGetLockSettingRes.Serializer());
             Create(new S2CDispelLockSettingRes.Serializer());
 
+            Create(new S2C_73_0_16_NTC.Serializer());
+            Create(new S2C_73_1_16_NTC.Serializer());
+
             Create(new S2CEntryBoardEntryBoardItemChangeMemberNtc.Serializer());
             Create(new S2CEntryBoardEntryBoardItemCreateRes.Serializer());
             Create(new S2CEntryBoardEntryBoardItemEntryRes.Serializer());
@@ -1690,6 +1696,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestPlayStartTimerNtc.Serializer());
             Create(new S2CQuestPlayStartTimerRes.Serializer());
             Create(new S2CQuestPlayTimeupNtc.Serializer());
+            Create(new S2CQuestRestartTimerNtc.Serializer());
+            Create(new S2CQuestStopTimerNtc.Serializer());
             Create(new S2CQuestQuestCancelNtc.Serializer());
             Create(new S2CQuestQuestCancelRes.Serializer());
             Create(new S2CQuestQuestCancelForceNtc.Serializer());

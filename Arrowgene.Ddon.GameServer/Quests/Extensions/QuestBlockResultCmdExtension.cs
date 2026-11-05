@@ -308,9 +308,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdAddSubstoryProgress(this QuestBlock questBlock, int substoryId, int progressDelta)
+        public static QuestBlock AddResultCmdAddWarProgress(this QuestBlock questBlock, int gaugeNo, int percentRate)
         {
-            questBlock.ResultCommands.AddResultCmdAddSubstoryProgress(substoryId, progressDelta);
+            questBlock.ResultCommands.AddResultCmdAddWarProgress(gaugeNo, percentRate);
             return questBlock;
         }
 
@@ -338,9 +338,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdSetEnemyAggroFlag(this QuestBlock questBlock, int type, int param02)
+        public static QuestBlock AddResultCmdSetEnemySpawnFlag(this QuestBlock questBlock, int isAggressive, int isRoaming)
         {
-            questBlock.ResultCommands.AddResultCmdSetEnemyAggroFlag(type, param02);
+            questBlock.ResultCommands.AddResultCmdSetEnemySpawnFlag(isAggressive, isRoaming);
             return questBlock;
         }
 
@@ -428,9 +428,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdRemoveFsmNpcFromSchedule(this QuestBlock questBlock, int param01 = 0)
+        public static QuestBlock AddResultCmdRemoveKilledEnemyGroupNotice(this QuestBlock questBlock, int flagNo)
         {
-            questBlock.ResultCommands.AddResultCmdRemoveFsmNpcFromSchedule(param01);
+            questBlock.ResultCommands.AddResultCmdRemoveKilledEnemyGroupNotice(flagNo);
             return questBlock;
         }
 
@@ -503,6 +503,24 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         public static QuestBlock AddResultCmdResetDiePlayerReturnPos(this QuestBlock questBlock, StageInfo stageInfo, int startPos)
         {
             questBlock.ResultCommands.AddResultCmdResetDiePlayerReturnPos(stageInfo, startPos);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdAddCycleTimer(this QuestBlock questBlock, int sec)
+        {
+            questBlock.ResultCommands.AddResultCmdAddCycleTimer(sec);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdStopCycleTimer(this QuestBlock questBlock)
+        {
+            questBlock.ResultCommands.AddResultCmdStopCycleTimer();
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdRestartCycleTimer(this QuestBlock questBlock)
+        {
+            questBlock.ResultCommands.AddResultCmdRestartCycleTimer();
             return questBlock;
         }
     }

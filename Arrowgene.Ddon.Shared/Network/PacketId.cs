@@ -2162,6 +2162,10 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_DAILY_MISSION_EVENT_LIST_GET_REQ = new PacketId(72, 3, 1, "C2S_DAILY_MISSION_EVENT_LIST_GET_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_DAILY_MISSION_EVENT_LIST_GET_RES = new PacketId(72, 3, 2, "S2C_DAILY_MISSION_EVENT_LIST_GET_RES", ServerType.Game, PacketSource.Server); // デイリーミッション：期間イベントのリストの取得に
 
+// Group: 73 - (DRAGON_SKILL)
+        public static readonly PacketId S2C_73_0_16_NTC = new PacketId(73, 0, 16, "S2C_73_0_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_73_1_16_NTC = new PacketId(73, 1, 16, "S2C_73_1_16_NTC", ServerType.Game, PacketSource.Server);
+
         #endregion
 
         #region GamePacketIdsInit
@@ -4093,6 +4097,10 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_DAILY_MISSION_REWARD_RECEIVE_RES);
             AddPacketIdEntry(packetIds, C2S_DAILY_MISSION_EVENT_LIST_GET_REQ);
             AddPacketIdEntry(packetIds, S2C_DAILY_MISSION_EVENT_LIST_GET_RES);
+
+// Group: 73 - (DRAGON_SKILL)
+            AddPacketIdEntry(packetIds, S2C_73_0_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_73_1_16_NTC);
 
             return packetIds;
         }

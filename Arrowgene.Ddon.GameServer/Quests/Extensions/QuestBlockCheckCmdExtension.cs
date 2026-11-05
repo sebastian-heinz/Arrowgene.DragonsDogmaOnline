@@ -742,31 +742,31 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdSubstoryEnemyHpNotLess(this QuestBlock questBlock, int substoryId, int hpRatePercent, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdWarGaugeNotLess(this QuestBlock questBlock, int gaugeNo, int percentRate, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdSubstoryEnemyHpNotLess(substoryId, hpRatePercent);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdWarGaugeNotLess(gaugeNo, percentRate);
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdSubstoryEnemyHpLess(this QuestBlock questBlock, int substoryId, int hpRatePercent, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdWarGaugeLess(this QuestBlock questBlock, int gaugeNo, int percentRate, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdSubstoryEnemyHpLess(substoryId, hpRatePercent);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdWarGaugeLess(gaugeNo, percentRate);
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdSubstoryAvgEnemyHpNotLess(this QuestBlock questBlock, int param01, int hpRatePercent, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdWarGaugeAvgNotLess(this QuestBlock questBlock, int percentRate, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdSubstoryAvgEnemyHpNotLess(param01, hpRatePercent);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdWarGaugeAvgNotLess(percentRate);
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdSubstoryAvgEnemyHpLess(this QuestBlock questBlock, int param01, int hpRatePercent, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdWarGaugeAvgLess(this QuestBlock questBlock, int percentRate, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdSubstoryAvgEnemyHpLess(param01, hpRatePercent);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdWarGaugeAvgLess(percentRate);
             return questBlock;
         }
 
@@ -938,10 +938,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdRisingMagmaTime(this QuestBlock questBlock, int timeSec, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdRisingMagmaLevel(this QuestBlock questBlock, int level, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdRisingMagmaTime(timeSec);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdRisingMagmaLevel(level);
             return questBlock;
         }
 

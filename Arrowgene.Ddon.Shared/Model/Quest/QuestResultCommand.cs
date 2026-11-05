@@ -123,10 +123,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         SubstoryProgress = 99, // 0x00633730 (cQuestProcess* this, s32 delta, s32 param02_unused, s32 param03_unused, s32 param04_unused)
 
         /// <summary>
-        /// Finds a substory entry by substoryId and adds progressDelta to its progress value, clamped to [0,100].
-        /// Does not seem to work?
+        /// Adds progress to an active war mission gauge, clamped to [0,100].
         /// </summary>
-        AddSubstoryProgress = 100, // 0x006338E0 (cQuestProcess* this, s32 substoryId, s32 progressDelta, s32 param03, s32 param04)
+        AddWarProgress = 100, // 0x006338E0 (cQuestProcess* this, s32 gaugeNo, s32 percentRate, s32 param03, s32 param04)
 
         /// <summary>
         /// Triggers a substory progress update sequence. Checks mode via FUN_009cffc0; if mode==0xb fires FUN_00bdee50 and FUN_00598590.
@@ -156,11 +155,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         QstTalkChgFsm = 104, // 0x00633A30 (cQuestProcess* this, s32 npcId, s32 msgNo, s32 param03, s32 param04)
 
         /// <summary>
-        /// Sets (type = 1) or clears (type = 0) a global enemy aggression flag.
-        /// When set, enemies within spawn range endlessly converge on the player's position.
-        /// Also calls FUN_00be9b60 with 0 or 1 depending on param02. Unclear what this is supposed to do.
+        /// Sets (1) or clears (0) two global enemy spawn behaviour flags.
+        /// Flag 1 (isAggressive): enemies rush the player's party upon spawning.
+        /// Flag 2 (isRoaming): enemies roam around until they find a player to attack. Only works for quest types 6 and 7 (cycle contents).
         /// </summary>
-        SetEnemyAggroFlag = 105, // 0x00633A80 (cQuestProcess* this, s32 type, s32 param02, s32 param03, s32 param04)
+        SetEnemySpawnFlag = 105, // 0x00633A80 (cQuestProcess* this, s32 isAggressive, s32 isRoaming, s32 param03, s32 param04)
 
         Padding106 = 106, // 0x00633B00 stub/nop - always returns 0
 
@@ -250,9 +249,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         Padding123 = 123, // 0x006343C0 stub/nop - always returns 0
 
         /// <summary>
-        /// Removes an FSM NPC entry from the process list at this+0x28/0x1c, freeing its children. Calls FUN_0063dda0(param01).
+        /// Removes a pending progress work notice for IsKilledTargetEnemySetGroup and IsKilledTargetEnemySetGroupNoMarker.
         /// </summary>
-        RemoveFsmNpcFromSchedule = 124, // 0x006343F0 (cQuestProcess* this, s32 param01, s32 param02, s32 param03, s32 param04)
+        RemoveKilledEnemyGroupNotice = 124, // 0x006343F0 (cQuestProcess* this, s32 flagNo, s32 param02, s32 param03, s32 param04)
 
         Padding125 = 125, // 0x00634410 stub/nop - always returns 0
 
