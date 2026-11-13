@@ -77,21 +77,17 @@
         },
         {
           "type": "TalkToNpc",
-          "announce_type": "CheckpointAndUpdate",
-          "result_commands": [
-            {
-              "comment": "Idle dialogue",
-              "type": "QstTalkChg",
-              "Param1": 3,
-              "Param2": 10732
-            }
-          ],
+          "announce_type": "Checkpoint",
           "stage_id": {
             "id": 66,
             "group_id": 0
           },
           "npc_id": "Talcott",
-          "message_id": 14775
+          "message_id": 14775,
+          "result_commands": [
+            {"type": "QstTalkChg", "Param1": 3, "Param2": 10732, "comment": "Extra dialogue - Klaus"},
+            {"type": "UpdateAnnounceDirect", "Param1": 9, "Param2": 3}
+          ]
         },
         {
           "type": "TalkToNpc",

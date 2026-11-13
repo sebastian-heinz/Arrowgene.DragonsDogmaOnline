@@ -115,18 +115,24 @@ public class ScriptedQuest : IQuest
             .AddResultCmdResetTutorialFlag()
             .AddCheckCmdIsTutorialFlagOn(84); // Cling to the enemy, and successfully use Weak Light
         process0.AddRawBlock(QuestAnnounceType.Update)
+            .AddResultCmdButtonGuideFlagOn(0)
             .AddResultCmdResetTutorialFlag()
             .AddCheckCmdIsTutorialFlagOn(82); // Use Resist to endure the enemy's swing (yellow icon) while climbing them
         process0.AddRawBlock(QuestAnnounceType.Update)
+            .AddResultCmdButtonGuideFlagOff(0)
+            .AddResultCmdButtonGuideFlagOn(2)
             .AddResultCmdResetTutorialFlag()
             .AddCheckCmdIsTutorialFlagOn(83); // While climbing the enemy, jump off during their knock-away attack (red icon)
         process0.AddRawBlock(QuestAnnounceType.Update)
+            .AddResultCmdButtonGuideFlagOff(2)
             .AddResultCmdResetTutorialFlag()
             .AddCheckCmdIsTutorialFlagOn(80); // Attack and enrage the enemy
         process0.AddRawBlock(QuestAnnounceType.Update)
+            .AddResultCmdButtonGuideFlagOn(3)
             .AddResultCmdResetTutorialFlag()
             .AddCheckCmdIsTutorialFlagOn(81); // Shake the enemy while they are enraged and tire them out!
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Encounter + 0, false)
+            .AddResultCmdButtonGuideFlagOff(3)
             .AddResultCmdTutorialEnemyInvincibility(false)
             .AddResultCmdTutorialDialog(TutorialId.TacticalRoleoftheShieldSage)
             .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, MyQstFlag.DespawnGroup0);

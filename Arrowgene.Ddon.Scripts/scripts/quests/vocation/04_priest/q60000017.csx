@@ -125,21 +125,27 @@ public class ScriptedQuest : IQuest
             .AddResultCmdResetTutorialFlag()
             .AddCheckCmdIsTutorialFlagOn(75); // Cling to the enemy and successfully use Ride Heal Aura (76 & 75)
         process0.AddRawBlock(QuestAnnounceType.Update)
+            .AddResultCmdButtonGuideFlagOn(0)
             .AddResultCmdResetTutorialFlag()
             .AddCheckCmdIsTutorialFlagOn(73); // Use Resist to endure the enemy's swing (yellow icon) while climbing them
         process0.AddRawBlock(QuestAnnounceType.Update)
+            .AddResultCmdButtonGuideFlagOff(0)
+            .AddResultCmdButtonGuideFlagOn(2)
             .AddResultCmdResetTutorialFlag()
             .AddCheckCmdIsTutorialFlagOn(74); // While climbing the enemy, jump off during their knock-away attack (red icon)
         process0.AddRawBlock(QuestAnnounceType.Update)
+            .AddResultCmdButtonGuideFlagOff(2)
             .AddResultCmdResetTutorialFlag()
             .AddCheckCmdIsTutorialFlagOn(71); // Attack and enrage the enemy or 73?
         process0.AddRawBlock(QuestAnnounceType.Update)
             .AddResultCmdResetTutorialFlag()
             .AddCheckCmdIsTutorialFlagOn(18); // Reveal the enemy's secret core during their enraged state with Heal Aura
         process0.AddRawBlock(QuestAnnounceType.Update)
+            .AddResultCmdButtonGuideFlagOn(3)
             .AddResultCmdResetTutorialFlag()
             .AddCheckCmdIsTutorialFlagOn(72); // Shake the enemy while they are enraged and tire them out! (16 & 72)
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Encounter + 0, false)
+            .AddResultCmdButtonGuideFlagOff(3)
             .AddResultCmdTutorialEnemyInvincibility(false)
             .AddResultCmdTutorialDialog(TutorialId.TacticalRoleofthePriest)
             .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, MyQstFlag.DespawnGroup0);

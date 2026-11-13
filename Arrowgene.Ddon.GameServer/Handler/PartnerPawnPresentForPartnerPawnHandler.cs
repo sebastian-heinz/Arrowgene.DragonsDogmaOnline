@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -5,6 +6,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
@@ -24,8 +26,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var packets = new PacketQueue();
 
             List<CDataItemUpdateResult> itemUpdateResults = new List<CDataItemUpdateResult>();
+
             Server.Database.ExecuteInTransaction(connection =>
             {
+                if (Server.Database.HasPartnerPawnLastAffectionIncreaseRecord(client.Character.CharacterId, client.Character.PartnerPawnId, PartnerPawnAffectionAction.Gift, connection))
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_ALREADY_GIFTED);               
+                }
+
                 foreach (var item in request.ItemUIDList)
                 {
                     uint itemId = client.Character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, item.ItemUID)?.Item2.Item2.ItemId

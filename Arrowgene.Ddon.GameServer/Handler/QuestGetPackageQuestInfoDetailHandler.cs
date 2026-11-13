@@ -86,11 +86,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
-                packageQuestInfoDetail.CompletedQuests = completedQuests;
-                packageQuestInfoDetail.TotalQuests = substoryMissionMap[req.SubstoryGroupId][seqNo].Count;
+                packageQuestInfoDetail.CurrentProgress = completedQuests;
+                packageQuestInfoDetail.MaxProgress = substoryMissionMap[req.SubstoryGroupId][seqNo].Count;
                 packageQuestInfoDetail.Unk3 = true;
                 packageQuestInfoDetail.Unk4 = true;
-                packageQuestInfoDetail.IsComplete = packageQuestInfoDetail.CompletedQuests == packageQuestInfoDetail.TotalQuests;
+                packageQuestInfoDetail.IsComplete = packageQuestInfoDetail.CurrentProgress == packageQuestInfoDetail.MaxProgress;
                 packageQuestInfoDetail.Unk6 = DateTimeOffset.FromUnixTimeSeconds(0);
 
                 result.PackageQuestInfoDetailList.Add(packageQuestInfoDetail);

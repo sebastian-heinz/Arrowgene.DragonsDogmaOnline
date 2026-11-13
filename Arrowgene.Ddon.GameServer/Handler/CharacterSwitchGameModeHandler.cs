@@ -125,12 +125,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 VisualEquipItemList = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Visual),
             });
 
+            List<StorageType> swappedStorages = [.. ItemManager.ItemBagStorageTypes, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion];
             client.Send(new S2CItemSortGetItemSortdataBinNtc()
             {
-                SortData = [.. ItemManager.ItemBagStorageTypes.Select(x => new CDataItemSort()
+                SortData = [.. swappedStorages.Select(x => new CDataItemSort()
                 {
                     StorageType = x,
-                    Bin = client.Character.Storage.GetStorage(x).SortData
+                    Bin = client.Character.Storage.GetStorage(x).SortData,
                 })]
             });
 
@@ -369,17 +370,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         Server.Database.InsertIfNotExistsNormalSkillParam(bbmCharacter.CommonId, newSkill);
                     }
                 }
-            }
-
-            // Populate extra tables for the characters
-            CDataOrbGainExtendParam ExtendParams = new CDataOrbGainExtendParam()
-            {
-                JewelrySlot = 3,
-            };
-
-            if (!Database.InsertGainExtendParam(bbmCharacter.CommonId, ExtendParams))
-            {
-                return null;
             }
 
             Enum.GetValues(typeof(JobId)).Cast<JobId>().Select(job => new CDataJobPlayPoint()

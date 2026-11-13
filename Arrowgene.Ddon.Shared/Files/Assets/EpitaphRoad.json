@@ -3655,7 +3655,28 @@
             "soul_item_id": 18659,
             "reward_buffs": true,
             "barriers": [],
-            "statues": [],
+            "statues": [
+                {
+                    "stage_id": 559,
+                    "group_id": 100,
+                    "pos_id": 0
+                },
+                {
+                    "stage_id": 559,
+                    "group_id": 110,
+                    "pos_id": 0
+                },
+                {
+                    "stage_id": 559,
+                    "group_id": 120,
+                    "pos_id": 0
+                },
+                {
+                    "stage_id": 559,
+                    "group_id": 130,
+                    "pos_id": 0
+                }
+            ],
             "doors": [],
             "chests": [],
             "drop_tables": [],

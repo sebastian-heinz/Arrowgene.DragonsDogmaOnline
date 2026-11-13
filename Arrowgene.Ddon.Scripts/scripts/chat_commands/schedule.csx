@@ -19,7 +19,7 @@ public class ChatCommand : IChatCommand
 
             TimeSpan ts = TimeSpan.FromSeconds(server.ScheduleManager.TimeToNextTaskUpdate(task.Type));
             var formattedTime = string.Format("{0:D1}d:{1:D2}h:{2:D2}m:{3:D2}s", ts.Days, ts.Hours, ts.Minutes, ts.Seconds);
-            var line = $"{task.TaskTypeName()}: {task.Type} ({(uint)task.Type})\n    {formattedTime}";
+            var line = $"{task.TaskTypeName()}: {task.TaskName()} ({(uint)task.Type})\n    {formattedTime}";
             lines.Add(line);
         }
 

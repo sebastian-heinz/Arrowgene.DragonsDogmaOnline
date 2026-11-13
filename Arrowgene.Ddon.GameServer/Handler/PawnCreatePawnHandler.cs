@@ -86,6 +86,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ExtendedParams = new CDataOrbGainExtendParam(),
                 Server = client.Character.Server,
                 PartnerPawnData = new PartnerPawnData(),
+                ShareRange = request.PawnInfo.ShareRange,
                 CraftData = new CDataPawnCraftData
                 {
                     CraftExp = 0,
@@ -111,7 +112,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true, client.Character);
 
             Database.CreatePawn(pawn);
-            Database.InsertGainExtendParam(pawn.CommonId, pawn.ExtendedParams);
 
             pawn = Server.Database.SelectPawnsByCharacterId(client.Character.CharacterId).Find(x => x.PawnId == pawn.PawnId);
             Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true, client.Character);

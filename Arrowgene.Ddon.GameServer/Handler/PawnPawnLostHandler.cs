@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -20,18 +21,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
 
+            bool isLost = Random.Shared.NextDouble() > (client.Character.MainPawnLostRate / 100.0);
+
             client.Enqueue(new S2CPawnPawnLostRes()
             {
                 PawnId = pawn.PawnId,
                 PawnName = pawn.Name,
-                IsLost = true
+                IsLost = isLost
             }, queue);
 
             S2CPawnPawnLostNtc ntc = new S2CPawnPawnLostNtc()
             {
                 PawnId = pawn.PawnId,
                 PawnName = pawn.Name,
-                IsLost = true
+                IsLost = isLost
             };
             client.Party.EnqueueToAllExcept(ntc, queue, client);
 
@@ -48,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }, queue);
             }
 
-            pawn.PawnState = PawnState.Lost;
+            pawn.PawnState = isLost ? PawnState.Lost : PawnState.None;
             Server.Database.UpdatePawnBaseInfo(pawn);
 
             return queue;

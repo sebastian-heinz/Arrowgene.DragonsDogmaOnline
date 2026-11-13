@@ -6,7 +6,7 @@ public class ChatCommand : IChatCommand
 
     public override AccountStateType AccountState => AccountStateType.User;
     public override string CommandName => "fashion";
-    public override string HelpText => "usage: `/fashion help/check/reset/add/save/load/apply [*]` - Commands for altering dress equipment.";
+    public override string HelpText => "usage: `/fashion help/check/reset/add/save/load/apply/dumpids/fromids [*]` - Commands for altering dress equipment.";
 
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
@@ -38,13 +38,17 @@ public class ChatCommand : IChatCommand
         {
             case "help":
                 {
-                    responses.Add(ChatResponse.ServerChat(client, $"/fashion help: Print this."));
-                    responses.Add(ChatResponse.ServerChat(client, $"/fashion check [pawnName]: Show your current template."));
-                    responses.Add(ChatResponse.ServerChat(client, $"/fashion reset [pawnName]: Empty the current template."));
-                    responses.Add(ChatResponse.ServerChat(client, $"/fashion add [pawnName]: Add your equipped dress items to the template."));
-                    responses.Add(ChatResponse.ServerChat(client, $"/fashion apply [pawnName]: Apply the current template."));
-                    responses.Add(ChatResponse.ServerChat(client, $"/fashion save templateName [pawnName]: Save a template for later use."));
-                    responses.Add(ChatResponse.ServerChat(client, $"/fashion load templateName [pawnName]: Load a template, overwriting the current template."));
+                    client.Send(new S2CConnectionInformationNtc([
+                        "/fashion help: Print this.",
+                        "/fashion check [pawnName]: Show your current template.",
+                        "/fashion reset [pawnName]: Empty the current template.",
+                        "/fashion add [pawnName]: Add your equipped dress items to the template.",
+                        "/fashion apply [pawnName]: Apply the current template.",
+                        "/fashion save templateName [pawnName]: Save a template for later use (this session only).",
+                        "/fashion load templateName [pawnName]: Load a template, overwriting the current template (this session only).",
+                        "/fashion dumpids [pawnName]: Print vanity ItemIds (7 slots).",
+                        "/fashion fromids id,id,... [pawnName]: Build template from 7 vanity ItemIds you own."
+                    ]));
                     break;
                 }
             case "check":
@@ -53,24 +57,24 @@ public class ChatCommand : IChatCommand
                     {
                         if (!CheckItems(client, targetCharacter, out var names))
                         {
-                            PrintTemplate(client, targetCharacter, responses, LobbyChatMsgType.ManagementAlertC, names);
+                            PrintTemplate(client, targetCharacter, names, "Template invalid; item missing.");
                             responses.Add(ChatResponse.CommandError(client, $"Template invalid; item missing."));
                             return;
                         }
                         if (!CheckEnsembleRules(client, targetCharacter))
                         {
-                            PrintTemplate(client, targetCharacter, responses, LobbyChatMsgType.ManagementAlertC, names);
+                            PrintTemplate(client, targetCharacter, names, "Template invalid; you cannot mix regular and ensemble gear.");
                             responses.Add(ChatResponse.CommandError(client, $"Template invalid; you cannot mix regular and ensemble gear."));
                             return;
                         }
                         if (!CheckEmptySpace(client, targetCharacter))
                         {
-                            PrintTemplate(client, targetCharacter, responses, LobbyChatMsgType.ManagementAlertC, names);
+                            PrintTemplate(client, targetCharacter, names, "Template invalid; unequip any vanity items that are not in the template.");
                             responses.Add(ChatResponse.CommandError(client, $"Template invalid; unequip any vanity items that are not in the template."));
                             return;
                         }
 
-                        PrintTemplate(client, targetCharacter, responses, LobbyChatMsgType.ManagementGuideC, names);
+                        PrintTemplate(client, targetCharacter, names);
                     }
                     break;
                 }
@@ -79,7 +83,7 @@ public class ChatCommand : IChatCommand
                     if (GetTargetCharacter(client, 1, command, responses, out var targetCharacter))
                     {
                         AddFashionData(targetCharacter);
-                        PrintTemplate(client, targetCharacter, responses, LobbyChatMsgType.ManagementGuideC, GetNames(client, targetCharacter));
+                        PrintTemplate(client, targetCharacter, GetNames(client, targetCharacter));
                     }
                     break;
                 }
@@ -124,7 +128,7 @@ public class ChatCommand : IChatCommand
 
                         if (LoadFashion(client, targetCharacter, password))
                         {
-                            PrintTemplate(client, targetCharacter, responses, LobbyChatMsgType.ManagementGuideC, GetNames(client, targetCharacter));
+                            PrintTemplate(client, targetCharacter, GetNames(client, targetCharacter));
                         }
                         else
                         {
@@ -145,11 +149,8 @@ public class ChatCommand : IChatCommand
 
                         if (!CheckItems(client, targetCharacter, out var names))
                         {
+                            PrintTemplate(client, targetCharacter, names, "Template could not be applied; item missing.");
                             responses.Add(ChatResponse.CommandError(client, $"Template could not be applied; item missing."));
-                            foreach (var name in names)
-                            {
-                                responses.Add(ChatResponse.CommandError(client, $"{name}"));
-                            }
                             return;
                         }
 
@@ -177,6 +178,73 @@ public class ChatCommand : IChatCommand
                     }
                     break;
                 }
+            case "dumpids":
+                {
+                    if (GetTargetCharacter(client, 1, command, responses, out var targetCharacter))
+                    {
+                        var itemIds = UidsToItemIds(client, targetCharacter, GetFashionData(targetCharacter));
+                        var compact = string.Join(",", ToCompactFashionIds(itemIds));
+                        // Compact list: helm,body,wearBody,arm,leg,wearLeg,accessory (no weapons/jewelry/lantern).
+                        PrintTemplate(
+                            client,
+                            targetCharacter,
+                            GetNames(client, targetCharacter),
+                            $"FASHION_IDS:{compact}",
+                            "Copy the FASHION_IDS line for /fashion fromids.");
+                    }
+                    break;
+                }
+            case "fromids":
+                {
+                    if (command.Length < 2)
+                    {
+                        responses.Add(ChatResponse.CommandError(client, "usage: /fashion fromids id,id,... [pawnName]"));
+                        return;
+                    }
+
+                    // Optional pawn name is the last arg when more than one arg follows fromids.
+                    int pawnArgIndex = command.Length >= 3 ? 2 : int.MaxValue;
+                    if (!GetTargetCharacter(client, pawnArgIndex, command, responses, out var targetCharacter))
+                    {
+                        return;
+                    }
+
+                    if (!TryParseItemIdList(command[1], out var itemIds, out var parseError))
+                    {
+                        responses.Add(ChatResponse.CommandError(client, parseError));
+                        return;
+                    }
+
+                    var missingNames = new List<string>();
+                    var wrongSlotNames = new List<string>();
+                    var resolved = ResolveItemIdsToUids(client, targetCharacter, itemIds, missingNames, wrongSlotNames);
+                    FashionTable.AddOrUpdate(targetCharacter, resolved);
+
+                    int boundCount = resolved.Count(x => x is not null);
+                    var extra = new List<string>();
+                    if (boundCount == 0)
+                    {
+                        extra.Add("No ItemIds could be matched to items you own in the correct slots. Working template is empty.");
+                    }
+                    else
+                    {
+                        extra.Add($"Bound {boundCount} slot(s) to items you own.");
+                    }
+                    foreach (var wrong in wrongSlotNames)
+                    {
+                        extra.Add($"Wrong slot: {wrong}");
+                    }
+                    foreach (var missing in missingNames)
+                    {
+                        extra.Add($"Missing owned item: {missing}");
+                    }
+                    if (missingNames.Count > 0 || wrongSlotNames.Count > 0)
+                    {
+                        extra.Add("Apply will fail or stay incomplete until each slot has a valid owned piece.");
+                    }
+                    PrintTemplate(client, targetCharacter, GetNames(client, targetCharacter), [.. extra]);
+                    break;
+                }
             default:
                 {
                     responses.Add(ChatResponse.CommandError(client, $"Unknown fashion subcommand."));
@@ -189,24 +257,65 @@ public class ChatCommand : IChatCommand
     private ConditionalWeakTable<GameClient, Dictionary<string, List<string>>> LockedFashions { get; } = [];
     private HashSet<StorageType> StorageTypes { get; } = [StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.ItemBagEquipment];
     private static byte TOTAL_EQUIP_SLOTS => EquipmentTemplate.TOTAL_EQUIP_SLOTS;
+    // dumpids/fromids use only these vanity indexes (ArmorHelm..Accessory).
+    // Excluded: weapons (0-1), jewelry (9-13), lantern (14).
+    private static readonly int[] FashionSlotIndexes = [2, 3, 4, 5, 6, 7, 8];
+    private static int FashionSlotCount => FashionSlotIndexes.Length;
+    private const int MaxFromIdsPayloadLength = 128;
 
-    private void PrintTemplate(GameClient client, CharacterCommon targetCharacter, List<ChatResponse> responses, LobbyChatMsgType chatType, IEnumerable<string> names)
+    private static bool IsFashionSlotIndex(int index)
     {
-        responses.Add(ChatResponse.ServerChat(client, $"Template for {targetCharacter.CDataCharacterName}:"));
-        foreach (var name in names)
-        {
-            responses.Add(new ChatResponse(client, $"{name}", chatType));
-        }
-
+        return index >= 2 && index <= 8;
     }
 
-    private void PrintTemplate(GameClient client, CharacterCommon targetCharacter, List<ChatResponse> responses)
+    private static List<uint> ToCompactFashionIds(List<uint> fullSlotIds)
     {
-        responses.Add(ChatResponse.ServerChat(client, $"Template for {targetCharacter.CDataCharacterName}:"));
-        foreach (var name in GetNames(client, targetCharacter))
+        var compact = new List<uint>(FashionSlotCount);
+        foreach (int index in FashionSlotIndexes)
         {
-            responses.Add(ChatResponse.ServerChat(client, $"{name}"));
+            compact.Add(index < fullSlotIds.Count ? fullSlotIds[index] : 0);
         }
+        return compact;
+    }
+
+    private static List<uint> FromCompactFashionIds(List<uint> compactIds)
+    {
+        var full = Enumerable.Repeat(0u, TOTAL_EQUIP_SLOTS).ToList();
+        for (int i = 0; i < FashionSlotCount && i < compactIds.Count; i++)
+        {
+            full[FashionSlotIndexes[i]] = compactIds[i];
+        }
+        return full;
+    }
+
+    private static void ClearNonFashionSlots(List<uint> itemIds)
+    {
+        for (int i = 0; i < itemIds.Count; i++)
+        {
+            if (!IsFashionSlotIndex(i))
+            {
+                itemIds[i] = 0;
+            }
+        }
+    }
+
+    private void PrintTemplate(GameClient client, CharacterCommon targetCharacter, IEnumerable<string> names, params string[] extraLines)
+    {
+        List<string> lines = [$"Template for {targetCharacter.CDataCharacterName}:"];
+        var nameList = names?.ToList() ?? [];
+        if (nameList.Count == 0)
+        {
+            lines.Add("(empty — no items in the working template)");
+        }
+        else
+        {
+            lines.AddRange(nameList);
+        }
+        if (extraLines is not null && extraLines.Length > 0)
+        {
+            lines.AddRange(extraLines.Where(x => !string.IsNullOrWhiteSpace(x)));
+        }
+        client.Send(new S2CConnectionInformationNtc(lines));
     }
 
     private bool GetTargetCharacter(GameClient client, int index, string[] command, List<ChatResponse> responses, out CharacterCommon targetCharacter)
@@ -261,6 +370,202 @@ public class ChatCommand : IChatCommand
                 currentFashion[i] = newFashion[i];
             }
         }
+    }
+
+    private static bool TryParseItemIdList(string raw, out List<uint> itemIds, out string error)
+    {
+        itemIds = null;
+        error = null;
+
+        if (string.IsNullOrWhiteSpace(raw))
+        {
+            error = "No ItemId list provided.";
+            return false;
+        }
+
+        if (raw.Length > MaxFromIdsPayloadLength)
+        {
+            error = $"ItemId list is too long (max {MaxFromIdsPayloadLength} characters).";
+            return false;
+        }
+
+        var parts = raw.Split(',', StringSplitOptions.TrimEntries);
+        // Accept compact (7 vanity slots) or legacy full (15 slots with unused zeros).
+        if (parts.Length != FashionSlotCount && parts.Length != TOTAL_EQUIP_SLOTS)
+        {
+            error = $"Expected {FashionSlotCount} vanity ItemIds (or legacy {TOTAL_EQUIP_SLOTS}), got {parts.Length}.";
+            return false;
+        }
+
+        var parsed = new List<uint>(parts.Length);
+        for (int i = 0; i < parts.Length; i++)
+        {
+            string part = parts[i];
+            if (string.IsNullOrEmpty(part))
+            {
+                error = $"Invalid ItemId at slot {i} (empty).";
+                return false;
+            }
+
+            // Reject signs, hex, and overflow (> uint.MaxValue).
+            if (!uint.TryParse(part, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var itemId))
+            {
+                error = $"Invalid ItemId '{part}' at slot {i}. Use plain non-negative integers only.";
+                return false;
+            }
+
+            parsed.Add(itemId);
+        }
+
+        itemIds = parts.Length == FashionSlotCount
+            ? FromCompactFashionIds(parsed)
+            : parsed;
+        ClearNonFashionSlots(itemIds);
+        return true;
+    }
+
+    private List<uint> UidsToItemIds(GameClient client, CharacterCommon character, List<string> uids)
+    {
+        var result = new List<uint>(TOTAL_EQUIP_SLOTS);
+        var equipped = character.Equipment.GetItems(EquipType.Visual);
+
+        for (int i = 0; i < TOTAL_EQUIP_SLOTS; i++)
+        {
+            if (!IsFashionSlotIndex(i))
+            {
+                result.Add(0);
+                continue;
+            }
+
+            string uid = uids[i];
+            if (uid is null)
+            {
+                result.Add(0);
+                continue;
+            }
+
+            var equippedItem = equipped.FirstOrDefault(item => item?.UId == uid);
+            if (equippedItem is not null)
+            {
+                result.Add(equippedItem.ItemId);
+                continue;
+            }
+
+            var found = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, uid);
+            if (found is not null)
+            {
+                result.Add(found.Item2.Item2.ItemId);
+                continue;
+            }
+
+            Logger.Error($"Fashion dumpids could not resolve UID '{uid}' to an ItemId.");
+            result.Add(0);
+        }
+
+        ClearNonFashionSlots(result);
+        return result;
+    }
+
+    private static EquipSlot ExpectedEquipSlotForTemplateIndex(int templateIndex)
+    {
+        // Template indexes are 0-based; EquipSlot values are 1-based and align 1:1.
+        return (EquipSlot)(templateIndex + 1);
+    }
+
+    private static bool ItemFitsFashionSlot(uint itemId, int templateIndex, out string itemLabel)
+    {
+        itemLabel = $"ItemId {itemId}";
+        if (!LibDdon.Assets.ClientItemInfos.ContainsKey(itemId))
+        {
+            return false;
+        }
+
+        var info = LibDdon.Assets.ClientItemInfos[itemId];
+        itemLabel = info.Name ?? itemLabel;
+        EquipSlot expected = ExpectedEquipSlotForTemplateIndex(templateIndex);
+        return info.EquipSlot == expected;
+    }
+
+    private List<string> ResolveItemIdsToUids(
+        GameClient client,
+        CharacterCommon character,
+        List<uint> itemIds,
+        List<string> missingNames,
+        List<string> wrongSlotNames)
+    {
+        var result = new List<string>(TOTAL_EQUIP_SLOTS);
+        var usedUids = new HashSet<string>();
+
+        for (int i = 0; i < TOTAL_EQUIP_SLOTS; i++)
+        {
+            uint itemId = itemIds[i];
+            if (!IsFashionSlotIndex(i) || itemId == 0)
+            {
+                result.Add(null);
+                continue;
+            }
+
+            if (!ItemFitsFashionSlot(itemId, i, out var itemLabel))
+            {
+                result.Add(null);
+                EquipSlot expected = ExpectedEquipSlotForTemplateIndex(i);
+                if (!LibDdon.Assets.ClientItemInfos.ContainsKey(itemId))
+                {
+                    missingNames.Add(itemLabel);
+                }
+                else
+                {
+                    var actual = LibDdon.Assets.ClientItemInfos[itemId].EquipSlot;
+                    wrongSlotNames.Add($"{itemLabel} → slot {expected}, item is {actual?.ToString() ?? "unknown"}");
+                }
+                continue;
+            }
+
+            string uid = FindOwnedUidForItemId(client, character, itemId, usedUids);
+            if (uid is null)
+            {
+                result.Add(null);
+                missingNames.Add(itemLabel);
+            }
+            else
+            {
+                result.Add(uid);
+            }
+        }
+
+        return result;
+    }
+
+    private string FindOwnedUidForItemId(GameClient client, CharacterCommon character, uint itemId, HashSet<string> usedUids)
+    {
+        foreach (var item in character.Equipment.GetItems(EquipType.Visual).Where(x => x is not null))
+        {
+            if (item.ItemId == itemId && usedUids.Add(item.UId))
+            {
+                return item.UId;
+            }
+        }
+
+        foreach (var match in client.Character.Storage.FindItemsByIdInStorage(StorageTypes, (ItemId)itemId))
+        {
+            // Use positional fields so this compiles against both named and unnamed tuple shapes.
+            string uid = match.Item2.Item2.UId;
+            if (usedUids.Add(uid))
+            {
+                return uid;
+            }
+        }
+
+        foreach (var match in client.Character.Storage.FindItemsByIdInStorage(ItemManager.EquipmentStorages, (ItemId)itemId))
+        {
+            string uid = match.Item2.Item2.UId;
+            if (usedUids.Add(uid))
+            {
+                return uid;
+            }
+        }
+
+        return null;
     }
 
     private void SaveFashion(GameClient client, CharacterCommon character, string password)

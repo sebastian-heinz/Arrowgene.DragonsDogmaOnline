@@ -1,7 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
@@ -11,11 +10,11 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetLightQuestList : GameRequestPacketHandler<C2SQuestGetLightQuestListReq, S2CQuestGetLightQuestListRes>
+    public class QuestGetLightQuestListHandler : GameRequestPacketHandler<C2SQuestGetLightQuestListReq, S2CQuestGetLightQuestListRes>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetLightQuestList));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetLightQuestListHandler));
         
-        public QuestGetLightQuestList(DdonGameServer server) : base(server)
+        public QuestGetLightQuestListHandler(DdonGameServer server) : base(server)
         {
         }
 
@@ -43,7 +42,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (QuestManager.IsBoardQuest(questScheduleId) 
                     && client.Character.CompletedQuests.GetValueOrDefault(lightQuest.QuestId)?.ClearCount 
-                        >= Server.GameSettings.GameServerSettings.LightQuestGenerationAttemptsPerQuest)
+                        >= Server.GameSettings.GameServerSettings.LightQuestRepeatsPerDay)
                 {
                     continue;
                 }

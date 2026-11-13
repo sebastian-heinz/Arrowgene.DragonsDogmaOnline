@@ -68,7 +68,7 @@ public partial class DdonSqlDb : SqlDb
     };
 
     private static readonly string SqlSelectBlackList = """SELECT "target_id" from "ddon_black_list" WHERE "character_id" = @character_id;""";
-    private static readonly string SqlDeleteBlackList = """DELETE FROM "ddon_black_list" "character_id" = @character_id AND "target_id" = @target_id;""";
+    private static readonly string SqlDeleteBlackList = """DELETE FROM "ddon_black_list" WHERE "character_id" = @character_id AND "target_id" = @target_id;""";
     private static readonly string SqlInsertBlackList = @"
         INSERT INTO ddon_black_list (character_id, target_id)
         SELECT

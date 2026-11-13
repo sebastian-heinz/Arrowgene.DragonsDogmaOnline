@@ -34,7 +34,7 @@ public class ScriptedQuest : IQuest
         process0.AddIsStageNoBlock(QuestAnnounceType.Accept, Stage.FortThinesGreatDiningHall)
             .AddResultCmdQstTalkChg(NpcId.Zeki, 25938);
         process0.AddTalkToNpcBlock(QuestAnnounceType.None, Stage.FortThinesGreatDiningHall, NpcId.Carrie2, 25939)
-            .AddResultCmdSetQuestOmMontageFix(Stage.FortThinesGreatDiningHall, 0, 0, 0)
+            .AddResultCmdSetOmState(Stage.FortThinesGreatDiningHall, 0, 0, 0)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 6412);
         process0.AddRawBlock(QuestAnnounceType.CheckpointAndUpdate)
             .AddResultCmdQstTalkChg(NpcId.Carrie2, 25940)
@@ -49,14 +49,14 @@ public class ScriptedQuest : IQuest
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.FortThinesGreatDiningHall, NpcId.Carrie2, 27028)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 6955)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, 6412)
-            .AddResultCmdSetQuestOmMontageFix(Stage.FortThinesGreatDiningHall, 1, 0, 0);
+            .AddResultCmdSetOmState(Stage.FortThinesGreatDiningHall, 1, 0, 0);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.FortThines1, NpcId.Zeki, 26064)
             .AddResultCmdQstTalkChg(NpcId.Carrie2, 26065);
         process0.AddRawBlock(QuestAnnounceType.CheckpointAndUpdate)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, 6955)
             .AddQuestFlag(QuestFlagAction.Set, QuestFlags.FortThinesGreatDiningHall.Carrie)
             .AddResultCmdReleaseAnnounce(ContentsRelease.CooperatorsoftheRoyalFamily)
-            .AddResultCommand(QuestManager.ResultCommand.Unknown(106, 6, 3))
+			.AddResultCmdCallGreatPurpose(6, 3)
             .AddCheckCommands([
                 QuestManager.CheckCommand.TutorialTalkNpc(448, NpcId.Carrie2)
             ])
@@ -64,9 +64,8 @@ public class ScriptedQuest : IQuest
                 QuestManager.CheckCommand.TouchActToNpc(448, NpcId.Carrie2),
                 QuestManager.CheckCommand.DummyNotProgress()
             ]);
-        process0.AddIsStageNoBlock(QuestAnnounceType.None, Stage.FortThinesGreatDiningHall, false)
+        process0.AddProcessEndBlock(true)
             .AddResultCmdReleaseAnnounce(ContentsRelease.None, TutorialId.AchievementsRoyalFamilyRestoration);
-        process0.AddProcessEndBlock(true);
     }
 }
 

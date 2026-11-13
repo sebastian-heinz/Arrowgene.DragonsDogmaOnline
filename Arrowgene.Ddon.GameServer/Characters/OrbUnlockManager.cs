@@ -10,82 +10,77 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
-    public class OrbUnlockManager
+    public class OrbUnlockManager(DdonGameServer server)
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(OrbUnlockManager));
 
-        private readonly DdonGameServer _Server;
+        private readonly DdonGameServer _Server = server;
 
-        public OrbUnlockManager(DdonGameServer server)
+        public static List<CDataOrbPageStatus> GetOrbPageStatus(CharacterCommon common)
         {
-            _Server = server;
-        }
+            List<CDataOrbPageStatus> result = [];
 
-        public List<CDataOrbPageStatus> GetOrbPageStatus(CharacterCommon Character)
-        {
-            List<CDataOrbPageStatus> Result = new List<CDataOrbPageStatus>();
+            Dictionary<uint, CDataOrbPageStatus> pageStatus = [];
+            Dictionary<uint, Dictionary<GroupNo, uint>> pageCompletionTotals = [];
 
-            Dictionary<uint, CDataOrbPageStatus> PageStatus = new Dictionary<uint, CDataOrbPageStatus>();
-            Dictionary<uint, Dictionary<GroupNo, uint>> PageCompletionTotals = new Dictionary<uint, Dictionary<GroupNo, uint>>();
-
-            foreach (var Element in _Server.Database.SelectOrbReleaseElementFromDragonForceAugmentation(Character.CommonId))
+            foreach (var element in common.OrbRelease)
             {
-                if (!PageStatus.ContainsKey(Element.PageNo))
+                if (!pageStatus.ContainsKey(element.PageNo))
                 {
-                    PageStatus.Add(Element.PageNo, new CDataOrbPageStatus() { PageNo = Element.PageNo });
-                    PageCompletionTotals.Add(Element.PageNo, new Dictionary<GroupNo, uint>());
+                    pageStatus.Add(element.PageNo, new CDataOrbPageStatus() { PageNo = element.PageNo });
+                    pageCompletionTotals.Add(element.PageNo, []);
                 }
 
-                Dictionary<GroupNo, uint> Total = PageCompletionTotals[Element.PageNo];
-                if (!Total.ContainsKey((GroupNo)Element.GroupNo))
+                Dictionary<GroupNo, uint> total = pageCompletionTotals[element.PageNo];
+                if (!total.ContainsKey((GroupNo)element.GroupNo))
                 {
-                    Total.Add((GroupNo)Element.GroupNo, 0);
+                    total.Add((GroupNo)element.GroupNo, 0);
                 }
 
-                Total[(GroupNo)Element.GroupNo] += 1;
+                total[(GroupNo)element.GroupNo] += 1;
             }
 
-            foreach (var PageNo in PageCompletionTotals.Keys)
+            foreach (var pageNo in pageCompletionTotals.Keys)
             {
-                CDataOrbPageStatus CurrentPage = PageStatus[PageNo];
-                foreach (var GroupNo in PageCompletionTotals[PageNo].Keys)
+                CDataOrbPageStatus currentPage = pageStatus[pageNo];
+                foreach (var groupNo in pageCompletionTotals[pageNo].Keys)
                 {
-                    CurrentPage.CategoryStatusList.Add(new CDataOrbCategoryStatus()
+                    currentPage.CategoryStatusList.Add(new CDataOrbCategoryStatus()
                     {
-                        CategoryId = (byte)(GroupNo == GroupNo.Group5 ? 0 : GroupNo),
-                        ReleaseNum = (byte)PageCompletionTotals[PageNo][GroupNo]
+                        CategoryId = (byte)(groupNo == GroupNo.Group5 ? 0 : groupNo),
+                        ReleaseNum = (byte)pageCompletionTotals[pageNo][groupNo]
                     });
                 }
             }
 
-            foreach (var Value in PageStatus.Values)
+            foreach (var value in pageStatus.Values)
             {
-                Result.Add(Value);
+                result.Add(value);
             }
 
-            return Result;
+            return result;
         }
 
-        public List<CDataItemUpdateResult> GetDragonForceUpgradeUpdateList(CharacterCommon Character)
+        public static List<CDataItemUpdateResult> GetDragonForceUpgradeUpdateList(CharacterCommon common)
         {
-            List<CDataItemUpdateResult> Results = new List<CDataItemUpdateResult>();
+            List<CDataItemUpdateResult> result = [];
 
-            var Upgrades = _Server.Database.SelectOrbReleaseElementFromDragonForceAugmentation(Character.CommonId);
-            foreach (var Upgrade in Upgrades)
+            var upgrades = common.OrbRelease;
+            foreach (var upgraded in upgrades)
             {
-                Results.Add(new CDataItemUpdateResult()
+                result.Add(new CDataItemUpdateResult()
                 {
                     UpdateItemNum = 1,
                     ItemList = new CDataItemList()
                     {
-                        ItemNum = Upgrade.ElementId,
-                        SlotNo = (byte)Upgrade.ElementId,
-                        EquipCharacterID = Character.CommonId
+                        ItemNum = upgraded.ElementId,
+                        SlotNo = (byte)upgraded.ElementId,
+                        EquipCharacterID = common.CommonId
                     }
                 });
             }
 
-            return Results;
+            return result;
         }
 
         private PacketQueue UpdateExtendedParamData(GameClient client, CharacterCommon character, DragonForceUpgrade upgrade, DbConnection? connectionIn = null)
@@ -123,12 +118,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     obj.MainPawnSlot += (ushort)upgrade.Amount;
                     // When the player unlocks this, the total number will be increased to 3.
                     client.Character.MyPawnSlotNum += (byte)upgrade.Amount;
-                    _Server.Database.UpdateMyPawnSlot(client.Character.CharacterId, client.Character.MyPawnSlotNum, connectionIn);
                     break;
                 case OrbGainParamType.SupportPawnSlot:
                     obj.SupportPawnSlot += (ushort)upgrade.Amount;
                     client.Character.RentalPawnSlotNum += (byte)upgrade.Amount;
-                    _Server.Database.UpdateRentalPawnSlot(client.Character.CharacterId, client.Character.RentalPawnSlotNum, connectionIn);
                     break;
                 case OrbGainParamType.UseItemSlot:
                     obj.UseItemSlot += (ushort)upgrade.Amount;
@@ -145,6 +138,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.PawnCraftNum:
                 // TODO: OrbGainParamType.MainPawnLostRate
                 case OrbGainParamType.MainPawnLostRate:
+                    if (character is Character arisen)
+                    {
+                        arisen.MainPawnLostRate += (ushort)upgrade.Amount;
+                    }
                     break;
                 case OrbGainParamType.SecretAbility:
                     queue.Enqueue(client, _Server.JobManager.UnlockSecretAbility(client, character, upgrade.SecretAbility, connectionIn));
@@ -159,8 +156,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 default:
                     break;
             }
-
-            _Server.Database.UpdateOrbGainExtendParam(character.CommonId, obj, connectionIn);
 
             switch (upgrade.GainType)
             {
@@ -195,50 +190,104 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return queue;
         }
 
-        private DragonForceUpgrade GetPlayerUpgrade(GameClient client, Character character, uint elementId)
+        public static CDataOrbGainExtendParam GetBaseExtendParam(CharacterCommon character)
         {
-            if (!gPlayerDragonForceUpgrades.ContainsKey(elementId))
+            CDataOrbGainExtendParam obj = new();
+
+            foreach (var release in character.OrbRelease)
             {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_INVALID_ELEMENT_ID, "Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
+                DragonForceUpgrade upgrade = character is Character ? gPlayerDragonForceUpgrades.GetValueOrDefault(release.ElementId) : gPawnDragonForceUpgrades.GetValueOrDefault(release.ElementId);
+                switch (upgrade?.GainType)
+                {
+                    case OrbGainParamType.AllJobsHpMax:
+                        obj.HpMax += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.AllJobsStaminaMax:
+                        obj.StaminaMax += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.AllJobsPhysicalAttack:
+                        obj.Attack += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.AllJobsPhysicalDefence:
+                        obj.Defence += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.AllJobsMagicalAttack:
+                        obj.MagicAttack += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.AllJobsMagicalDefence:
+                        obj.MagicDefence += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.AbilityCost:
+                        obj.AbilityCost += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.AccessorySlot:
+                        obj.JewelrySlot += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.MainPawnSlot:
+                        obj.MainPawnSlot += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.SupportPawnSlot:
+                        obj.SupportPawnSlot += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.UseItemSlot:
+                        obj.UseItemSlot += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.MaterialItemSlot:
+                        obj.MaterialItemSlot += (ushort)upgrade.Amount;
+                        break;
+                    case OrbGainParamType.EquipItemSlot:
+                        obj.EquipItemSlot += (ushort)upgrade.Amount;
+                        break;
+                }
             }
 
-            return gPlayerDragonForceUpgrades[elementId];
-        }
-
-        private DragonForceUpgrade GetPawnUpgrade(GameClient client, Pawn character, uint elementId)
-        {
-            if (!gPawnDragonForceUpgrades.ContainsKey(elementId))
+            if (character is Character characterArisen)
             {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_INVALID_ELEMENT_ID, "Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
-            }
+                if (characterArisen.CompletedQuests.ContainsKey(Shared.Model.Quest.QuestId.AServantsPledge))
+                {
+                    obj.MainPawnSlot += 2;
+                    characterArisen.MyPawnSlotNum += 2;
 
-            return gPawnDragonForceUpgrades[elementId];
+                    obj.SupportPawnSlot += 3;
+                    characterArisen.RentalPawnSlotNum += 3;
+                }
+
+                characterArisen.MyPawnSlotNum += (byte)obj.MainPawnSlot;
+                characterArisen.RentalPawnSlotNum += (byte)obj.SupportPawnSlot;
+
+                if (characterArisen.GameMode == GameMode.BitterblackMaze)
+                {
+                    obj.JewelrySlot += 3;
+                }
+             }
+
+            return obj;
         }
 
-        public PacketQueue UnlockDragonForceAugmentationUpgrade(GameClient client, CharacterCommon character, uint elementId)
+        private static DragonForceUpgrade GetPlayerUpgrade(uint elementId)
+        {
+            return gPlayerDragonForceUpgrades.TryGetValue(elementId, out DragonForceUpgrade value)
+                ? value
+                : throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_INVALID_ELEMENT_ID, "Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
+        }
+
+        private static DragonForceUpgrade GetPawnUpgrade(uint elementId)
+        {
+            return gPawnDragonForceUpgrades.TryGetValue(elementId, out DragonForceUpgrade value)
+                ? value
+                : throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_INVALID_ELEMENT_ID, "Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
+        }
+
+        public PacketQueue UnlockDragonForceAugmentationUpgrade(GameClient client, CharacterCommon common, uint elementId)
         {
             PacketQueue queue = new();
 
-            DragonForceUpgrade upgrade = null;
-
-            if (character is Character)
-            {
-                upgrade = GetPlayerUpgrade(client, (Character)character, elementId);
-            }
-            else
-            {
-                upgrade = GetPawnUpgrade(client, (Pawn)character, elementId);
-            }
-
-            if (upgrade == null)
-            {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_INVALID_ELEMENT_ID);
-            }
+            DragonForceUpgrade upgrade = common is Character arisen ? GetPlayerUpgrade(elementId) : GetPawnUpgrade(elementId);
 
             // Check for Valid Conditions before continuing
             if (upgrade.IsRestrictedByTotalLevels())
             {
-                uint totalLevels = TotalLevelsGained(character);
+                uint totalLevels = TotalLevelsGained(common);
                 if (totalLevels < upgrade.LvlUpCost)
                 {
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_NOT_COMPLETE_TRUNK);
@@ -270,20 +319,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             _Server.Database.ExecuteInTransaction(connection =>
             {
-                queue.AddRange(UpdateExtendedParamData(client, character, upgrade, connection));
+                queue.AddRange(UpdateExtendedParamData(client, common, upgrade, connection));
 
-                character.OrbRelease.Add(new()
+                common.OrbRelease.Add(new()
                 {
                     ElementId = elementId,
                     PageNo = (byte)upgrade.PageNo,
                     GroupNo = (byte)upgrade.GroupNo,
                     Index = (byte)upgrade.IndexNo,
                 });
-                _Server.Database.InsertIfNotExistsDragonForceAugmentation(character.CommonId, elementId, upgrade.PageNo, upgrade.GroupNo, upgrade.IndexNo, connection);
+                _Server.Database.InsertIfNotExistsDragonForceAugmentation(common.CommonId, elementId, upgrade.PageNo, upgrade.GroupNo, upgrade.IndexNo, connection);
 
-                if (character is Character)
+                if (common is Character)
                 {
-                    S2COrbDevoteReleaseOrbElementRes response = new S2COrbDevoteReleaseOrbElementRes()
+                    S2COrbDevoteReleaseOrbElementRes response = new()
                     {
                         GainParamType = upgrade.GainType,
                         RestOrb = _Server.WalletManager.GetWalletAmount(client.Character, WalletType.BloodOrbs),
@@ -296,9 +345,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
                 else
                 {
-                    S2COrbDevoteReleasePawnOrbElementRes response = new S2COrbDevoteReleasePawnOrbElementRes()
+                    S2COrbDevoteReleasePawnOrbElementRes response = new()
                     {
-                        PawnId = ((Pawn)character).PawnId,
+                        PawnId = ((Pawn)common).PawnId,
                         GainParamType = upgrade.GainType,
                         RestOrb = _Server.WalletManager.GetWalletAmount(client.Character, WalletType.BloodOrbs),
                         GainParamValue = upgrade.Amount
@@ -311,7 +360,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return queue;
         }
 
-        private uint TotalLevelsGained(CharacterCommon Character)
+        private static uint TotalLevelsGained(CharacterCommon Character)
         {
             uint TotalLevels = 0;
             foreach (var JobData in Character.CharacterJobDataList)
@@ -325,7 +374,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static Dictionary<OrbGainParamType, int> CountParamType(CharacterCommon character)
         {
             var upgrades = character is Character ? gPlayerDragonForceUpgrades : gPawnDragonForceUpgrades;
-            return character.OrbRelease.GroupBy(x => upgrades[x.ElementId].GainType).ToDictionary(g => g.Key, g => g.Count());
+            return character.OrbRelease.GroupBy(x => upgrades.GetValueOrDefault(x.ElementId)?.GainType ?? OrbGainParamType.None).ToDictionary(g => g.Key, g => g.Count());
         }
 
         private class DragonForceUpgrade
@@ -336,7 +385,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 this.LvlUpCost = 0;
                 this.GainType = OrbGainParamType.None;
                 this.Amount = 0;
-                this.Category = Category.None;
+                //this.Category = Category.None;
             }
 
             public OrbGainParamType GainType { get; private set; }
@@ -344,10 +393,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public LvlUpRestrictionType LvlUpRestrictionType { get; private set; }
             public uint LvlUpCost { get; private set; }
             public AbilityId SecretAbility { get; private set; }
-            public uint PageNo { get; private set; }
-            public uint GroupNo { get; private set; }
-            public uint IndexNo { get; private set; }
-            public Category Category { get; private set; }
+            public byte PageNo { get; private set; }
+            public byte GroupNo { get; private set; }
+            public byte IndexNo { get; private set; }
+            public Category Category
+            {
+                get
+                {
+                    return GroupNo switch
+                    {
+                        1 => Category.Vitality,
+                        2 => Category.Adventure,
+                        3 => Category.Magick,
+                        4 => Category.Combat,
+                        5 => Category.Other,
+                        _ => Category.None,
+                    };
+                }
+            }
 
             public bool IsSecretAbility()
             {
@@ -383,62 +446,34 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return this;
             }
 
-            public DragonForceUpgrade HasOrbUnlockRestriction(uint Amount)
+            public DragonForceUpgrade HasOrbUnlockRestriction(uint amount)
             {
                 this.LvlUpRestrictionType = LvlUpRestrictionType.Orbs;
-                this.LvlUpCost = Amount;
+                this.LvlUpCost = amount;
                 return this;
             }
 
-            public DragonForceUpgrade Unlocks(OrbGainParamType Type, uint Amount)
+            public DragonForceUpgrade Unlocks(OrbGainParamType type, uint amount)
             {
-                this.GainType = Type;
-                this.Amount = Amount;
+                this.GainType = type;
+                this.Amount = amount;
                 return this;
             }
 
-            public DragonForceUpgrade Unlocks(AbilityId Type)
+            public DragonForceUpgrade Unlocks(AbilityId type)
             {
                 this.GainType = OrbGainParamType.SecretAbility;
-                this.SecretAbility = Type;
-                this.Amount = (uint)Type;
+                this.SecretAbility = type;
+                this.Amount = (ushort)type;
                 return this;
             }
 
-            public DragonForceUpgrade Location(PageNo PageNo, GroupNo GroupNo, uint IndexNo)
+            public DragonForceUpgrade Location(PageNo pageNo, GroupNo groupNo, byte indexNo)
             {
-                this.PageNo = (uint)PageNo;
-                this.GroupNo = (uint)GroupNo;
-                this.IndexNo = IndexNo;
-                this.Category = GroupNo2Category(GroupNo);
+                this.PageNo = (byte)pageNo;
+                this.GroupNo = (byte)groupNo;
+                this.IndexNo = indexNo;
                 return this;
-            }
-
-            public CDataReleaseOrbElement AsCDataReleaseOrbElement()
-            {
-                return new CDataReleaseOrbElement()
-                {
-                    ElementId = 0
-                };
-            }
-
-            private Category GroupNo2Category(GroupNo GroupNo)
-            {
-                switch (GroupNo)
-                {
-                    case GroupNo.Group1:
-                        return Category.Vitality;
-                    case GroupNo.Group2:
-                        return Category.Adventure;
-                    case GroupNo.Group3:
-                        return Category.Magick;
-                    case GroupNo.Group4:
-                        return Category.Combat;
-                    case GroupNo.Group5:
-                        return Category.Other;
-                }
-
-                return Category.None;
             }
         }
 
@@ -477,7 +512,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             Combat = 5,
         }
 
-        private static readonly Dictionary<uint, DragonForceUpgrade> gPlayerDragonForceUpgrades = new Dictionary<uint, DragonForceUpgrade>()
+        private static readonly Dictionary<uint, DragonForceUpgrade> gPlayerDragonForceUpgrades = new()
         {
             #region PAGE1
 
@@ -955,7 +990,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x10] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
-                .Unlocks(OrbGainParamType.PawnAdventureNum, 1),
+                .Unlocks(OrbGainParamType.SupportPawnSlot, 1),
             [0x11] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group5, 2)
                 .HasTotalLevelsRestriction(60)
@@ -1108,7 +1143,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             #endregion
         };
 
-        private static readonly Dictionary<uint, DragonForceUpgrade> gPawnDragonForceUpgrades = new Dictionary<uint, DragonForceUpgrade>()
+        private static readonly Dictionary<uint, DragonForceUpgrade> gPawnDragonForceUpgrades = new()
         {
             #region PAGE1
 

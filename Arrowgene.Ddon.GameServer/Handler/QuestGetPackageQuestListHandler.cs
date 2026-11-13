@@ -121,8 +121,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     packageQuestList.Details.Add(new()
                     {
                         SeqNo = seqNo,
-                        Unk1 = 0,
-                        Unk2 = 0,
+                        CurrentProgress = 0,
+                        MaxProgress = 0,
                         Unk3 = [],
                         Unk4 = true,
                         Unk5 = true,

@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Chat.Command;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -39,7 +40,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         var newMsg = newSet.CharacterMessageList[j];
 
                         // Restore the weird chat bubble thing that you can't normally type.
-                        if (newMsg.Message.Length > 0 && StringInfo.GetNextTextElement(newMsg.Message) != ChatBubblePrefix)
+                        if (newMsg.Message.Length > 0 
+                            && !newMsg.Message.StartsWith(ChatCommandHandler.ChatCommandStart) 
+                            && StringInfo.GetNextTextElement(newMsg.Message) != ChatBubblePrefix)
                         {
                             newMsg.Message = $"{ChatBubblePrefix}{newMsg.Message}";
                         }

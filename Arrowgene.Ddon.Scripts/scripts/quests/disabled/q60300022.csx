@@ -51,7 +51,7 @@ public class ScriptedQuest : IQuest
             ]);
         process0.AddRawBlock(QuestAnnounceType.CheckpointAndUpdate)
             .AddResultCmdQstTalkChg(NpcId.Morgan, 28291) // Don't lose context on checkpoint
-            .AddResultCmdAchievementBanner(6, 10)
+            .AddResultCmdCallGreatPurpose(6, 10)
             .AddCheckCommands([
                 QuestManager.CheckCommand.StageNo(1150)
             ])

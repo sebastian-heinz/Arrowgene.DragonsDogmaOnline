@@ -614,6 +614,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnJoinPartyRentedPawnHandler(this));
             AddHandler(new PawnReturnRentedPawnHandler(this));
             AddHandler(new PawnUpdatePawnReactionListHandler(this));
+            AddHandler(new PawnUpdatePawnShareRangeHandler(this));
             AddHandler(new PawnGetFavoritePawnListHandler(this));
             AddHandler(new PawnSetFavoritePawnHandler(this));
             AddHandler(new PawnDeleteFavoritePawnHandler(this));
@@ -647,7 +648,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetEndContentsGroupHandler(this));
             AddHandler(new QuestGetEndContentsRecruitListHandler(this));
             AddHandler(new QuestGetLevelBonusListHandler(this));
-            AddHandler(new QuestGetLightQuestList(this));
+            AddHandler(new QuestGetLightQuestListHandler(this));
             AddHandler(new QuestGetLotQuestListHandler(this));
             AddHandler(new QuestGetMainQuestListHandler(this));
             AddHandler(new QuestGetMobHuntQuestListHandler(this));

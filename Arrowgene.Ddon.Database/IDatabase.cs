@@ -123,6 +123,7 @@ public interface IDatabase
     bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null);
     uint GetPawnOwnerCharacterId(uint pawnId, DbConnection? connectionIn = null);
     bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null);
+    bool UpdatePawnShareRange(uint pawnId, byte shareRange);
 
     // Pawn Training Status
     bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus, DbConnection? connectionIn = null);
@@ -298,10 +299,6 @@ public interface IDatabase
     List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(
         uint commonId, DbConnection? connectionIn = null
     );
-
-    bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
-    bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam param, DbConnection? connectionIn = null);
-    CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null);
 
     // Bazaar
     ulong InsertBazaarExhibition(BazaarExhibition exhibition, DbConnection? connectionIn = null);

@@ -433,8 +433,8 @@ namespace Arrowgene.Ddon.Shared.Model
             [CustomSkillId.FlamingBowP] = 105,
             [CustomSkillId.ExhaustingBowT] = 210,
             [CustomSkillId.ExhaustingBowP] = 110,
-            [CustomSkillId.HealingFlashT] = 201,
-            [CustomSkillId.HealingFlashP] = 101,
+            [CustomSkillId.HealingFlashT] = 213,
+            [CustomSkillId.HealingFlashP] = 113,
             [CustomSkillId.CripplingBowT] = 208,
             [CustomSkillId.CripplingBowP] = 108,
 

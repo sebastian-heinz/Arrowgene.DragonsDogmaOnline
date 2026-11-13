@@ -71,6 +71,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         client.Enqueue(ntc, queue);
                     }
                 }
+
+                uint stageNo = StageManager.ConvertIdToStageNo(request.LayoutId.AsStageLayoutId());
+                if (Server.AssetRepository.GatheringSpotInfoAsset.GatheringInfoMap.TryGetValue(stageNo, out var spots)
+                    && spots.TryGetValue((request.LayoutId.AsStageLayoutId().GroupId, request.PosId), out var spotInfo))
+                {
+                    if (spotInfo.GatheringType is GatheringType.OM_GATHER_GRASS
+                                               or GatheringType.OM_GATHER_FLOWER
+                                               or GatheringType.OM_GATHER_MUSHROOM)
+                    {
+                        queue.AddRange(Server.AchievementManager.HandleCollect(client, AchievementCollectParam.Herb, connection));
+                    }
+                }
             });
 
             queue.Send();

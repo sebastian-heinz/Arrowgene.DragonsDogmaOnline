@@ -540,7 +540,7 @@ namespace Arrowgene.Ddon.Shared.Model
         Nate = 714,
         Nathaniel = 1310,
         Nave = 2704,
-        Navido = 681,
+        Navid = 681,
         Nayajiku = 3050,
         NecroMaster = 573,
         Nedo0 = 29,

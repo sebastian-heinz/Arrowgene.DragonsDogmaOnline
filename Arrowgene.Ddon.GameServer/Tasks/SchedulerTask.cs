@@ -62,5 +62,10 @@ namespace Arrowgene.Ddon.GameServer.Tasks
         /// </summary>
         /// <returns></returns>
         public abstract string TaskTypeName();
+
+        public virtual string TaskName()
+        {
+            return Type.ToString();
+        }
     }
 }

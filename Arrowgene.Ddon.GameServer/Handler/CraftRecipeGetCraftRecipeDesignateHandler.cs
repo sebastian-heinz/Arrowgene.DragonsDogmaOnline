@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var allRecipes = Server.AssetRepository.CraftingRecipesAsset
                     .Where(x => x.Category == request.Category)
                     .SelectMany(x => x.RecipeList)
-                    .Where(x => x.UnlockID > 0);
+                    .Where(x => x.UnlockID > 0 && !x.IsHide);
 
             foreach ( var item in request.ItemList)
             {

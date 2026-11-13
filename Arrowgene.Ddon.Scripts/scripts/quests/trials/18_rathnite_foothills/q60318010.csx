@@ -115,7 +115,7 @@ public class ScriptedQuest : IQuest
         process0.AddTalkToNpcBlock(QuestAnnounceType.Update, Stage.BerthasBanditGroupHideout, NpcId.Joaquim, 25363);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.RathniteFoothillsLakeside0, NpcId.Victor, 25365);
         process0.AddProcessEndBlock(true)
-			.AddResultCmdAchievementBanner(6, 1);
+			.AddResultCmdCallGreatPurpose(6, 1);
 
 		var process1 = AddNewProcess(1);
 		process1.AddRawBlock(QuestAnnounceType.None)

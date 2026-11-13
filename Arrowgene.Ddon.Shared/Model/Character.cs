@@ -147,6 +147,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool IsLanternLit => LanternTimer > 0;
         public uint LanternTimer { get; set; }
 
+        public ushort MainPawnLostRate { get; set; }
+
         public Dictionary<JobId, JobEmblem> JobEmblems { get; set; }
 
         public EpitaphRoadState EpitaphRoadState { get; set; }

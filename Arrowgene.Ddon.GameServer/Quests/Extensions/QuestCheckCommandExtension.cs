@@ -358,7 +358,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
 
         public static List<CDataQuestCommand> AddCheckCmdIsStageNo(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, bool showMarker = true)
         {
-            checkCommands.Add(showMarker ? 
+            checkCommands.Add(showMarker ?
                 QuestManager.CheckCommand.StageNo(stageInfo.StageNo) :
                 QuestManager.CheckCommand.StageNoWithoutMarker(stageInfo.StageNo));
             return checkCommands;
@@ -660,9 +660,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
 
         // Ghidra-discovered check commands (IDs 211–256)
 
-        public static List<CDataQuestCommand> AddCheckCmdIsSubstoryStateBit18(this List<CDataQuestCommand> checkCommands)
+        public static List<CDataQuestCommand> AddCheckCmdIsPartyDisbanded(this List<CDataQuestCommand> checkCommands)
         {
-            checkCommands.Add(QuestManager.CheckCommand.IsSubstoryStateBit18());
+            checkCommands.Add(QuestManager.CheckCommand.IsPartyDisbanded());
             return checkCommands;
         }
 
@@ -816,9 +816,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdIsSubstoryIngameHourInRange(this List<CDataQuestCommand> checkCommands, int minHour, int maxHour)
+        public static List<CDataQuestCommand> AddCheckCmdIsSubstoryProgressInRange(this List<CDataQuestCommand> checkCommands, int minValue, int maxValue)
         {
-            checkCommands.Add(QuestManager.CheckCommand.IsSubstoryIngameHourInRange(minHour, maxHour));
+            checkCommands.Add(QuestManager.CheckCommand.IsSubstoryProgressInRange(minValue, maxValue));
             return checkCommands;
         }
 
@@ -834,21 +834,21 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdIsContentsTimerBElapsed(this List<CDataQuestCommand> checkCommands, int timerNo)
+        public static List<CDataQuestCommand> AddCheckCmdIsTimerElapsed(this List<CDataQuestCommand> checkCommands, int timerNo, int sec)
         {
-            checkCommands.Add(QuestManager.CheckCommand.IsContentsTimerBElapsed(timerNo));
+            checkCommands.Add(QuestManager.CheckCommand.IsTimerElapsed(timerNo, sec));
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdIsQuestClearCountNotLess(this List<CDataQuestCommand> checkCommands, int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+        public static List<CDataQuestCommand> AddCheckCmdIsTimerNotElapsed(this List<CDataQuestCommand> checkCommands, int timerNo, int sec)
         {
-            checkCommands.Add(QuestManager.CheckCommand.IsQuestClearCountNotLess(param01, param02, param03, param04));
+            checkCommands.Add(QuestManager.CheckCommand.IsTimerNotElapsed(timerNo, sec));
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdIsContentsModeTimerNotLess(this List<CDataQuestCommand> checkCommands, int timeSec)
+        public static List<CDataQuestCommand> AddCheckCmdRisingMagmaTime(this List<CDataQuestCommand> checkCommands, int timeSec)
         {
-            checkCommands.Add(QuestManager.CheckCommand.IsContentsModeTimerNotLess(timeSec));
+            checkCommands.Add(QuestManager.CheckCommand.RisingMagmaTime(timeSec));
             return checkCommands;
         }
 
@@ -957,6 +957,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         public static List<CDataQuestCommand> AddCheckCmdTouchClanBoard(this List<CDataQuestCommand> checkCommands)
         {
             checkCommands.Add(QuestManager.CheckCommand.TouchClanBoard());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsOrderJobTutorialQuest(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsOrderJobTutorialQuest());
             return checkCommands;
         }
     }

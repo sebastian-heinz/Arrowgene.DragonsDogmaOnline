@@ -353,6 +353,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         questFlags[questFlag.Type] = new Dictionary<int, QuestFlag>();
                     }
                     questFlags[questFlag.Type][questFlag.Value] = questFlag;
+
+					// Displays correct announce on checkpoint
+                    if (resultCommand.Command == (ushort)QuestResultCommand.UpdateAnnounceDirect)
+                    {
+                        announceNoCount = (uint)resultCommand.Param01 + 1;
+                    }
                 }
 
 
@@ -394,10 +400,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 // Make copy of the result commands
                 processState.ResultCommandList = processState.ResultCommandList
                     .Where(x => x.Command != (ushort)QuestResultCommand.UpdateAnnounce &&
+                                x.Command != (ushort)QuestResultCommand.UpdateAnnounceDirect &&
                                 x.Command != (ushort)QuestResultCommand.SetAnnounce &&
                                 x.Command != (ushort)QuestResultCommand.CallGeneralAnnounce &&
                                 x.Command != (ushort)QuestResultCommand.PlayMessage &&
-                                x.Command != (ushort)QuestResultCommand.AchievementBanner &&
+                                x.Command != (ushort)QuestResultCommand.CallGreatPurpose &&
                                 x.Command != (ushort)QuestResultCommand.HandItem &&
                                 x.Command != (ushort)QuestResultCommand.PushImteToPlBag)
                     .ToList();

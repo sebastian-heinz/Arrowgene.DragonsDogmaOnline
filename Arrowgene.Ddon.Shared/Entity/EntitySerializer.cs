@@ -915,6 +915,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnTrainingGetTrainingStatusReq.Serializer());
             Create(new C2SPawnTrainingSetTrainingStatusReq.Serializer());
             Create(new C2SPawnUpdatePawnReactionListReq.Serializer());
+            Create(new C2SPawnUpdatePawnShareRangeReq.Serializer());
             Create(new C2SPawnGetRentedPawnListReq.Serializer());
 
             Create(new C2SPhotoPhotoTakeNtc.Serializer());
@@ -1619,6 +1620,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnTrainingSetTrainingStatusRes.Serializer());
             Create(new S2CPawnUpdatePawnReactionListNtc.Serializer());
             Create(new S2CPawnUpdatePawnReactionListRes.Serializer());
+            Create(new S2CPawnUpdatePawnShareRangeRes.Serializer());
             Create(new S2CPawnUpdateRentalPawnAdventureCountNtc.Serializer());
 
             Create(new S2CProfileGetAvailableBackgroundListRes.Serializer());
@@ -1709,7 +1711,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestSetNavigationQuestRes.Serializer());
             Create(new S2CQuestSetPriorityQuestNtc.Serializer());
             Create(new S2CQuestSetPriorityQuestRes.Serializer());
-            Create(new S2CQuestSubstoryStartAnnounceNtc.Serializer());
+            Create(new S2CQuestSubstoryMissionStartNtc.Serializer());
+            Create(new S2CQuestSubstoryMissionCompleteNtc.Serializer());
+            Create(new S2CQuestSubstoryMissionAllCompleteNtc.Serializer());
             Create(new S2CQuestTimeGainQuestPlayStartNtc.Serializer());
             Create(new S2CQuestTimerNtc.Serializer());
             Create(new S2CQuestAddPackageQuestPointRes.Serializer());

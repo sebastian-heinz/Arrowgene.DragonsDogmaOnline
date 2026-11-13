@@ -71,8 +71,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 //Acre Selund
                 Stage.FortressCityMegadoResidentialLevel1,
-                Stage.FortressCityMegadoResidentialLevel2,
-                Stage.FortressCityMegadoResidentialLevel3,
                 Stage.FortressCityMegadoCraftRoom,
                 Stage.FortThines1, // TODO: The other ones?
                 Stage.FortThinesGreatDiningHall,
@@ -114,8 +112,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             Stage.FortThines1,
             Stage.LookoutCastle1,
             Stage.FortressCityMegadoResidentialLevel1, 
-            Stage.FortressCityMegadoResidentialLevel2, 
-            Stage.FortressCityMegadoResidentialLevel3,
             Stage.BitterblackMazeCove
         }.Select(x => x.StageId).ToHashSet();
 

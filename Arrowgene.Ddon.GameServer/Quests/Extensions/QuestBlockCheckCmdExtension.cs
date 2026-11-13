@@ -721,10 +721,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
 
         // Ghidra-discovered check commands (IDs 211–256)
 
-        public static QuestBlock AddCheckCmdIsSubstoryStateBit18(this QuestBlock questBlock, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdIsPartyDisbanded(this QuestBlock questBlock, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsSubstoryStateBit18();
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsPartyDisbanded();
             return questBlock;
         }
 
@@ -903,10 +903,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdIsSubstoryIngameHourInRange(this QuestBlock questBlock, int minHour, int maxHour, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdIsSubstoryProgressInRange(this QuestBlock questBlock, int minValue, int maxValue, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsSubstoryIngameHourInRange(minHour, maxHour);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsSubstoryProgressInRange(minValue, maxValue);
             return questBlock;
         }
 
@@ -924,24 +924,24 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdIsContentsTimerBElapsed(this QuestBlock questBlock, int timerNo, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdIsTimerElapsed(this QuestBlock questBlock, int timerNo, int sec, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsContentsTimerBElapsed(timerNo);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsTimerElapsed(timerNo, sec);
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdIsQuestClearCountNotLess(this QuestBlock questBlock, int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdIsTimerNotElapsed(this QuestBlock questBlock, int timerNo, int sec, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsQuestClearCountNotLess(param01, param02, param03, param04);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsTimerNotElapsed(timerNo, sec);
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdIsContentsModeTimerNotLess(this QuestBlock questBlock, int timeSec, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdRisingMagmaTime(this QuestBlock questBlock, int timeSec, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsContentsModeTimerNotLess(timeSec);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdRisingMagmaTime(timeSec);
             return questBlock;
         }
 
@@ -1068,6 +1068,13 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
             questBlock.CheckCommands[commandListIndex].AddCheckCmdTouchClanBoard();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsOrderJobTutorialQuest(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsOrderJobTutorialQuest();
             return questBlock;
         }
     }

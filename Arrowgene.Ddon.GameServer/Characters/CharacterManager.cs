@@ -57,14 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 character.FavoritedPawnIds = Server.Database.GetPawnFavorites(character.CharacterId, connectionIn);
 
-                character.ExtendedParams = Server.Database.SelectOrbGainExtendParam(character.CommonId, connectionIn);
-                if (character.ExtendedParams == null)
-                {
-                    // Old DB is in use and new table not populated with required data for character
-                    Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.CharacterId}, CommonId={character.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
-                    return null;
-                }
-
+                character.ExtendedParams = OrbUnlockManager.GetBaseExtendParam(character);
                 character.ReleasedExtendedJobParams = Server.JobOrbUnlockManager.GetReleasedElements(character, connectionIn);
                 Server.JobOrbUnlockManager.EvaluateJobOrbTreeUnlocks(character);
 
@@ -324,13 +317,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 Pawn pawn = character.Pawns[i];
                 pawn.Server = character.Server;
                 pawn.Equipment = character.Storage.GetPawnEquipment(i);
-                pawn.ExtendedParams = Server.Database.SelectOrbGainExtendParam(pawn.CommonId, connectionIn);
+                pawn.ExtendedParams = OrbUnlockManager.GetBaseExtendParam(pawn);
                 pawn.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob(character, pawn.Job);
-                if (pawn.ExtendedParams == null)
-                {
-                    // Old DB is in use and new table not populated with required data for character
-                    Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.ContentCharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
-                }
                 if (pawn.PawnType != PawnType.Main)
                 {
                     Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.ContentCharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} has invalid pawn type; locally setting pawn type back to Main.");

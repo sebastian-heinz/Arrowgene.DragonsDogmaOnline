@@ -16,7 +16,7 @@ public partial class DdonSqlDb : SqlDb
         @"SELECT * FROM ddon_pawn WHERE is_official_pawn=true;";
 
     private const string SqlSelectAllPlayerPawns =
-        @"SELECT * FROM ddon_pawn WHERE is_official_pawn=false LIMIT @limit;";
+        @"SELECT * FROM ddon_pawn WHERE is_official_pawn=false AND share_range < 5 LIMIT @limit;";
 
     private const string SqlSelectPawnOwnerId =
         "SELECT * FROM ddon_pawn WHERE \"pawn_id\" = @pawn_id;";
@@ -58,6 +58,14 @@ public partial class DdonSqlDb : SqlDb
         	)
         WHERE
         	ddon_pawn.character_id != @character_id
+            AND ddon_pawn.share_range < 5
+            AND NOT (ddon_pawn.share_range = 2 AND (contact.status IS NULL OR contact.status != 2))
+            AND NOT (ddon_pawn.share_range = 3 AND (clan.clan_id IS NULL OR clan.clan_id != @clan_id))
+            AND NOT (
+                    ddon_pawn.share_range = 4 
+                    AND (contact.status IS NULL OR contact.status != 2)
+                    AND (clan.clan_id IS NULL OR clan.clan_id != @clan_id)
+                )
         	AND (
         		@dont_filter_by_owner_name
         		OR (
@@ -114,7 +122,8 @@ public partial class DdonSqlDb : SqlDb
         "equipment_quality_level",
         "consumable_quantity_level",
         "cost_performance_level",
-        "is_official_pawn"
+        "is_official_pawn",
+        "share_range"
     };
 
     protected static readonly string[] CDataPawnReactionFields = new[]
@@ -144,6 +153,11 @@ public partial class DdonSqlDb : SqlDb
     private static readonly string SqlUpdatePawnReaction =
         $"UPDATE \"ddon_pawn_reaction\" SET {BuildQueryUpdate(CDataPawnReactionFields)} WHERE \"pawn_id\" = @pawn_id AND \"reaction_type\"=@reaction_type;";
 
+    private static readonly string SqlUpdatePawnShareRange =
+        "UPDATE \"ddon_pawn\" SET \"share_range\"=@share_range WHERE \"pawn_id\"=@pawn_id;";
+
+    private static readonly string SqlSelectPawnShareRangeByPawnId =
+        "SELECT \"share_range\" FROM \"ddon_pawn\" WHERE \"pawn_id\" = @pawn_id;";
     private static readonly string SqlSelectPawnReactionByPawnId =
         $"SELECT {BuildQueryField(CDataPawnReactionFields)} FROM \"ddon_pawn_reaction\" WHERE \"pawn_id\" = @pawn_id;";
 
@@ -463,6 +477,16 @@ public partial class DdonSqlDb : SqlDb
 
         ExecuteReader(
             conn,
+            SqlSelectPawnShareRangeByPawnId,
+            command => { AddParameter(command, "@pawn_id", pawn.PawnId); },
+            reader =>
+            {
+                if (reader.Read()) pawn.ShareRange = GetByte(reader, "share_range");
+            }
+        );
+
+        ExecuteReader(
+            conn,
             SqlSelectPawnReactionByPawnId,
             command => { AddParameter(command, "@pawn_id", pawn.PawnId); },
             reader =>
@@ -706,6 +730,20 @@ public partial class DdonSqlDb : SqlDb
         ) == 1;
     }
 
+    public override bool UpdatePawnShareRange(uint pawnId, byte shareRange)
+    {
+        using DbConnection connection = OpenNewConnection();
+        return ExecuteNonQuery(
+            connection,
+            SqlUpdatePawnShareRange,
+            command =>
+            {
+                AddParameter(command, "@pawn_id", pawnId);
+                AddParameter(command, "@share_range", shareRange);
+            }
+        ) == 1;
+    }
+
     public bool DeleteNormalSkillParam(uint pawnId, byte reactionType)
     {
         return ExecuteNonQuery(
@@ -781,6 +819,7 @@ public partial class DdonSqlDb : SqlDb
         AddParameter(command, "@training_points", pawn.TrainingPoints);
         AddParameter(command, "@available_training", pawn.AvailableTraining);
         AddParameter(command, "@is_official_pawn", false);
+        AddParameter(command, "@share_range", pawn.ShareRange);
 
         AddParameter(command, "@craft_exp", pawn.CraftData.CraftExp);
         AddParameter(command, "@craft_rank", pawn.CraftData.CraftRank);

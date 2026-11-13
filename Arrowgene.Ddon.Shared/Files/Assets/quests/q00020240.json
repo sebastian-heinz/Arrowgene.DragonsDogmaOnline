@@ -30,10 +30,12 @@
             "type": "fixed",
             "loot_pool": [
                 {
+                    "comment": "Unappraised Wind Trinket (King)",
                     "item_id": 13489,
                     "num": 1
                 },
                 {
+                    "comment": "Key Of Dragon Force",
                     "item_id": 14189,
                     "num": 1
                 }
@@ -76,9 +78,7 @@
                     "named_enemy_params_id": 1687,
                     "start_think_tbl_no": 2,
                     "is_manual_set": true,
-                    "is_required": false,
-                    "repop_count": 50,
-                    "repop_wait_second": 0
+                    "is_boss_gauge": true
                 },
                 {
                     "comment": "Dragon Crystal of Evil Sealing",
@@ -90,9 +90,7 @@
                     "named_enemy_params_id": 1687,
                     "start_think_tbl_no": 2,
                     "is_manual_set": true,
-                    "is_required": false,
-                    "repop_count": 50,
-                    "repop_wait_second": 0
+                    "is_boss_gauge": true
                 },
                 {
                     "comment": "Dragon Crystal of Power Sapping",
@@ -104,9 +102,7 @@
                     "named_enemy_params_id": 1686,
                     "start_think_tbl_no": 2,
                     "is_manual_set": true,
-                    "is_required": false,
-                    "repop_count": 50,
-                    "repop_wait_second": 0
+                    "is_boss_gauge": true
                 },
                 {
                     "comment": "Dragon Crystal of Power Sealing",
@@ -118,9 +114,7 @@
                     "named_enemy_params_id": 1686,
                     "start_think_tbl_no": 2,
                     "is_manual_set": true,
-                    "is_required": false,
-                    "repop_count": 50,
-                    "repop_wait_second": 0
+                    "is_boss_gauge": true
                 }
             ]
         },
@@ -135,24 +129,28 @@
                 {
                     "comment": "Memory of Sighs",
                     "enemy_id": "0x030105",
+                    "start_think_tbl_no": 1,
                     "level": 77,
                     "exp": 0,
-                    "index": 2,
+                    "index": 0,
                     "enemy_target_types_id": 1,
                     "named_enemy_params_id": 1701,
                     "repop_count": 50,
-                    "repop_wait_second": 45
+                    "repop_wait_second": 0,
+                    "is_manual_set": true
                 },
                 {
                     "comment": "Memory of Sighs",
                     "enemy_id": "0x030105",
+                    "start_think_tbl_no": 1,
                     "level": 77,
                     "exp": 0,
-                    "index": 5,
+                    "index": 1,
                     "enemy_target_types_id": 1,
                     "named_enemy_params_id": 1701,
                     "repop_count": 50,
-                    "repop_wait_second": 45
+                    "repop_wait_second": 0,
+                    "is_manual_set": true
                 }
             ]
         },
@@ -160,31 +158,35 @@
             "comment": "Adds (Gimick)",
             "stage_id": {
                 "id": 380,
-                "group_id": 3
+                "group_id": 2
             },
             "placement_type": "Manual",
             "enemies": [
                 {
                     "comment": "Memory of Sighs",
                     "enemy_id": "0x030105",
+                    "start_think_tbl_no": 1,
+                    "level": 77,
+                    "exp": 0,
+                    "index": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1701,
+                    "repop_count": 50,
+                    "repop_wait_second": 0,
+                    "is_manual_set": true
+                },
+                {
+                    "comment": "Memory of Sighs",
+                    "enemy_id": "0x030105",
+                    "start_think_tbl_no": 1,
                     "level": 77,
                     "exp": 0,
                     "index": 1,
                     "enemy_target_types_id": 1,
                     "named_enemy_params_id": 1701,
                     "repop_count": 50,
-                    "repop_wait_second": 45
-                },
-                {
-                    "comment": "Memory of Sighs",
-                    "enemy_id": "0x030105",
-                    "level": 77,
-                    "exp": 0,
-                    "index": 3,
-                    "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1701,
-                    "repop_count": 50,
-                    "repop_wait_second": 45
+                    "repop_wait_second": 0,
+                    "is_manual_set": true
                 }
             ]
         }
@@ -217,7 +219,18 @@
                         "z": -19507
                     },
                     "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 4807, "comment": "Gerd"},
                         {"type": "QstLayout", "action": "Set", "value": 4061, "comment": "Spawn NPCs"}
+                    ],
+                    "result_commands": [
+                        {"type": "QstTalkChg", "Param1": 1, "Param2": 17390, "comment": "The White Dragon"},
+                        {"type": "QstTalkChg", "Param1": 3, "Param2": 15936, "comment": "Klaus"},
+                        {"type": "QstTalkChg", "Param1": 7, "Param2": 15937, "comment": "Gerd"},
+                        {"type": "QstTalkChg", "Param1": 23, "Param2": 17391, "comment": "Gearóid"},
+                        {"type": "QstTalkChg", "Param1": 20, "Param2": 17392, "comment": "Cecily"},
+                        {"type": "QstTalkChg", "Param1": 501, "Param2": 17394, "comment": "Gurdolin"},
+                        {"type": "QstTalkChg", "Param1": 13, "Param2": 17395, "comment": "Lise"},
+                        {"type": "QstTalkChg", "Param1": 21, "Param2": 17396, "comment": "Elliot"}
                     ]
                 },
                 {
@@ -228,14 +241,23 @@
                     "event_id": 25
                 },
                 {
-                    "type": "IsStageNo",
+                    "type": "Raw",
                     "announce_type": "Update",
                     "checkpoint": true,
-                    "stage_id": {
-                        "id": 386
-                    },
                     "contents_release": [
                         {"flag_info": "ValtableHall.ValtableHallUpperArea"}
+                    ],
+                    "check_commands": [
+                        {"type": "SceHitIn", "Param1": 881, "Param2": 0}
+                    ],
+                    "result_commands": [
+                        {"type": "QstTalkChg", "Param1": 20, "Param2": 17393, "comment": "Cecily"}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "StageNoWithoutMarker", "Param1": 884}
                     ]
                 },
                 {
@@ -259,15 +281,46 @@
                     "jump_stage_id": {
                         "id": 380
                     },
-                    "start_pos_no": 0,
-                    "flags": [
-                        {"type": "QstLayout", "action": "Set", "value": 4060, "comment": "Spawn NPCs"}
-                    ]
+                    "start_pos_no": 0
                 },
                 {
                     "type": "KillGroup",
                     "announce_type": "Update",
-                    "groups": [0]
+                    "groups": [0],
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 4061, "comment": "Spawn NPCs"},
+                        {"type": "QstLayout", "action": "Set", "value": 4060, "comment": "Spawn NPCs"},
+                        {"type": "QstLayout", "action": "Set", "value": 5102, "comment": "Spawn tower bases"}
+                    ],
+                    "result_commands": [
+                        {"type": "PlayMessage", "Param1": 15965, "Param2": 10, "comment": "Cecily: O Dragon... Dear Willmia..."},
+                        {"type": "PlayMessage", "Param1": 15966, "Param2": 10, "comment": "Cecily: I will overcome this trial!"},
+                        {"type": "PlayMessage", "Param1": 15977, "Param2": 10, "comment": "Gurdolin: I won't hold back!"},
+                        {"type": "PlayMessage", "Param1": 15989, "Param2": 10, "comment": "Elliot: Forgive me, Spirit Dragon!"},
+                        {"type": "PlayMessage", "Param1": 15983, "Param2": 10, "comment": "Lise: Jump high and attack! How about this!?"},
+                        {"type": "PlayMessage", "Param1": 15967, "Param2": 10, "comment": "Cecily: Sleep now... And settle into a quiet slumber..."},
+                        {"type": "PlayMessage", "Param1": 15990, "Param2": 10, "comment": "Elliot: Even when it is ill, a Dragon is truly formidable, isn't it?"},
+                        {"type": "PlayMessage", "Param1": 15978, "Param2": 10, "comment": "Gurdolin: Hey, you know holding back is disrespectful, right?"},
+                        {"type": "PlayMessage", "Param1": 15968, "Param2": 10, "comment": "Cecily: Be still, O Spirit Dragon!"},
+                        {"type": "PlayMessage", "Param1": 15984, "Param2": 10, "comment": "Lise: Run low and attack! How's that?"},
+                        {"type": "PlayMessage", "Param1": 15979, "Param2": 10, "comment": "Gurdolin: Lise, you're holding back!"},
+                        {"type": "PlayMessage", "Param1": 15991, "Param2": 10, "comment": "Elliot: I won't run away, I will not flee!"},
+                        {"type": "PlayMessage", "Param1": 15971, "Param2": 10, "comment": "Cecily: How about this!?"},
+                        {"type": "PlayMessage", "Param1": 15981, "Param2": 10, "comment": "Gurdolin: Elliot, get a move on!"},
+                        {"type": "PlayMessage", "Param1": 15972, "Param2": 10, "comment": "Cecily: Hyah!"},
+                        {"type": "PlayMessage", "Param1": 15985, "Param2": 10, "comment": "Lise: Turn quick and attack! Swiftly! As fast as I am!"},
+                        {"type": "PlayMessage", "Param1": 15973, "Param2": 10, "comment": "Cecily: Let's do it in waves!"},
+                        {"type": "PlayMessage", "Param1": 15993, "Param2": 10, "comment": "Elliot: Hah—hah... that's tough."},
+                        {"type": "PlayMessage", "Param1": 15986, "Param2": 10, "comment": "Lise: My stamina is running out! This might not end well!"},
+                        {"type": "PlayMessage", "Param1": 15974, "Param2": 10, "comment": "Cecily: Everyone... good luck."},
+                        {"type": "PlayMessage", "Param1": 15992, "Param2": 10, "comment": "Elliot: Captain, let's decide this once and for all!"},
+                        {"type": "PlayMessage", "Param1": 15982, "Param2": 10, "comment": "Gurdolin: A Dragon is a Dragon no matter what the circumstance... they're tough."},
+                        {"type": "PlayMessage", "Param1": 15987, "Param2": 10, "comment": "Lise: We've come this far! We will see it through to the end!"},
+                        {"type": "PlayMessage", "Param1": 15975, "Param2": 10, "comment": "Cecily: ...I have a mission to complete."},
+                        {"type": "PlayMessage", "Param1": 15988, "Param2": 10, "comment": "Lise: I will～! I will survive～!"},
+                        {"type": "PlayMessage", "Param1": 15994, "Param2": 10, "comment": "Elliot: Surely... Even Master Joseph will commend me now..."},
+                        {"type": "PlayMessage", "Param1": 15976, "Param2": 10, "comment": "Cecily: Willmia... I'll do the rest!"}
+                    ]
                 },
                 {
                     "type": "PlayEvent",
@@ -277,10 +330,10 @@
                     "event_id": 5,
                     "flags": [
                         {"type": "QstLayout", "action": "Clear", "value": 4060, "comment": "Spawn NPCs"},
-                        {"type": "QstLayout", "action": "Clear", "value": 4061, "comment": "Spawn NPCs"},
-                        {"type": "QstLayout", "action": "Set", "value": 4064, "comment": "Spawn NPCs"},
-                        {"type": "QstLayout", "action": "Set", "value": 4808, "comment": "Spawn Gearoid"},
-                        {"type": "QstLayout", "action": "Set", "value": 4807, "comment": "Spawn Gerd"}
+                        {"type": "QstLayout", "action": "Clear", "value": 5102, "comment": "Spawn tower bases"}
+                    ],
+                    "result_commands": [
+                        {"type": "StopMessage"}
                     ]
                 },
                 {
@@ -288,43 +341,67 @@
                     "stage_id": {
                         "id": 3
                     },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 4064, "comment": "Spawn NPCs"},
+                        {"type": "QstLayout", "action": "Set", "value": 4808, "comment": "Spawn Gearoid"}
+                    ],
                     "announce_type": "Update",
                     "checkpoint": true,
                     "npc_id": "Joseph",
-                    "message_id": 16006
+                    "message_id": 16006,
+                    "result_commands": [
+                        {"type": "QstTalkChg", "Param1": 501, "Param2": 16003, "comment": "Gurdolin"},
+                        {"type": "QstTalkChg", "Param1": 13, "Param2": 16004, "comment": "Lise"},
+                        {"type": "QstTalkChg", "Param1": 21, "Param2": 16005, "comment": "Elliot"},
+                        {"type": "QstTalkChg", "Param1": 23, "Param2": 17489, "comment": "Gearóid"},
+                        {"type": "QstTalkChg", "Param1": 2610, "Param2": 17490, "comment": "Mordred"},
+                        {"type": "QstTalkChg", "Param1": 2620, "Param2": 17491, "comment": "Doherty"},
+                        {"type": "QstTalkChg", "Param1": 2621, "Param2": 17492, "comment": "Maia"},
+                        {"type": "QstTalkChg", "Param1": 2622, "Param2": 17493, "comment": "Tadgh"},
+                        {"type": "QstTalkChg", "Param1": 1003, "Param2": 17494, "comment": "Pamela"},
+                        {"type": "QstTalkChg", "Param1": 14, "Param2": 17495, "comment": "Mayleaf"},
+                        {"type": "QstTalkChg", "Param1": 7, "Param2": 17496, "comment": "Gerd"},
+                        {"type": "QstTalkChg", "Param1": 3, "Param2": 17497, "comment": "Klaus"},
+                        {"type": "QstTalkChg", "Param1": 1, "Param2": 17498, "comment": "The White Dragon"}
+                    ]
                 }
             ]
         },
         {
+            "comment": "Phases 1 and 2 - Memory of Sighs",
             "blocks": [
                 {
                     "type": "Raw",
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 81}
+                        {"type": "IsLinkageEnemyFlag", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 2}
                     ]
                 },
                 {
-                    "comment": "Spawn Crystals",
                     "type": "SpawnGroup",
-                    "check_commands": [
-                        {"type": "EmHpLess", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 70}
+                    "groups": [2],
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 1, "Param2": 100127}
                     ],
-                    "groups": [2]
+                    "check_commands": [
+                        {"type": "IsLinkageEnemyFlagOff", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 2}
+                    ]
                 },
                 {
                     "type": "DestroyGroup",
                     "groups": [2],
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 41}
+                        {"type": "IsLinkageEnemyFlag", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 2}
                     ]
                 },
                 {
-                    "comment": "Spawn Crystals",
                     "type": "SpawnGroup",
-                    "check_commands": [
-                        {"type": "EmHpLess", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 30}
+                    "groups": [3],
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 1, "Param2": 100127}
                     ],
-                    "groups": [3]
+                    "check_commands": [
+                        {"type": "IsLinkageEnemyFlagOff", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 2}
+                    ]
                 },
                 {
                     "type": "DestroyGroup",
@@ -333,20 +410,81 @@
             ]
         },
         {
+            "comment": "Final phase - Towers",
             "blocks": [
                 {
                     "type": "Raw",
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 10}
+                        {"type": "IsLinkageEnemyFlag", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 3}
                     ]
                 },
                 {
-                    "comment": "Spawn Towers",
-                    "type": "KillGroup",
-                    "groups": [1]
+                    "type": "SpawnGroup",
+                    "groups": [1],
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 1, "Param2": 100131}
+                    ],
+                    "check_commands": [
+                        {"type": "IsLinkageEnemyFlag", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 5}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "StartTimer", "Param1": 1, "Param2": 35},
+                        {"type": "StartTimer", "Param1": 2, "Param2": 45}
+                    ],
+                    "check_commands": [
+                        {"type": "225", "Param1": 435, "Param2": 3, "Param3": -1},
+                        {"type": "IsNotEndTimer", "Param1": 2}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "MyQstFlagOn", "Param1": 1},
+                        {"type": "CallGeneralAnnounce", "Param1": 1, "Param2": 100148},
+                        {"type": "LinkageEnemyFlagOff", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 3}
+                    ]
+                }
+            ]
+        },
+        {
+            "comment": "Final phase - Grand chant",
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "IsLinkageEnemyFlag", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 5}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 1, "Param2": 100132}
+                    ],
+                    "check_commands": [
+                        {"type": "IsEndTimer", "Param1": 1},
+                        {"type": "MyQstFlagOff", "Param1": 1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 1, "Param2": 100147}
+                    ],
+                    "check_commands": [
+                        {"type": "IsEndTimer", "Param1": 2},
+                        {"type": "MyQstFlagOff", "Param1": 1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "LinkageEnemyFlagOff", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 3}
+                    ]
                 }
             ]
         }
-
     ]
 }

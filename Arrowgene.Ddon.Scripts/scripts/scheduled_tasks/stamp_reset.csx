@@ -10,7 +10,7 @@ public class StampResetTask : DailyTask
             server.StampManager.RefreshStamp(character);
         }
 
-        server.RpcManager.AnnounceAll("internal/command", RpcInternalCommand.StampReset, null);
+        server.RpcManager.AnnounceOthers("internal/command", RpcInternalCommand.StampReset, null);
 
         server.Database.ResetCharacterStamps();
     }

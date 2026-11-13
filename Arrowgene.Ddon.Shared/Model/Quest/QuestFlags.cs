@@ -1234,5 +1234,14 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// </summary>
             public static QuestFlagInfo NayajikuExm { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2923, QuestId.Q70031001);
         }
+
+		// Evidence item list for Mephis's interrogation quests
+        public static class EvidenceItems
+        {
+            /// <summary>
+            /// Adds "Knife" to the list
+            /// </summary>
+            public static QuestFlagInfo Knife { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(4710, QuestId.Q70032001);
+        }
     }
 }

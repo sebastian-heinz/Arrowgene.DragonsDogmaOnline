@@ -1,0 +1,2 @@
+ALTER TABLE "ddon_pawn"
+ADD COLUMN share_range SMALLINT NOT NULL DEFAULT 1;

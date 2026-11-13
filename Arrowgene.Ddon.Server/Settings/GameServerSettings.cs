@@ -1147,7 +1147,7 @@ namespace Arrowgene.Ddon.Server.Settings
         /// The number of times a player can repeat a board quest before it is no longer offered. Resets when quests rotate.
         /// </summary>
         [DefaultValue(_LightQuestRepeatsPerDay)]
-        public uint Board
+        public uint LightQuestRepeatsPerDay
         {
             set
             {
@@ -1175,7 +1175,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlDomain", _UrlDomain);
             }
         }
-        private const string _UrlDomain = "http://localhost:{52099}";
+        private const string _UrlDomain = "http://localhost:52099";
 
         /// <summary>
         /// Various URLs used by the client.
@@ -1193,7 +1193,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlManual", _UrlManual);
             }
         }
-        private const string _UrlManual = "http://localhost:{52099}/manual_nfb/";
+        private const string _UrlManual = "http://localhost:52099/manual_nfb/";
 
         /// <summary>
         /// 
@@ -1210,7 +1210,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlShopDetail", _UrlShopDetail);
             }
         }
-        private const string _UrlShopDetail = "http://localhost:{52099}/shop/ingame/stone/detail";
+        private const string _UrlShopDetail = "http://localhost:52099/shop/ingame/stone/detail";
 
         /// <summary>
         /// 
@@ -1227,7 +1227,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlShopCounterA", _UrlShopCounterA);
             }
         }
-        private const string _UrlShopCounterA = "http://localhost:{52099}/shop/ingame/counter?";
+        private const string _UrlShopCounterA = "http://localhost:52099/shop/ingame/counter?";
 
         /// <summary>
         /// 
@@ -1244,7 +1244,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlShopAttention", _UrlShopAttention);
             }
         }
-        private const string _UrlShopAttention = "http://localhost:{52099}/shop/ingame/attention?";
+        private const string _UrlShopAttention = "http://localhost:52099/shop/ingame/attention?";
 
         /// <summary>
         /// 
@@ -1261,7 +1261,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlShopStoneLimit", _UrlShopStoneLimit);
             }
         }
-        private const string _UrlShopStoneLimit = "http://localhost:{52099}/shop/ingame/stone/limit";
+        private const string _UrlShopStoneLimit = "http://localhost:52099/shop/ingame/stone/limit";
 
         /// <summary>
         /// 
@@ -1278,7 +1278,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlShopCounterB", _UrlShopCounterB);
             }
         }
-        private const string _UrlShopCounterB = "http://localhost:{52099}/shop/ingame/counter?";
+        private const string _UrlShopCounterB = "http://localhost:52099/shop/ingame/counter?";
 
         /// <summary>
         /// 
@@ -1295,7 +1295,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlChargeCallback", _UrlChargeCallback);
             }
         }
-        private const string _UrlChargeCallback = "http://localhost:{52099}/opening/entry/ddo/cog_callback/charge";
+        private const string _UrlChargeCallback = "http://localhost:52099/opening/entry/ddo/cog_callback/charge";
 
         /// <summary>
         /// 
@@ -1312,7 +1312,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlChargeA", _UrlChargeA);
             }
         }
-        private const string _UrlChargeA = "http://localhost:{52099}/sp_ingame/charge/";
+        private const string _UrlChargeA = "http://localhost:52099/sp_ingame/charge/";
 
         /// <summary>
         /// 
@@ -1363,7 +1363,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlCampaignBanner", _UrlCampaignBanner);
             }
         }
-        private const string _UrlCampaignBanner = "http://localhost:{52099}/sp_ingame/campaign/bnr/bnr01.html?";
+        private const string _UrlCampaignBanner = "http://localhost:52099/sp_ingame/campaign/bnr/bnr01.html?";
 
         /// <summary>
         /// 
@@ -1380,7 +1380,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlSupportIndex", _UrlSupportIndex);
             }
         }
-        private const string _UrlSupportIndex = "http://localhost:{52099}/sp_ingame/support/index.html";
+        private const string _UrlSupportIndex = "http://localhost:52099/sp_ingame/support/index.html";
 
         /// <summary>
         /// 
@@ -1397,7 +1397,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlPhotoupAuthorize", _UrlPhotoupAuthorize);
             }
         }
-        private const string _UrlPhotoupAuthorize = "http://localhost:{52099}/api/photoup/authorize";
+        private const string _UrlPhotoupAuthorize = "http://localhost:52099/api/photoup/authorize";
 
         /// <summary>
         /// 
@@ -1414,7 +1414,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlApiA", _UrlApiA);
             }
         }
-        private const string _UrlApiA = "http://localhost:{52099}/link/api";
+        private const string _UrlApiA = "http://localhost:52099/link/api";
 
         /// <summary>
         /// 
@@ -1431,7 +1431,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlApiB", _UrlApiB);
             }
         }
-        private const string _UrlApiB = "http://localhost:{52099}/link/api";
+        private const string _UrlApiB = "http://localhost:52099/link/api";
 
         /// <summary>
         /// 
@@ -1448,7 +1448,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlIndex", _UrlIndex);
             }
         }
-        private const string _UrlIndex = "http://localhost:{52099}/sp_ingame/link/index.html";
+        private const string _UrlIndex = "http://localhost:52099/sp_ingame/link/index.html";
 
         /// <summary>
         /// 
@@ -1465,7 +1465,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlCampaign", _UrlCampaign);
             }
         }
-        private const string _UrlCampaign = "http://localhost:{52099}/sp_ingame/campaign/bnr/slide.html";
+        private const string _UrlCampaign = "http://localhost:52099/sp_ingame/campaign/bnr/slide.html";
 
         /// <summary>
         /// 
@@ -1482,7 +1482,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlChargeB", _UrlChargeB);
             }
         }
-        private const string _UrlChargeB = "http://localhost:{52099}/sp_ingame/charge/";
+        private const string _UrlChargeB = "http://localhost:52099/sp_ingame/charge/";
 
         /// <summary>
         /// 
@@ -1499,7 +1499,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("UrlCompanionImage", _UrlCompanionImage);
             }
         }
-        private const string _UrlCompanionImage = "http://localhost:{52099}/";
+        private const string _UrlCompanionImage = "http://localhost:52099/";
         
         /// <summary>
         /// How many pawns to consider for random sampling e.g. for clan hall pawns.

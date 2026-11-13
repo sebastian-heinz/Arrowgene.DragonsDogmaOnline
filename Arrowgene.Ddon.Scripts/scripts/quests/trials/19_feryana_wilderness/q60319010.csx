@@ -64,7 +64,7 @@ public class ScriptedQuest : IQuest
         process0.AddProcessEndBlock(true)
 			.AddResultCommands([
 				QuestManager.ResultCommand.WorldManageLayoutFlagOn(1216, 70000001),
-				QuestManager.ResultCommand.AchievementBanner(6, 5)
+				QuestManager.ResultCommand.CallGreatPurpose(6, 5)
 			]);
 
 		// Branch 1 - Gerald
