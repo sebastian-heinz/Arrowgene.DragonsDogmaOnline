@@ -47,6 +47,7 @@
                 "id": 464,
                 "group_id": 200
             },
+            "subgroup_id": 22,
             "enemies": [
                 {
                     "comment": "Ancestor Orc - Tosser",
@@ -122,16 +123,21 @@
                 },
                 {
                     "type": "Raw",
+                    "result_commands": [
+                        {"type": "QstLayoutFlagOn", "Param1": 7369}
+                    ],
                     "check_commands": [
                         {"type": "DieEnemy", "Param1": 133, "Param2": 14, "Param3": -1}
                     ]
                 },
                 {
-                    "type": "KillGroup",
+                    "type": "Raw",
                     "announce_type": "Accept",
-                    "groups": [0],
                     "result_commands": [
                         {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035}
+                    ],
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 133, "Param2": 200, "Param3": -1}
                     ]
                 },
                 {
@@ -147,11 +153,12 @@
                 },
                 {
                     "type": "DiscoverEnemy",
-                    "announce_type": "Update",
+                    "announce_type": "CheckpointAndUpdate",
                     "groups": [1],
                     "result_commands": [
                         {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100036},
-                        {"type": "QstLayoutFlagOff", "Param1": 7368}
+                        {"type": "QstLayoutFlagOff", "Param1": 7368},
+                        {"type": "QstLayoutFlagOff", "Param1": 7369}
 					]
                 },
                 {
@@ -159,6 +166,20 @@
                     "announce_type": "Update",
 					"reset_group": false,
                     "groups": [1]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "IsMyquestLayoutFlagOn", "Param1": 7369}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [0]
                 }
             ]
         }

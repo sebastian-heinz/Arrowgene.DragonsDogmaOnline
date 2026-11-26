@@ -48,6 +48,7 @@
                 "id": 371,
                 "group_id": 73
             },
+            "subgroup_id": 7,
             "enemies": [
                 {
                     "comment": "Bolt Grimwarg",
@@ -68,6 +69,7 @@
                 "id": 371,
                 "group_id": 73
             },
+            "subgroup_id": 7,
             "starting_index": 2,
             "enemies": [
                 {
@@ -211,6 +213,10 @@
                 },
                 {
                     "type": "Raw",
+                    "result_commands": [
+                        {"type": "QstLayoutFlagOn", "Param1": 4609},
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ],
                     "check_commands": [
                         {"type": "DieEnemy", "Param1": 120, "Param2": 33, "Param3": -1}
                     ]
@@ -219,8 +225,7 @@
                     "type": "Raw",
                     "announce_type": "Accept",
                     "result_commands": [
-                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035},
-                        {"type": "MyQstFlagOn", "Param1": 0}
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035}
                     ],
                     "check_commands": [
                         {"type": "DieEnemy", "Param1": 120, "Param2": 73, "Param3": -1}
@@ -239,10 +244,11 @@
                 },
                 {
                     "type": "Raw",
-                    "announce_type": "Update",
+                    "announce_type": "CheckpointAndUpdate",
                     "result_commands": [
                         {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100036},
                         {"type": "QstLayoutFlagOff", "Param1": 4606},
+                        {"type": "QstLayoutFlagOff", "Param1": 4609},
                         {"type": "MyQstFlagOn", "Param1": 1}
                     ],
                     "check_commands": [

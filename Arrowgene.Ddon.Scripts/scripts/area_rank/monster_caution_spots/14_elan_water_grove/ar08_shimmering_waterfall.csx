@@ -2,7 +2,7 @@
 
 public class MonsterSpotInfo : IMonsterSpotInfo
 {
-    public override StageLayoutId StageLayoutId => Stage.ElanWaterGrove.AsStageLayoutId(48);
+    public override StageLayoutId StageLayoutId => Stage.ElanWaterGrove.AsStageLayoutId(19);
     public override QuestAreaId AreaId => QuestAreaId.ElanWaterGrove;
     public override uint RequiredAreaRank => 8;
 
@@ -15,7 +15,7 @@ public class MonsterSpotInfo : IMonsterSpotInfo
     {
         var enemies = new List<InstancedEnemy>()
         {
-            LibDdon.Enemy.CreateAuto(EnemyId.Bifrest0, 73, 1, isBoss: true),
+            LibDdon.Enemy.CreateAuto(EnemyId.Bifrest0, 73, 5, isBoss: true),
         };
 
         var dropsTable = LibDdon.Enemy.GetDropsTable(enemies[0]).Clone()

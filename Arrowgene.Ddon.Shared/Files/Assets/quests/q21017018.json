@@ -1,11 +1,11 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "Beckoning Demons",
+    "comment": "The Dark Summoner Witch",
     "quest_id": 21017018,
     "base_level": 80,
     "minimum_item_rank": 0,
-    "discoverable": false,
+    "discoverable": true,
     "area_id": "KingalCanyon",
     "order_conditions": [{"type": "AreaRank", "Param1": 17, "Param2": 14}],
     "rewards": [
@@ -45,40 +45,9 @@
         {
             "stage_id": {
                 "id": 373,
-                "group_id": 5
-            },
-            "enemies": [
-                {
-                    "comment": "Skeleton Mage",
-                    "enemy_id": "0x010308",
-                    "level": 78,
-                    "exp": 586
-                },
-                {
-                    "comment": "Frost Skeleton",
-                    "enemy_id": "0x010315",
-                    "level": 78,
-                    "exp": 586
-                },
-                {
-                    "comment": "Skeleton Mage",
-                    "enemy_id": "0x010308",
-                    "level": 78,
-                    "exp": 586
-                },
-                {
-                    "comment": "Frost Skeleton",
-                    "enemy_id": "0x010315",
-                    "level": 78,
-                    "exp": 586
-                }
-            ]
-        },
-        {
-            "stage_id": {
-                "id": 373,
                 "group_id": 47
             },
+            "subgroup_id": 9,
             "enemies": [
                 {
                     "comment": "Empress Ghost",
@@ -109,6 +78,34 @@
         },
         {
             "stage_id": {
+                "id": 373,
+                "group_id": 47
+            },
+            "subgroup_id": 9,
+            "enemies": [
+                {
+                    "comment": "Medusa",
+                    "enemy_id": "0x015610",
+                    "level": 80,
+                    "exp": 20175,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Gargoyle",
+                    "enemy_id": "0x010603",
+                    "level": 80,
+                    "exp": 4035
+                },
+                {
+                    "comment": "Gargoyle",
+                    "enemy_id": "0x010603",
+                    "level": 80,
+                    "exp": 4035
+                }
+            ]
+        },
+        {
+            "stage_id": {
                 "id": 448,
                 "group_id": 7
             },
@@ -124,7 +121,7 @@
                 {
                     "comment": "Wounded Empress Ghost",
                     "enemy_id": "0x015605",
-                    "named_enemy_params_id": 1563,
+                    "named_enemy_params_id": 927,
                     "level": 80,
                     "exp": 5376,
                     "is_boss": true
@@ -132,80 +129,215 @@
                 {
                     "comment": "Wounded Siren",
                     "enemy_id": "0x010605",
-                    "named_enemy_params_id": 1563,
+                    "named_enemy_params_id": 927,
                     "level": 80,
                     "exp": 630
                 },
                 {
                     "comment": "Wounded Siren",
                     "enemy_id": "0x010605",
-                    "named_enemy_params_id": 1563,
+                    "named_enemy_params_id": 927,
                     "level": 80,
                     "exp": 630
                 },
                 {
                     "comment": "Wounded Siren",
                     "enemy_id": "0x010605",
-                    "named_enemy_params_id": 1563,
+                    "named_enemy_params_id": 927,
                     "level": 80,
                     "exp": 630
                 }
             ]
+        },
+        {
+            "stage_id": {
+                "id": 448,
+                "group_id": 7
+            },
+            "starting_index": 6,
+            "enemies": [
+                {
+                    "comment": "Behemoth",
+                    "enemy_id": "0x015709",
+                    "level": 80,
+                    "exp": 20175,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Wounded Medusa",
+                    "enemy_id": "0x015610",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 6300,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Wounded Gargoyle",
+                    "enemy_id": "0x010603",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 546
+                },
+                {
+                    "comment": "Wounded Gargoyle",
+                    "enemy_id": "0x010603",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 546
+                },
+                {
+                    "comment": "Wounded Gargoyle",
+                    "enemy_id": "0x010603",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 546
+                },
+                {
+                    "comment": "Wounded Gargoyle",
+                    "enemy_id": "0x010603",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 546
+                }
+            ]
         }
     ],
-    "blocks": [
+    "processes": [
         {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "reset_group": false,
-            "groups": [0]
-        },
-        {
-            "type": "IsStageNo",
-			"stage_id": {
-				"id": 373
-			},
-            "result_commands": [
-                {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035}
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "CheckAreaRank", "Param1": 17, "Param2": 14},
+                        {"type": "StageNo", "Param1": 122}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "QstLayoutFlagOn", "Param1": 4669},
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ],
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 122, "Param2": 5, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Accept",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035}
+                    ],
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 122, "Param2": 47, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 815},
+                        {"type": "QstLayoutFlagOn", "Param1": 4666}
+                    ],
+                    "check_commands": [
+                        {"type": "QuestOmSetTouch", "Param1": 122, "Param2": 0, "Param3": 0}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "CheckpointAndUpdate",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100036},
+                        {"type": "QstLayoutFlagOff", "Param1": 4666},
+                        {"type": "QstLayoutFlagOff", "Param1": 4669},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ],
+                    "check_commands": [
+                        {"type": "IsEnemyFoundForOrder", "Param1": 866, "Param2": 7, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 866, "Param2": 7, "Param3": -1}
+                    ]
+                }
             ]
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "groups": [1]
-        },
-        {
-            "type": "CollectItem",
-            "announce_type": "Update",
-            "stage_id": {
-                "id": 373, "group_id": 0, "layer_no": 0
-            },
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 4666}
-            ],
-            "result_commands": [
-                {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 815}
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "SetRandom", "Param1": 1, "Param2": 1, "Param3": 2}
+                    ]
+                }
             ]
         },
         {
-            "type": "DiscoverEnemy",
-            "announce_type": "Update",
-            "flags": [
-                {"type": "QstLayout", "action": "Clear", "value": 4666}
-            ],
-            "result_commands": [
-                {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 21080}
-            ],
-            "groups": [2]
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [0]
+                }
+            ]
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "reset_group": false,
-            "groups": [2]
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 2}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [1]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 1},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [2]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 2},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [3]
+                }
+            ]
         }
     ]
 }

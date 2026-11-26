@@ -48,6 +48,7 @@
                 "id": 371,
                 "group_id": 74
             },
+            "subgroup_id": 9,
             "enemies": [
                 {
                     "comment": "Siren",
@@ -110,6 +111,7 @@
                 "id": 371,
                 "group_id": 74
             },
+            "subgroup_id": 9,
             "enemies": [
                 {
                     "comment": "Strix",
@@ -318,6 +320,10 @@
                 },
                 {
                     "type": "Raw",
+                    "result_commands": [
+                        {"type": "QstLayoutFlagOn", "Param1": 4621},
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ],
                     "check_commands": [
                         {"type": "DieEnemy", "Param1": 120, "Param2": 20, "Param3": -1}
                     ]
@@ -326,8 +332,7 @@
                     "type": "Raw",
                     "announce_type": "Accept",
                     "result_commands": [
-                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035},
-                        {"type": "MyQstFlagOn", "Param1": 0}
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035}
                     ],
                     "check_commands": [
                         {"type": "DieEnemy", "Param1": 120, "Param2": 74, "Param3": -1}
@@ -346,10 +351,11 @@
                 },
                 {
                     "type": "Raw",
-                    "announce_type": "Update",
+                    "announce_type": "CheckpointAndUpdate",
                     "result_commands": [
                         {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100036},
                         {"type": "QstLayoutFlagOff", "Param1": 4618},
+                        {"type": "QstLayoutFlagOff", "Param1": 4621},
                         {"type": "MyQstFlagOn", "Param1": 1}
                     ],
                     "check_commands": [

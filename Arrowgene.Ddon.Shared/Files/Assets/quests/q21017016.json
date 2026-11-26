@@ -5,7 +5,7 @@
     "quest_id": 21017016,
     "base_level": 75,
     "minimum_item_rank": 0,
-    "discoverable": false,
+    "discoverable": true,
     "area_id": "KingalCanyon",
     "news_image": 303,
     "order_conditions": [{"type": "AreaRank", "Param1": 17, "Param2": 12}],
@@ -46,50 +46,110 @@
         {
             "stage_id": {
                 "id": 373,
-                "group_id": 1
+                "group_id": 46
             },
+            "subgroup_id": 7,
             "enemies": [
                 {
-                    "comment": "Stout Undead",
-                    "enemy_id": "0x010502",
-					"start_think_tbl_no": 2,
+                    "comment": "Ghost Mail",
+                    "enemy_id": "0x010311",
                     "level": 75,
-                    "exp": 275
+                    "exp": 2735
                 },
                 {
-                    "comment": "Stout Undead",
-                    "enemy_id": "0x010502",
-					"start_think_tbl_no": 2,
+                    "comment": "Ghost Mail",
+                    "enemy_id": "0x010311",
                     "level": 75,
-                    "exp": 275
+                    "exp": 2735
                 },
                 {
-                    "comment": "Stout Undead",
-                    "enemy_id": "0x010502",
-					"start_think_tbl_no": 2,
+                    "comment": "Ghost Mail",
+                    "enemy_id": "0x010311",
                     "level": 75,
-                    "exp": 275
-                },
-                {
-                    "comment": "Stout Undead",
-                    "enemy_id": "0x010502",
-					"start_think_tbl_no": 2,
-                    "level": 75,
-                    "exp": 275
+                    "exp": 2735
                 }
             ]
         },
         {
             "stage_id": {
                 "id": 373,
-                "group_id": 52
+                "group_id": 46
             },
+            "subgroup_id": 7,
+            "starting_index": 3,
             "enemies": [
                 {
                     "comment": "Death Knight",
                     "enemy_id": "0x010310",
                     "level": 75,
                     "exp": 2735
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 369,
+                "group_id": 6
+            },
+			"placement_type": "manual",
+            "enemies": [
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 75,
+                    "exp": 2735,
+					"index": 0
+                },
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 75,
+                    "exp": 2735,
+					"index": 1
+                },
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 75,
+                    "exp": 2735,
+					"index": 2
+                },
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 75,
+                    "exp": 2735,
+					"index": 3
+                },
+                {
+                    "comment": "Eliminator Slay",
+                    "enemy_id": "0x010530",
+                    "level": 75,
+                    "exp": 2735,
+					"index": 10
+                },
+                {
+                    "comment": "Eliminator Slay",
+                    "enemy_id": "0x010530",
+                    "level": 75,
+                    "exp": 2735,
+					"index": 11
+                },
+                {
+                    "comment": "Wounded Ghost Mail",
+                    "enemy_id": "0x010311",
+                    "named_enemy_params_id": 927,
+                    "level": 75,
+                    "exp": 800,
+					"index": 12
+                },
+                {
+                    "comment": "Wounded Ghost Mail",
+                    "enemy_id": "0x010311",
+                    "named_enemy_params_id": 927,
+                    "level": 75,
+                    "exp": 800,
+					"index": 13
                 }
             ]
         },
@@ -139,68 +199,150 @@
                 {
                     "comment": "Wounded Death Knight",
                     "enemy_id": "0x010310",
-                    "named_enemy_params_id": 1563,
+                    "named_enemy_params_id": 927,
                     "level": 75,
                     "exp": 2735,
-					"is_boss": true,
 					"index": 13
                 }
             ]
         }
     ],
-    "blocks": [
+    "processes": [
         {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "reset_group": false,
-            "groups": [0]
-        },
-        {
-            "type": "IsStageNo",
-			"stage_id": {
-				"id": 373
-			},
-            "result_commands": [
-                {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035}
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "CheckAreaRank", "Param1": 17, "Param2": 12},
+                        {"type": "StageNo", "Param1": 122}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "QstLayoutFlagOn", "Param1": 4657},
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ],
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 122, "Param2": 2, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Accept",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035}
+                    ],
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 122, "Param2": 46, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 815},
+                        {"type": "QstLayoutFlagOn", "Param1": 4654}
+                    ],
+                    "check_commands": [
+                        {"type": "QuestOmSetTouch", "Param1": 122, "Param2": 0, "Param3": 0}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "CheckpointAndUpdate",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100036},
+                        {"type": "QstLayoutFlagOff", "Param1": 4654},
+                        {"type": "QstLayoutFlagOff", "Param1": 4657},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ],
+                    "check_commands": [
+                        {"type": "IsEnemyFoundForOrder", "Param1": 863, "Param2": 6, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 863, "Param2": 6, "Param3": -1}
+                    ]
+                }
             ]
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "groups": [1]
-        },
-        {
-            "type": "CollectItem",
-            "announce_type": "Update",
-            "stage_id": {
-                "id": 373, "group_id": 1, "layer_no": 0
-            },
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 4655}
-            ],
-            "result_commands": [
-                {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 815}
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "SetRandom", "Param1": 1, "Param2": 1, "Param3": 2}
+                    ]
+                }
             ]
         },
         {
-            "type": "DiscoverEnemy",
-            "announce_type": "Update",
-            "flags": [
-                {"type": "QstLayout", "action": "Clear", "value": 4655}
-            ],
-            "result_commands": [
-                {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 21079}
-            ],
-            "groups": [2]
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [0]
+                }
+            ]
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "reset_group": false,
-            "groups": [2]
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 2}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [1]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 1},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [2]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 2},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [3]
+                }
+            ]
         }
     ]
 }

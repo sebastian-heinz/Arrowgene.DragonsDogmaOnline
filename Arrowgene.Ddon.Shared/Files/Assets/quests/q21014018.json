@@ -48,6 +48,7 @@
                 "id": 372,
                 "group_id": 44
             },
+            "subgroup_id": 9,
             "enemies": [
                 {
                     "comment": "White Griffin",
@@ -63,6 +64,7 @@
                 "id": 372,
                 "group_id": 44
             },
+            "subgroup_id": 9,
             "enemies": [
                 {
                     "comment": "Black Griffin",
@@ -182,6 +184,10 @@
                 },
                 {
                     "type": "Raw",
+                    "result_commands": [
+                        {"type": "QstLayoutFlagOn", "Param1": 4597},
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ],
                     "check_commands": [
                         {"type": "DieEnemy", "Param1": 121, "Param2": 20, "Param3": -1}
                     ]
@@ -190,8 +196,7 @@
                     "type": "Raw",
                     "announce_type": "Accept",
                     "result_commands": [
-                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035},
-                        {"type": "MyQstFlagOn", "Param1": 0}
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035}
                     ],
                     "check_commands": [
                         {"type": "DieEnemy", "Param1": 121, "Param2": 44, "Param3": 0}
@@ -210,10 +215,11 @@
                 },
                 {
                     "type": "Raw",
-                    "announce_type": "Update",
+                    "announce_type": "CheckpointAndUpdate",
                     "result_commands": [
                         {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100036},
                         {"type": "QstLayoutFlagOff", "Param1": 4594},
+                        {"type": "QstLayoutFlagOff", "Param1": 4597},
                         {"type": "MyQstFlagOn", "Param1": 1}
                     ],
                     "check_commands": [

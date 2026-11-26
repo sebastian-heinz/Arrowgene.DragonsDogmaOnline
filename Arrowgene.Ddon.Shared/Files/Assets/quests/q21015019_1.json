@@ -49,6 +49,7 @@
                 "id": 371,
                 "group_id": 78
             },
+            "subgroup_id": 19,
             "enemies": [
                 {
                     "comment": "Wight",
@@ -71,6 +72,7 @@
                 "id": 371,
                 "group_id": 78
             },
+            "subgroup_id": 19,
             "enemies": [
                 {
                     "comment": "Witch",
@@ -129,7 +131,7 @@
                 "id": 367,
                 "group_id": 5
             },
-            "starting_index": 7,
+            "starting_index": 4,
             "enemies": [
                 {
                     "comment": "Nightmare",
@@ -173,6 +175,10 @@
                 },
                 {
                     "type": "Raw",
+                    "result_commands": [
+                        {"type": "QstLayoutFlagOn", "Param1": 4634},
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ],
                     "check_commands": [
                         {"type": "DieEnemy", "Param1": 120, "Param2": 16, "Param3": -1}
                     ]
@@ -181,8 +187,7 @@
                     "type": "Raw",
                     "announce_type": "Accept",
                     "result_commands": [
-                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035},
-                        {"type": "MyQstFlagOn", "Param1": 0}
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035}
                     ],
                     "check_commands": [
                         {"type": "DieEnemy", "Param1": 120, "Param2": 78, "Param3": -1}
@@ -201,10 +206,11 @@
                 },
                 {
                     "type": "Raw",
-                    "announce_type": "Update",
+                    "announce_type": "CheckpointAndUpdate",
                     "result_commands": [
                         {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100036},
                         {"type": "QstLayoutFlagOff", "Param1": 4631},
+                        {"type": "QstLayoutFlagOff", "Param1": 4634},
                         {"type": "MyQstFlagOn", "Param1": 1}
                     ],
                     "check_commands": [
