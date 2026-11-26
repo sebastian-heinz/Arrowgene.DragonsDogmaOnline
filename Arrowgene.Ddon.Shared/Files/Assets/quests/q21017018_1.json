@@ -1,0 +1,344 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Dark Summoner Witch",
+    "quest_id": 21017018,
+    "base_level": 80,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "KingalCanyon",
+    "order_conditions": [{"type": "AreaRank", "Param1": 17, "Param2": 14}],
+    "variant_index": 1,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 5106
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 665
+        },
+        {
+            "type": "exp",
+            "amount": 48420
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": "DubiousAnimalPelt",
+                    "num": 3
+                },
+                {
+                    "item_id": "SuperiorStrongGalaExtract",
+                    "num": 3
+                },
+                {
+                    "item_id": "Panacea",
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 373,
+                "group_id": 53
+            },
+            "subgroup_id": 17,
+            "enemies": [
+                {
+                    "comment": "Empress Ghost",
+                    "enemy_id": "0x015605",
+                    "level": 80,
+                    "exp": 20175,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Siren",
+                    "enemy_id": "0x010605",
+                    "level": 80,
+                    "exp": 4035
+                },
+                {
+                    "comment": "Siren",
+                    "enemy_id": "0x010605",
+                    "level": 80,
+                    "exp": 4035
+                },
+                {
+                    "comment": "Siren",
+                    "enemy_id": "0x010605",
+                    "level": 80,
+                    "exp": 4035
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 373,
+                "group_id": 53
+            },
+            "subgroup_id": 17,
+            "enemies": [
+                {
+                    "comment": "Medusa",
+                    "enemy_id": "0x015610",
+                    "level": 80,
+                    "exp": 20175,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Gargoyle",
+                    "enemy_id": "0x010603",
+                    "level": 80,
+                    "exp": 4035
+                },
+                {
+                    "comment": "Gargoyle",
+                    "enemy_id": "0x010603",
+                    "level": 80,
+                    "exp": 4035
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 448,
+                "group_id": 7
+            },
+            "starting_index": 6,
+            "enemies": [
+                {
+                    "comment": "Behemoth",
+                    "enemy_id": "0x015709",
+                    "level": 80,
+                    "exp": 20175,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Wounded Empress Ghost",
+                    "enemy_id": "0x015605",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 5376,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Wounded Siren",
+                    "enemy_id": "0x010605",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 630
+                },
+                {
+                    "comment": "Wounded Siren",
+                    "enemy_id": "0x010605",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 630
+                },
+                {
+                    "comment": "Wounded Siren",
+                    "enemy_id": "0x010605",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 630
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 448,
+                "group_id": 7
+            },
+            "starting_index": 6,
+            "enemies": [
+                {
+                    "comment": "Behemoth",
+                    "enemy_id": "0x015709",
+                    "level": 80,
+                    "exp": 20175,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Wounded Medusa",
+                    "enemy_id": "0x015610",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 6300,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Wounded Gargoyle",
+                    "enemy_id": "0x010603",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 546
+                },
+                {
+                    "comment": "Wounded Gargoyle",
+                    "enemy_id": "0x010603",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 546
+                },
+                {
+                    "comment": "Wounded Gargoyle",
+                    "enemy_id": "0x010603",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 546
+                },
+                {
+                    "comment": "Wounded Gargoyle",
+                    "enemy_id": "0x010603",
+                    "named_enemy_params_id": 927,
+                    "level": 80,
+                    "exp": 546
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "CheckAreaRank", "Param1": 17, "Param2": 14},
+                        {"type": "StageNo", "Param1": 122}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "QstLayoutFlagOn", "Param1": 4670},
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ],
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 122, "Param2": 21, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Accept",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035}
+                    ],
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 122, "Param2": 53, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 815},
+                        {"type": "QstLayoutFlagOn", "Param1": 4667}
+                    ],
+                    "check_commands": [
+                        {"type": "QuestOmSetTouch", "Param1": 122, "Param2": 1, "Param3": 0}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "CheckpointAndUpdate",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100036},
+                        {"type": "QstLayoutFlagOff", "Param1": 4667},
+                        {"type": "QstLayoutFlagOff", "Param1": 4670},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ],
+                    "check_commands": [
+                        {"type": "IsEnemyFoundForOrder", "Param1": 866, "Param2": 7, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 866, "Param2": 7, "Param3": -1}
+                    ]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "SetRandom", "Param1": 1, "Param2": 1, "Param3": 2}
+                    ]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [0]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 2}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [1]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 1},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [2]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 2},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [3]
+                }
+            ]
+        }
+    ]
+}

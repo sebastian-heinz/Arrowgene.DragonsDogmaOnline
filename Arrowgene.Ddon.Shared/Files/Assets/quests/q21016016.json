@@ -5,7 +5,7 @@
     "quest_id": 21016016,
     "base_level": 80,
     "minimum_item_rank": 0,
-    "discoverable": false,
+    "discoverable": true,
     "area_id": "MorrowForest",
     "order_conditions": [{"type": "AreaRank", "Param1": 16, "Param2": 13}],
     "rewards": [
@@ -48,33 +48,24 @@
         {
             "stage_id": {
                 "id": 374,
-                "group_id": 25
+                "group_id": 34
             },
+            "subgroup_id": 7,
+            "starting_index": 1,
             "enemies": [
                 {
-                    "comment": "Severely Infected Pixie (Severe)",
-                    "enemy_id": "0x010170",
-                    "infection_type": 2,
-                    "level": 75,
-                    "exp": 520
+                    "comment": "Ghoul",
+                    "enemy_id": "0x015503",
+                    "level": 80,
+                    "exp": 20175,
+                    "is_boss": true
                 },
                 {
-                    "comment": "Severely Infected Pixie",
-                    "enemy_id": "0x010170",
-                    "level": 75,
-                    "exp": 520
-                },
-                {
-                    "comment": "Severely Infected Pixie",
-                    "enemy_id": "0x010170",
-                    "level": 75,
-                    "exp": 520
-                },
-                {
-                    "comment": "Severely Infected Pixie",
-                    "enemy_id": "0x010170",
-                    "level": 75,
-                    "exp": 520
+                    "comment": "Ghoul",
+                    "enemy_id": "0x015503",
+                    "level": 80,
+                    "exp": 20175,
+                    "is_boss": true
                 }
             ]
         },
@@ -83,20 +74,40 @@
                 "id": 374,
                 "group_id": 34
             },
+            "subgroup_id": 7,
+            "starting_index": 1,
             "enemies": [
                 {
-                    "comment": "Ghoul",
-                    "enemy_id": "0x015503",
+                    "comment": "Severely Infected Demon (Severe)",
+                    "enemy_id": "0x015910",
+                    "infection_type": 2,
                     "level": 80,
-                    "exp": 20175,
-                    "is_boss": true
+                    "exp": 4035,
+                    "repop_count": 1
                 },
                 {
-                    "comment": "Ghoul",
-                    "enemy_id": "0x015503",
+                    "comment": "Severely Infected Demon (Severe)",
+                    "enemy_id": "0x015910",
+                    "infection_type": 2,
                     "level": 80,
-                    "exp": 20175,
-                    "is_boss": true
+                    "exp": 4035,
+                    "repop_count": 1
+                },
+                {
+                    "comment": "Severely Infected Demon (Severe)",
+                    "enemy_id": "0x015910",
+                    "infection_type": 2,
+                    "level": 80,
+                    "exp": 4035,
+                    "repop_count": 1
+                },
+                {
+                    "comment": "Severely Infected Demon (Severe)",
+                    "enemy_id": "0x015910",
+                    "infection_type": 2,
+                    "level": 80,
+                    "exp": 4035,
+                    "repop_count": 1
                 }
             ]
         },
@@ -115,6 +126,14 @@
                     "exp": 20175,
                     "is_boss": true,
                     "index": 0
+                },
+                {
+                    "comment": "Severely Infected Warg (Severe)",
+                    "enemy_id": "0x010220",
+                    "infection_type": 2,
+                    "level": 80,
+                    "exp": 4035,
+                    "index": 2
                 },
                 {
                     "comment": "Severely Infected Warg (Severe)",
@@ -146,6 +165,14 @@
                     "infection_type": 2,
                     "level": 80,
                     "exp": 4035,
+                    "index": 6
+                },
+                {
+                    "comment": "Severely Infected Warg (Severe)",
+                    "enemy_id": "0x010220",
+                    "infection_type": 2,
+                    "level": 80,
+                    "exp": 4035,
                     "index": 7
                 },
                 {
@@ -166,52 +193,221 @@
                     "index": 9
                 }
             ]
+        },
+        {
+            "stage_id": {
+                "id": 374,
+                "group_id": 22
+            },
+            "placement_type": "manual",
+            "enemies": [
+                {
+                    "comment": "Severely Infected Griffin (Critical)",
+                    "enemy_id": "0x015310",
+                    "infection_type": 3,
+                    "level": 80,
+                    "exp": 20175,
+                    "is_boss": true,
+                    "index": 0
+                },
+                {
+                    "comment": "Severely Infected Stymphalides (Severe)",
+                    "enemy_id": "0x010614",
+                    "infection_type": 2,
+                    "level": 80,
+                    "exp": 4035,
+                    "index": 3
+                },
+                {
+                    "comment": "Severely Infected Stymphalides (Severe)",
+                    "enemy_id": "0x010614",
+                    "infection_type": 2,
+                    "level": 80,
+                    "exp": 4035,
+                    "index": 4
+                },
+                {
+                    "comment": "Severely Infected Stymphalides (Severe)",
+                    "enemy_id": "0x010614",
+                    "infection_type": 2,
+                    "level": 80,
+                    "exp": 4035,
+                    "index": 5
+                },
+                {
+                    "comment": "Severely Infected Stymphalides (Severe)",
+                    "enemy_id": "0x010614",
+                    "infection_type": 2,
+                    "level": 80,
+                    "exp": 4035,
+                    "index": 7
+                },
+                {
+                    "comment": "Severely Infected Stymphalides (Severe)",
+                    "enemy_id": "0x010614",
+                    "infection_type": 2,
+                    "level": 80,
+                    "exp": 4035,
+                    "index": 8
+                },
+                {
+                    "comment": "Wounded Severely Infected Demon (Severe)",
+                    "enemy_id": "0x015910",
+                    "named_enemy_params_id": 927,
+                    "infection_type": 2,
+                    "level": 80,
+                    "exp": 780,
+                    "index": 9
+                },
+                {
+                    "comment": "Wounded Severely Infected Demon (Severe)",
+                    "enemy_id": "0x015910",
+                    "named_enemy_params_id": 927,
+                    "infection_type": 2,
+                    "level": 80,
+                    "exp": 780,
+                    "index": 10
+                }
+            ]
         }
     ],
-    "blocks": [
+    "processes": [
         {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "reset_group": false,
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "groups": [1]
-        },
-        {
-            "type": "CollectItem",
-            "announce_type": "Update",
-            "stage_id": {
-                "id": 374, "group_id": 0, "layer_no": 0
-            },
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 4642}
-            ],
-            "result_commands": [
-                {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 815}
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "CheckAreaRank", "Param1": 16, "Param2": 13},
+                        {"type": "StageNo", "Param1": 123}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "QstLayoutFlagOn", "Param1": 4645},
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ],
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 123, "Param2": 25, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Accept",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100035}
+                    ],
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 123, "Param2": 34, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 815},
+                        {"type": "QstLayoutFlagOn", "Param1": 4642}
+                    ],
+                    "check_commands": [
+                        {"type": "QuestOmSetTouch", "Param1": 123, "Param2": 0, "Param3": 0}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "CheckpointAndUpdate",
+                    "result_commands": [
+                        {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100036},
+                        {"type": "QstLayoutFlagOff", "Param1": 4642},
+                        {"type": "QstLayoutFlagOff", "Param1": 4645},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ],
+                    "check_commands": [
+                        {"type": "IsEnemyFoundForOrder", "Param1": 123, "Param2": 22, "Param3": -1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 123, "Param2": 22, "Param3": -1}
+                    ]
+                }
             ]
         },
         {
-            "type": "DiscoverEnemy",
-            "announce_type": "Update",
-            "flags": [
-                {"type": "QstLayout", "action": "Clear", "value": 4642}
-            ],
-            "result_commands": [
-                {"type": "CallGeneralAnnounce", "Param1": 0, "Param2": 100036}
-            ],
-            "groups": [2]
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "MyQstFlagOn", "Param1": 0}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "SetRandom", "Param1": 1, "Param2": 1, "Param3": 2}
+                    ]
+                }
+            ]
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "reset_group": false,
-            "groups": [2]
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [0]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 2}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [1]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 1},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [2]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "RandomEq", "Param1": 1, "Param2": 2},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [3]
+                }
+            ]
         }
     ]
 }
+
